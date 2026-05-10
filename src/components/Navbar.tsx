@@ -25,6 +25,7 @@ export function Navbar() {
           <NavItem href="/course/ap-gov" label="AP Gov" />
           <NavItem href="/course/ap-calc" label="AP Calc" />
           <NavItem href="/course/ap-research" label="AP Research" />
+          <NavItem href="/guides" label="Guides" />
         </nav>
 
         {/* Search + Theme */}
@@ -56,6 +57,7 @@ export function Navbar() {
           <MobileLink href="/course/ap-gov" label="AP Gov" onClick={() => setMobileOpen(false)} />
           <MobileLink href="/course/ap-calc" label="AP Calc" onClick={() => setMobileOpen(false)} />
           <MobileLink href="/course/ap-research" label="AP Research" onClick={() => setMobileOpen(false)} />
+          <MobileLink href="/guides" label="Study Guides" onClick={() => setMobileOpen(false)} />
         </div>
       )}
     </header>

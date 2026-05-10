@@ -7,7 +7,7 @@ import { VideoSection } from "@/components/VideoSection";
 import { EssayViewer } from "@/components/EssayViewer";
 import { MockExamSection } from "@/components/MockExamSection";
 import { ExamCountdown } from "@/components/ExamCountdown";
-import { ProgressTracker } from "@/components/ProgressTracker";
+
 
 const themeMap: Record<string, { dot: string; bg: string; text: string; badge: string }> = {
   blue: { dot: "bg-blue-600", bg: "bg-blue-50 dark:bg-blue-950", text: "text-blue-600 dark:text-blue-400", badge: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" },
@@ -185,15 +185,6 @@ export default async function CoursePage(props: { params: Promise<{ slug: string
             ))}
           </div>
 
-          {/* Progress Tracker */}
-          <h3 className="text-lg font-bold tracking-tight mt-10 mb-4">Track Your Progress</h3>
-          <ProgressTracker 
-            courseSlug={slug}
-            totalUnits={units.length}
-            totalFlashcards={flashcards.length}
-            totalQuestions={questions.length}
-            color={course.color}
-          />
         </section>
       </div>
     </div>

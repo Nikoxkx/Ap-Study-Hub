@@ -20,7 +20,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 md:py-28 relative">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-muted text-muted-foreground text-xs font-medium px-3 py-1.5 rounded-full mb-5">
-              ✨ Free AP Exam Prep · 2025
+              ✨ Free AP Exam Prep · 2026
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] mb-5">
               Everything you need to{" "}
