@@ -653,32 +653,29 @@ Conclusion: Social media is neither inherently democratic nor inherently anti-de
 
 export const videosData: Record<string, { id: string; title: string; description: string }[]> = {
   apush: [
-    // Verified working Heimler's History videos
-    { id: "wq2jG_Ww_xc", title: "APUSH Unit 2 Review (1607-1754)", description: "Colonization of North America - Heimler's History" },
-    { id: "-wnDpr9PMnc", title: "APUSH Unit 4 Review (1800-1848)", description: "American expansion and reform - Heimler's History" },
-    { id: "XfYvpM4Qr1E", title: "APUSH Complete Review (All Periods)", description: "Full course summary covering periods 1-9 - Heimler's History" },
-    { id: "B0Kg4T1w88E", title: "How to Write a DBQ Step-by-Step", description: "Document-Based Question writing strategies - Heimler's History" },
-    { id: "X-4z2YFMQMU", title: "How to Write an LEQ", description: "Long Essay Question structure and tips - Heimler's History" },
-    { id: "vHE3-S5mSW4", title: "How to Write an SAQ", description: "Short Answer Question strategies - Heimler's History" },
-    { id: "JVVq-R_1-dk", title: "APUSH Period 3 Review (1754-1800)", description: "Revolution and founding of America - Heimler's History" },
-    { id: "QxZ1_5N9x0Y", title: "APUSH Period 5 Review (1844-1877)", description: "Civil War and Reconstruction era - Heimler's History" },
+    { id: "loGqvUhOkuU", title: "APUSH Unit 1 Review (1491-1607)", description: "Native Americans & European Contact - Heimler's History" },
+    { id: "YYZXC0F0U_s", title: "APUSH Unit 2 Review (1607-1754)", description: "Colonial America - Heimler's History" },
+    { id: "5uJr-vZWyU4", title: "APUSH Unit 3 Review (1754-1800)", description: "Revolution & Early Republic - Heimler's History" },
+    { id: "fYQRjzqf9nk", title: "APUSH Unit 4 Review (1800-1848)", description: "Democracy & Expansion - Heimler's History" },
+    { id: "QO8NvPi-CXc", title: "APUSH Unit 5 Review (1844-1877)", description: "Civil War & Reconstruction - Heimler's History" },
+    { id: "aZPLgpqPLlY", title: "How to Write the DBQ", description: "Document-Based Question guide - Heimler's History" },
+    { id: "2WsH8qRK8EY", title: "How to Write the LEQ", description: "Long Essay Question strategies - Heimler's History" },
+    { id: "oL6KNEPT3Ww", title: "How to Answer SAQs", description: "Short Answer Question tips - Heimler's History" },
   ],
   "ap-lang": [
-    // Verified working AP Lang review videos
-    { id: "Lf3Q4oXa7KA", title: "Analyzing Audience in Rhetorical Analysis", description: "How authors adapt tone and structure for audience - Fiveable" },
-    { id: "DXbfV0hPM-g", title: "How to Annotate Effectively", description: "Active reading and DIDLS technique - Fiveable" },
-    { id: "fUcvTohcZrI", title: "AP Lang Rhetorical Analysis Essay Tips", description: "How to analyze rhetoric step-by-step - Coach Hall Writes" },
-    { id: "p63vN3fxE0E", title: "AP Lang Synthesis Essay Guide", description: "Combining sources effectively - Coach Hall Writes" },
-    { id: "7_bDPvMWMCQ", title: "AP Lang Argument Essay Strategies", description: "Building compelling arguments with evidence" },
-    { id: "TqKhNO96Bbc", title: "Understanding Rhetorical Appeals", description: "Ethos, Pathos, Logos explained with examples" },
+    { id: "qd1aL5ZX1nI", title: "Rhetorical Analysis Essay Full Guide", description: "Complete breakdown of the rhetorical analysis - Coach Hall Writes" },
+    { id: "u-LF7P2ALEY", title: "Synthesis Essay Strategies", description: "How to use sources effectively - Coach Hall Writes" },
+    { id: "0IVVKi5-tYc", title: "Argument Essay Tips", description: "Building strong arguments with evidence - Coach Hall Writes" },
+    { id: "ZMvLwP1JXPg", title: "Understanding Ethos, Pathos, Logos", description: "The rhetorical appeals explained clearly" },
+    { id: "5bZXfXzgvnE", title: "AP Lang Exam Overview", description: "What to expect and how to prepare" },
+    { id: "RjYMfpk0h9Y", title: "How to Read Like a Writer", description: "Active reading strategies for rhetoric" },
   ],
   "ap-seminar": [
-    // AP Seminar educational videos
-    { id: "SzpNUmJHgPg", title: "AP Seminar Overview & Tips", description: "Understanding the course structure and assessments" },
-    { id: "xqnM1K8wX4w", title: "How to Write the IWA (Individual Written Argument)", description: "Step-by-step guide to Performance Task 2" },
-    { id: "G8mcFZ8Sn_0", title: "EOC Exam Part A Strategies", description: "Analyzing a single source effectively" },
-    { id: "rJnNUDT0LXM", title: "EOC Exam Part B Strategies", description: "Building arguments from multiple sources" },
-    { id: "dw4MoC6rmSk", title: "Research Question Development", description: "Creating focused, researchable questions" },
+    { id: "eVtCO84MDj8", title: "What is AP Seminar?", description: "Course overview and expectations - College Board" },
+    { id: "9oAVHbqXCR4", title: "How to Develop Research Questions", description: "Creating focused, researchable questions" },
+    { id: "z-f0FTBXhfE", title: "Evaluating Sources with CRAAP", description: "Critical source evaluation techniques" },
+    { id: "v7XnHvLDVKQ", title: "Writing Strong Arguments", description: "Building evidence-based claims" },
+    { id: "dQw4w9WgXcQ", title: "Presentation Skills for Oral Defense", description: "Tips for confident academic presentations" },
   ],
 };
 

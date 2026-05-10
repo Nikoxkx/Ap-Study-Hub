@@ -93,6 +93,25 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* About Section */}
+      <section className="border-t border-border bg-muted/20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl font-bold mb-6">Y</div>
+          <h2 className="text-2xl font-bold tracking-tight mb-4">Why I Built This</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">
+            Hey, I&apos;m Yeisbel. As a student preparing for AP exams, I noticed how scattered and expensive most study resources were. 
+            Some sites charged monthly fees, others required accounts just to view basic content, and YouTube videos were buried under algorithm noise.
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-4">
+            I built AP Study Hub because every student deserves free, organized, quality study materials without barriers. 
+            No accounts. No payments. No ads. Just everything you need to ace your AP exams in one place.
+          </p>
+          <p className="text-sm text-muted-foreground/80 italic">
+            Good luck on your exams. You&apos;ve got this.
+          </p>
+        </div>
+      </section>
+
       {/* Footer CTA */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 text-center">
         <h2 className="text-2xl font-bold tracking-tight mb-3">Ready to start?</h2>
