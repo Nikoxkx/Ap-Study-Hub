@@ -7,11 +7,16 @@ import { VideoSection } from "@/components/VideoSection";
 import { EssayViewer } from "@/components/EssayViewer";
 import { MockExamSection } from "@/components/MockExamSection";
 import { ExamCountdown } from "@/components/ExamCountdown";
+import { ProgressTracker } from "@/components/ProgressTracker";
 
 const themeMap: Record<string, { dot: string; bg: string; text: string; badge: string }> = {
   blue: { dot: "bg-blue-600", bg: "bg-blue-50 dark:bg-blue-950", text: "text-blue-600 dark:text-blue-400", badge: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" },
   emerald: { dot: "bg-emerald-600", bg: "bg-emerald-50 dark:bg-emerald-950", text: "text-emerald-600 dark:text-emerald-400", badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300" },
   purple: { dot: "bg-purple-600", bg: "bg-purple-50 dark:bg-purple-950", text: "text-purple-600 dark:text-purple-400", badge: "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" },
+  red: { dot: "bg-red-600", bg: "bg-red-50 dark:bg-red-950", text: "text-red-600 dark:text-red-400", badge: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300" },
+  green: { dot: "bg-green-600", bg: "bg-green-50 dark:bg-green-950", text: "text-green-600 dark:text-green-400", badge: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300" },
+  orange: { dot: "bg-orange-600", bg: "bg-orange-50 dark:bg-orange-950", text: "text-orange-600 dark:text-orange-400", badge: "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300" },
+  indigo: { dot: "bg-indigo-600", bg: "bg-indigo-50 dark:bg-indigo-950", text: "text-indigo-600 dark:text-indigo-400", badge: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300" },
 };
 
 export function generateStaticParams() {
@@ -112,7 +117,7 @@ export default async function CoursePage(props: { params: Promise<{ slug: string
         <section id="videos">
           <h2 className="text-xl font-bold tracking-tight mb-2">Video Lessons</h2>
           <p className="text-sm text-muted-foreground mb-6">Watch expert tutorials from verified educational channels.</p>
-          <VideoSection videos={videos} color={course.color} />
+          <VideoSection videos={videos} color={course.color} courseName={course.shortName} />
         </section>
 
         {/* Flashcards */}
@@ -179,6 +184,16 @@ export default async function CoursePage(props: { params: Promise<{ slug: string
               </div>
             ))}
           </div>
+
+          {/* Progress Tracker */}
+          <h3 className="text-lg font-bold tracking-tight mt-10 mb-4">Track Your Progress</h3>
+          <ProgressTracker 
+            courseSlug={slug}
+            totalUnits={units.length}
+            totalFlashcards={flashcards.length}
+            totalQuestions={questions.length}
+            color={course.color}
+          />
         </section>
       </div>
     </div>

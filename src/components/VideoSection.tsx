@@ -1,12 +1,18 @@
 "use client";
 import { useState } from "react";
+import { YouTubeSearch } from "./YouTubeSearch";
 
 interface Video { id: string; title: string; description: string; }
 
-export function VideoSection({ videos, color }: { videos: Video[]; color: string }) {
+export function VideoSection({ videos, color, courseName }: { videos: Video[]; color: string; courseName?: string }) {
   const [active, setActive] = useState(0);
 
-  if (!videos.length) return <p className="text-sm text-muted-foreground">No videos available.</p>;
+  if (!videos.length) return (
+    <div>
+      <p className="text-sm text-muted-foreground mb-4">No curated videos available yet.</p>
+      {courseName && <YouTubeSearch courseName={courseName} color={color} />}
+    </div>
+  );
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -40,6 +46,9 @@ export function VideoSection({ videos, color }: { videos: Video[]; color: string
           ))}
         </div>
       )}
+
+      {/* YouTube Search */}
+      {courseName && <YouTubeSearch courseName={courseName} color={color} />}
     </div>
   );
 }
