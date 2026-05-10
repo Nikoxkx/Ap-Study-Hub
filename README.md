@@ -114,5 +114,6 @@ This site is deployed on **Vercel**. Any push to the `main` branch triggers an a
 Made with care for AP students everywhere.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+## License
 
 </div>
