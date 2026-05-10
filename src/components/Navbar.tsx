@@ -21,6 +21,8 @@ export function Navbar() {
           <NavItem href="/course/apush" label="APUSH" />
           <NavItem href="/course/ap-lang" label="AP Lang" />
           <NavItem href="/course/ap-seminar" label="AP Seminar" />
+          <NavItem href="/course/ap-bio" label="AP Bio" />
+          <NavItem href="/course/ap-gov" label="AP Gov" />
         </nav>
 
         {/* Search + Theme */}
@@ -48,6 +50,8 @@ export function Navbar() {
           <MobileLink href="/course/apush" label="APUSH" onClick={() => setMobileOpen(false)} />
           <MobileLink href="/course/ap-lang" label="AP Lang" onClick={() => setMobileOpen(false)} />
           <MobileLink href="/course/ap-seminar" label="AP Seminar" onClick={() => setMobileOpen(false)} />
+          <MobileLink href="/course/ap-bio" label="AP Bio" onClick={() => setMobileOpen(false)} />
+          <MobileLink href="/course/ap-gov" label="AP Gov" onClick={() => setMobileOpen(false)} />
         </div>
       )}
     </header>

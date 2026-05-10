@@ -21,7 +21,7 @@ A comprehensive, completely free resource for AP exam preparation.
 
 ## About
 
-**AP Study Hub** is a free, no-login-required study platform designed to help students prepare for their AP exams. Whether you're tackling APUSH, AP Lang, or AP Seminar, we've got you covered with comprehensive study materials aligned to College Board standards.
+**AP Study Hub** is a free, no-login-required study platform designed to help students prepare for their AP exams. Whether you're tackling APUSH, AP Lang, AP Seminar, AP Biology, or AP Government, we've got you covered with comprehensive study materials aligned to College Board standards.
 
 ---
 
@@ -48,15 +48,15 @@ A comprehensive, completely free resource for AP exam preparation.
 ### APUSH
 **AP U.S. History**
 
-Master American history from pre-Columbian times to the present day.
+Master American history from pre-Columbian times to the present day. Covers nine chronological periods from 1491 to the present, including key events, figures, and themes that shaped the nation.
 
 </td>
 <td align="center" width="33%">
 
 ### AP Lang
-**AP English Language**
+**AP English Language & Composition**
 
-Develop rhetorical analysis and argumentative writing skills.
+Develop rhetorical analysis and argumentative writing skills. Learn to analyze prose, construct evidence-based arguments, and master the art of persuasive communication.
 
 </td>
 <td align="center" width="33%">
@@ -64,9 +64,57 @@ Develop rhetorical analysis and argumentative writing skills.
 ### AP Seminar
 **AP Seminar**
 
-Build research, collaboration, and presentation abilities.
+Build research, collaboration, and presentation abilities. Part of the AP Capstone program, focusing on critical thinking, evidence evaluation, and academic discourse.
 
-Open https://v0-ap-study-hub.vercel.app/ in your browser.
+</td>
+</tr>
+<tr>
+<td align="center" width="33%">
+
+### AP Bio
+**AP Biology**
+
+Explore the fundamental concepts of biology including evolution, cellular processes, genetics, and ecology. Prepare for laboratory investigations and scientific reasoning questions.
+
+</td>
+<td align="center" width="33%">
+
+### AP Gov
+**AP U.S. Government & Politics**
+
+Understand the foundations of American democracy, constitutional principles, civil liberties, political participation, and policy-making processes in the United States government.
+
+</td>
+<td align="center" width="33%">
+
+### More Coming Soon
+**Expanding Our Offerings**
+
+We're continuously adding new AP courses. Check back regularly for updates to our course catalog.
+
+</td>
+</tr>
+</table>
+
+---
+
+## Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/Nikoxkx/Ap-Study-Hub.git
+
+# Navigate to the project
+cd Ap-Study-Hub
+
+# Install dependencies
+pnpm install
+
+# Run the development server
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
@@ -78,13 +126,18 @@ This site is deployed on **Vercel**. Any push to the `main` branch triggers an a
 
 ---
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+
+---
+
 <div align="center">
 
 **Created by Yeisbel Pena**
 
 Made with care for AP students everywhere.
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-## License
 
 </div>
