@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
-import Link from "next/link";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { AuthProvider } from "@/components/AuthProvider";
 import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
@@ -26,20 +24,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body className="min-h-screen flex flex-col antialiased">
         <ThemeProvider>
-          <AuthProvider>
-            <Navbar />
+          <Navbar />
 
-            <main className="flex-1">{children}</main>
+          <main className="flex-1">{children}</main>
 
-            {/* Footer */}
-            <footer className="border-t border-border bg-muted/30 py-8 mt-12">
-              <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-                <p className="font-semibold text-sm mb-1">AP Study Hub</p>
-                <p className="text-xs text-muted-foreground">Created by <span className="font-medium text-foreground">Yeisbel Pena</span></p>
-                <p className="text-[10px] text-muted-foreground mt-3">Not affiliated with College Board®</p>
-              </div>
-            </footer>
-          </AuthProvider>
+          {/* Footer */}
+          <footer className="border-t border-border bg-muted/30 py-8 mt-12">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+              <p className="font-semibold text-sm mb-1">AP Study Hub</p>
+              <p className="text-xs text-muted-foreground">Created by <span className="font-medium text-foreground">Yeisbel Pena</span></p>
+              <p className="text-[10px] text-muted-foreground mt-3">Not affiliated with College Board</p>
+            </div>
+          </footer>
         </ThemeProvider>
       </body>
     </html>
