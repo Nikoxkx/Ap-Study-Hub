@@ -21,7 +21,7 @@ A comprehensive, completely free resource for AP exam preparation.
 
 ## About
 
-**AP Study Hub** is a free, no-login-required study platform designed to help students prepare for their AP exams. Whether you're tackling APUSH, AP Lang, AP Seminar, AP Biology, or AP Government, we've got you covered with comprehensive study materials aligned to College Board standards.
+**AP Study Hub** is a free, no-login-required study platform designed to help students prepare for their AP exams. Whether you're tackling APUSH, AP Lang, AP Seminar, AP Biology, AP Government, AP Calculus, or AP Research, we've got you covered with comprehensive study materials aligned to College Board standards.
 
 ---
 
@@ -30,10 +30,14 @@ A comprehensive, completely free resource for AP exam preparation.
 | Feature | Description |
 |:--------|:------------|
 | **Study Guides** | Comprehensive unit-by-unit notes aligned with College Board curriculum |
-| **Video Lessons** | Curated YouTube tutorials from top AP educators |
+| **Video Lessons** | Curated YouTube tutorials from top AP educators (Heimler's History, Bozeman Science, Coach Hall Writes) |
+| **YouTube Search** | Search YouTube directly from the site for additional video resources |
 | **Flashcards** | Interactive flip cards for key terms and concepts |
 | **Practice Questions** | AP-style multiple choice questions with detailed explanations |
 | **Mock Exams** | Full-length timed practice exams following the real format |
+| **Essay Examples** | High-scoring sample essays with detailed rubric breakdowns |
+| **Exemplar Papers** | Research paper examples for AP Seminar and AP Research |
+| **Exam Countdown** | Live countdown to your AP exam date |
 | **Resources** | Direct links to official College Board materials |
 | **Dark Mode** | Light, dark, and system theme options for comfortable studying |
 
@@ -48,7 +52,7 @@ A comprehensive, completely free resource for AP exam preparation.
 ### APUSH
 **AP U.S. History**
 
-Master American history from pre-Columbian times to the present day. Covers nine chronological periods from 1491 to the present, including key events, figures, and themes that shaped the nation.
+Master American history from pre-Columbian times to the present. Covers nine chronological periods with key events, figures, and themes.
 
 </td>
 <td align="center" width="33%">
@@ -56,15 +60,15 @@ Master American history from pre-Columbian times to the present day. Covers nine
 ### AP Lang
 **AP English Language & Composition**
 
-Develop rhetorical analysis and argumentative writing skills. Learn to analyze prose, construct evidence-based arguments, and master the art of persuasive communication.
+Develop rhetorical analysis and argumentative writing skills. Includes synthesis, rhetorical analysis, and argument essay practice.
 
 </td>
 <td align="center" width="33%">
 
 ### AP Seminar
-**AP Seminar**
+**AP Capstone Seminar**
 
-Build research, collaboration, and presentation abilities. Part of the AP Capstone program, focusing on critical thinking, evidence evaluation, and academic discourse.
+Build research, collaboration, and presentation skills. Includes exemplar IWA and IRR papers with rubric breakdowns.
 
 </td>
 </tr>
@@ -74,7 +78,7 @@ Build research, collaboration, and presentation abilities. Part of the AP Capsto
 ### AP Bio
 **AP Biology**
 
-Explore the fundamental concepts of biology including evolution, cellular processes, genetics, and ecology. Prepare for laboratory investigations and scientific reasoning questions.
+Explore evolution, cellular processes, genetics, and ecology. Covers all 8 units with video lessons from Bozeman Science.
 
 </td>
 <td align="center" width="33%">
@@ -82,7 +86,25 @@ Explore the fundamental concepts of biology including evolution, cellular proces
 ### AP Gov
 **AP U.S. Government & Politics**
 
-Understand the foundations of American democracy, constitutional principles, civil liberties, political participation, and policy-making processes in the United States government.
+Understand American democracy, constitutional principles, civil liberties, and political participation with Heimler's History videos.
+
+</td>
+<td align="center" width="33%">
+
+### AP Calc
+**AP Calculus AB/BC**
+
+Master limits, derivatives, integrals, and series. Includes both AB and BC content with practice problems and video tutorials.
+
+</td>
+</tr>
+<tr>
+<td align="center" width="33%">
+
+### AP Research
+**AP Capstone Research**
+
+Conduct independent research culminating in a 4,000-5,000 word academic paper. Includes exemplar papers with detailed rubric analysis.
 
 </td>
 <td align="center" width="33%">
@@ -90,7 +112,15 @@ Understand the foundations of American democracy, constitutional principles, civ
 ### More Coming Soon
 **Expanding Our Offerings**
 
-We're continuously adding new AP courses. Check back regularly for updates to our course catalog.
+We're continuously adding new AP courses. Check back regularly for updates to our catalog.
+
+</td>
+<td align="center" width="33%">
+
+### Request a Course
+**Want a specific AP course?**
+
+Open an issue on GitHub to request additional AP courses or contribute to the project.
 
 </td>
 </tr>

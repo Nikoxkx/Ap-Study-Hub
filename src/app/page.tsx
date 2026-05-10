@@ -7,6 +7,8 @@ const courseTheme: Record<string, { bg: string; text: string; badgeBg: string }>
   purple: { bg: "bg-purple-50 dark:bg-purple-950", text: "text-purple-600 dark:text-purple-400", badgeBg: "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" },
   red: { bg: "bg-red-50 dark:bg-red-950", text: "text-red-600 dark:text-red-400", badgeBg: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300" },
   green: { bg: "bg-green-50 dark:bg-green-950", text: "text-green-600 dark:text-green-400", badgeBg: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300" },
+  orange: { bg: "bg-orange-50 dark:bg-orange-950", text: "text-orange-600 dark:text-orange-400", badgeBg: "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300" },
+  indigo: { bg: "bg-indigo-50 dark:bg-indigo-950", text: "text-indigo-600 dark:text-indigo-400", badgeBg: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300" },
 };
 
 export default function HomePage() {

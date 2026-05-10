@@ -51,6 +51,26 @@ export const coursesData = [
     icon: "🧬",
     examDate: "May 12, 2025",
   },
+  {
+    id: 6,
+    slug: "ap-calc",
+    name: "AP Calculus AB/BC",
+    shortName: "AP Calc",
+    description: "Master limits, derivatives, integrals, and series. AB covers single-variable calculus while BC extends to more advanced topics.",
+    color: "orange",
+    icon: "📐",
+    examDate: "May 13, 2025",
+  },
+  {
+    id: 7,
+    slug: "ap-research",
+    name: "AP Research",
+    shortName: "AP Research",
+    description: "Conduct an independent research project culminating in a 4,000-5,000 word academic paper and presentation with oral defense.",
+    color: "indigo",
+    icon: "🔎",
+    examDate: "April 30, 2025",
+  },
 ];
 
 export const unitsData: Record<string, { unitNumber: number; title: string; description: string; content: string; keyTerms: string[] }[]> = {
@@ -96,6 +116,21 @@ export const unitsData: Record<string, { unitNumber: number; title: string; desc
     { unitNumber: 6, title: "Gene Expression and Regulation", description: "DNA to protein", content: `## Central Dogma\n**DNA → RNA → Protein**\n\n## Transcription (Nucleus)\n- DNA → mRNA\n- RNA polymerase reads template\n- mRNA processing: cap, tail, splicing\n\n## Translation (Ribosome)\n- mRNA → Protein\n- **Codons**: 3-nucleotide sequences\n- **tRNA**: Brings amino acids\n- **Start**: AUG (methionine)\n- **Stop**: UAA, UAG, UGA\n\n## Gene Regulation\n- **Operons** (prokaryotes): lac, trp\n- **Transcription factors** (eukaryotes)\n- **Epigenetics**: Methylation, acetylation`, keyTerms: ["Transcription", "Translation", "Codon", "mRNA", "Operon", "Gene Regulation"] },
     { unitNumber: 7, title: "Natural Selection", description: "Evolution and adaptation", content: `## Darwin's Theory\n1. **Variation** exists in populations\n2. **Overproduction** of offspring\n3. **Competition** for resources\n4. **Differential survival**: Fitness\n5. **Inheritance**: Traits passed on\n\n## Evidence for Evolution\n- Fossil record\n- Homologous structures\n- Embryology\n- Molecular biology (DNA)\n- Biogeography\n\n## Types of Selection\n- **Directional**: Favors one extreme\n- **Stabilizing**: Favors average\n- **Disruptive**: Favors both extremes\n\n## Hardy-Weinberg Equilibrium\n- p² + 2pq + q² = 1\n- No evolution occurring`, keyTerms: ["Natural Selection", "Fitness", "Adaptation", "Hardy-Weinberg", "Homologous Structures"] },
     { unitNumber: 8, title: "Ecology", description: "Ecosystems and interactions", content: `## Levels of Organization\nOrganism → Population → Community → Ecosystem → Biosphere\n\n## Energy Flow\n- **Producers**: Autotrophs (photosynthesis)\n- **Consumers**: Heterotrophs\n- **Decomposers**: Break down dead matter\n- **10% Rule**: Energy transfer efficiency\n\n## Biogeochemical Cycles\n- Carbon, nitrogen, water, phosphorus\n\n## Population Ecology\n- **Exponential growth**: J-curve\n- **Logistic growth**: S-curve\n- **Carrying capacity (K)**: Max population\n\n## Community Interactions\n- Predation, competition, symbiosis\n- **Keystone species**: Disproportionate impact`, keyTerms: ["Ecosystem", "Food Web", "Carrying Capacity", "Keystone Species", "Biogeochemical Cycle"] },
+  ],
+  "ap-calc": [
+    { unitNumber: 1, title: "Limits and Continuity", description: "Foundation of calculus", content: `## What is a Limit?\nThe value a function approaches as x approaches a specific value.\n\n### Notation\n- lim(x→a) f(x) = L\n\n## Limit Laws\n- Sum/Difference: lim(f+g) = lim f + lim g\n- Product: lim(fg) = (lim f)(lim g)\n- Quotient: lim(f/g) = (lim f)/(lim g)\n\n## Special Limits\n- lim(x→0) sin(x)/x = 1\n- lim(x→∞) (1+1/n)^n = e\n\n## Continuity\nA function is continuous at x=a if:\n1. f(a) exists\n2. lim(x→a) f(x) exists\n3. lim(x→a) f(x) = f(a)`, keyTerms: ["Limit", "Continuity", "One-sided Limit", "Squeeze Theorem", "IVT"] },
+    { unitNumber: 2, title: "Derivatives", description: "Rate of change and slopes", content: `## Definition of Derivative\nf'(x) = lim(h→0) [f(x+h) - f(x)] / h\n\n## Derivative Rules\n- **Power Rule**: d/dx[x^n] = nx^(n-1)\n- **Product Rule**: (fg)' = f'g + fg'\n- **Quotient Rule**: (f/g)' = (f'g - fg')/g²\n- **Chain Rule**: d/dx[f(g(x))] = f'(g(x))·g'(x)\n\n## Common Derivatives\n- d/dx[sin x] = cos x\n- d/dx[cos x] = -sin x\n- d/dx[e^x] = e^x\n- d/dx[ln x] = 1/x\n\n## Applications\n- Slope of tangent line\n- Instantaneous rate of change\n- Velocity and acceleration`, keyTerms: ["Derivative", "Power Rule", "Chain Rule", "Product Rule", "Quotient Rule"] },
+    { unitNumber: 3, title: "Applications of Derivatives", description: "Using derivatives to analyze functions", content: `## Related Rates\nUsing derivatives to find rates when quantities are related.\n\n## Extrema\n- **Critical Points**: Where f'(x) = 0 or undefined\n- **First Derivative Test**: Sign changes\n- **Second Derivative Test**: Concavity\n\n## Curve Sketching\n- Increasing: f'(x) > 0\n- Decreasing: f'(x) < 0\n- Concave up: f''(x) > 0\n- Concave down: f''(x) < 0\n- Inflection points: f''(x) = 0\n\n## Optimization\n1. Set up equation to optimize\n2. Take derivative\n3. Find critical points\n4. Test endpoints and critical points`, keyTerms: ["Critical Point", "Extrema", "Optimization", "Related Rates", "Concavity"] },
+    { unitNumber: 4, title: "Integrals", description: "Accumulation and area", content: `## Definite Integral\n∫[a,b] f(x)dx = F(b) - F(a)\n\nRepresents signed area under curve.\n\n## Fundamental Theorem of Calculus\n1. d/dx[∫[a,x] f(t)dt] = f(x)\n2. ∫[a,b] f(x)dx = F(b) - F(a)\n\n## Integration Rules\n- ∫x^n dx = x^(n+1)/(n+1) + C\n- ∫e^x dx = e^x + C\n- ∫1/x dx = ln|x| + C\n- ∫sin x dx = -cos x + C\n- ∫cos x dx = sin x + C\n\n## Techniques\n- U-substitution\n- Integration by parts (BC)`, keyTerms: ["Integral", "Antiderivative", "FTC", "Riemann Sum", "U-Substitution"] },
+    { unitNumber: 5, title: "Applications of Integrals", description: "Area, volume, and accumulation", content: `## Area Between Curves\nA = ∫[a,b] [f(x) - g(x)] dx\n\nWhere f(x) ≥ g(x) on [a,b]\n\n## Volume of Revolution\n- **Disk Method**: V = π∫[a,b] [R(x)]² dx\n- **Washer Method**: V = π∫[a,b] [R²-r²] dx\n- **Shell Method**: V = 2π∫[a,b] x·f(x) dx\n\n## Average Value\nf_avg = (1/(b-a))∫[a,b] f(x)dx\n\n## Accumulation Functions\nF(x) = ∫[a,x] f(t)dt\n\nF'(x) = f(x)`, keyTerms: ["Disk Method", "Washer Method", "Shell Method", "Average Value", "Accumulation"] },
+    { unitNumber: 6, title: "Series (BC Only)", description: "Infinite sequences and series", content: `## Sequences\n{a_n} approaches L if lim(n→∞) a_n = L\n\n## Series\nΣa_n converges if partial sums approach a limit.\n\n## Convergence Tests\n- **Geometric**: |r| < 1\n- **p-series**: p > 1\n- **Ratio Test**: lim|a_(n+1)/a_n| < 1\n- **Integral Test**\n- **Comparison Tests**\n\n## Power Series\nΣc_n(x-a)^n\n\n## Taylor Series\nf(x) = Σ f^(n)(a)/n! · (x-a)^n\n\n## Maclaurin Series (a=0)\n- e^x = Σ x^n/n!\n- sin x = Σ (-1)^n x^(2n+1)/(2n+1)!\n- cos x = Σ (-1)^n x^(2n)/(2n)!`, keyTerms: ["Series", "Convergence", "Taylor Series", "Maclaurin Series", "Power Series", "Ratio Test"] },
+  ],
+  "ap-research": [
+    { unitNumber: 1, title: "Developing Research Questions", description: "Formulating inquiry", content: `## What Makes a Good Research Question?\n\n### Characteristics\n- **Focused**: Specific scope\n- **Researchable**: Can be investigated\n- **Complex**: No simple yes/no answer\n- **Arguable**: Multiple perspectives exist\n\n## The Research Gap\nIdentify what existing research doesn't address.\n\n## Types of Questions\n- **Descriptive**: What is happening?\n- **Comparative**: How do X and Y differ?\n- **Causal**: Does X cause Y?\n- **Evaluative**: Is X effective?\n\n## Refining Your Question\n1. Start broad, then narrow\n2. Consider feasibility\n3. Ensure scholarly significance`, keyTerms: ["Research Question", "Gap in Literature", "Feasibility", "Scope", "Significance"] },
+    { unitNumber: 2, title: "Literature Review", description: "Understanding existing research", content: `## Purpose\n- Establish context\n- Identify gaps\n- Build credibility\n- Avoid duplication\n\n## Finding Sources\n- Academic databases (JSTOR, Google Scholar)\n- Peer-reviewed journals\n- Books and monographs\n- Primary sources when appropriate\n\n## Evaluating Sources\n- **Authority**: Who wrote it?\n- **Currency**: When published?\n- **Accuracy**: Supported by evidence?\n- **Purpose**: Why written?\n\n## Synthesizing\nDon't just summarize—connect sources, identify themes, and position your research.`, keyTerms: ["Literature Review", "Peer Review", "Synthesis", "Primary Source", "Secondary Source"] },
+    { unitNumber: 3, title: "Research Methodology", description: "How to conduct research", content: `## Quantitative Methods\n- Surveys, experiments\n- Statistical analysis\n- Numerical data\n- Generalizability\n\n## Qualitative Methods\n- Interviews, observations\n- Thematic analysis\n- Rich descriptions\n- Contextual understanding\n\n## Mixed Methods\nCombining both approaches.\n\n## Ethics\n- Informed consent\n- Confidentiality\n- No harm to participants\n- IRB approval if needed\n\n## Validity and Reliability\n- **Validity**: Measuring what you intend\n- **Reliability**: Consistent results`, keyTerms: ["Methodology", "Quantitative", "Qualitative", "Validity", "Reliability", "Ethics"] },
+    { unitNumber: 4, title: "Writing the Academic Paper", description: "Structure and conventions", content: `## Paper Structure\n\n### Introduction\n- Hook and context\n- Research question\n- Thesis/argument preview\n\n### Literature Review\n- Synthesis of existing research\n- Gap identification\n\n### Methodology\n- What you did and why\n\n### Findings/Results\n- Present evidence objectively\n\n### Discussion\n- Interpret findings\n- Address implications\n- Acknowledge limitations\n\n### Conclusion\n- Summary and significance\n\n## Citation\n- Consistent style (APA, MLA, Chicago)\n- In-text citations\n- Works cited/bibliography`, keyTerms: ["Thesis", "Abstract", "Methodology", "Discussion", "Citation"] },
+    { unitNumber: 5, title: "Presentation and Defense", description: "Communicating your research", content: `## Presentation (15-20 minutes)\n- Clear, engaging delivery\n- Visual aids (slides)\n- Explain methodology\n- Present key findings\n- Discuss implications\n\n## Oral Defense\nAnswer panelists' questions about:\n- Research process\n- Methodology choices\n- Limitations\n- Implications\n- Future research\n\n## Tips\n- Know your paper inside and out\n- Anticipate tough questions\n- Stay calm and composed\n- It's okay to say "I don't know"\n- Connect back to your argument`, keyTerms: ["Oral Defense", "Presentation", "Q&A", "Visual Aids", "Implications"] },
   ],
 };
 
@@ -308,6 +343,37 @@ export const flashcardsData: Record<string, { front: string; back: string }[]> =
     { front: "What is apoptosis?", back: "Programmed cell death. Controlled process important for development and preventing cancer." },
     { front: "What is a keystone species?", back: "Species with disproportionately large effect on ecosystem relative to its abundance." },
   ],
+  "ap-calc": [
+    { front: "What is the definition of a limit?", back: "lim(x→a) f(x) = L means f(x) gets arbitrarily close to L as x approaches a." },
+    { front: "What is the definition of the derivative?", back: "f'(x) = lim(h→0) [f(x+h) - f(x)] / h — the instantaneous rate of change." },
+    { front: "What is the power rule?", back: "d/dx[x^n] = nx^(n-1)" },
+    { front: "What is the product rule?", back: "(fg)' = f'g + fg'" },
+    { front: "What is the quotient rule?", back: "(f/g)' = (f'g - fg') / g²" },
+    { front: "What is the chain rule?", back: "d/dx[f(g(x))] = f'(g(x)) · g'(x)" },
+    { front: "What is the derivative of sin(x)?", back: "d/dx[sin x] = cos x" },
+    { front: "What is the derivative of e^x?", back: "d/dx[e^x] = e^x (it's its own derivative)" },
+    { front: "What is the derivative of ln(x)?", back: "d/dx[ln x] = 1/x" },
+    { front: "What is the Fundamental Theorem of Calculus?", back: "Part 1: d/dx[∫[a,x] f(t)dt] = f(x). Part 2: ∫[a,b] f(x)dx = F(b) - F(a)" },
+    { front: "What is u-substitution?", back: "Integration technique: let u = inner function, du = derivative, substitute to simplify." },
+    { front: "What is the disk method?", back: "V = π∫[a,b] [R(x)]² dx — for volume of revolution around an axis." },
+    { front: "How do you find critical points?", back: "Set f'(x) = 0 or find where f'(x) is undefined." },
+    { front: "What does the second derivative tell you?", back: "f''(x) > 0: concave up. f''(x) < 0: concave down. f''(x) = 0: possible inflection point." },
+    { front: "What is L'Hôpital's Rule?", back: "If lim gives 0/0 or ∞/∞, then lim f/g = lim f'/g'" },
+  ],
+  "ap-research": [
+    { front: "What is a literature review?", back: "A synthesis of existing research that establishes context, identifies gaps, and positions your study." },
+    { front: "What makes a good research question?", back: "Focused, researchable, complex (no yes/no), arguable, and significant to the field." },
+    { front: "What is the difference between quantitative and qualitative research?", back: "Quantitative: numerical data, statistics, generalizability. Qualitative: rich descriptions, themes, contextual understanding." },
+    { front: "What is validity in research?", back: "The extent to which your study measures what it claims to measure." },
+    { front: "What is reliability?", back: "The consistency and replicability of your research results." },
+    { front: "What is informed consent?", back: "Participants must be told about the study and voluntarily agree to participate." },
+    { front: "What is a thesis statement in research?", back: "Your central argument or claim that your research supports." },
+    { front: "What is the gap in literature?", back: "What existing research doesn't address — the space your research fills." },
+    { front: "What is peer review?", back: "Process where scholarly work is evaluated by experts in the field before publication." },
+    { front: "What should an abstract include?", back: "Research question, methodology, key findings, and implications — typically 150-250 words." },
+    { front: "How long is the AP Research paper?", back: "4,000-5,000 words (approximately 15-20 pages)." },
+    { front: "What is the oral defense?", back: "A 15-20 minute presentation followed by Q&A where you defend your research." },
+  ],
 };
 
 // Expanded quiz data with 30+ questions per course
@@ -439,6 +505,30 @@ export const quizData: Record<string, { question: string; options: string[]; cor
     { question: "Carrying capacity (K) represents:", options: ["Rate of population growth", "Maximum sustainable population size", "Minimum viable population", "Birth rate"], correctIndex: 1, explanation: "Carrying capacity is the maximum population an environment can sustain with available resources.", skill: "Ecology" },
     { question: "The 10% rule states that:", options: ["10% of species go extinct each year", "Only 10% of energy transfers between trophic levels", "Populations grow 10% annually", "10% of DNA is genes"], correctIndex: 1, explanation: "Only about 10% of energy is transferred to the next trophic level; the rest is lost as heat.", skill: "Ecology" },
     { question: "A keystone species:", options: ["Is always a predator", "Has disproportionate ecosystem impact relative to abundance", "Is the most abundant species", "Never goes extinct"], correctIndex: 1, explanation: "Keystone species have large effects on ecosystems relative to their population size (e.g., sea otters, wolves).", skill: "Ecology" },
+  ],
+  "ap-calc": [
+    { question: "What is lim(x→0) sin(x)/x?", options: ["0", "1", "Undefined", "∞"], correctIndex: 1, explanation: "This is a fundamental limit. Using L'Hôpital's Rule or the squeeze theorem, lim(x→0) sin(x)/x = 1.", skill: "Limits" },
+    { question: "The derivative of f(x) = x³ is:", options: ["x²", "3x²", "3x³", "x⁴/4"], correctIndex: 1, explanation: "Using the power rule d/dx[xⁿ] = nxⁿ⁻¹, the derivative of x³ is 3x².", skill: "Derivatives" },
+    { question: "The chain rule states that d/dx[f(g(x))] =", options: ["f'(x)g'(x)", "f(g'(x))", "f'(g(x))·g'(x)", "f'(g(x))/g'(x)"], correctIndex: 2, explanation: "The chain rule: derivative of outer function evaluated at inner, times derivative of inner.", skill: "Derivatives" },
+    { question: "What is ∫x² dx?", options: ["x³", "x³/3 + C", "2x", "3x²"], correctIndex: 1, explanation: "The antiderivative of xⁿ is xⁿ⁺¹/(n+1) + C. So ∫x² dx = x³/3 + C.", skill: "Integrals" },
+    { question: "The Fundamental Theorem of Calculus Part 2 states:", options: ["F'(x) = f(x)", "∫[a,b] f(x)dx = F(b) - F(a)", "lim f(x) = L", "f(x) is continuous"], correctIndex: 1, explanation: "FTC Part 2: The definite integral equals F(b) - F(a) where F is any antiderivative of f.", skill: "Integrals" },
+    { question: "If f'(x) > 0 on an interval, then f is:", options: ["Constant", "Decreasing", "Increasing", "Concave up"], correctIndex: 2, explanation: "When the derivative is positive, the function is increasing (slope is positive).", skill: "Applications" },
+    { question: "Critical points occur where:", options: ["f(x) = 0", "f'(x) = 0 or undefined", "f''(x) = 0", "f(x) is maximum"], correctIndex: 1, explanation: "Critical points are where the derivative is zero or undefined — potential extrema.", skill: "Applications" },
+    { question: "The disk method formula for volume is:", options: ["∫ f(x)dx", "π∫ [f(x)]² dx", "2π∫ xf(x)dx", "∫ |f(x)|dx"], correctIndex: 1, explanation: "Disk method: V = π∫[a,b] [R(x)]² dx for rotation around an axis.", skill: "Applications" },
+    { question: "L'Hôpital's Rule applies when the limit gives:", options: ["A finite number", "0/0 or ∞/∞", "1/0", "Any indeterminate form"], correctIndex: 1, explanation: "L'Hôpital's Rule: If lim gives 0/0 or ∞/∞, then lim f/g = lim f'/g'.", skill: "Limits" },
+    { question: "A Taylor series centered at a=0 is called:", options: ["Power series", "Maclaurin series", "Fourier series", "Geometric series"], correctIndex: 1, explanation: "A Maclaurin series is a Taylor series centered at a=0: f(x) = Σ f⁽ⁿ⁾(0)/n! · xⁿ.", skill: "Series (BC)" },
+  ],
+  "ap-research": [
+    { question: "A literature review should:", options: ["Only summarize sources", "Synthesize sources and identify gaps", "Include only primary sources", "Avoid citing other research"], correctIndex: 1, explanation: "A literature review synthesizes existing research, identifies patterns and gaps, and positions your study.", skill: "Research Process" },
+    { question: "Validity in research refers to:", options: ["Whether results are consistent", "Whether you're measuring what you intend", "Sample size", "Statistical significance"], correctIndex: 1, explanation: "Validity is the extent to which your study measures what it claims to measure.", skill: "Methodology" },
+    { question: "Reliability in research refers to:", options: ["Whether you're measuring what you intend", "Consistency and replicability of results", "Ethical approval", "Sample diversity"], correctIndex: 1, explanation: "Reliability is whether your methods produce consistent results across multiple trials.", skill: "Methodology" },
+    { question: "Quantitative research typically uses:", options: ["Interviews and observations", "Numerical data and statistics", "Only secondary sources", "No hypothesis"], correctIndex: 1, explanation: "Quantitative research uses numerical data, statistical analysis, and aims for generalizability.", skill: "Methodology" },
+    { question: "Informed consent requires:", options: ["Participants know the study purpose and agree voluntarily", "Payment to participants", "Government approval", "Anonymous data only"], correctIndex: 0, explanation: "Informed consent means participants understand what participation involves and agree freely.", skill: "Ethics" },
+    { question: "A good research question should be:", options: ["Yes/no answerable", "Broad and general", "Focused, complex, and arguable", "Already answered by existing research"], correctIndex: 2, explanation: "Good research questions are specific enough to investigate but complex enough to require analysis.", skill: "Research Process" },
+    { question: "The gap in literature refers to:", options: ["Missing pages in sources", "What existing research doesn't address", "Peer review process", "Citation format"], correctIndex: 1, explanation: "The gap is what existing research hasn't explored — the space your study aims to fill.", skill: "Literature Review" },
+    { question: "AP Research papers should be:", options: ["1,000-2,000 words", "2,000-3,000 words", "4,000-5,000 words", "10,000+ words"], correctIndex: 2, explanation: "AP Research papers are 4,000-5,000 words (approximately 15-20 pages).", skill: "Paper Structure" },
+    { question: "The oral defense is:", options: ["A written exam", "A presentation followed by Q&A", "Peer review", "Group project"], correctIndex: 1, explanation: "The oral defense is a 15-20 minute presentation followed by questions from panelists.", skill: "Presentation" },
+    { question: "Mixed methods research combines:", options: ["Multiple researchers", "Quantitative and qualitative approaches", "Primary and secondary sources", "Different citation styles"], correctIndex: 1, explanation: "Mixed methods combines quantitative (numerical) and qualitative (descriptive) approaches.", skill: "Methodology" },
   ],
 };
 
@@ -763,52 +853,148 @@ Conclusion: Social media is neither inherently democratic nor inherently anti-de
         }
       ]
     }
+  ],
+  "ap-research": [
+    {
+      id: "academic-paper-1",
+      title: "Impact of Sleep Deprivation on Academic Performance",
+      type: "Academic Research Paper",
+      prompt: "Conduct an independent research study on a topic of your choice, culminating in a 4,000-5,000 word academic paper.",
+      sampleEssay: `Abstract
+
+This study investigates the relationship between sleep deprivation and academic performance among high school students, with particular attention to the mediating role of executive function. Using a mixed-methods approach combining quantitative sleep tracking data (n=47) with qualitative interviews (n=12), this research finds that students averaging less than seven hours of sleep per night showed significantly lower executive function scores (p<.05) and corresponding decreases in GPA. However, the relationship was moderated by individual differences in chronotype and coping strategies. These findings suggest that school start time policies and sleep education programs should account for individual variation rather than applying uniform recommendations.
+
+Introduction
+
+The American Academy of Pediatrics recommends that adolescents sleep 8-10 hours per night, yet the CDC reports that over 70% of high school students regularly sleep fewer than eight hours (CDC, 2019). This gap between recommendation and reality has prompted researchers to investigate consequences for academic achievement. While the correlation between sleep and grades is well-established, the mechanisms connecting them remain debated. This paper addresses the research question: How does sleep deprivation affect high school students' academic performance, and what role does executive function play in mediating this relationship?
+
+Understanding this mechanism matters for policy. If sleep directly affects learning and memory consolidation, then content-focused interventions (like tutoring) may be insufficient without addressing sleep. If executive function mediates the relationship, then strategies supporting self-regulation might partially compensate for sleep deficits. This research contributes to ongoing debates about school start times and student support services by clarifying these pathways.
+
+Literature Review
+
+The neuroscience of sleep and learning has advanced significantly in recent decades. Walker's (2017) research demonstrates that sleep plays a crucial role in memory consolidation, with different sleep stages serving distinct functions: slow-wave sleep consolidates declarative memories while REM sleep processes procedural and emotional learning. Sleep deprivation disrupts these processes, impairing both the encoding of new information and the consolidation of what was learned during waking hours.
+
+However, the relationship between sleep and academic performance may not be direct. Executive function—the set of cognitive processes including working memory, inhibitory control, and cognitive flexibility—has been proposed as a mediating variable. Beebe et al. (2010) found that experimental sleep restriction in adolescents produced significant decrements in executive function tasks. Given that executive function predicts academic achievement independently of intelligence (Best et al., 2011), sleep deprivation may harm grades primarily by impairing students' ability to plan, organize, and self-regulate their learning.
+
+Individual differences complicate these relationships. Chronotype—whether one is naturally a "morning person" or "evening person"—significantly affects how students respond to early school start times. Evening-chronotype students forced to attend early classes experience a form of chronic jet lag that morning-chronotype students do not (Kelley et al., 2015). Research suggests that as much as 50% of chronotype variation is genetic (Kalmbach et al., 2017), raising equity concerns about uniform policies.
+
+Methodology
+
+This study employed a convergent parallel mixed-methods design, collecting quantitative and qualitative data simultaneously and integrating them during interpretation.
+
+Quantitative Component: Forty-seven students (28 female, 19 male) from a suburban high school wore Fitbit devices for four weeks, providing objective sleep duration and timing data. Participants also completed the Behavior Rating Inventory of Executive Function (BRIEF-2) and the Morningness-Eveningness Questionnaire (MEQ). GPA data were obtained from school records with appropriate consent.
+
+Qualitative Component: Twelve participants were purposively selected for semi-structured interviews lasting 30-45 minutes, sampling across sleep duration categories and chronotypes. Interviews explored students' perceptions of how sleep affected their academic work and what strategies they used to cope with insufficient sleep.
+
+Analysis: Quantitative analysis employed hierarchical regression to test whether executive function mediated the sleep-GPA relationship, controlling for chronotype. Qualitative data were analyzed using thematic analysis following Braun and Clarke's (2006) six-phase approach.
+
+Results
+
+Quantitative Findings: Mean sleep duration was 6.4 hours (SD=1.1), with only 17% of participants meeting the 8-hour minimum recommendation. Sleep duration significantly predicted GPA (β=.34, p<.01). When executive function was added to the model, the direct effect of sleep on GPA decreased (β=.21, p<.05) while executive function independently predicted GPA (β=.29, p<.01), consistent with partial mediation.
+
+Chronotype significantly moderated these relationships. Evening-chronotype students showed stronger negative effects of sleep deprivation on executive function (β=-.42 vs. β=-.19 for morning types), suggesting they are more vulnerable to the academic consequences of early school start times.
+
+Qualitative Findings: Three themes emerged from interview analysis. First, participants described a "vicious cycle" where academic stress reduced sleep, which impaired academic performance, which increased stress. Second, students reported various compensatory strategies, from caffeine use (reported by 83% of interviewees) to strategic course scheduling. Third, participants expressed frustration that adults seemed unaware of the competing demands—homework, extracurriculars, social needs—that made sufficient sleep seem impossible.
+
+Discussion
+
+These findings support the hypothesis that executive function partially mediates the relationship between sleep and academic performance. Students who sleep less show impaired executive function, which in turn predicts lower grades. However, the partial (not full) mediation suggests that sleep also affects academic performance through other pathways, likely including direct effects on memory consolidation and emotional regulation.
+
+The moderating role of chronotype has important policy implications. Evening-chronotype students—through no fault of their own, given the genetic component—are systematically disadvantaged by early school start times. Simply delaying start times would benefit these students disproportionately, partially addressing what amounts to a structural inequity in current school scheduling.
+
+The qualitative findings reveal that students are not passive victims of sleep deprivation but actively employ coping strategies. However, these strategies have limitations and costs—caffeine dependence, strategic avoidance of challenging courses, acceptance of lower performance. Supporting students in developing more adaptive strategies, while simultaneously addressing structural factors like start times and homework load, may be more effective than either approach alone.
+
+Limitations include the single-school sample, self-selection bias among participants, and the correlational nature of the main findings, which cannot definitively establish causation despite the theoretical framework suggesting directionality.
+
+Conclusion
+
+This research demonstrates that sleep deprivation affects high school academic performance partially through its impact on executive function, with chronotype moderating vulnerability to these effects. These findings support policies that delay school start times while also suggesting that such policies should be accompanied by sleep education and support for student self-regulation. Future research should experimentally test whether sleep interventions improve executive function and, subsequently, academic outcomes.`,
+      score: 5,
+      rubricBreakdown: [
+        {
+          category: "Research Design",
+          points: 5,
+          maxPoints: 5,
+          explanation: "The study employs an appropriate mixed-methods design that addresses the research question from multiple angles. Methodology is clearly described, including participant selection, measures, and analysis approach. The design appropriately addresses both the 'how' (quantitative) and 'why' (qualitative) aspects of the research question."
+        },
+        {
+          category: "Literature Review & Context",
+          points: 5,
+          maxPoints: 5,
+          explanation: "The paper situates the research within existing scholarship, identifying the gap (mechanism of sleep-performance relationship) and justifying the study's contribution. Sources are relevant, recent, and appropriately synthesized rather than merely summarized."
+        },
+        {
+          category: "Analysis & Evidence",
+          points: 5,
+          maxPoints: 5,
+          explanation: "Quantitative analysis is appropriate (hierarchical regression, mediation testing) and qualitative analysis follows established methods (Braun & Clarke thematic analysis). Results are clearly presented with statistical detail where appropriate and rich qualitative excerpts."
+        },
+        {
+          category: "Argumentation & Implications",
+          points: 4,
+          maxPoints: 5,
+          explanation: "The discussion effectively interprets findings and draws policy implications. The paper acknowledges limitations appropriately. Slightly stronger connection between qualitative and quantitative findings would strengthen the argument."
+        },
+        {
+          category: "Written Communication",
+          points: 5,
+          maxPoints: 5,
+          explanation: "The paper is well-organized following academic conventions, written in appropriate scholarly register, and properly cited throughout. The abstract effectively summarizes the full paper."
+        }
+      ]
+    }
   ]
 };
 
 export const videosData: Record<string, { id: string; title: string; description: string }[]> = {
   apush: [
-    { id: "wq2jG_Ww_xc", title: "APUSH Unit 2 Review (1607-1754)", description: "Colonial America & European colonization methods - Heimler's History (2.2M views)" },
-    { id: "-wnDpr9PMnc", title: "APUSH Unit 4 Review (1800-1848)", description: "Early Republic, Market Revolution & Democracy - Heimler's History (2.5M views)" },
-    { id: "Xdq9kU7XHMY", title: "APUSH Unit 3 Review (1754-1800)", description: "American Revolution & Constitution - Heimler's History" },
-    { id: "qVdmW8VVQP4", title: "APUSH Unit 5 Review (1844-1877)", description: "Civil War & Reconstruction Era - Heimler's History" },
-    { id: "mEV2Sl8x1jI", title: "APUSH Unit 6 Review (1865-1898)", description: "Gilded Age & Western Expansion - Heimler's History" },
+    { id: "rshS9_N4kHw", title: "Unit 1 Review: 1491–1607", description: "Period 1 comprehensive review - Heimler's History" },
+    { id: "mE9pD-XvGWA", title: "Unit 2 Review: 1607–1754", description: "Colonial America development - Heimler's History" },
+    { id: "K37n6YkZ9Vw", title: "Midterm Review (First Semester)", description: "Complete first semester recap - Heimler's History" },
+    { id: "5rT419YvIuA", title: "3 Must-Know Causes of the Great Depression", description: "Essential Depression Era knowledge - Heimler's History" },
     { id: "XHVN1k-5Pew", title: "How to Write the DBQ", description: "Document-Based Question step-by-step guide - Heimler's History" },
-    { id: "vHE3-S5mSW4", title: "How to Write the LEQ", description: "Long Essay Question structure & tips - Heimler's History" },
-    { id: "N-7g_drecGQ", title: "How to Answer SAQs", description: "Short Answer Question strategies - Heimler's History" },
   ],
   "ap-lang": [
-    { id: "8Fdt-2LQEUQ", title: "How to Write a Rhetorical Analysis Essay", description: "Step-by-step rhetorical analysis breakdown - Coach Hall Writes" },
-    { id: "e7Wy8c13Ps8", title: "AP Lang Synthesis Essay Tips", description: "How to combine sources effectively - Coach Hall Writes" },
-    { id: "PJlkbNaO27M", title: "AP Lang Argument Essay Guide", description: "Building compelling arguments with evidence - Coach Hall Writes" },
-    { id: "aPD-3VSFmG4", title: "Ethos, Pathos, and Logos Explained", description: "Understanding the three rhetorical appeals" },
-    { id: "0xeHQ4u9rpo", title: "AP English Language Exam Overview", description: "What to expect on exam day - College Board" },
-    { id: "4LI0Eag10ek", title: "How to Analyze Rhetoric", description: "Breaking down persuasive techniques in texts" },
+    { id: "UuY3Wbrzya0", title: "How to Write a Synthesis Essay (Q1)", description: "Complete synthesis essay breakdown - Coach Hall Writes" },
+    { id: "qvY11BTnv4M", title: "Establishing a Line of Reasoning", description: "Building logical flow in synthesis - Coach Hall Writes" },
+    { id: "MheCg8x9W9A", title: "Writing a Defensible Rhetorical Analysis Thesis", description: "Crafting strong analytical thesis - Coach Hall Writes" },
+    { id: "DawchTChTnk", title: "5 Tips to Improve Your Synthesis Essay Score", description: "Quick synthesis improvements - Coach Hall Writes" },
+    { id: "7p6Xp7Y1VpE", title: "Rhetorical Analysis: Adding Strong Commentary", description: "Deepening analysis techniques - Coach Hall Writes" },
   ],
   "ap-seminar": [
-    { id: "vvLSxsohXYo", title: "AP Seminar Course Overview", description: "Understanding the AP Capstone program - College Board" },
-    { id: "N7VuBGkN_Mc", title: "How to Write a Research Paper", description: "Academic research and writing fundamentals" },
-    { id: "YMs0SXDIFUE", title: "Evaluating Sources (CRAAP Test)", description: "Critical source evaluation for research" },
-    { id: "OEEn2XkMf6g", title: "How to Give a Great Presentation", description: "Public speaking tips for oral defense" },
-    { id: "Fy7-hK6LG9U", title: "Building Strong Arguments", description: "Constructing evidence-based claims" },
+    { id: "rO8TfDk-52A", title: "AP Seminar EOC Exam Overview & Tips", description: "End-of-course exam preparation strategies" },
+    { id: "Y8Y5n0zZ0_E", title: "Identifying Main Idea and Line of Reasoning", description: "Critical reading skills - Part 1" },
+    { id: "Vz8_0f2_O0g", title: "How to Survive AP Seminar (10-Minute Guide)", description: "Quick survival tips for the course" },
+    { id: "q6_y-0V4U6k", title: "Evaluating Evidence for the EOC (CRAAP/RAVEN)", description: "Source evaluation frameworks" },
+    { id: "8b5T6gX0_U4", title: "IRR Conclusion Paragraph Walkthrough", description: "Writing effective research conclusions" },
   ],
   "ap-gov": [
-    { id: "lrk4oY7pJiE", title: "AP Gov Unit 1 Review", description: "Foundations of American Democracy - Heimler's History" },
-    { id: "1oePdGrvNT8", title: "AP Gov Unit 2 Review", description: "Interactions Among Branches - Heimler's History" },
-    { id: "5f3l-P1G_tU", title: "AP Gov Unit 3 Review", description: "Civil Liberties & Civil Rights - Heimler's History" },
-    { id: "O4BKh8T0xss", title: "AP Gov Unit 4 Review", description: "Political Ideologies & Beliefs - Heimler's History" },
-    { id: "Cqv6V8gBqkA", title: "AP Gov Unit 5 Review", description: "Political Participation - Heimler's History" },
-    { id: "mUd9VBIRWaU", title: "AP Gov Required Cases", description: "All 15 required Supreme Court cases explained - Heimler's History" },
-    { id: "BNRrBGYqw-8", title: "AP Gov FRQ Tips", description: "How to write all 4 free response questions - Heimler's History" },
+    { id: "sK91Vv58tKk", title: "Unit 1: Foundations of American Democracy", description: "Constitutional principles review - Heimler's History" },
+    { id: "XhM99aPj5mY", title: "Unit 2: Interactions Among Branches", description: "How branches work together - Heimler's History" },
+    { id: "Yw9T7wN_15Q", title: "The Roles and Powers of the President", description: "Executive branch deep dive - Heimler's History" },
+    { id: "L5C1uX04_9k", title: "Federalism in Action (Current Examples)", description: "Modern federalism applications - Heimler's History" },
+    { id: "7_hE3H6I038", title: "The Federal Bureaucracy Explained", description: "Understanding executive agencies - Heimler's History" },
   ],
   "ap-bio": [
-    { id: "I0y5-4AKzPo", title: "AP Bio Unit 1 Review", description: "Chemistry of Life - Heimler's History" },
-    { id: "RsTq7W0M7vM", title: "AP Bio Unit 2 Review", description: "Cell Structure & Function - Heimler's History" },
-    { id: "N1e5VCQrpPg", title: "AP Bio Unit 3 Review", description: "Cellular Energetics - Heimler's History" },
-    { id: "g8Y2S8RXzAw", title: "AP Bio Unit 4 Review", description: "Cell Communication & Cell Cycle - Heimler's History" },
-    { id: "V_05T-TQlIY", title: "AP Bio Unit 5 Review", description: "Heredity - Heimler's History" },
-    { id: "TRbJcVTBrQU", title: "AP Bio Unit 6 Review", description: "Gene Expression & Regulation - Heimler's History" },
-    { id: "_SkJN2FPVso", title: "AP Bio FRQ Tips", description: "How to answer free response questions - Heimler's History" },
+    { id: "Fgs9ZNR6QHY", title: "Full Course Review (Units 1-8)", description: "Complete AP Biology curriculum review" },
+    { id: "pDIn9fIAnU0", title: "Unit 1: Chemistry of Life", description: "Comprehensive chemistry review - Bozeman Science" },
+    { id: "L_T3X-m-A-E", title: "Unit 2: Cell Structure & Function", description: "2025/2026 standards update" },
+    { id: "R6La6W60_as", title: "Natural Selection Review", description: "Evolution fundamentals - Bozeman Science" },
+    { id: "LeS2-6zLBn0", title: "AP Bio Lab 1: Diffusion and Osmosis", description: "Lab review and analysis" },
+  ],
+  "ap-calc": [
+    { id: "WUvTyaaNkzM", title: "AP Calculus AB Full Course Review", description: "Complete AB curriculum - The Organic Chemistry Tutor" },
+    { id: "riXcZT2ICjA", title: "Limits and Continuity Review", description: "Unit 1 concepts explained - The Organic Chemistry Tutor" },
+    { id: "5yfh5cf4-0w", title: "Derivatives Complete Review", description: "All derivative rules and applications" },
+    { id: "rfG8ce4nNh0", title: "Integration Techniques", description: "Antiderivatives and definite integrals" },
+    { id: "7gigNsz4Oe8", title: "AP Calculus BC: Series Review", description: "Taylor and Maclaurin series - BC only" },
+  ],
+  "ap-research": [
+    { id: "d0NHOpeczUU", title: "AP Research Course Overview", description: "Understanding the research process - College Board" },
+    { id: "KwE7tkOxYWQ", title: "How to Write a Literature Review", description: "Academic literature review techniques" },
+    { id: "g3Udm0OZvSk", title: "Research Methodology Basics", description: "Qualitative vs quantitative approaches" },
+    { id: "hMZisjWCaQ0", title: "Oral Defense Preparation", description: "Preparing for your research defense" },
+    { id: "If_E2cZ_2KA", title: "Academic Paper Structure", description: "Writing your 5000-word research paper" },
   ],
 };
 
@@ -842,6 +1028,18 @@ export const tipsData: Record<string, { title: string; content: string; category
     { title: "Draw It Out", content: "Sketch processes like cellular respiration, photosynthesis, and meiosis. Visual memory helps retention.", category: "Study Strategy" },
     { title: "Practice Data Analysis", content: "Most FRQs include graphs or data tables. Practice interpreting results and explaining what they show.", category: "Exam Prep" },
     { title: "Know Your Equations", content: "Hardy-Weinberg, water potential, and chi-square. Practice when and how to use each.", category: "Exam Prep" },
+  ],
+  "ap-calc": [
+    { title: "Master the Fundamentals First", content: "Limits and continuity are the foundation. Make sure you understand these before moving to derivatives.", category: "Study Strategy" },
+    { title: "Know Your Derivative Rules", content: "Product, quotient, chain rule - practice until they're automatic. These appear in every problem.", category: "Study Strategy" },
+    { title: "Memorize Common Integrals", content: "Build a reference sheet of integral formulas. Pattern recognition speeds up problem solving.", category: "Exam Prep" },
+    { title: "Practice FRQ Without Calculator", content: "Many FRQ sections don't allow calculators. Practice solving by hand to build confidence.", category: "Exam Prep" },
+  ],
+  "ap-research": [
+    { title: "Start Your Literature Review Early", content: "Finding and reading sources takes longer than you think. Begin researching months before your paper is due.", category: "Research" },
+    { title: "Choose a Focused Topic", content: "Narrow your research question. A specific, manageable topic leads to deeper analysis than a broad one.", category: "Research" },
+    { title: "Document Everything", content: "Keep detailed notes on sources, methods, and insights. This makes writing your paper much easier.", category: "Writing Tips" },
+    { title: "Practice Your Defense", content: "Prepare for tough questions about methodology, limitations, and implications. Know your research inside and out.", category: "Presentations" },
   ],
 };
 
@@ -889,14 +1087,34 @@ export const resourcesData: Record<string, { title: string; url: string; descrip
     { title: "HHMI BioInteractive", url: "https://www.biointeractive.org/", description: "Interactive simulations and animations", type: "Interactive" },
     { title: "The Biology Corner", url: "https://biologycorner.com/", description: "Worksheets and study resources", type: "Study Guide" },
   ],
+  "ap-calc": [
+    { title: "College Board AP Calculus", url: "https://apstudents.collegeboard.org/courses/ap-calculus-ab", description: "Official AB/BC course pages", type: "Official" },
+    { title: "AP Classroom", url: "https://apclassroom.collegeboard.org/", description: "Practice problems and progress checks", type: "Official" },
+    { title: "Khan Academy Calculus", url: "https://www.khanacademy.org/math/ap-calculus-ab", description: "Free video lessons and practice", type: "Video" },
+    { title: "Paul's Online Math Notes", url: "https://tutorial.math.lamar.edu/Classes/CalcI/CalcI.aspx", description: "Comprehensive calculus tutorials", type: "Study Guide" },
+    { title: "Organic Chemistry Tutor", url: "https://www.youtube.com/@TheOrganicChemistryTutor", description: "Step-by-step calculus videos", type: "Video" },
+    { title: "Desmos Graphing Calculator", url: "https://www.desmos.com/calculator", description: "Free online graphing tool", type: "Tools" },
+  ],
+  "ap-research": [
+    { title: "College Board AP Research", url: "https://apstudents.collegeboard.org/courses/ap-research", description: "Official course page and paper guidelines", type: "Official" },
+    { title: "AP Classroom", url: "https://apclassroom.collegeboard.org/", description: "Rubrics and sample papers", type: "Official" },
+    { title: "Google Scholar", url: "https://scholar.google.com/", description: "Academic article search engine", type: "Research" },
+    { title: "JSTOR", url: "https://www.jstor.org/", description: "Academic journals database", type: "Research" },
+    { title: "Purdue OWL", url: "https://owl.purdue.edu/", description: "Research and citation guides", type: "Writing Resources" },
+    { title: "Zotero", url: "https://www.zotero.org/", description: "Free reference management software", type: "Tools" },
+  ],
 };
 
 // AP Exam dates (auto-updating based on College Board schedule)
 // Month/day format - year auto-calculated
 export const examDatesData: Record<string, { month: number; day: number; time: string }> = {
-  apush: { month: 5, day: 9, time: "8:00 AM" },        // APUSH is typically early May
-  "ap-lang": { month: 5, day: 14, time: "8:00 AM" },  // AP Lang is mid-May Week 2
-  "ap-seminar": { month: 5, day: 7, time: "8:00 AM" }, // AP Seminar is early May Week 1
+  apush: { month: 5, day: 9, time: "8:00 AM" },
+  "ap-lang": { month: 5, day: 14, time: "8:00 AM" },
+  "ap-seminar": { month: 5, day: 7, time: "8:00 AM" },
+  "ap-gov": { month: 5, day: 5, time: "8:00 AM" },
+  "ap-bio": { month: 5, day: 12, time: "8:00 AM" },
+  "ap-calc": { month: 5, day: 13, time: "8:00 AM" },
+  "ap-research": { month: 4, day: 30, time: "8:00 AM" },
 };
 
 
