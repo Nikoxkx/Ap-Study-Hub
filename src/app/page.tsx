@@ -5,6 +5,8 @@ const courseTheme: Record<string, { bg: string; text: string; badgeBg: string }>
   blue: { bg: "bg-blue-50 dark:bg-blue-950", text: "text-blue-600 dark:text-blue-400", badgeBg: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" },
   emerald: { bg: "bg-emerald-50 dark:bg-emerald-950", text: "text-emerald-600 dark:text-emerald-400", badgeBg: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300" },
   purple: { bg: "bg-purple-50 dark:bg-purple-950", text: "text-purple-600 dark:text-purple-400", badgeBg: "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" },
+  red: { bg: "bg-red-50 dark:bg-red-950", text: "text-red-600 dark:text-red-400", badgeBg: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300" },
+  green: { bg: "bg-green-50 dark:bg-green-950", text: "text-green-600 dark:text-green-400", badgeBg: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300" },
 };
 
 export default function HomePage() {
@@ -118,8 +120,9 @@ export default function HomePage() {
         <p className="text-muted-foreground mb-6">Pick a course and begin studying today — it&apos;s completely free.</p>
         <div className="flex flex-wrap gap-3 justify-center">
           <Link href="/course/apush" className="btn btn-primary h-10 px-5 text-sm">Study APUSH</Link>
-          <Link href="/course/ap-lang" className="btn btn-outline h-10 px-5 text-sm">Study AP Lang</Link>
-          <Link href="/course/ap-seminar" className="btn btn-outline h-10 px-5 text-sm">Study AP Seminar</Link>
+          <Link href="/course/ap-gov" className="btn btn-outline h-10 px-5 text-sm">Study AP Gov</Link>
+          <Link href="/course/ap-bio" className="btn btn-outline h-10 px-5 text-sm">Study AP Bio</Link>
+          <Link href="#courses" className="btn btn-outline h-10 px-5 text-sm">All Courses</Link>
         </div>
       </section>
     </div>
