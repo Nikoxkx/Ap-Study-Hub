@@ -65,9 +65,23 @@ export function Navbar() {
 }
 
 function NavItem({ href, label }: { href: string; label: string }) {
+  const abbrevMap: Record<string, string> = {
+    "APUSH": "APUSH",
+    "AP Lang": "Lang",
+    "AP Seminar": "Sem",
+    "AP Bio": "Bio",
+    "AP Gov": "Gov",
+    "AP Calc": "Calc",
+    "AP Research": "Res",
+    "Guides": "Guides"
+  };
+  
+  const abbrev = abbrevMap[label] || label;
+  
   return (
-    <Link href={href} className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted">
-      {label}
+    <Link href={href} title={label} className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted group relative">
+      <span className="group-hover:hidden">{abbrev}</span>
+      <span className="hidden group-hover:inline">{label}</span>
     </Link>
   );
 }
