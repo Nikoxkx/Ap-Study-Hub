@@ -128,33 +128,7 @@ Open an issue on GitHub to request additional AP courses or contribute to the pr
 
 ---
 
-## Getting Started
 
-```bash
-# Clone the repository
-git clone https://github.com/Nikoxkx/Ap-Study-Hub.git
-
-# Navigate to the project
-cd Ap-Study-Hub
-
-# Install dependencies
-pnpm install
-
-# Run the development server
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## Deployment
-
-This site is deployed on **Vercel**. Any push to the `main` branch triggers an automatic deployment.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Nikoxkx/Ap-Study-Hub)
-
----
 
 ## License
 
