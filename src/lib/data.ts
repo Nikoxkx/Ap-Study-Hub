@@ -9,7 +9,7 @@ export const coursesData = [
     description: "Explore the cultural, economic, political, and social developments that have shaped the United States from c. 1491 to the present.",
     color: "blue",
     icon: "🇺🇸",
-    examDate: "May 10, 2025",
+    examDate: "May 10, 2026",
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ export const coursesData = [
     description: "Develop your ability to read and write with critical awareness of rhetorical strategies and techniques.",
     color: "emerald",
     icon: "✍️",
-    examDate: "May 13, 2025",
+    examDate: "May 13, 2026",
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ export const coursesData = [
     description: "Engage in cross-curricular conversations that explore the complexities of academic and real-world topics through multiple lenses.",
     color: "purple",
     icon: "🔬",
-    examDate: "May 7, 2025",
+    examDate: "May 7, 2026",
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ export const coursesData = [
     description: "Study the foundations, institutions, political behavior, and policy-making of the U.S. government.",
     color: "red",
     icon: "🏛️",
-    examDate: "May 5, 2025",
+    examDate: "May 5, 2026",
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ export const coursesData = [
     description: "Explore the core scientific principles, theories, and processes governing living organisms and biological systems.",
     color: "green",
     icon: "🧬",
-    examDate: "May 12, 2025",
+    examDate: "May 12, 2026",
   },
   {
     id: 6,
@@ -59,7 +59,7 @@ export const coursesData = [
     description: "Master limits, derivatives, integrals, and series. AB covers single-variable calculus while BC extends to more advanced topics.",
     color: "orange",
     icon: "📐",
-    examDate: "May 13, 2025",
+    examDate: "May 13, 2026",
   },
   {
     id: 7,
@@ -69,7 +69,7 @@ export const coursesData = [
     description: "Conduct an independent research project culminating in a 4,000-5,000 word academic paper and presentation with oral defense.",
     color: "indigo",
     icon: "🔎",
-    examDate: "April 30, 2025",
+    examDate: "April 30, 2026",
   },
 ];
 
@@ -353,7 +353,7 @@ export const flashcardsData: Record<string, { front: string; back: string }[]> =
     { front: "What is the derivative of sin(x)?", back: "d/dx[sin x] = cos x" },
     { front: "What is the derivative of e^x?", back: "d/dx[e^x] = e^x (it's its own derivative)" },
     { front: "What is the derivative of ln(x)?", back: "d/dx[ln x] = 1/x" },
-    { front: "What is the Fundamental Theorem of Calculus?", back: "Part 1: d/dx[∫[a,x] f(t)dt] = f(x). Part 2: ∫[a,b] f(x)dx = F(b) - F(a)" },
+    { front: "What is the Fundamental Theorem of Calculus?", back: "Part 1: d/dx[���[a,x] f(t)dt] = f(x). Part 2: ∫[a,b] f(x)dx = F(b) - F(a)" },
     { front: "What is u-substitution?", back: "Integration technique: let u = inner function, du = derivative, substitute to simplify." },
     { front: "What is the disk method?", back: "V = π∫[a,b] [R(x)]² dx — for volume of revolution around an axis." },
     { front: "How do you find critical points?", back: "Set f'(x) = 0 or find where f'(x) is undefined." },
@@ -978,7 +978,7 @@ export const videosData: Record<string, { id: string; title: string; description
   "ap-bio": [
     { id: "Fgs9ZNR6QHY", title: "Full Course Review (Units 1-8)", description: "Complete AP Biology curriculum review" },
     { id: "pDIn9fIAnU0", title: "Unit 1: Chemistry of Life", description: "Comprehensive chemistry review - Bozeman Science" },
-    { id: "L_T3X-m-A-E", title: "Unit 2: Cell Structure & Function", description: "2025/2026 standards update" },
+    { id: "L_T3X-m-A-E", title: "Unit 2: Cell Structure & Function", description: "2026/2026 standards update" },
     { id: "R6La6W60_as", title: "Natural Selection Review", description: "Evolution fundamentals - Bozeman Science" },
     { id: "LeS2-6zLBn0", title: "AP Bio Lab 1: Diffusion and Osmosis", description: "Lab review and analysis" },
   ],
