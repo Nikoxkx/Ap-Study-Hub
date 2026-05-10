@@ -66,36 +66,7 @@ Develop rhetorical analysis and argumentative writing skills.
 
 Build research, collaboration, and presentation abilities.
 
-</td>
-</tr>
-</table>
-
----
-
-## Tech Stack
-
-```
-Framework      Next.js 16 (App Router)
-Styling        Tailwind CSS
-Deployment     Vercel
-```
-
----
-
-## Quick Start
-
-```bash
-# Clone the repository
-git clone https://github.com/Nikoxkx/Ap-Study-Hub.git
-
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open https://v0-ap-study-hub.vercel.app/ in your browser.
 
 ---
 
