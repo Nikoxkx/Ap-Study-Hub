@@ -1,4 +1,5 @@
 <div align="center">
+<img width="3400" height="1912" alt="jaume-rovira-llorca-imagea" src="https://github.com/user-attachments/assets/3cdb330b-a90f-4d08-abf2-05ec3db942e4" />
 
 # AP Study Hub
 
