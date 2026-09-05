@@ -1,6 +1,6 @@
 <div align="center">
 
-  <a href="https://apstudyhub.vercel.app">
+  <a href="https://v0-project-roan-six-20.vercel.app">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/banner-dark.svg" />
       <img src="./assets/readme/banner-light.svg" width="100%" alt="AP Study Hub — unit notes, index cards, marked essays and timed practice for seven AP courses" />
@@ -8,7 +8,7 @@
   </a>
 
   <p>
-    <a href="https://apstudyhub.vercel.app"><img src="https://img.shields.io/badge/apstudyhub.vercel.app-live-b0392a?style=flat-square&labelColor=1c1b17" alt="Live site" /></a>
+    <a href="https://v0-project-roan-six-20.vercel.app"><img src="https://img.shields.io/badge/v0-project-roan-six-20.vercel.app-live-b0392a?style=flat-square&labelColor=1c1b17" alt="Live site" /></a>
     <img src="https://img.shields.io/badge/courses-7-57534a?style=flat-square&labelColor=1c1b17" alt="Seven courses" />
     <img src="https://img.shields.io/badge/account-not%20required-2f5f56?style=flat-square&labelColor=1c1b17" alt="No account required" />
     <img src="https://img.shields.io/badge/tracking-none-3f6b46?style=flat-square&labelColor=1c1b17" alt="No tracking" />
@@ -29,7 +29,7 @@ Unit notes, the cards I drilled on the bus, and sample essays with the rubric po
 marked in the margin — plus timed practice papers with a running clock. I sat these
 exams. This is what I wish had existed.
 
-**Live at <https://apstudyhub.vercel.app>** — no account, no paywall, no tracking.
+**Live at <https://v0-project-roan-six-20.vercel.app>** — no account, no paywall, no tracking.
 
 <p align="center">
   <strong>44</strong> units of notes &nbsp;·&nbsp; <strong>201</strong> index cards &nbsp;·&nbsp;
@@ -68,17 +68,17 @@ trademarks, and nothing here has been reviewed or endorsed by them.
 
 Every number below is what the site itself computes from the content at build time —
 not a marketing figure. The live versions of all the counts are on
-[`/about`](https://apstudyhub.vercel.app/about).
+[`/about`](https://v0-project-roan-six-20.vercel.app/about).
 
 | Spine | Course | Units | Cards | Questions | Essays | Timed paper | Notes read | Last worked on |
 | :---- | :----- | ----: | ----: | --------: | -----: | ----------: | ---------: | :------------- |
-| `USH` | [AP United States History](https://apstudyhub.vercel.app/course/apush) | 9 | 53 | 30 | 1 | 1 | ~4 min | 30 August 2026 |
-| `LNG` | [AP English Language and Composition](https://apstudyhub.vercel.app/course/ap-lang) | 6 | 45 | 30 | 3 | 1 | ~2 min | 22 August 2026 |
-| `SEM` | [AP Seminar](https://apstudyhub.vercel.app/course/ap-seminar) | 5 | 36 | 28 | 1 | 1 | ~1 min | 19 July 2026 |
-| `GOV` | [AP United States Government and Politics](https://apstudyhub.vercel.app/course/ap-gov) | 5 | 20 | 15 | — | — | ~2 min | 28 June 2026 |
-| `BIO` | [AP Biology](https://apstudyhub.vercel.app/course/ap-bio) | 8 | 20 | 15 | — | — | ~3 min | 11 August 2026 |
-| `CAL` | [AP Calculus AB and BC](https://apstudyhub.vercel.app/course/ap-calc) | 6 | 15 | 10 | — | — | ~2 min | 31 May 2026 |
-| `RES` | [AP Research](https://apstudyhub.vercel.app/course/ap-research) | 5 | 12 | 10 | 1 | — | ~2 min | 4 July 2026 |
+| `USH` | [AP United States History](https://v0-project-roan-six-20.vercel.app/course/apush) | 9 | 53 | 30 | 1 | 1 | ~4 min | 30 August 2026 |
+| `LNG` | [AP English Language and Composition](https://v0-project-roan-six-20.vercel.app/course/ap-lang) | 6 | 45 | 30 | 3 | 1 | ~2 min | 22 August 2026 |
+| `SEM` | [AP Seminar](https://v0-project-roan-six-20.vercel.app/course/ap-seminar) | 5 | 36 | 28 | 1 | 1 | ~1 min | 19 July 2026 |
+| `GOV` | [AP United States Government and Politics](https://v0-project-roan-six-20.vercel.app/course/ap-gov) | 5 | 20 | 15 | — | — | ~2 min | 28 June 2026 |
+| `BIO` | [AP Biology](https://v0-project-roan-six-20.vercel.app/course/ap-bio) | 8 | 20 | 15 | — | — | ~3 min | 11 August 2026 |
+| `CAL` | [AP Calculus AB and BC](https://v0-project-roan-six-20.vercel.app/course/ap-calc) | 6 | 15 | 10 | — | — | ~2 min | 31 May 2026 |
+| `RES` | [AP Research](https://v0-project-roan-six-20.vercel.app/course/ap-research) | 5 | 12 | 10 | 1 | — | ~2 min | 4 July 2026 |
 | | **All seven** | **44** | **201** | **138** | **6** | **3** | ~16 min | |
 
 What each spine actually contains:
@@ -162,9 +162,9 @@ of writing.
 
 | Course | Paper | Length | Sections |
 | :----- | :---- | -----: | :------- |
-| [APUSH](https://apstudyhub.vercel.app/course/apush/exam) | APUSH Practice Exam | 155 min | Multiple choice (55 min, 15 questions) · DBQ (60 min) · Long essay (40 min) · 7 source documents |
-| [AP Lang](https://apstudyhub.vercel.app/course/ap-lang/exam) | AP Lang Practice Exam | 180 min | Multiple choice (60 min, 10 questions) · Free response (120 min, 3 questions) · 6 source documents |
-| [AP Seminar](https://apstudyhub.vercel.app/course/ap-seminar/exam) | AP Seminar EOC Practice | 120 min | Part A: Source analysis (30 min) · Part B: Constructing an argument (90 min) · 5 source documents |
+| [APUSH](https://v0-project-roan-six-20.vercel.app/course/apush/exam) | APUSH Practice Exam | 155 min | Multiple choice (55 min, 15 questions) · DBQ (60 min) · Long essay (40 min) · 7 source documents |
+| [AP Lang](https://v0-project-roan-six-20.vercel.app/course/ap-lang/exam) | AP Lang Practice Exam | 180 min | Multiple choice (60 min, 10 questions) · Free response (120 min, 3 questions) · 6 source documents |
+| [AP Seminar](https://v0-project-roan-six-20.vercel.app/course/ap-seminar/exam) | AP Seminar EOC Practice | 120 min | Part A: Source analysis (30 min) · Part B: Constructing an argument (90 min) · 5 source documents |
 
 ### Sources, checked by a person
 
@@ -183,13 +183,13 @@ your AP coordinator — late-testing windows differ by school.
 
 | Course | Date 2026 | Start (local) |
 | :----- | :-------- | :------------ |
-| [AP Research](https://apstudyhub.vercel.app/course/ap-research) | Thursday, 30 April | Digital portfolio deadline — no sit-down exam |
-| [AP Government and Politics](https://apstudyhub.vercel.app/course/ap-gov) | Tuesday, 5 May | 12:00 p.m. |
-| [AP Seminar](https://apstudyhub.vercel.app/course/ap-seminar) | Thursday, 7 May | 12:00 p.m. |
-| [AP United States History](https://apstudyhub.vercel.app/course/apush) | Saturday, 9 May | 8:00 a.m. |
-| [AP Biology](https://apstudyhub.vercel.app/course/ap-bio) | Tuesday, 12 May | 8:00 a.m. |
-| [AP Calculus AB and BC](https://apstudyhub.vercel.app/course/ap-calc) | Wednesday, 13 May | 8:00 a.m. |
-| [AP English Language and Composition](https://apstudyhub.vercel.app/course/ap-lang) | Thursday, 14 May | 8:00 a.m. |
+| [AP Research](https://v0-project-roan-six-20.vercel.app/course/ap-research) | Thursday, 30 April | Digital portfolio deadline — no sit-down exam |
+| [AP Government and Politics](https://v0-project-roan-six-20.vercel.app/course/ap-gov) | Tuesday, 5 May | 12:00 p.m. |
+| [AP Seminar](https://v0-project-roan-six-20.vercel.app/course/ap-seminar) | Thursday, 7 May | 12:00 p.m. |
+| [AP United States History](https://v0-project-roan-six-20.vercel.app/course/apush) | Saturday, 9 May | 8:00 a.m. |
+| [AP Biology](https://v0-project-roan-six-20.vercel.app/course/ap-bio) | Tuesday, 12 May | 8:00 a.m. |
+| [AP Calculus AB and BC](https://v0-project-roan-six-20.vercel.app/course/ap-calc) | Wednesday, 13 May | 8:00 a.m. |
+| [AP English Language and Composition](https://v0-project-roan-six-20.vercel.app/course/ap-lang) | Thursday, 14 May | 8:00 a.m. |
 
 While an exam is still ahead, the home page shows a live countdown to the soonest one,
 and every course page shows a countdown to its own — the day count is rendered on the
@@ -198,7 +198,7 @@ season is over the blocks simply stop appearing.
 
 ## 04 — The study guides
 
-[`/guides`](https://apstudyhub.vercel.app/guides) is the part of the site that is not
+[`/guides`](https://v0-project-roan-six-20.vercel.app/guides) is the part of the site that is not
 about any one course — study method that survives contact with a real AP exam.
 
 1. **How to revise.** Space it out, even badly; test, do not review; do full questions,
@@ -283,8 +283,8 @@ Research.
 ## 08 — How it is built
 
 Design decisions are written up on
-[`/colophon`](https://apstudyhub.vercel.app/colophon); accessibility conformance and
-the known defects are on [`/accessibility`](https://apstudyhub.vercel.app/accessibility).
+[`/colophon`](https://v0-project-roan-six-20.vercel.app/colophon); accessibility conformance and
+the known defects are on [`/accessibility`](https://v0-project-roan-six-20.vercel.app/accessibility).
 The short version:
 
 - **Static.** Every content page is generated at build time. The only dynamic route is
@@ -294,7 +294,7 @@ The short version:
 - **Reads with JavaScript off.** The notes, essays, practice questions and the search
   results page are all server-rendered HTML. Only the card deck, the countdown and the
   header combobox need the client — and the search form still posts to
-  [`/search`](https://apstudyhub.vercel.app/search) with `method="get"` if you never
+  [`/search`](https://v0-project-roan-six-20.vercel.app/search) with `method="get"` if you never
   load a script at all.
 - **Search without a search engine.** A hand-rolled, scored index over 646 documents
   (the seven courses, all units, key terms, cards, questions, essays and tips). Every
@@ -314,7 +314,7 @@ The short version:
 - **Exactly three `localStorage` keys**, all of them the reader’s own study state:
   `aps.theme` (theme choice), `aps.cards.{course}` (which cards you marked as missed),
   `aps.exam.{course}.{paper}` (in-progress timed-paper answers and drafts). Every key
-  is listed and explained on [`/privacy`](https://apstudyhub.vercel.app/privacy).
+  is listed and explained on [`/privacy`](https://v0-project-roan-six-20.vercel.app/privacy).
   Nothing else is stored. Nothing is sent anywhere.
 - **Accessibility as a budget line.** The target is WCAG 2.2 AA: body text sits at
   roughly 16:1, every subject colour was measured at the size it is actually used in
@@ -322,7 +322,7 @@ The short version:
   section 02), feedback lands in `aria-live` regions, and everything animates only
   when `prefers-reduced-motion` says it may. The conformance claims and the known
   problems that have not been fixed yet are written down on
-  [`/accessibility`](https://apstudyhub.vercel.app/accessibility).
+  [`/accessibility`](https://v0-project-roan-six-20.vercel.app/accessibility).
 - **Built to be found.** Per-page metadata with whole-sentence descriptions (never
   cut mid-sentence), canonical URLs, a sitemap whose `lastModified` dates are the
   dates the *content* was last worked on — not the build time — `robots.txt`, a web

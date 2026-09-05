@@ -8,7 +8,7 @@
  * instead of `http://localhost:3000` leaking into the sitemap.
  */
 
-const FALLBACK_ORIGIN = "https://apstudyhub.vercel.app";
+const FALLBACK_ORIGIN = "https://v0-project-roan-six-20.vercel.app";
 
 function readOrigin(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;
