@@ -1,77 +1,19 @@
-// Static data - comprehensive AP exam content
+/**
+ * Course content.
+ *
+ * Everything on the site that is not layout or chrome lives here, keyed by
+ * course slug. It is a TypeScript module rather than a database because it is a
+ * few hundred kilobytes of text that changes a few times a term: a database
+ * would add a network round trip, a deployment dependency and a failure mode,
+ * and would buy nothing back. Being a module also means the type checker
+ * catches a malformed unit at build time rather than at read time.
+ *
+ * Read it through src/lib/catalog.ts, which joins it to the subject registry
+ * and fills in the gaps for the courses that do not have every content type
+ * written yet.
+ */
 
-export const coursesData = [
-  {
-    id: 1,
-    slug: "apush",
-    name: "AP United States History",
-    shortName: "APUSH",
-    description: "Explore the cultural, economic, political, and social developments that have shaped the United States from c. 1491 to the present.",
-    color: "blue",
-    icon: "🇺🇸",
-    examDate: "May 10, 2026",
-  },
-  {
-    id: 2,
-    slug: "ap-lang",
-    name: "AP English Language and Composition",
-    shortName: "AP Lang",
-    description: "Develop your ability to read and write with critical awareness of rhetorical strategies and techniques.",
-    color: "emerald",
-    icon: "✍️",
-    examDate: "May 13, 2026",
-  },
-  {
-    id: 3,
-    slug: "ap-seminar",
-    name: "AP Seminar",
-    shortName: "AP Seminar",
-    description: "Engage in cross-curricular conversations that explore the complexities of academic and real-world topics through multiple lenses.",
-    color: "purple",
-    icon: "🔬",
-    examDate: "May 7, 2026",
-  },
-  {
-    id: 4,
-    slug: "ap-gov",
-    name: "AP United States Government and Politics",
-    shortName: "AP Gov",
-    description: "Study the foundations, institutions, political behavior, and policy-making of the U.S. government.",
-    color: "red",
-    icon: "🏛️",
-    examDate: "May 5, 2026",
-  },
-  {
-    id: 5,
-    slug: "ap-bio",
-    name: "AP Biology",
-    shortName: "AP Bio",
-    description: "Explore the core scientific principles, theories, and processes governing living organisms and biological systems.",
-    color: "green",
-    icon: "🧬",
-    examDate: "May 12, 2026",
-  },
-  {
-    id: 6,
-    slug: "ap-calc",
-    name: "AP Calculus AB/BC",
-    shortName: "AP Calc",
-    description: "Master limits, derivatives, integrals, and series. AB covers single-variable calculus while BC extends to more advanced topics.",
-    color: "orange",
-    icon: "📐",
-    examDate: "May 13, 2026",
-  },
-  {
-    id: 7,
-    slug: "ap-research",
-    name: "AP Research",
-    shortName: "AP Research",
-    description: "Conduct an independent research project culminating in a 4,000-5,000 word academic paper and presentation with oral defense.",
-    color: "indigo",
-    icon: "🔎",
-    examDate: "April 30, 2026",
-  },
-];
+// Static data - comprehensive AP exam content
 
 export const unitsData: Record<string, { unitNumber: number; title: string; description: string; content: string; keyTerms: string[] }[]> = {
   apush: [
@@ -946,58 +888,6 @@ This research demonstrates that sleep deprivation affects high school academic p
   ]
 };
 
-export const videosData: Record<string, { id: string; title: string; description: string }[]> = {
-  apush: [
-    { id: "rshS9_N4kHw", title: "Unit 1 Review: 1491–1607", description: "Period 1 comprehensive review - Heimler's History" },
-    { id: "mE9pD-XvGWA", title: "Unit 2 Review: 1607–1754", description: "Colonial America development - Heimler's History" },
-    { id: "K37n6YkZ9Vw", title: "Midterm Review (First Semester)", description: "Complete first semester recap - Heimler's History" },
-    { id: "5rT419YvIuA", title: "3 Must-Know Causes of the Great Depression", description: "Essential Depression Era knowledge - Heimler's History" },
-    { id: "XHVN1k-5Pew", title: "How to Write the DBQ", description: "Document-Based Question step-by-step guide - Heimler's History" },
-  ],
-  "ap-lang": [
-    { id: "UuY3Wbrzya0", title: "How to Write a Synthesis Essay (Q1)", description: "Complete synthesis essay breakdown - Coach Hall Writes" },
-    { id: "qvY11BTnv4M", title: "Establishing a Line of Reasoning", description: "Building logical flow in synthesis - Coach Hall Writes" },
-    { id: "MheCg8x9W9A", title: "Writing a Defensible Rhetorical Analysis Thesis", description: "Crafting strong analytical thesis - Coach Hall Writes" },
-    { id: "DawchTChTnk", title: "5 Tips to Improve Your Synthesis Essay Score", description: "Quick synthesis improvements - Coach Hall Writes" },
-    { id: "7p6Xp7Y1VpE", title: "Rhetorical Analysis: Adding Strong Commentary", description: "Deepening analysis techniques - Coach Hall Writes" },
-  ],
-  "ap-seminar": [
-    { id: "rO8TfDk-52A", title: "AP Seminar EOC Exam Overview & Tips", description: "End-of-course exam preparation strategies" },
-    { id: "Y8Y5n0zZ0_E", title: "Identifying Main Idea and Line of Reasoning", description: "Critical reading skills - Part 1" },
-    { id: "Vz8_0f2_O0g", title: "How to Survive AP Seminar (10-Minute Guide)", description: "Quick survival tips for the course" },
-    { id: "q6_y-0V4U6k", title: "Evaluating Evidence for the EOC (CRAAP/RAVEN)", description: "Source evaluation frameworks" },
-    { id: "8b5T6gX0_U4", title: "IRR Conclusion Paragraph Walkthrough", description: "Writing effective research conclusions" },
-  ],
-  "ap-gov": [
-    { id: "sK91Vv58tKk", title: "Unit 1: Foundations of American Democracy", description: "Constitutional principles review - Heimler's History" },
-    { id: "XhM99aPj5mY", title: "Unit 2: Interactions Among Branches", description: "How branches work together - Heimler's History" },
-    { id: "Yw9T7wN_15Q", title: "The Roles and Powers of the President", description: "Executive branch deep dive - Heimler's History" },
-    { id: "L5C1uX04_9k", title: "Federalism in Action (Current Examples)", description: "Modern federalism applications - Heimler's History" },
-    { id: "7_hE3H6I038", title: "The Federal Bureaucracy Explained", description: "Understanding executive agencies - Heimler's History" },
-  ],
-  "ap-bio": [
-    { id: "Fgs9ZNR6QHY", title: "Full Course Review (Units 1-8)", description: "Complete AP Biology curriculum review" },
-    { id: "pDIn9fIAnU0", title: "Unit 1: Chemistry of Life", description: "Comprehensive chemistry review - Bozeman Science" },
-    { id: "L_T3X-m-A-E", title: "Unit 2: Cell Structure & Function", description: "2026/2026 standards update" },
-    { id: "R6La6W60_as", title: "Natural Selection Review", description: "Evolution fundamentals - Bozeman Science" },
-    { id: "LeS2-6zLBn0", title: "AP Bio Lab 1: Diffusion and Osmosis", description: "Lab review and analysis" },
-  ],
-  "ap-calc": [
-    { id: "WUvTyaaNkzM", title: "AP Calculus AB Full Course Review", description: "Complete AB curriculum - The Organic Chemistry Tutor" },
-    { id: "riXcZT2ICjA", title: "Limits and Continuity Review", description: "Unit 1 concepts explained - The Organic Chemistry Tutor" },
-    { id: "5yfh5cf4-0w", title: "Derivatives Complete Review", description: "All derivative rules and applications" },
-    { id: "rfG8ce4nNh0", title: "Integration Techniques", description: "Antiderivatives and definite integrals" },
-    { id: "7gigNsz4Oe8", title: "AP Calculus BC: Series Review", description: "Taylor and Maclaurin series - BC only" },
-  ],
-  "ap-research": [
-    { id: "d0NHOpeczUU", title: "AP Research Course Overview", description: "Understanding the research process - College Board" },
-    { id: "KwE7tkOxYWQ", title: "How to Write a Literature Review", description: "Academic literature review techniques" },
-    { id: "g3Udm0OZvSk", title: "Research Methodology Basics", description: "Qualitative vs quantitative approaches" },
-    { id: "hMZisjWCaQ0", title: "Oral Defense Preparation", description: "Preparing for your research defense" },
-    { id: "If_E2cZ_2KA", title: "Academic Paper Structure", description: "Writing your 5000-word research paper" },
-  ],
-};
-
 export const tipsData: Record<string, { title: string; content: string; category: string }[]> = {
   apush: [
     { title: "Master the 9 Periods", content: "Focus on understanding themes and turning points, not memorizing dates. Ask: What changed? What stayed the same? Why?", category: "Study Strategy" },
@@ -1107,17 +997,6 @@ export const resourcesData: Record<string, { title: string; url: string; descrip
 
 // AP Exam dates (auto-updating based on College Board schedule)
 // Month/day format - year auto-calculated
-export const examDatesData: Record<string, { month: number; day: number; time: string }> = {
-  apush: { month: 5, day: 9, time: "8:00 AM" },
-  "ap-lang": { month: 5, day: 14, time: "8:00 AM" },
-  "ap-seminar": { month: 5, day: 7, time: "8:00 AM" },
-  "ap-gov": { month: 5, day: 5, time: "8:00 AM" },
-  "ap-bio": { month: 5, day: 12, time: "8:00 AM" },
-  "ap-calc": { month: 5, day: 13, time: "8:00 AM" },
-  "ap-research": { month: 4, day: 30, time: "8:00 AM" },
-};
-
-
 // Mock exam data with embedded sources
 export const mockExamsData: Record<string, {
   id: number;

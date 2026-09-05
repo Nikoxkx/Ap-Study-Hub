@@ -1,148 +1,116 @@
-<div align="center">
-<img width="3400" height="1912" alt="jaume-rovira-llorca-imagea" src="https://github.com/user-attachments/assets/3cdb330b-a90f-4d08-abf2-05ec3db942e4" />
-
 # AP Study Hub
 
-### Your Free AP Exam Prep Companion
+Unit notes, index cards, marked sample essays and timed practice papers for seven
+Advanced Placement courses. No account, no paywall, no tracking.
 
-[![Live Site](https://img.shields.io/badge/Live%20Site-Visit%20Now-blue?style=for-the-badge)](https://v0-project-roan-six-20.vercel.app)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
+Live at **https://apstudyhub.vercel.app**
 
----
-
-**Study smarter, not harder.**  
-A comprehensive, completely free resource for AP exam preparation.
-
-[Get Started](#courses) · [Features](#features) · [Courses](#available-courses)
-
-</div>
+Not affiliated with the College Board. AP and Advanced Placement are their
+registered trademarks; nothing here has been reviewed or endorsed by them.
 
 ---
 
-## About
+## What is in it
 
-**AP Study Hub** is a free, no-login-required study platform designed to help students prepare for their AP exams. Whether you're tackling APUSH, AP Lang, AP Seminar, AP Biology, AP Government, AP Calculus, or AP Research, we've got you covered with comprehensive study materials aligned to College Board standards.
+| Course | Units | Cards | Questions | Marked essays | Timed paper |
+| --- | --- | --- | --- | --- | --- |
+| AP US History | yes | yes | yes | yes | yes |
+| AP English Language | yes | yes | yes | yes | yes |
+| AP Seminar | yes | yes | yes | yes | yes |
+| AP Research | yes | yes | yes | yes | yes |
+| AP US Government | yes | yes | yes | — | — |
+| AP Biology | yes | yes | yes | — | — |
+| AP Calculus AB | yes | yes | yes | — | — |
 
----
+Coverage is deliberately uneven and the site says so on every page it affects —
+routes and navigation tabs for content that does not exist are not rendered at
+all, rather than leading to an empty page. The live counts are generated from
+the content itself and shown on `/about`.
 
-## Features
+## Running it
 
-| Feature | Description |
-|:--------|:------------|
-| **Study Guides** | Comprehensive unit-by-unit notes aligned with College Board curriculum |
-| **Video Lessons** | Curated YouTube tutorials from top AP educators (Heimler's History, Bozeman Science, Coach Hall Writes) |
-| **YouTube Search** | Search YouTube directly from the site for additional video resources |
-| **Flashcards** | Interactive flip cards for key terms and concepts |
-| **Practice Questions** | AP-style multiple choice questions with detailed explanations |
-| **Mock Exams** | Full-length timed practice exams following the real format |
-| **Essay Examples** | High-scoring sample essays with detailed rubric breakdowns |
-| **Exemplar Papers** | Research paper examples for AP Seminar and AP Research |
-| **Exam Countdown** | Live countdown to your AP exam date |
-| **Resources** | Direct links to official College Board materials |
-| **Dark Mode** | Light, dark, and system theme options for comfortable studying |
+Requires Node 20.9+ and pnpm.
 
----
+```bash
+pnpm install
+pnpm dev          # http://localhost:3000
+```
 
-## Available Courses
+Other scripts:
 
-<table>
-<tr>
-<td align="center" width="33%">
+```bash
+pnpm typecheck    # tsc --noEmit
+pnpm lint         # eslint
+pnpm build        # production build
+pnpm check        # all three, in that order
+```
 
-### APUSH
-**AP U.S. History**
+There is no database, no CMS and no environment file to create. `NEXT_PUBLIC_SITE_URL`
+is the only variable the app reads, and it only affects canonical URLs and the
+sitemap; without it the production domain is assumed.
 
-Master American history from pre-Columbian times to the present. Covers nine chronological periods with key events, figures, and themes.
+## How it is laid out
 
-</td>
-<td align="center" width="33%">
+```
+src/
+  app/
+    layout.tsx              root shell: metadata, fonts, header, footer, JSON-LD
+    page.tsx                home
+    globals.css             design tokens, @font-face, component classes
+    course/[slug]/          one course, seven child routes
+      layout.tsx              course shell: breadcrumbs, countdown, tabs
+      page.tsx                overview
+      notes/                  unit notes, server-rendered
+      cards/                  flashcard deck
+      practice/               multiple-choice sets
+      essays/                 sample responses with the rubric alongside
+      exam/                   timed paper
+      resources/              checked links
+    search/                 server-rendered results (works with JS off)
+    guides/ about/ colophon/ privacy/ accessibility/
+    api/search/route.ts     JSON endpoint for the header combobox
+    sitemap.ts robots.ts manifest.ts icon.tsx apple-icon.tsx opengraph-image.tsx
+  components/               14 components, all hand-written, no UI library
+  lib/
+    data.ts                 all course content
+    catalog.ts              joins content to subjects, computes counts
+    subjects.ts             the seven courses: colour, exam date, metadata
+    search.ts               scored index over the content
+    channels.ts             YouTube channels, each with a date it was checked
+    markdown.tsx            the small subset of Markdown the notes use
+    schema.tsx              JSON-LD builders
+    site.ts                 origin, names, dates
+public/fonts/               four self-hosted variable WOFF2 files + licences
+```
 
-### AP Lang
-**AP English Language & Composition**
+## Notes on the build
 
-Develop rhetorical analysis and argumentative writing skills. Includes synthesis, rhetorical analysis, and argument essay practice.
+- **Static.** Every content page is generated at build time. The only dynamic
+  route is `/api/search`.
+- **No UI library.** No component kit, no icon package. Every glyph is
+  hand-drawn SVG on a 32-unit grid; every control is a native element.
+- **Three self-hosted typefaces.** Newsreader, Public Sans and JetBrains Mono,
+  latin-subset variable WOFF2, about 192 KB total. Nothing is requested from a
+  font CDN. Licences are in `public/fonts/`.
+- **No client-side data fetching.** Content is imported as TypeScript modules,
+  so it is type-checked and it ships in the HTML.
+- **Three localStorage keys**, all of them the reader's own study state. They
+  are listed and explained on `/privacy`.
+- Design decisions are written down in `/colophon`; accessibility conformance
+  and known defects are in `/accessibility`.
 
-</td>
-<td align="center" width="33%">
+## Contributing
 
-### AP Seminar
-**AP Capstone Seminar**
+Corrections are the most useful contribution — the notes compress a lot and
+some of it will be wrong. Open an issue with the page address and what is
+wrong with it, and it gets fixed and the content revision in the footer gets
+bumped.
 
-Build research, collaboration, and presentation skills. Includes exemplar IWA and IRR papers with rubric breakdowns.
+If you want to add content, keep the existing shape: everything lives in
+`src/lib/data.ts`, keyed by course slug, and anything with a URL needs a date
+recording when a human last opened it.
 
-</td>
-</tr>
-<tr>
-<td align="center" width="33%">
+## Licence
 
-### AP Bio
-**AP Biology**
-
-Explore evolution, cellular processes, genetics, and ecology. Covers all 8 units with video lessons from Bozeman Science.
-
-</td>
-<td align="center" width="33%">
-
-### AP Gov
-**AP U.S. Government & Politics**
-
-Understand American democracy, constitutional principles, civil liberties, and political participation with Heimler's History videos.
-
-</td>
-<td align="center" width="33%">
-
-### AP Calc
-**AP Calculus AB/BC**
-
-Master limits, derivatives, integrals, and series. Includes both AB and BC content with practice problems and video tutorials.
-
-</td>
-</tr>
-<tr>
-<td align="center" width="33%">
-
-### AP Research
-**AP Capstone Research**
-
-Conduct independent research culminating in a 4,000-5,000 word academic paper. Includes exemplar papers with detailed rubric analysis.
-
-</td>
-<td align="center" width="33%">
-
-### More Coming Soon
-**Expanding Our Offerings**
-
-We're continuously adding new AP courses. Check back regularly for updates to our catalog.
-
-</td>
-<td align="center" width="33%">
-
-### Request a Course
-**Want a specific AP course?**
-
-Open an issue on GitHub to request additional AP courses or contribute to the project.
-
-</td>
-</tr>
-</table>
-
----
-
-
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-
----
-
-<div align="center">
-
-**Created by Yeisbel Pena**
-
-Made with care for AP students everywhere.
-
-</div>
+Code is MIT. Course content is © the author, and the bundled typefaces are under
+the SIL Open Font License 1.1 (licence text in `public/fonts/`).
