@@ -381,6 +381,7 @@ export default function HomePage() {
                 "Not a replacement for your teacher, your textbook, or AP Classroom.",
                 "Not tracking you. No analytics, no cookies, no third-party scripts.",
                 "Not finished. Coverage is uneven — the counts on each course tell you exactly how uneven.",
+                "Not hiding AI use — see /ai-disclosure for where AI helped draft and how it was checked.",
               ].map((line) => (
                 <li key={line} className="flex gap-2.5">
                   <span aria-hidden="true" style={{ color: "var(--mark)" }}>

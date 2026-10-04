@@ -57,20 +57,65 @@ export default function AboutPage() {
             <p>
               My name is {site.author.name}. I am a student, not a teacher, not a tutoring company,
               and not a content agency. Every note, card and practice question on this site was
-              written by me, for exams I have sat or am sitting.
+              curated and reviewed by me, for exams I have sat or am sitting — with AI tools used as
+              drafting assistants (see{" "}
+              <Link href="/ai-disclosure" className="link-underlined">
+                AI disclosure
+              </Link>
+              ).
             </p>
             <p>
               That is the main thing worth knowing about it, in both directions. It means the notes
               are written from the position of someone who was recently confused by the same
               material, which is genuinely useful, and it means there is no department of fact
               checkers behind them, which is genuinely a limitation. Where I am not confident about
-              something, the page says so.
+              something, the page says so. Where AI helped draft, the disclosure says exactly where.
             </p>
           </div>
         </section>
 
+        <section className="mt-16" aria-labelledby="ai-heading">
+          <SectionHead folio="02" title="AI use — honestly" id="ai-heading">
+            This site was built with AI as a collaborator. Full breakdown is on{" "}
+            <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>
+              /ai-disclosure
+            </Link>{" "}
+            and in{" "}
+            <a
+              href={`${site.repo}/blob/main/AI_DISCLOSURE.md`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-underlined"
+              style={{ color: "var(--ink)" }}
+            >
+              AI_DISCLOSURE.md
+            </a>
+            . Short version: v0.dev scaffolded the first version (hence the v0 URL), Copilot/ChatGPT/Claude
+            helped draft code and content, and every unit, card, question, and essay was human-reviewed
+            against College Board CEDs.
+          </SectionHead>
+          <div className="prose">
+            <ul>
+              <li>
+                <strong>Code:</strong> Components like CardDeck, PracticeSet, TimedPaper had AI-assisted
+                drafts, rewritten for WCAG 2.2 AA, static generation, and no UI library.
+              </li>
+              <li>
+                <strong>Content:</strong> 44 units, 201 cards, 138 questions, 6 essays, 3 papers — first
+                passes often AI-assisted, then edited in personal revision voice, checked for required
+                docs/cases, and verified no secure material reproduced.
+              </li>
+              <li>
+                <strong>No runtime AI:</strong> No chatbot, no AI grading, no API calls in production.
+                Search is hand-rolled scored index, not LLM. Timed papers use rubric checklists for
+                self-marking.
+              </li>
+            </ul>
+          </div>
+        </section>
+
         <section className="mt-16" aria-labelledby="method-heading">
-          <SectionHead folio="02" title="How the content is made" id="method-heading">
+          <SectionHead folio="03" title="How the content is made" id="method-heading">
             Four rules, applied to everything here.
           </SectionHead>
 
@@ -117,7 +162,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="coverage-heading">
-          <SectionHead folio="03" title="Where it is thin" id="coverage-heading">
+          <SectionHead folio="04" title="Where it is thin" id="coverage-heading">
             Coverage is uneven and pretending otherwise would be the fastest way to waste your time.
             These are the real counts, generated from the content itself.
           </SectionHead>
@@ -169,7 +214,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="corrections-heading">
-          <SectionHead folio="04" title="Corrections" id="corrections-heading" />
+          <SectionHead folio="05" title="Corrections" id="corrections-heading" />
           <div className="prose">
             <p>
               There will be errors in here. History notes compress arguments, science notes simplify
@@ -188,7 +233,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="not-heading">
-          <SectionHead folio="05" title="What this is not" id="not-heading" />
+          <SectionHead folio="06" title="What this is not" id="not-heading" />
           <ul className="grid gap-x-12 gap-y-5 md:grid-cols-2">
             {[
               {
