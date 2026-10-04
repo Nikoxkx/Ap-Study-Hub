@@ -19,6 +19,9 @@
     <img src="https://img.shields.io/badge/node-%E2%89%A520.9-57534a?style=flat-square&labelColor=1c1b17&logo=nodedotjs&logoColor=f6f3ec" alt="Node 20.9 or newer" />
     <img src="https://img.shields.io/badge/accessibility-WCAG%202.2%20AA-3f6b46?style=flat-square&labelColor=1c1b17" alt="WCAG 2.2 AA target" />
     <img src="https://img.shields.io/badge/licence-MIT-57534a?style=flat-square&labelColor=1c1b17" alt="Licence: MIT" />
+    <br />
+    <a href="./AI_DISCLOSURE.md"><img src="https://img.shields.io/badge/AI%20use-disclosed-2f5f56?style=flat-square&labelColor=1c1b17" alt="AI use disclosed" /></a>
+    <a href="https://v0-project-roan-six-20.vercel.app/ai-disclosure"><img src="https://img.shields.io/badge/AI%20disclosure-live%20site-b0392a?style=flat-square&labelColor=1c1b17" alt="AI disclosure live site" /></a>
   </p>
 
 </div>
@@ -61,6 +64,7 @@ trademarks, and nothing here has been reviewed or endorsed by them.
 - [10 — How the repo is laid out](#10--how-the-repo-is-laid-out)
 - [11 — Adding content and fixing errors](#11--adding-content-and-fixing-errors)
 - [12 — Contributing](#12--contributing)
+- [13 — AI disclosure](#13--ai-disclosure) — where AI was used, and how it was checked
 
 ---
 
@@ -451,6 +455,74 @@ pass.
   do.
 - Content changes should keep the voice: what a person who just sat the exam would
   have written, not what a course catalogue would write.
+
+## 13 — AI disclosure
+
+**AI was used as a collaborator, not an autopilot.** This section and the full
+`AI_DISCLOSURE.md` in the repo document where.
+
+**Live page:** `/ai-disclosure` on the site — linked from footer, colophon, and about.
+
+### Tools
+
+| Tool | Role |
+| :--- | :--- |
+| **v0.dev** (Vercel) | Initial Next.js App Router scaffold — explains `v0-project-roan-six-20.vercel.app` URL. Early layout, course shells, tab strip. Rewritten for a11y & static output. |
+| **ChatGPT / GPT-4o** | Drafting README, colophon, privacy, accessibility, study guides, flashcard wording, question distractors, essay outlines, banner script, Tailwind cleanup. |
+| **Claude** | Alternative drafting for unit notes from CEDs, summarization, tone proofreading. |
+| **GitHub Copilot** | Inline completion for `CardDeck.tsx`, `PracticeSet.tsx`, `TimedPaper.tsx`, `SiteSearch.tsx`, search scoring, catalog types. |
+
+No AI image generators for content — all subject marks are hand-drawn SVG on 32-unit grid (`SubjectMark.tsx`). Banners are deterministic SVG from `assets/readme/build-banners.mjs`.
+
+### Where AI was used
+
+**Code & architecture — AI-assisted, human-reviewed:**
+- `layout.tsx`, `page.tsx`, `course/[slug]/layout.tsx`, `Furniture.tsx`, `SiteHeader/Footer` — v0 first versions, rewritten for WCAG 2.2 AA
+- `CardDeck.tsx` — Fisher–Yates shuffle, localStorage via `useSyncExternalStore`, keyboard: Space/Enter flip, arrows, 1/2 mark, S shuffle — AI draft, human focus scoping
+- `PracticeSet.tsx` — radio fieldsets, `aria-live` results, review pass — AI draft, human a11y
+- `TimedPaper.tsx` — running clock, autosave to `aps.exam.{course}.{paper}`, rubric checklist not fake grading
+- `search.ts` + `/api/search` + `SiteSearch.tsx` — hand-rolled scored index over 646 docs, title weight, doc-type weight, one-result-per-title, 180ms debounce, GET fallback at `/search`
+- `next.config.ts` — tight CSP (`youtube-nocookie.com` only frame), HSTS preload, `nosniff`, `SAMEORIGIN`, `Permissions-Policy`
+- `schema.tsx`, `sitemap.ts` — JSON-LD, whole-sentence meta descriptions, `lastModified` = content revision date
+
+**Course content — human-curated, AI-drafted:**
+- `unitsData` (44 units) — first-pass from College Board CEDs, key terms extracted, then rewritten in personal revision voice, CED order/numbering kept, required docs/cases flagged
+- `flashcardsData` (201 cards) — front/back pairs, pruned hallucinations, back = what you must *produce*
+- `quizData` (138 questions) — original questions only, no secure material reproduced, distractors from real mistakes, explanations say why wrong options fail
+- `essaysData` (6 essays) + `mockExamsData` (3 papers) — DBQ, LEQ, synthesis, rhetorical analysis, argument, IWA/IWR outlines, rubric breakdowns — rewritten in exam register, sophistication requires nuance
+- `resourcesData` (45 links) + `channels.ts` (7 channels: Heimler's History, Bozeman Science, Coach Hall Writes, The Organic Chemistry Tutor, Khan Academy, Tom Richey, College Board) — every link opened by a person, date-checked, channels not video IDs
+
+**Docs & copy — AI-assisted writing:**
+- `README.md` — catalogue table, study mode descriptions, build/SEO/security sections
+- `about/page.tsx` — method rules, coverage disclosure, personal story
+- `colophon/page.tsx` — typeface rationales (Newsreader, Public Sans, JetBrains Mono), palette from bookbinding cloth
+- `guides/page.tsx` — 5 guides: method, stimulus, last fortnight, exam day, credit bands
+- `privacy/page.tsx`, `accessibility/page.tsx` — 3 localStorage keys: `aps.theme`, `aps.cards.{course}`, `aps.exam.{course}.{paper}`
+
+### What was NOT AI
+
+- Personal experience: 7 courses because I have only sat seven. Rule: nothing goes up unless I would have used it the week before the exam.
+- Editorial choices: paper `#f6f3ec`, ink `#1c1b17`, mark `#b0392a` (red pen), rules not cards, 4px max radius, one motion idiom, no icon library.
+- Fact-checking: every note checked against CED/textbook/primary source. No analytics, no cookies, no third-party scripts.
+- Accessibility testing: keyboard-only flows, screen reader, `prefers-reduced-motion`.
+- No runtime AI: no chatbot, no AI grading, no AI API in production.
+
+### Verification
+
+1. CED-first — units follow CED order, required docs flagged verbatim
+2. Link check — every outbound link opened by person, date recorded
+3. Type safety — content in TypeScript modules, `pnpm typecheck` catches malformed at build time
+4. Original questions — no secure exam material, released material linked not reproduced
+5. Static output — every content page static, one dynamic route `/api/search`, no DB/CMS
+6. Human review — author Yeisbel Pena reads every page before deploy
+
+### How to cite
+
+> AP Study Hub uses AI tools (v0.dev, ChatGPT, Claude, GitHub Copilot) for drafting and scaffolding. All course content was human-reviewed, fact-checked against College Board CEDs, and edited by the author. See AI_DISCLOSURE.md.
+
+Full file: [`AI_DISCLOSURE.md`](./AI_DISCLOSURE.md) · Live: `/ai-disclosure` · History: [commits](https://github.com/Nikoxkx/Ap-Study-Hub/commits/main/AI_DISCLOSURE.md)
+
+Last updated: 2026-10-04
 
 ## Licence
 

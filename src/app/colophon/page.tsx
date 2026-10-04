@@ -87,6 +87,28 @@ const stack = [
   ["Content", "TypeScript modules — no CMS, no database, no runtime data fetching"],
   ["Hosting", "Vercel, static output"],
   ["Analytics", "None"],
+  ["AI disclosure", "See /ai-disclosure — v0.dev scaffold, Copilot/ChatGPT/Claude drafts, human review"],
+];
+
+const aiTools = [
+  {
+    tool: "v0.dev by Vercel",
+    role: "Scaffold",
+    detail:
+      "Generated first versions of App Router structure, course shells, tab strip, and component shells. Explains the original deployment URL v0-project-roan-six-20.vercel.app. Rewritten for a11y, static output, and no UI library.",
+  },
+  {
+    tool: "GitHub Copilot",
+    role: "Code completion",
+    detail:
+      "Inline completion for CardDeck (Fisher–Yates, keyboard), PracticeSet (aria-live), TimedPaper (autosave), SiteSearch, search scoring, catalog types. All checked manually.",
+  },
+  {
+    tool: "ChatGPT / Claude",
+    role: "Drafting & docs",
+    detail:
+      "Drafted README sections, colophon copy, privacy/accessibility statements, study guides, flashcard wording, question distractors, essay outlines, banner script. Human rewrote in personal voice and verified every claim.",
+  },
 ];
 
 export default function ColophonPage() {
@@ -259,10 +281,90 @@ export default function ColophonPage() {
           </p>
         </section>
 
+        <section className="mt-16" aria-labelledby="ai-heading">
+          <SectionHead folio="05" title="AI & tooling — where it was used" id="ai-heading">
+            AI was a collaborator, not an autopilot. Drafts and boilerplate were often AI-assisted,
+            but structure, fact-checking, and final decisions were human. Full breakdown lives at{" "}
+            <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>
+              /ai-disclosure
+            </Link>{" "}
+            and in{" "}
+            <ExternalLink href={`${site.repo}/blob/main/AI_DISCLOSURE.md`} className="link-underlined">
+              AI_DISCLOSURE.md
+            </ExternalLink>
+            .
+          </SectionHead>
+
+          <div className="table-scroll">
+            <table className="data-table">
+              <caption className="sr-only">AI tools and their role in building the site</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Tool</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">What it did & how it was checked</th>
+                </tr>
+              </thead>
+              <tbody>
+                {aiTools.map((row) => (
+                  <tr key={row.tool}>
+                    <th scope="row" style={{ whiteSpace: "nowrap" }}>
+                      {row.tool}
+                    </th>
+                    <td>{row.role}</td>
+                    <td style={{ color: "var(--ink-soft)" }}>{row.detail}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 grid gap-x-12 gap-y-5 md:grid-cols-2">
+            {[
+              {
+                h: "Content: AI-drafted, human-curated",
+                p: "Unit notes, 201 cards, 138 questions, 6 essays, 3 timed papers had AI first drafts from CEDs. Every item human-reviewed, edited in personal voice, checked against required docs/cases. No secure exam material reproduced.",
+              },
+              {
+                h: "Code: AI-assisted, human-reviewed",
+                p: "CardDeck Fisher–Yates, PracticeSet aria-live, TimedPaper autosave, search scoring — AI suggested patterns, human implemented focus scoping, JS-off fallbacks, WCAG 2.2 AA, and static generation.",
+              },
+              {
+                h: "Design: human decisions",
+                p: "Paper #f6f3ec, ink #1c1b17, mark #b0392a (red pen), binding-cloth subject colors, hand-drawn 32-unit SVG marks, rules not cards. Palette checked at actual size.",
+              },
+              {
+                h: "No runtime AI",
+                p: "No chatbot, no AI grading, no AI API calls in production. Search is hand-rolled scored index, not LLM. Timed papers use rubric checklists for self-marking, not word counters.",
+              },
+            ].map((item) => (
+              <article key={item.h} className="rule-top pt-4">
+                <h3 className="text-[1.0625rem] font-semibold">{item.h}</h3>
+                <p className="mt-1.5 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+                  {item.p}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <p className="mt-8 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+            Why disclose? Students should know when they are reading a person who recently struggled
+            with the same material vs. a model predicting likely text. Full file:{" "}
+            <ExternalLink href={`${site.repo}/blob/main/AI_DISCLOSURE.md`} className="link-underlined">
+              AI_DISCLOSURE.md
+            </ExternalLink>{" "}
+            — commit history public.
+          </p>
+        </section>
+
         <p className="mt-14 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
           Accessibility choices are documented separately, on the{" "}
           <Link href="/accessibility" className="link-underlined" style={{ color: "var(--ink)" }}>
             accessibility page
+          </Link>{" "}
+          and AI use on the{" "}
+          <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>
+            AI disclosure page
           </Link>
           .
         </p>

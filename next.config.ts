@@ -76,6 +76,10 @@ const nextConfig: NextConfig = {
       { source: "/course/:slug/flashcards", destination: "/course/:slug/cards", permanent: true },
       { source: "/course/:slug/mock-exam", destination: "/course/:slug/exam", permanent: true },
       { source: "/courses", destination: "/#catalogue", permanent: true },
+      // AI disclosure aliases — common guesses.
+      { source: "/ai", destination: "/ai-disclosure", permanent: true },
+      { source: "/ai-disclosures", destination: "/ai-disclosure", permanent: true },
+      { source: "/ai-use", destination: "/ai-disclosure", permanent: true },
     ];
   },
 };

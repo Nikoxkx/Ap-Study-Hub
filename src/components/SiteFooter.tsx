@@ -17,6 +17,7 @@ const columns = [
     heading: "The site",
     links: [
       { href: "/about", label: "About & method" },
+      { href: "/ai-disclosure", label: "AI disclosure" },
       { href: "/guides", label: "Study guides" },
       { href: "/search", label: "Search everything" },
       { href: "/colophon", label: "Colophon" },
@@ -29,6 +30,7 @@ const columns = [
       { href: "/privacy", label: "Privacy" },
       { href: "/sitemap.xml", label: "Sitemap" },
       { href: site.repo, label: "Source on GitHub", external: true },
+      { href: `${site.repo}/blob/main/AI_DISCLOSURE.md`, label: "AI_DISCLOSURE.md", external: true },
     ],
   },
 ];
@@ -53,8 +55,8 @@ export function SiteFooter() {
             </div>
             <p className="max-w-[34ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
               {totals.units} units of notes, {totals.flashcards} cards and {totals.questions}{" "}
-              practice questions across {totals.courses} courses. Everything on here was written
-              or checked by hand.
+              practice questions across {totals.courses} courses. AI-assisted drafts, human-reviewed —
+              see <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>AI disclosure</Link>.
             </p>
             <p className="mt-4 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
               Built by{" "}

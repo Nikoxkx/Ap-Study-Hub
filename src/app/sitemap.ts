@@ -37,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: absoluteUrl("/colophon"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
     { url: absoluteUrl("/accessibility"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
     { url: absoluteUrl("/privacy"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
+    { url: absoluteUrl("/ai-disclosure"), lastModified: isoDate("2026-10-04"), changeFrequency: "yearly", priority: 0.6 },
   ];
 
   const coursePages: MetadataRoute.Sitemap = subjects.flatMap((subject) => {
