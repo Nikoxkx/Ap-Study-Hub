@@ -8,11 +8,22 @@ import type { SubjectSlug } from "@/lib/subjects";
  * part of the discipline: historical evidence, rhetoric, discussion, civic
  * institutions, cells, change/accumulation, and evidence under review.
  *
- * Every glyph uses the same 32×32 grid, rounded ink stroke, and quiet interior
- * details. Solid accents give the marks some weight at catalogue size without
- * turning them into badges. They are decorative — the course name is always
- * next to them — so every mark is aria-hidden.
+ * Every glyph uses the same 32×32 grid and rounded chalk stroke. A deterministic
+ * roughening filter adds a little edge wobble and dry-chalk dust without changing
+ * on every render. Solid accents give the marks some weight at catalogue size
+ * without turning them into badges. They are decorative — the course name is
+ * always next to them — so every mark is aria-hidden.
  */
+
+const chalkSeeds: Record<SubjectSlug, number> = {
+  apush: 7,
+  "ap-lang": 13,
+  "ap-seminar": 19,
+  "ap-gov": 23,
+  "ap-bio": 29,
+  "ap-calc": 31,
+  "ap-research": 37,
+};
 
 const glyphs: Record<SubjectSlug, React.ReactNode> = {
   // An open primary-source book: a national star beside a timeline of evidence.
@@ -100,6 +111,9 @@ interface SubjectMarkProps {
 }
 
 export function SubjectMark({ subject, size = 32, className }: SubjectMarkProps) {
+  const filterId = `chalk-${subject}-${size}`;
+  const small = size < 32;
+
   return (
     <svg
       viewBox="0 0 32 32"
@@ -111,12 +125,47 @@ export function SubjectMark({ subject, size = 32, className }: SubjectMarkProps)
       className={className}
       style={{ overflow: "visible" }}
     >
+      <defs>
+        <filter
+          id={filterId}
+          x="-8%"
+          y="-8%"
+          width="116%"
+          height="116%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.82"
+            numOctaves={2}
+            seed={chalkSeeds[subject]}
+            result="chalk-noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="chalk-noise"
+            scale={small ? 0.34 : 0.48}
+            xChannelSelector="R"
+            yChannelSelector="G"
+            result="rough-chalk"
+          />
+          <feGaussianBlur in="rough-chalk" stdDeviation={small ? 0.1 : 0.16} result="chalk-dust" />
+          <feComponentTransfer in="chalk-dust" result="faint-chalk-dust">
+            <feFuncA type="linear" slope={0.42} />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode in="faint-chalk-dust" />
+            <feMergeNode in="rough-chalk" />
+          </feMerge>
+        </filter>
+      </defs>
       <g
         fill="none"
         stroke="currentColor"
-        strokeWidth={1.6}
+        strokeWidth={1.65}
         strokeLinecap="round"
         strokeLinejoin="round"
+        filter={`url(#${filterId})`}
       >
         {glyphs[subject]}
       </g>
