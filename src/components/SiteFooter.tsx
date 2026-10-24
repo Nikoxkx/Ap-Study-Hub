@@ -54,8 +54,8 @@ export function SiteFooter() {
               </span>
             </div>
             <p className="max-w-[34ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
-              {totals.units} units of notes, {totals.flashcards} cards and {totals.questions}{" "}
-              practice questions across {totals.courses} courses. AI-assisted drafts, human-reviewed —
+              {totals.units} deep lessons, {totals.flashcards} cards and {totals.questions}{" "}
+              practice questions across {totals.courses} courses. AI-assisted drafts with dated sources and public corrections —
               see <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>AI disclosure</Link>.
             </p>
             <p className="mt-4 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
@@ -120,7 +120,7 @@ export function SiteFooter() {
         {/* Exam calendar strip — useful, and the kind of thing only someone who
             sat these exams would put in a footer. */}
         <div className="mt-10 rule-top pt-5">
-          <h2 className="label mb-3">2026 exam dates</h2>
+          <h2 className="label mb-3">2027 exams & deadlines</h2>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {[...subjects]
               .sort((a, b) => a.exam.date.localeCompare(b.exam.date))

@@ -249,7 +249,7 @@ export function Markdown({ source, idPrefix = "" }: { source: string; idPrefix?:
 /** Plain-text projection of Markdown, for search indexing and meta descriptions. */
 export function toPlainText(source: string): string {
   return source
-    .replace(/`{1,3}[^`]*`{1,3}/g, " ")
+    .replace(/`{1,3}([^`]*)`{1,3}/g, "$1")
     .replace(/[#>|*_-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();

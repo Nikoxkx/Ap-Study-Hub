@@ -474,7 +474,10 @@ hr {
   border-radius: 999px;
   color: var(--ink-soft);
   background: transparent;
-  white-space: nowrap;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
 }
 
 .tag-subject {
@@ -526,6 +529,31 @@ hr {
 
 .prose > * + * {
   margin-top: 0.9em;
+}
+
+.prose section > * + * {
+  margin-top: 1em;
+}
+
+.prose section > h4:first-child {
+  margin-top: 0;
+}
+
+.prose .source-line {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+
+.prose .source-ref {
+  color: var(--ink-faint);
+  text-decoration: none;
+}
+
+.prose .source-ref:hover {
+  color: var(--subject-ink);
 }
 
 .prose h2 {

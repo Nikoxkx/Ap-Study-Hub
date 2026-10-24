@@ -12,8 +12,8 @@ import { useStoredState } from "@/lib/use-stored-state";
  * a student who trusted it would learn to pad. It is gone.
  *
  * What replaces it: the clock is real, the multiple choice is marked properly,
- * and the written section gives you the actual rubric rows as a checklist to
- * mark yourself against. Self-assessment against a real rubric is what AP
+ * and the written section gives you rubric-informed criteria as a checklist to
+ * mark yourself against. Self-assessment against explicit criteria is what AP
  * teachers have students do, and it is honest about what a static site can and
  * cannot know.
  *
@@ -174,7 +174,7 @@ export function TimedPaper({
     const totalMinutes = exam.sections.reduce((sum, s) => sum + s.timeMinutes, 0);
     return (
       <div className="sheet-tabbed mx-auto max-w-2xl p-7">
-        <p className="label mb-2">Full paper · {totalMinutes} minutes</p>
+        <p className="label mb-2">Original timed practice · {totalMinutes} minutes</p>
         <h3 className="text-[1.5rem]">{exam.title}</h3>
         <p className="mt-2 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
           {exam.description}
@@ -210,7 +210,7 @@ export function TimedPaper({
           <h4 className="label mb-2">Before you start</h4>
           <ul className="space-y-1.5 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
             <li>The clock does not pause. That is the point.</li>
-            <li>Multiple choice is marked automatically. Written answers are not — you will mark those yourself against the real rubric.</li>
+            <li>Multiple choice is marked automatically. Written answers use transparent self-check criteria; official scoring remains the authority for exam-grade judgments.</li>
             <li>What you type is saved in this browser only, so a reload will not lose it.</li>
           </ul>
         </div>

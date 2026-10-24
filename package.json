@@ -2,7 +2,7 @@
   "name": "ap-study-hub",
   "version": "1.0.0",
   "private": true,
-  "description": "Unit notes, index cards, marked essays and timed practice for seven AP courses.",
+  "description": "Deep curriculum-linked lessons, glossary cards, original practice, marked essays, and timed study for seven AP courses.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,7 +18,9 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm typecheck && pnpm lint && pnpm build"
+    "validate:content": "tsx scripts/validate-lessons.ts",
+    "build:banners": "node assets/readme/build-banners.mjs",
+    "check": "corepack pnpm validate:content && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build"
   },
   "dependencies": {
     "next": "16.2.6",
@@ -34,6 +36,7 @@
     "eslint-config-next": "16.2.0",
     "postcss": "8.5.8",
     "tailwindcss": "4.1.17",
+    "tsx": "^4.23.15",
     "typescript": "5.9.3"
   }
 }

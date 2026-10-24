@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { subject, mockExams } = course;
   const minutes = mockExams[0]?.sections.reduce((sum, s) => sum + s.timeMinutes, 0) ?? 0;
   const title = `${subject.familiar} timed practice paper`;
-  const description = `A ${minutes}-minute ${subject.familiar} practice paper with a running clock, the source documents embedded, and honest self-marking against the real rubric.`;
+  const description = `A ${minutes}-minute original ${subject.familiar} timed practice set with a running clock, constructed source packets, and transparent self-check criteria.`;
 
   return {
     title,
@@ -49,8 +49,8 @@ export default async function ExamPage({ params }: { params: Params }) {
           {subject.familiar} timed paper
         </h2>
         <p className="lede mt-4">
-          Forty minutes feels different when it is running. Do this once before exam week and you
-          will find out whether your plan for the essay survives contact with a clock.
+          A running clock feels different from untimed practice. These original sets build pacing and stamina;
+          they are not full-length released exams. Use the official papers linked in Sources for that.
         </p>
       </header>
 

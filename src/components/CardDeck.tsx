@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
 
@@ -23,6 +24,8 @@ import { useStoredState } from "@/lib/use-stored-state";
 export interface Card {
   front: string;
   back: string;
+  unitNumber?: number;
+  lessonTitle?: string;
 }
 
 type Verdict = "again" | "got";
@@ -47,7 +50,8 @@ function shuffled<T>(input: T[]): T[] {
 const NO_VERDICTS: Record<number, Verdict> = Object.freeze({});
 
 export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
-  const storageKey = `aps.cards.${courseSlug}`;
+  // Versioned because glossary-backed cards changed deck ordering.
+  const storageKey = `aps.cards.v2.${courseSlug}`;
 
   const [order, setOrder] = useState<number[]>(() => cards.map((_, i) => i));
   const [position, setPosition] = useState(0);
@@ -217,7 +221,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
         >
           <CardFace side="front" hidden={flipped}>
             <span className="label mb-4 block">
-              {courseLabel} · card {String(cardIndex + 1).padStart(2, "0")}
+              {courseLabel} · {card.unitNumber ? `lesson ${card.unitNumber}` : `card ${String(cardIndex + 1).padStart(2, "0")}`}
             </span>
             <span
               className="block text-[clamp(1.125rem,1rem+0.7vw,1.5rem)]"
@@ -250,6 +254,14 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
           </CardFace>
         </span>
       </button>
+
+      {card.unitNumber ? (
+        <p className="mt-3 text-[0.8125rem]">
+          <Link href={`/course/${courseSlug}/notes#unit-${card.unitNumber}`} className="link-underlined">
+            Review lesson {card.unitNumber}{card.lessonTitle ? ` · ${card.lessonTitle}` : ""} →
+          </Link>
+        </p>
+      ) : null}
 
       {/* Screen readers get the text directly; the 3D flip is meaningless to them. */}
       <p className="sr-only" aria-live="polite">

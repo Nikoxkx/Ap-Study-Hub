@@ -31,7 +31,7 @@ const storageKeys = [
     when: "Written when you use the theme control in the header. Absent until then.",
   },
   {
-    key: "aps.cards.{course}",
+    key: "aps.cards.v2.{course}",
     what: "Which flashcards you marked as known and which you marked to see again, per course.",
     when: "Written as you work through a card deck.",
   },

@@ -1,13 +1,9 @@
 import { ImageResponse } from "next/og";
 
 /**
- * Favicon, generated rather than shipped as a .ico.
- *
- * The stacked-sheets mark from SiteMark, redrawn with heavier strokes because
- * a 1.9px stroke disappears at 32px. Ink on paper, so it reads on both a light
- * and a dark browser chrome.
+ * Browser-tab icon. The sheet and folded-corner paths are exactly the SiteMark
+ * geometry; only the stroke weight and filled paper are adjusted for 32px.
  */
-
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
@@ -21,15 +17,14 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#1c1b17",
+          background: "#f6f3ec",
+          border: "1px solid #c3baa5",
         }}
       >
-        <svg width="26" height="26" viewBox="0 0 32 32">
-          <g fill="none" stroke="#f6f3ec" strokeWidth={2.6} strokeLinejoin="miter">
-            <path d="M6 27V9l6-5h14v23z" />
-            <path d="M12 4v5H6" />
-          </g>
-          <path d="M11 15h10M11 20h10" stroke="#b0392a" strokeWidth={2.2} />
+        <svg width="28" height="28" viewBox="0 0 32 32">
+          <path d="M6 27V9l6-5h14v23z" fill="#fffdf7" stroke="#1c1b17" strokeWidth={2.25} strokeLinejoin="miter" />
+          <path d="M12 4v5H6z" fill="#ddd6c6" stroke="#1c1b17" strokeWidth={2.25} strokeLinejoin="miter" />
+          <path d="M11 15h10M11 20h10" fill="none" stroke="#b0392a" strokeWidth={1.9} />
         </svg>
       </div>
     ),

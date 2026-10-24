@@ -5,6 +5,7 @@ import { PracticeSet } from "@/components/PracticeSet";
 import { absoluteUrl } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
+type SearchParams = Promise<{ unit?: string | string[] }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const { subject, counts } = course;
   const title = `${subject.familiar} practice questions`;
-  const description = `${counts.questions} multiple-choice questions written in ${subject.familiar} exam register, each with an explanation of why the other options fail.`;
+  const description = `${counts.questions} original ${subject.familiar} practice questions with reasoned explanations and lesson-linked sets for every unit.`;
 
   return {
     title,
@@ -23,8 +24,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
-export default async function PracticePage({ params }: { params: Params }) {
-  const { slug } = await params;
+export default async function PracticePage({ params, searchParams }: { params: Params; searchParams: SearchParams }) {
+  const [{ slug }, query] = await Promise.all([params, searchParams]);
   const course = getCourse(slug);
   if (!course) notFound();
 
@@ -32,6 +33,11 @@ export default async function PracticePage({ params }: { params: Params }) {
   if (questions.length === 0) notFound();
 
   const skills = [...new Set(questions.map((q) => q.skill).filter(Boolean))] as string[];
+  const requestedUnit = Array.isArray(query.unit) ? query.unit[0] : query.unit;
+  const parsedUnit = Number(requestedUnit);
+  const initialUnit = Number.isInteger(parsedUnit) && questions.some((question) => question.unitNumber === parsedUnit)
+    ? parsedUnit
+    : undefined;
 
   return (
     <div className="wrap py-12 md:py-16">
@@ -42,25 +48,27 @@ export default async function PracticePage({ params }: { params: Params }) {
             {subject.familiar} practice
           </h2>
           <p className="lede mt-4">
-            Written from scratch to match the difficulty band and the wording style of the real
-            paper. The distractors are the ones people actually pick.
+            Original questions with reasoned feedback. Filter to one lesson for focused retrieval,
+            or work through the full course set; every lesson-linked answer includes a route back to
+            the teaching you need.
           </p>
 
           {skills.length > 0 ? (
             <div className="mt-5">
               <h3 className="label mb-2">Skills covered</h3>
               <ul className="flex flex-wrap gap-1.5">
-                {skills.map((skill) => (
+                {skills.slice(0, 12).map((skill) => (
                   <li key={skill} className="tag">
                     {skill}
                   </li>
                 ))}
+                  {skills.length > 12 ? <li className="tag">+ {skills.length - 12} more</li> : null}
               </ul>
             </div>
           ) : null}
         </header>
 
-        <PracticeSet questions={questions} />
+        <PracticeSet questions={questions} courseSlug={subject.slug} initialUnit={initialUnit} />
 
         <aside className="sunk mt-14 p-5">
           <h3 className="label mb-2">A note on where these come from</h3>

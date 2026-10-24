@@ -90,9 +90,10 @@ export default function AboutPage() {
             >
               AI_DISCLOSURE.md
             </a>
-            . Short version: v0.dev scaffolded the first version (hence the v0 URL), Copilot/ChatGPT/Claude
-            helped draft code and content, and every unit, card, question, and essay was human-reviewed
-            against College Board CEDs.
+            . Short version: v0.dev scaffolded the first version (hence the v0 URL); Copilot, ChatGPT,
+            Claude, and Arena.ai Agent Mode assisted with code and content. The expanded lessons were
+            drafted against official curriculum and scoring pages and are checked by automated depth,
+            citation, and TypeScript validation. The author retains editorial responsibility.
           </SectionHead>
           <div className="prose">
             <ul>
@@ -101,9 +102,10 @@ export default function AboutPage() {
                 drafts, rewritten for WCAG 2.2 AA, static generation, and no UI library.
               </li>
               <li>
-                <strong>Content:</strong> 44 units, 201 cards, 138 questions, 6 essays, 3 papers — first
-                passes often AI-assisted, then edited in personal revision voice, checked for required
-                docs/cases, and verified no secure material reproduced.
+                <strong>Content:</strong> {totals.units} deep lessons and {totals.paragraphs} teaching
+                paragraphs, plus {totals.flashcards} cards and {totals.questions} original practice
+                questions. Drafts cite current curriculum and scoring sources and pass structural
+                validation; no secure exam material is intentionally reproduced.
               </li>
               <li>
                 <strong>No runtime AI:</strong> No chatbot, no AI grading, no API calls in production.
@@ -124,7 +126,7 @@ export default function AboutPage() {
               {
                 rule: "Nothing goes up that I would not have used myself",
                 detail:
-                  "The test for a note is whether it would have saved me an hour the week before the exam. Filler that exists to make a unit look complete does not pass it, which is why some units are short.",
+                  "Every lesson must do real teaching: at least ten developed paragraphs, precise examples, misconceptions worth correcting, and an explicit connection to the exam or scoring task. A paragraph count is a floor, not a substitute for accuracy.",
               },
               {
                 rule: "Framework first, then everything else",
@@ -162,14 +164,14 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="coverage-heading">
-          <SectionHead folio="04" title="Where it is thin" id="coverage-heading">
-            Coverage is uneven and pretending otherwise would be the fastest way to waste your time.
-            These are the real counts, generated from the content itself.
+          <SectionHead folio="04" title="Coverage, in real counts" id="coverage-heading">
+            Every course now has a complete deep-lesson spine. Essays and timed practice remain uneven,
+            so those counts are shown plainly rather than hidden behind a comprehensive-sounding adjective.
           </SectionHead>
 
           <dl className="mb-8 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
-            <Stat value={totals.units} label="units written" tone="mark" />
-            <Stat value={totals.flashcards} label="cards" />
+            <Stat value={totals.units} label="deep lessons" tone="mark" />
+            <Stat value={totals.paragraphs} label="teaching paragraphs" />
             <Stat value={totals.questions} label="questions" />
             <Stat value={`${Math.round(totals.readingMinutes / 60)}h`} label="of reading" />
           </dl>
@@ -180,7 +182,8 @@ export default function AboutPage() {
               <thead>
                 <tr>
                   <th scope="col">Course</th>
-                  <th scope="col">Units</th>
+                  <th scope="col">Lessons</th>
+                  <th scope="col">Paragraphs</th>
                   <th scope="col">Cards</th>
                   <th scope="col">Questions</th>
                   <th scope="col">Essays</th>
@@ -196,6 +199,7 @@ export default function AboutPage() {
                       </Link>
                     </th>
                     <td className="tabular-nums">{course.counts.units || "—"}</td>
+                    <td className="tabular-nums">{course.counts.paragraphs || "—"}</td>
                     <td className="tabular-nums">{course.counts.flashcards || "—"}</td>
                     <td className="tabular-nums">{course.counts.questions || "—"}</td>
                     <td className="tabular-nums">{course.counts.essays || "—"}</td>

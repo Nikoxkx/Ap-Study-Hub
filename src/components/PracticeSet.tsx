@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useId, useMemo, useState } from "react";
 
 /**
@@ -23,18 +24,45 @@ export interface Question {
   correctIndex: number;
   explanation: string;
   skill?: string;
+  unitNumber?: number;
+  lessonTitle?: string;
 }
 
 const LETTERS = ["A", "B", "C", "D", "E", "F"];
 
-export function PracticeSet({ questions }: { questions: Question[] }) {
+export function PracticeSet({
+  questions: allQuestions,
+  courseSlug,
+  initialUnit,
+}: {
+  questions: Question[];
+  courseSlug: string;
+  initialUnit?: number;
+}) {
   const groupId = useId();
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [finished, setFinished] = useState(false);
+  const [unitFilter, setUnitFilter] = useState(initialUnit ? String(initialUnit) : "all");
 
+  const unitOptions = useMemo(() => {
+    const units = new Map<number, string>();
+    for (const question of allQuestions) {
+      if (question.unitNumber && !units.has(question.unitNumber)) {
+        units.set(question.unitNumber, question.lessonTitle ?? `Lesson ${question.unitNumber}`);
+      }
+    }
+    return [...units.entries()].sort(([a], [b]) => a - b);
+  }, [allQuestions]);
+
+  const questions = useMemo(
+    () => unitFilter === "all"
+      ? allQuestions
+      : allQuestions.filter((question) => question.unitNumber === Number(unitFilter)),
+    [allQuestions, unitFilter],
+  );
   const question = questions[index];
 
   const score = useMemo(
@@ -137,6 +165,13 @@ export function PracticeSet({ questions }: { questions: Question[] }) {
                   <p className="mt-2.5 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
                     {q.explanation}
                   </p>
+                  {q.unitNumber ? (
+                    <p className="mt-2 text-[0.8125rem]">
+                      <Link href={`/course/${courseSlug}/notes#unit-${q.unitNumber}`} className="link-underlined">
+                        Review lesson {q.unitNumber}{q.lessonTitle ? ` · ${q.lessonTitle}` : ""}
+                      </Link>
+                    </p>
+                  ) : null}
                 </li>
               ))}
             </ol>
@@ -151,6 +186,40 @@ export function PracticeSet({ questions }: { questions: Question[] }) {
 
   return (
     <div>
+      {unitOptions.length > 0 ? (
+        <div className="mb-7 flex flex-wrap items-center gap-3">
+          <label htmlFor={`${groupId}-unit`} className="label">
+            Practice by lesson
+          </label>
+          <select
+            id={`${groupId}-unit`}
+            value={unitFilter}
+            onChange={(event) => {
+              setUnitFilter(event.target.value);
+              setIndex(0);
+              setChoice(null);
+              setChecked(false);
+              setAnswers({});
+              setFinished(false);
+            }}
+            className="min-w-0 flex-1 px-3 py-2 text-[0.875rem] sm:max-w-md"
+            style={{
+              border: "1px solid var(--rule-strong)",
+              borderRadius: "var(--radius-cut)",
+              background: "var(--paper-raised)",
+              color: "var(--ink)",
+            }}
+          >
+            <option value="all">All course questions ({allQuestions.length})</option>
+            {unitOptions.map(([number, title]) => (
+              <option key={number} value={number}>
+                Lesson {number} · {title} ({allQuestions.filter((question) => question.unitNumber === number).length})
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : null}
+
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <p
           className="text-[0.8125rem] tabular-nums"
@@ -290,6 +359,17 @@ export function PracticeSet({ questions }: { questions: Question[] }) {
             <p className="text-[0.9375rem]" style={{ color: "var(--ink)", lineHeight: 1.6 }}>
               {question.explanation}
             </p>
+            {question.unitNumber ? (
+              <p className="mt-3 text-[0.8125rem]">
+                <Link
+                  href={`/course/${courseSlug}/notes#unit-${question.unitNumber}`}
+                  className="link-underlined"
+                  style={{ color: "var(--ink)" }}
+                >
+                  Review lesson {question.unitNumber}{question.lessonTitle ? ` · ${question.lessonTitle}` : ""} →
+                </Link>
+              </p>
+            ) : null}
           </div>
         ) : null}
       </div>

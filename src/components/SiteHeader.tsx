@@ -35,7 +35,7 @@ export function SiteHeader() {
           </span>
           {upcoming ? (
             <span style={{ letterSpacing: "0.04em", opacity: 0.85 }}>
-              Next exam — {upcoming.familiar}, {formatExamDate(upcoming, "short")}
+              {upcoming.exam.window === "deadline" ? "Next deadline" : "Next exam"} — {upcoming.familiar}, {formatExamDate(upcoming, "short")}
             </span>
           ) : null}
         </div>

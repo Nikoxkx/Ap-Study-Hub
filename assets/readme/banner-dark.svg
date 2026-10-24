@@ -1,167 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="1200" height="360" role="img" aria-label="AP Study Hub — unit notes, index cards, marked essays and timed practice for seven AP courses">
-  <title>AP Study Hub</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-labelledby="title desc">
+  <title id="title">AP Study Hub — deep lessons, active recall, original practice</title>
+  <desc id="desc">Paper-and-ink artwork showing a cited lesson connected to glossary cards and original practice for seven AP courses.</desc>
   <defs>
-    <pattern id="ruled" width="8" height="24" patternUnits="userSpaceOnUse">
-      <path d="M0 23.5H8" stroke="#302e28" stroke-width="1" opacity="0.5" />
+    <pattern id="rules" width="10" height="24" patternUnits="userSpaceOnUse">
+      <path d="M0 23.5H10" stroke="#302e28" opacity="0.6" />
     </pattern>
-    <style>
-      .frame { stroke-width: 2.4; }
-      .line  { stroke-width: 1.4; opacity: 0.55; }
-    </style>
   </defs>
+  <rect width="1200" height="420" fill="#141412" />
+  <rect width="1200" height="420" fill="url(#rules)" opacity="0.35" />
+  <rect x="0.5" y="0.5" width="1199" height="419" fill="none" stroke="#302e28" />
+  <rect width="10" height="420" fill="#e08a78" />
 
-  <rect width="1200" height="360" fill="#141412" />
-  <rect width="1200" height="360" fill="url(#ruled)" />
-  <rect x="0.5" y="0.5" width="1199" height="359" fill="none" stroke="#302e28" />
-
-  <!-- eyebrow -->
-  <text x="64" y="86" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="14" letter-spacing="1.9"
-        fill="#837c6f">INDEPENDENT · EST. 2025 · SEVEN COURSES</text>
-
-  <!-- title -->
-  <text x="64" y="162" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="74" letter-spacing="-1.6"
-        fill="#ece7dc">AP Study Hub</text>
-  <rect x="66" y="184" width="78" height="4" fill="#e08a78" />
-
-  <!-- lede -->
-  <text x="64" y="234" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="24" fill="#a8a193">Unit notes, index cards, marked essays and</text>
-  <text x="64" y="266" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="24" fill="#a8a193">timed practice for seven AP courses.</text>
-
-  <!-- footer line -->
-  <text x="64" y="318" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" letter-spacing="1.6"
-        fill="#837c6f">NO ACCOUNT · NO PAYWALL · NO TRACKING</text>
-
-  <!-- column rule -->
-  <path d="M716 70V318" stroke="#302e28" stroke-width="1" />
-
-  <!-- the shelf -->
-  <path d="M746 296.75H1142"
-        stroke="#454138" stroke-width="1.5" />
+  <!-- Exact SiteMark sheet geometry, enlarged for the repository banner. -->
+  <g transform="translate(64 47) scale(1.35)" fill="none" stroke="#ece7dc" stroke-width="1.7" stroke-linejoin="miter">
+    <path d="M6 27V9l6-5h14v23z" fill="#1d1c19" />
+    <path d="M12 4v5H6z" fill="#24221d" />
+    <path d="M11 15h10M11 20h10" stroke="#e08a78" stroke-width="1.4" />
+  </g>
+  <text x="119" y="80" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="31" fill="#ece7dc">AP Study Hub</text>
+  <text x="64" y="137" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" letter-spacing="1.8" fill="#837c6f">2026–27 EDITION · SEVEN AP COURSES</text>
+  <text x="64" y="202" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="48" letter-spacing="-1" fill="#ece7dc">Read deeply. Recall actively.</text>
+  <text x="64" y="252" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="48" letter-spacing="-1" fill="#ece7dc">Practise deliberately.</text>
+  <path d="M64 277H650" stroke="#ece7dc" stroke-width="2" />
+  <text x="64" y="315" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="15" fill="#e08a78">51 LESSONS · 510 PARAGRAPHS · 405 CARDS · 240 QUESTIONS</text>
+  <text x="64" y="357" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" letter-spacing="1.3" fill="#837c6f">FREE · NO ACCOUNT · NO PAYWALL · NO TRACKING</text>
   
-    <g>
-      <rect x="760" y="164" width="44" height="132" rx="2"
-            fill="#2a1a17" stroke="#e59283" stroke-width="1.5" />
-      <rect x="760" y="275" width="44" height="3"
-            fill="#e59283" opacity="0.45" />
-      <g transform="translate(769 181) scale(0.8125)"
-         fill="none" stroke="#e59283" stroke-width="2.4"
-         stroke-linecap="square" stroke-linejoin="miter">
-        
-    <rect x="4" y="6" width="24" height="20" rx="1" class="frame" />
-    <path d="M4 11h24M4 16h24M4 21h24" class="line" />
-    <rect x="4" y="6" width="11" height="10" class="fill" fill="#e59283" stroke="none" />
-      </g>
-      <text x="782" y="224" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
-            font-size="13" letter-spacing="1.2" fill="#e59283"
-            opacity="0.85">USH</text>
-    </g>
-  
-    <g>
-      <rect x="814" y="180" width="44" height="116" rx="2"
-            fill="#171c29" stroke="#93aada" stroke-width="1.5" />
-      <rect x="814" y="275" width="44" height="3"
-            fill="#93aada" opacity="0.45" />
-      <g transform="translate(823 197) scale(0.8125)"
-         fill="none" stroke="#93aada" stroke-width="2.4"
-         stroke-linecap="square" stroke-linejoin="miter">
-        
-    <path d="M9 26 L20 7a3 3 0 0 1 5 3L14 29z" class="frame" />
-    <path d="M11.5 22.5H22" class="line" />
-    <circle cx="12" cy="26" r="1.6" class="fill" fill="#93aada" stroke="none" />
-      </g>
-      <text x="836" y="240" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
-            font-size="13" letter-spacing="1.2" fill="#93aada"
-            opacity="0.85">LNG</text>
-    </g>
-  
-    <g>
-      <rect x="868" y="170" width="44" height="126" rx="2"
-            fill="#241a26" stroke="#c79aca" stroke-width="1.5" />
-      <rect x="868" y="275" width="44" height="3"
-            fill="#c79aca" opacity="0.45" />
-      <g transform="translate(877 187) scale(0.8125)"
-         fill="none" stroke="#c79aca" stroke-width="2.4"
-         stroke-linecap="square" stroke-linejoin="miter">
-        
-    <circle cx="12" cy="13" r="7.5" class="frame" />
-    <circle cx="20" cy="13" r="7.5" class="frame" />
-    <circle cx="16" cy="20" r="7.5" class="frame" />
-    <circle cx="16" cy="15.5" r="2" class="fill" fill="#c79aca" stroke="none" />
-      </g>
-      <text x="890" y="230" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
-            font-size="13" letter-spacing="1.2" fill="#c79aca"
-            opacity="0.85">SEM</text>
-    </g>
-  
-    <g>
-      <rect x="922" y="184" width="44" height="112" rx="2"
-            fill="#13221f" stroke="#79bdb0" stroke-width="1.5" />
-      <rect x="922" y="275" width="44" height="3"
-            fill="#79bdb0" opacity="0.45" />
-      <g transform="translate(931 201) scale(0.8125)"
-         fill="none" stroke="#79bdb0" stroke-width="2.4"
-         stroke-linecap="square" stroke-linejoin="miter">
-        
-    <path d="M3 12 L16 5 L29 12" class="frame" />
-    <path d="M7 12v12M13 12v12M19 12v12M25 12v12" class="line" />
-    <path d="M4 24h24M2 28h28" class="frame" />
-      </g>
-      <text x="944" y="244" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
-            font-size="13" letter-spacing="1.2" fill="#79bdb0"
-            opacity="0.85">GOV</text>
-    </g>
-  
-    <g>
-      <rect x="976" y="166" width="44" height="130" rx="2"
-            fill="#1c2416" stroke="#a9c67e" stroke-width="1.5" />
-      <rect x="976" y="275" width="44" height="3"
-            fill="#a9c67e" opacity="0.45" />
-      <g transform="translate(985 183) scale(0.8125)"
-         fill="none" stroke="#a9c67e" stroke-width="2.4"
-         stroke-linecap="square" stroke-linejoin="miter">
-        
-    <path d="M11 4c0 7 10 9 10 12s-10 5-10 12" class="frame" />
-    <path d="M21 4c0 7-10 9-10 12s10 5 10 12" class="frame" />
-    <path d="M12.5 9h7M11 16h10M12.5 23h7" class="line" />
-      </g>
-      <text x="998" y="226" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
-            font-size="13" letter-spacing="1.2" fill="#a9c67e"
-            opacity="0.85">BIO</text>
-    </g>
-  
-    <g>
-      <rect x="1030" y="188" width="44" height="108" rx="2"
-            fill="#2a2012" stroke="#e0ad64" stroke-width="1.5" />
-      <rect x="1030" y="275" width="44" height="3"
-            fill="#e0ad64" opacity="0.45" />
-      <g transform="translate(1039 205) scale(0.8125)"
-         fill="none" stroke="#e0ad64" stroke-width="2.4"
-         stroke-linecap="square" stroke-linejoin="miter">
-        
-    <path d="M5 27V5M5 27h22" class="frame" />
-    <path d="M5 24C11 24 13 8 27 8" class="frame" />
-    <path d="M10 27v-6M15 27V16M20 27V11" class="line" />
-      </g>
-      <text x="1052" y="248" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
-            font-size="13" letter-spacing="1.2" fill="#e0ad64"
-            opacity="0.85">CAL</text>
-    </g>
-  
-    <g>
-      <rect x="1084" y="174" width="44" height="122" rx="2"
-            fill="#211f1c" stroke="#bdb5a7" stroke-width="1.5" />
-      <rect x="1084" y="275" width="44" height="3"
-            fill="#bdb5a7" opacity="0.45" />
-      <g transform="translate(1093 191) scale(0.8125)"
-         fill="none" stroke="#bdb5a7" stroke-width="2.4"
-         stroke-linecap="square" stroke-linejoin="miter">
-        
-    <circle cx="16" cy="16" r="10" class="frame" />
-    <path d="M16 2v6M16 24v6M2 16h6M24 16h6" class="line" />
-    <circle cx="16" cy="16" r="3" class="fill" fill="#bdb5a7" stroke="none" />
-      </g>
-      <text x="1106" y="234" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
-            font-size="13" letter-spacing="1.2" fill="#bdb5a7"
-            opacity="0.85">RES</text>
+    <g transform="translate(735 48)">
+      <rect x="22" y="24" width="370" height="292" fill="#24221d" stroke="#454138" transform="rotate(3 207 170)" />
+      <rect width="370" height="292" fill="#1d1c19" stroke="#ece7dc" stroke-width="1.5" />
+      <path d="M326 0h44v44" fill="#24221d" stroke="#ece7dc" stroke-width="1.5" />
+      <path d="M326 0v44h44" fill="none" stroke="#ece7dc" stroke-width="1.5" />
+      <rect x="25" y="-12" width="28" height="12" fill="#9c3b2e" /><rect x="66" y="-12" width="28" height="12" fill="#31456b" /><rect x="107" y="-12" width="28" height="12" fill="#6b3f6e" /><rect x="148" y="-12" width="28" height="12" fill="#2f5f56" /><rect x="189" y="-12" width="28" height="12" fill="#4f6b32" /><rect x="230" y="-12" width="28" height="12" fill="#9a6520" /><rect x="271" y="-12" width="28" height="12" fill="#57534a" />
+      <text x="28" y="61" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" letter-spacing="1.6" fill="#e08a78">READ → RECALL → RESPOND</text>
+      <text x="28" y="102" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="29" fill="#ece7dc">One connected study loop</text>
+      <path d="M28 133H330" stroke="#837c6f" stroke-width="3" opacity="0.48" /><path d="M28 155H302" stroke="#837c6f" stroke-width="3" opacity="0.48" /><path d="M28 177H330" stroke="#837c6f" stroke-width="3" opacity="0.48" /><path d="M28 199H302" stroke="#837c6f" stroke-width="3" opacity="0.48" />
+      <path d="M28 226H330" stroke="#454138" />
+      <rect x="28" y="244" width="128" height="30" fill="#24221d" stroke="#454138" />
+      <text x="43" y="264" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" fill="#a8a193">GLOSSARY CARD</text>
+      <rect x="174" y="244" width="156" height="30" fill="#24221d" stroke="#e08a78" />
+      <text x="190" y="264" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" fill="#e08a78">ORIGINAL PRACTICE</text>
+      <path d="M185 303v25H25v-25" fill="none" stroke="#e08a78" stroke-width="1.5" stroke-dasharray="4 4" />
+      <text x="185" y="352" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" letter-spacing="1" fill="#837c6f">FEEDBACK RETURNS TO THE EXACT SECTION</text>
     </g>
 </svg>
