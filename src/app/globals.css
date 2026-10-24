@@ -159,9 +159,20 @@
   --good-wash: #1a241a;
   --warn: #d9b567;
   --warn-wash: #262013;
-  --subject-ink: var(--color-subject-lit);
   --subject-tint: var(--color-subject-wash-dark, #221f1b);
   --shadow-lift: 0 1px 0 var(--rule), 0 8px 20px -14px rgb(0 0 0 / 0.9);
+}
+
+/* Resolve aliases on the same node that receives the course custom props.
+   A root-level alias would lock in the default color before the course scope. */
+.subject-scope {
+  --subject-ink: var(--subject);
+  --subject-tint: var(--subject-wash);
+}
+
+.dark .subject-scope {
+  --subject-ink: var(--subject-lit);
+  --subject-tint: var(--subject-wash-dark);
 }
 
 /* --------------------------------------------------------------------------

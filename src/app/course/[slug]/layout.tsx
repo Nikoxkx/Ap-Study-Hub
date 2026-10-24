@@ -45,7 +45,7 @@ export default async function CourseLayout({
   ];
 
   return (
-    <div style={subjectVars(subject)}>
+    <div className="subject-scope" style={subjectVars(subject)}>
       <JsonLd schema={[courseSchema(course), breadcrumbSchema(trail)]} />
 
       <header className="rule-bottom" style={{ background: "var(--paper-raised)" }}>

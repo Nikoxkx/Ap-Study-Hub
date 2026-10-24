@@ -96,7 +96,7 @@ export default function HomePage() {
           {/* Standing block: the next exam or submission deadline. Live data, not an ornament. */}
           {upcoming ? (
             <aside
-              className="sheet-tabbed self-start p-6"
+              className="subject-scope sheet-tabbed self-start p-6"
               style={subjectVars(upcoming)}
               aria-labelledby="next-exam-heading"
             >
@@ -147,7 +147,7 @@ export default function HomePage() {
           {catalog.map((course, index) => {
             const { subject, counts } = course;
             return (
-              <li key={subject.slug} style={subjectVars(subject)}>
+              <li key={subject.slug} className="subject-scope" style={subjectVars(subject)}>
                 <Link
                   href={`/course/${subject.slug}`}
                   className="group relative grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-2 rule-bottom py-5 no-underline transition-[padding,background-color] duration-200 ease-[cubic-bezier(0.2,0.7,0.3,1)] hover:pl-3 md:grid-cols-[2.6rem_minmax(0,1fr)_auto] md:gap-x-6 md:py-6"
