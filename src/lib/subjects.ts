@@ -32,8 +32,8 @@ export interface Subject {
   summary: string;
   /** Longer intro used at the top of the course page and in meta descriptions. */
   intro: string;
-  /** ISO date of the 2026 exam, plus the local start time as printed by CB. */
-  exam: { date: string; window: "morning" | "afternoon" };
+  /** 2027 exam date/session, or the AP Research portfolio deadline. */
+  exam: { date: string; window: "morning" | "afternoon" | "deadline" };
   ink: string;
   lit: string;
   wash: string;
@@ -59,12 +59,12 @@ export const subjects: Subject[] = [
       "Nine chronological periods from 1491 to the present, weighted toward the essay half of the exam.",
     intro:
       "APUSH is less about memorising dates than about arguing with them. The exam gives you a DBQ, a long essay and 55 multiple-choice questions built on stimulus material, so the unit notes below are organised the way the rubric reads: context, evidence, then complexity.",
-    exam: { date: "2026-05-09", window: "morning" },
+    exam: { date: "2027-05-07", window: "morning" },
     ink: "#9c3b2e",
     lit: "#e59283",
     wash: "#f3e6e2",
     washDark: "#2a1a17",
-    revised: "2026-08-30",
+    revised: "2026-10-24",
     mark: "apush",
   },
   {
@@ -75,13 +75,13 @@ export const subjects: Subject[] = [
     summary:
       "Rhetorical analysis, synthesis and argument — three essays in two hours and fifteen minutes.",
     intro:
-      "AP Lang is a writing exam wearing a reading exam's coat. Everything here is built around the three free-response tasks, because that is where two thirds of the score lives. The marked samples show which sentence earned which rubric point.",
-    exam: { date: "2026-05-14", window: "morning" },
+      "AP Lang is a writing exam wearing a reading exam's coat. Everything here is built around the three free-response tasks, because that is where 55% of the score lives. The marked samples show which sentence earned which rubric point.",
+    exam: { date: "2027-05-12", window: "morning" },
     ink: "#31456b",
     lit: "#93aada",
     wash: "#e3e7f0",
     washDark: "#171c29",
-    revised: "2026-08-22",
+    revised: "2026-10-24",
     mark: "ap-lang",
   },
   {
@@ -90,15 +90,15 @@ export const subjects: Subject[] = [
     familiar: "AP Seminar",
     official: "AP Seminar",
     summary:
-      "Two performance tasks worth 65% of the score, plus a two-hour written exam in May.",
+      "Two performance tasks worth 55% of the score, plus a two-hour written exam worth 45%.",
     intro:
-      "Most of AP Seminar is submitted long before exam day. The Individual Research Report, the Individual Written Argument and the team project carry the grade; the May paper is only 35%. The exemplars here are annotated against the actual scoring guidelines.",
-    exam: { date: "2026-05-07", window: "afternoon" },
+      "Most of AP Seminar is submitted long before exam day. The Individual Research Report, the Individual Written Argument and the team project carry 55% of the grade; the May exam carries the other 45%. The exemplars here are annotated against the actual scoring guidelines.",
+    exam: { date: "2027-05-10", window: "afternoon" },
     ink: "#6b3f6e",
     lit: "#c79aca",
     wash: "#eee4ef",
     washDark: "#241a26",
-    revised: "2026-07-19",
+    revised: "2026-10-24",
     mark: "ap-seminar",
   },
   {
@@ -107,15 +107,15 @@ export const subjects: Subject[] = [
     familiar: "AP Gov",
     official: "AP United States Government and Politics",
     summary:
-      "Nine required Supreme Court cases and fifteen founding documents you are expected to cite by name.",
+      "Fifteen required Supreme Court cases and thirteen foundational documents you are expected to use precisely.",
     intro:
-      "AP Gov rewards precision over breadth. The College Board names fifteen required documents and nine required cases, and the free-response section will ask you to apply them to a scenario you have never seen. The notes flag every required text.",
-    exam: { date: "2026-05-05", window: "afternoon" },
+      "AP Gov rewards precision over breadth. For 2026–27, the College Board names thirteen required documents and fifteen required cases, and the free-response section will ask you to apply them to a scenario you have never seen. The notes flag every required text.",
+    exam: { date: "2027-05-04", window: "morning" },
     ink: "#2f5f56",
     lit: "#79bdb0",
     wash: "#e0ebe8",
     washDark: "#13221f",
-    revised: "2026-06-28",
+    revised: "2026-10-24",
     mark: "ap-gov",
   },
   {
@@ -127,12 +127,12 @@ export const subjects: Subject[] = [
       "Eight units, four big ideas, and six free-response questions that lean hard on experimental design.",
     intro:
       "AP Bio's free-response section is mostly about reading a graph and defending a claim. Content matters, but the points come from justification. The practice set below is weighted toward the analysis skills the scoring guidelines actually reward.",
-    exam: { date: "2026-05-12", window: "morning" },
+    exam: { date: "2027-05-03", window: "afternoon" },
     ink: "#4f6b32",
     lit: "#a9c67e",
     wash: "#e7ecdf",
     washDark: "#1c2416",
-    revised: "2026-08-11",
+    revised: "2026-10-24",
     mark: "ap-bio",
   },
   {
@@ -143,13 +143,13 @@ export const subjects: Subject[] = [
     summary:
       "Limits through integrals for AB; series, polar and parametric on top of that for BC.",
     intro:
-      "AB and BC share a spine — the first eight units are identical — so this page covers both and marks the BC-only material. Half the exam is calculator-active, and knowing which half changes how you set a problem up.",
-    exam: { date: "2026-05-13", window: "morning" },
+      "AB and BC share the first eight units in this library, while BC adds parametric/polar work and infinite series. Unit labels make that distinction explicit. For May 2027, each exam has 42 multiple-choice questions and six free-response questions; calculator access depends on the part, so the setup always matters before the keystrokes.",
+    exam: { date: "2027-05-10", window: "morning" },
     ink: "#9a6520",
     lit: "#e0ad64",
     wash: "#f3e9d9",
     washDark: "#2a2012",
-    revised: "2026-05-31",
+    revised: "2026-10-24",
     mark: "ap-calc",
   },
   {
@@ -161,12 +161,12 @@ export const subjects: Subject[] = [
       "One 4,000–5,000 word paper, a presentation and an oral defence. There is no May exam.",
     intro:
       "AP Research has no sit-down exam at all. The whole grade is the academic paper (75%), the presentation and the oral defence (25%), all due to the College Board digital portfolio at the end of April. Everything below is about the paper.",
-    exam: { date: "2026-04-30", window: "morning" },
+    exam: { date: "2027-04-30", window: "deadline" },
     ink: "#57534a",
     lit: "#bdb5a7",
     wash: "#eae7e0",
     washDark: "#211f1c",
-    revised: "2026-07-04",
+    revised: "2026-10-24",
     mark: "ap-research",
   },
 ];
@@ -210,13 +210,15 @@ export function formatExamDate(subject: Subject, style: "long" | "short" = "long
   return style === "long" ? LONG_DATE.format(d) : SHORT_DATE.format(d);
 }
 
-/** College Board publishes 8am and 12pm local starts. */
+/** Session labels follow the 2027 schedule; schools confirm exact reporting times. */
 export function examTimeLabel(subject: Subject) {
-  return subject.exam.window === "morning" ? "8:00 a.m. local" : "12:00 p.m. local";
+  if (subject.exam.window === "deadline") return "11:59 p.m. ET submission deadline";
+  return subject.exam.window === "morning" ? "Session 1 · typically morning" : "Session 2 · typically afternoon";
 }
 
-/** Exam instant in UTC, assuming an 8am/12pm US-Eastern start. Used by the countdown. */
+/** Reference instant for the countdown: a typical Eastern session start or the exact ET deadline. */
 export function examInstant(subject: Subject): number {
-  const hourUtc = subject.exam.window === "morning" ? 12 : 16; // EDT = UTC-4 in May
+  if (subject.exam.window === "deadline") return Date.parse(`${subject.exam.date}T23:59:59-04:00`);
+  const hourUtc = subject.exam.window === "morning" ? 12 : 16; // Typical 8am/12pm EDT starts.
   return Date.parse(`${subject.exam.date}T${String(hourUtc).padStart(2, "0")}:00:00Z`);
 }

@@ -1,7 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
+import { useStudyState } from "@/lib/use-study-state";
+import { cardStudyId, scheduleReview } from "@/lib/study-model";
+import type { SubjectSlug } from "@/lib/subjects";
 
 /**
  * Card deck.
@@ -21,15 +25,18 @@ import { useStoredState } from "@/lib/use-stored-state";
  */
 
 export interface Card {
+  id: string;
   front: string;
   back: string;
+  unitNumber?: number;
+  lessonTitle?: string;
 }
 
 type Verdict = "again" | "got";
 
 interface DeckProps {
   cards: Card[];
-  courseSlug: string;
+  courseSlug: SubjectSlug;
   courseLabel: string;
 }
 
@@ -47,7 +54,8 @@ function shuffled<T>(input: T[]): T[] {
 const NO_VERDICTS: Record<number, Verdict> = Object.freeze({});
 
 export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
-  const storageKey = `aps.cards.${courseSlug}`;
+  // Versioned because glossary-backed cards changed deck ordering.
+  const storageKey = `aps.cards.v2.${courseSlug}`;
 
   const [order, setOrder] = useState<number[]>(() => cards.map((_, i) => i));
   const [position, setPosition] = useState(0);
@@ -81,6 +89,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
     NO_VERDICTS,
     reviveVerdicts,
   );
+  const [, setStudy] = useStudyState();
 
   const missedCount = useMemo(
     () => Object.values(verdicts).filter((v) => v === "again").length,
@@ -112,9 +121,17 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
   const mark = useCallback(
     (verdict: Verdict) => {
       setVerdicts((current) => ({ ...current, [cardIndex]: verdict }));
+      setStudy((current) => scheduleReview(current, {
+        itemId: cardStudyId(courseSlug, card.id),
+        courseSlug,
+        kind: "review",
+        grade: verdict === "got" ? "good" : "again",
+        correct: verdict === "got",
+        chosen: verdict === "again" ? "Marked for another pass" : undefined,
+      }));
       step(1);
     },
-    [cardIndex, step, setVerdicts],
+    [card.id, cardIndex, courseSlug, step, setVerdicts, setStudy],
   );
 
   const shuffle = useCallback(() => {
@@ -217,7 +234,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
         >
           <CardFace side="front" hidden={flipped}>
             <span className="label mb-4 block">
-              {courseLabel} · card {String(cardIndex + 1).padStart(2, "0")}
+              {courseLabel} · {card.unitNumber ? `lesson ${card.unitNumber}` : `card ${String(cardIndex + 1).padStart(2, "0")}`}
             </span>
             <span
               className="block text-[clamp(1.125rem,1rem+0.7vw,1.5rem)]"
@@ -250,6 +267,14 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
           </CardFace>
         </span>
       </button>
+
+      {card.unitNumber ? (
+        <p className="mt-3 text-[0.8125rem]">
+          <Link href={`/course/${courseSlug}/notes#unit-${card.unitNumber}`} className="link-underlined">
+            Review lesson {card.unitNumber}{card.lessonTitle ? ` · ${card.lessonTitle}` : ""} →
+          </Link>
+        </p>
+      ) : null}
 
       {/* Screen readers get the text directly; the 3D flip is meaningless to them. */}
       <p className="sr-only" aria-live="polite">

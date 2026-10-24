@@ -2,7 +2,7 @@
   "name": "ap-study-hub",
   "version": "1.0.0",
   "private": true,
-  "description": "Unit notes, index cards, marked essays and timed practice for seven AP courses.",
+  "description": "Deep curriculum-linked lessons, glossary cards, original practice, marked essays, and timed study for seven AP courses.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,15 +18,20 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm typecheck && pnpm lint && pnpm build"
+    "validate:content": "tsx scripts/validate-lessons.ts",
+    "validate:study": "tsx scripts/validate-study.ts",
+    "build:banners": "node assets/readme/build-banners.mjs",
+    "check": "corepack pnpm validate:content && corepack pnpm validate:study && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build"
   },
   "dependencies": {
+    "katex": "^0.19.1",
     "next": "16.2.6",
     "react": "19.2.6",
     "react-dom": "19.2.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.1.17",
+    "@types/katex": "^0.16.8",
     "@types/node": "22.19.15",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
@@ -34,6 +39,7 @@
     "eslint-config-next": "16.2.0",
     "postcss": "8.5.8",
     "tailwindcss": "4.1.17",
+    "tsx": "^4.23.15",
     "typescript": "5.9.3"
   }
 }

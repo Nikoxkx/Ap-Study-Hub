@@ -49,9 +49,9 @@ export default async function CardsPage({ params }: { params: Params }) {
             {subject.familiar} cards
           </h2>
           <p className="lede mt-4">
-            Front is the prompt, back is what you would have to be able to write down. Marking a
-            card &ldquo;again&rdquo; keeps it in the redo pile; that is stored in your browser and
-            never leaves it.
+            Lesson glossaries now feed this deck automatically, alongside the original course cards.
+            Front is the prompt, back is a definition worth producing cold. Linked cards take you
+            straight to the full lesson; &ldquo;again&rdquo; marks stay only in your browser.
           </p>
         </header>
 
@@ -86,6 +86,15 @@ export default async function CardsPage({ params }: { params: Params }) {
                 </dt>
                 <dd className="pl-[1.8rem] text-[0.9375rem] sm:pl-0" style={{ color: "var(--ink-soft)", margin: 0 }}>
                   {card.back}
+                  {card.unitNumber ? (
+                    <Link
+                      href={`/course/${subject.slug}/notes#unit-${card.unitNumber}`}
+                      className="link-underlined mt-1.5 block text-[0.75rem]"
+                      style={{ color: "var(--ink-faint)" }}
+                    >
+                      Lesson {card.unitNumber}{card.lessonTitle ? ` · ${card.lessonTitle}` : ""}
+                    </Link>
+                  ) : null}
                 </dd>
               </div>
             ))}

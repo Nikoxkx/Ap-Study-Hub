@@ -26,9 +26,9 @@ export const site = {
   /** Used in <title> templates — short enough to leave room for the page name. */
   shortName: "AP Study Hub",
   origin: readOrigin(),
-  tagline: "Notes, drills and marked essays for 7 courses",
+  tagline: "Deep lessons, drills and marked essays for 7 courses",
   description:
-    "Unit notes, index cards, marked essays and timed practice for seven AP courses: US History, Lang, Seminar, Gov, Biology, Calculus and Research.",
+    "Fifty-one curriculum-aligned deep lessons, index cards, original practice, marked essays and timed drills for seven AP courses, with visible sources and scoring guidance.",
   author: {
     name: "Yeisbel Pena",
     role: "Student, and the person who writes everything here",
@@ -36,13 +36,13 @@ export const site = {
   repo: "https://github.com/Nikoxkx/Ap-Study-Hub",
   locale: "en_US",
   /** Bumped by hand when the content set materially changes. Shown in the footer. */
-  contentRevision: "2026.09",
+  contentRevision: "2026.10",
   /**
    * Date the privacy and accessibility statements were last reviewed. Kept here
    * rather than inside those pages so a review updates one line, and so the
    * sitemap can report a `lastModified` for them that is not simply "today".
    */
-  policyUpdated: "2026-08-24",
+  policyUpdated: "2026-10-24",
 } as const;
 
 /**

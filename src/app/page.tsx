@@ -5,6 +5,7 @@ import { subjects, formatExamDate, examInstant, examTimeLabel, subjectVars } fro
 import { daysUntil } from "@/lib/clock";
 import { SubjectMark } from "@/components/SubjectMark";
 import { Countdown } from "@/components/Countdown";
+import { StudySystemVisual } from "@/components/StudySystemVisual";
 import { SectionHead, Stat } from "@/components/Furniture";
 import { JsonLd, catalogSchema, faqSchema } from "@/lib/schema";
 import { site } from "@/lib/site";
@@ -37,7 +38,7 @@ const faqs = [
   {
     question: "Are these real AP exam questions?",
     answer:
-      "No. Every practice question here is written from scratch in the style and difficulty band of the real exam. Released College Board questions are linked to on each course's resources page rather than reproduced.",
+      "No. Practice questions here are original and are labeled as such. Released College Board questions are linked from each course's resources page rather than reproduced.",
   },
   {
     question: "Which AP courses are covered?",
@@ -66,12 +67,13 @@ export default function HomePage() {
               className="text-[clamp(2.1rem,1.4rem+3.1vw,3.9rem)]"
               style={{ letterSpacing: "-0.028em", lineHeight: 1.04 }}
             >
-              Seven AP courses, written up the way I actually revised for them.
+              Seven AP courses, rebuilt around deep lessons—not quick definitions.
             </h1>
 
             <p className="lede mt-6">
-              Unit notes, the cards I drilled on the bus, and sample essays with the rubric points
-              marked in the margin. I sat these exams. This is what I wish had existed.
+              {totals.units} lessons with {totals.paragraphs} substantive teaching paragraphs, plus
+              glossary cards, original practice, marked essays, and the official frameworks and scoring
+              guidance behind the work. Read deeply, then retrieve actively.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -84,21 +86,23 @@ export default function HomePage() {
             </div>
 
             <dl className="mt-11 grid max-w-xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
-              <Stat value={totals.units} label="units of notes" tone="mark" />
+              <Stat value={totals.units} label="deep lessons" tone="mark" />
               <Stat value={totals.flashcards} label="index cards" />
               <Stat value={totals.questions} label="practice questions" />
-              <Stat value={totals.essays} label="marked essays" />
+              <Stat value={totals.paragraphs} label="teaching paragraphs" />
             </dl>
           </div>
 
-          {/* Standing block: the next exam. Live data, not an ornament. */}
+          {/* Standing block: the next exam or submission deadline. Live data, not an ornament. */}
           {upcoming ? (
             <aside
-              className="sheet-tabbed self-start p-6"
+              className="subject-scope sheet-tabbed self-start p-6"
               style={subjectVars(upcoming)}
               aria-labelledby="next-exam-heading"
             >
-              <p className="label mb-1">Soonest exam</p>
+              <p className="label mb-1">
+                {upcoming.exam.window === "deadline" ? "Soonest deadline" : "Soonest exam"}
+              </p>
               <h2
                 id="next-exam-heading"
                 className="text-[1.375rem]"
@@ -134,16 +138,16 @@ export default function HomePage() {
       {/* ── Catalogue ───────────────────────────────────────────────────── */}
       <section id="catalogue" className="wrap py-16 md:py-20" aria-labelledby="catalogue-heading">
         <SectionHead folio="01" title="The catalogue" id="catalogue-heading">
-          Every course page is the same seven parts: notes, cards, practice, essays where the exam
-          has them, a timed paper, and a list of sources worth your time. Counts below are what is
-          actually written, not what is planned.
+          Every course connects the same material through notes, cards, practice, essays where useful,
+          timed practice, and visible sources. Counts below are what is actually written, not what
+          is planned.
         </SectionHead>
 
         <ol className="rule-top">
           {catalog.map((course, index) => {
             const { subject, counts } = course;
             return (
-              <li key={subject.slug} style={subjectVars(subject)}>
+              <li key={subject.slug} className="subject-scope" style={subjectVars(subject)}>
                 <Link
                   href={`/course/${subject.slug}`}
                   className="group relative grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-2 rule-bottom py-5 no-underline transition-[padding,background-color] duration-200 ease-[cubic-bezier(0.2,0.7,0.3,1)] hover:pl-3 md:grid-cols-[2.6rem_minmax(0,1fr)_auto] md:gap-x-6 md:py-6"
@@ -188,7 +192,7 @@ export default function HomePage() {
                       className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 text-[0.75rem]"
                       style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
                     >
-                      <span>{counts.units} units</span>
+                      <span>{counts.units} lessons · {counts.paragraphs} paragraphs</span>
                       <span>{counts.flashcards} cards</span>
                       <span>{counts.questions} questions</span>
                       {counts.essays > 0 ? <span>{counts.essays} essays</span> : null}
@@ -231,12 +235,23 @@ export default function HomePage() {
             can bookmark the bit you are working through instead of scrolling past the rest.
           </SectionHead>
 
+          <figure className="mb-12 mt-2">
+            <StudySystemVisual />
+            <figcaption
+              className="mt-3 text-[0.8125rem]"
+              style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
+            >
+              The expanded library is one connected system: read the teaching, retrieve the idea,
+              practise an original question, then return to the exact section that needs another look.
+            </figcaption>
+          </figure>
+
           <ol className="grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 n: "i",
                 name: "Notes",
-                body: "Unit-by-unit write-ups following the College Board framework, with the key terms pulled out at the top of each unit so you can self-test before reading.",
+                body: "Curriculum-aligned lessons with at least ten developed paragraphs each, objectives, glossaries, rubric connections, and section-level citations.",
               },
               {
                 n: "ii",
@@ -246,7 +261,7 @@ export default function HomePage() {
               {
                 n: "iii",
                 name: "Practice",
-                body: "Multiple choice written in exam register — plausible distractors, not three obviously wrong answers — with an explanation for why each option fails.",
+                body: "Original multiple choice with reasoned feedback, lesson filters, and a route back to the exact teaching when an answer goes wrong.",
               },
               {
                 n: "iv",
@@ -256,12 +271,12 @@ export default function HomePage() {
               {
                 n: "v",
                 name: "Timed paper",
-                body: "The full-length format with a running clock and the source documents embedded, so you find out how long forty minutes really is before it counts.",
+                body: "Original timed sets with a running clock and constructed source packets. These build stamina without pretending to be full-length released exams.",
               },
               {
                 n: "vi",
                 name: "Sources",
-                body: "Links out to College Board material, archives and the teachers worth watching. Every link was opened by a person before it was added.",
+                body: "Official curriculum and scoring references sit beside supporting textbooks and archives, with checked dates and lesson-level citations.",
               },
             ].map((item) => (
               <li key={item.name} className="rule-top pt-4">
@@ -286,9 +301,9 @@ export default function HomePage() {
 
       {/* ── Exam calendar ───────────────────────────────────────────────── */}
       <section className="wrap py-16 md:py-20" aria-labelledby="calendar-heading">
-        <SectionHead folio="03" title="2026 exam calendar" id="calendar-heading">
-          Dates as published by the College Board for the May 2026 administration. Confirm your own
-          schedule with your AP coordinator — late-testing windows differ by school.
+        <SectionHead folio="03" title="2027 exam and deadline calendar" id="calendar-heading">
+          Dates and the AP Research portfolio deadline as published for 2027. Confirm your own reporting
+          time with your AP coordinator — school schedules and late-testing windows can differ.
         </SectionHead>
 
         <div className="table-scroll">

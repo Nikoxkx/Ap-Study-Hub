@@ -34,6 +34,7 @@ export function CourseTabs({ slug, available }: CourseTabsProps) {
   const tabs = [
     { href: base, label: "Overview", show: true },
     { href: `${base}/notes`, label: "Notes", show: available.notes },
+    { href: `${base}/studio`, label: "Studio", show: true },
     { href: `${base}/cards`, label: "Cards", show: available.cards },
     { href: `${base}/practice`, label: "Practice", show: available.practice },
     { href: `${base}/essays`, label: "Essays", show: available.essays },

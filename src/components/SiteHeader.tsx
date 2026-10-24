@@ -3,6 +3,8 @@ import { SiteSearch } from "./SiteSearch";
 import { ThemeControl } from "./ThemeControl";
 import { SiteMark } from "./SubjectMark";
 import { MobileNav } from "./MobileNav";
+import { CommandPalette } from "./CommandPalette";
+import { getNavigationCommands } from "@/lib/navigation";
 import { subjects } from "@/lib/subjects";
 import { nextExam } from "@/lib/catalog";
 import { formatExamDate } from "@/lib/subjects";
@@ -21,6 +23,7 @@ import { formatExamDate } from "@/lib/subjects";
 
 export function SiteHeader() {
   const upcoming = nextExam();
+  const commands = getNavigationCommands();
 
   return (
     <header data-site-header className="sticky top-0 z-40">
@@ -35,7 +38,7 @@ export function SiteHeader() {
           </span>
           {upcoming ? (
             <span style={{ letterSpacing: "0.04em", opacity: 0.85 }}>
-              Next exam — {upcoming.familiar}, {formatExamDate(upcoming, "short")}
+              {upcoming.exam.window === "deadline" ? "Next deadline" : "Next exam"} — {upcoming.familiar}, {formatExamDate(upcoming, "short")}
             </span>
           ) : null}
         </div>
@@ -65,6 +68,7 @@ export function SiteHeader() {
           </Link>
 
           <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-3">
+            <CommandPalette commands={commands} />
             <div className="hidden min-w-0 max-w-[19rem] flex-1 lg:block">
               <SiteSearch />
             </div>
@@ -103,6 +107,15 @@ export function SiteHeader() {
               </li>
             ))}
             <li className="ml-auto shrink-0">
+              <Link
+                href="/study"
+                className="flex h-10 items-center px-3 text-[0.8125rem] font-semibold no-underline"
+                style={{ color: "var(--mark)" }}
+              >
+                Your study desk
+              </Link>
+            </li>
+            <li className="shrink-0">
               <Link
                 href="/guides"
                 className="flex h-10 items-center px-3 text-[0.8125rem] font-medium no-underline"

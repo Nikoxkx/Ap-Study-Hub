@@ -1,7 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
+import { useStudyState } from "@/lib/use-study-state";
+import { questionStudyId, scheduleReview, type StudyState } from "@/lib/study-model";
+import type { SubjectSlug } from "@/lib/subjects";
+import { MathAwareText } from "@/lib/math";
 
 /**
  * Timed paper.
@@ -12,8 +17,8 @@ import { useStoredState } from "@/lib/use-stored-state";
  * a student who trusted it would learn to pad. It is gone.
  *
  * What replaces it: the clock is real, the multiple choice is marked properly,
- * and the written section gives you the actual rubric rows as a checklist to
- * mark yourself against. Self-assessment against a real rubric is what AP
+ * and the written section gives you rubric-informed criteria as a checklist to
+ * mark yourself against. Self-assessment against explicit criteria is what AP
  * teachers have students do, and it is honest about what a static site can and
  * cannot know.
  *
@@ -28,6 +33,8 @@ interface Question {
   correctIndex: number;
   explanation: string;
   skill?: string;
+  unitNumber?: number;
+  lessonTitle?: string;
 }
 
 interface Source {
@@ -95,7 +102,7 @@ export function TimedPaper({
 }: {
   exam: MockExam;
   allQuestions: Question[];
-  courseSlug: string;
+  courseSlug: SubjectSlug;
 }) {
   const draftKey = `aps.exam.${courseSlug}.${exam.id}`;
 
@@ -105,7 +112,11 @@ export function TimedPaper({
   const [remaining, setRemaining] = useState(0);
   const [mcqAnswers, setMcqAnswers] = useState<Record<number, number>>({});
   const [selfMarks, setSelfMarks] = useState<Record<string, boolean>>({});
+  const [flags, setFlags] = useState<Record<number, boolean>>({});
+  const [sectionStartedAt, setSectionStartedAt] = useState(0);
+  const [elapsedBySection, setElapsedBySection] = useState<Record<string, number>>({});
   const [expired, setExpired] = useState(false);
+  const [, setStudy] = useStudyState();
 
   const headingRef = useRef<HTMLHeadingElement>(null);
   const section = exam.sections[sectionIndex];
@@ -155,6 +166,7 @@ export function TimedPaper({
     (index: number) => {
       setSectionIndex(index);
       setDeadline(Date.now() + exam.sections[index].timeMinutes * 60_000);
+      setSectionStartedAt(Date.now());
       setExpired(false);
       setPhase("sitting");
       // Move focus to the new section heading so keyboard and screen reader
@@ -165,16 +177,33 @@ export function TimedPaper({
   );
 
   const finishSection = useCallback(() => {
-    if (sectionIndex + 1 < exam.sections.length) startSection(sectionIndex + 1);
-    else setPhase("review");
-  }, [sectionIndex, exam.sections.length, startSection]);
+    const elapsed = Math.max(1, Math.round((Date.now() - sectionStartedAt) / 1000));
+    setElapsedBySection((current) => ({ ...current, [section.name]: elapsed }));
+    if (sectionIndex + 1 < exam.sections.length) {
+      startSection(sectionIndex + 1);
+    } else {
+      const paperQuestions = exam.sections.flatMap((item) => item.questionIds ?? [])
+        .map((id) => allQuestions.find((question) => question.id === id))
+        .filter((question): question is Question => Boolean(question));
+      setStudy((current) => paperQuestions.reduce((state: StudyState, question) => {
+        const given = mcqAnswers[question.id];
+        const correct = given === question.correctIndex;
+        return scheduleReview(state, {
+          itemId: questionStudyId(courseSlug, question.id), courseSlug, kind: "practice",
+          correct, grade: correct ? "good" : "again",
+          chosen: given === undefined ? "Left blank" : question.options[given],
+        });
+      }, current));
+      setPhase("review");
+    }
+  }, [sectionIndex, section.name, sectionStartedAt, exam.sections, startSection, allQuestions, setStudy, courseSlug, mcqAnswers]);
 
   /* ── Briefing ──────────────────────────────────────────────────────── */
   if (phase === "briefing") {
     const totalMinutes = exam.sections.reduce((sum, s) => sum + s.timeMinutes, 0);
     return (
       <div className="sheet-tabbed mx-auto max-w-2xl p-7">
-        <p className="label mb-2">Full paper · {totalMinutes} minutes</p>
+        <p className="label mb-2">Original timed practice · {totalMinutes} minutes</p>
         <h3 className="text-[1.5rem]">{exam.title}</h3>
         <p className="mt-2 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
           {exam.description}
@@ -210,7 +239,7 @@ export function TimedPaper({
           <h4 className="label mb-2">Before you start</h4>
           <ul className="space-y-1.5 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
             <li>The clock does not pause. That is the point.</li>
-            <li>Multiple choice is marked automatically. Written answers are not — you will mark those yourself against the real rubric.</li>
+            <li>Multiple choice is marked automatically. Written answers use transparent self-check criteria; official scoring remains the authority for exam-grade judgments.</li>
             <li>What you type is saved in this browser only, so a reload will not lose it.</li>
           </ul>
         </div>
@@ -238,6 +267,16 @@ export function TimedPaper({
       0,
     );
     const totalRubricRows = frqPrompts.reduce((sum, prompt) => sum + prompt.rubric.length, 0);
+    const skillRows = [...allMcq.reduce((rows, question) => {
+      const skill = question.skill || "Course-wide reasoning";
+      const row = rows.get(skill) ?? { skill, total: 0, correct: 0, flagged: 0 };
+      row.total += 1;
+      if (mcqAnswers[question.id] === question.correctIndex) row.correct += 1;
+      if (flags[question.id]) row.flagged += 1;
+      rows.set(skill, row);
+      return rows;
+    }, new Map<string, { skill: string; total: number; correct: number; flagged: number }>()).values()];
+    const flaggedCount = allMcq.filter((question) => flags[question.id]).length;
 
     return (
       <div className="mx-auto max-w-3xl">
@@ -256,6 +295,10 @@ export function TimedPaper({
                 <p className="label mt-1.5">multiple choice</p>
               </div>
             ) : null}
+            <div>
+              <p className="tnum text-[2.5rem] leading-none" style={{ fontFamily: "var(--font-display)", fontWeight: 600, color: "var(--ink)" }}>{flaggedCount}</p>
+              <p className="label mt-1.5">flagged for another look</p>
+            </div>
             {totalRubricRows > 0 ? (
               <div>
                 <p
@@ -270,6 +313,29 @@ export function TimedPaper({
             ) : null}
           </div>
         </div>
+
+        <section className="mt-10" aria-labelledby="pacing-review-heading">
+          <h4 id="pacing-review-heading" className="mb-2 rule-top pt-5 text-[1.25rem]">Pacing & skill diagnostics</h4>
+          <p className="mb-5 max-w-[62ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>These measurements describe this sitting only. They are not converted into an AP 1–5 prediction.</p>
+          <div className="diagnostic-grid">
+            <ol className="rule-top">
+              {exam.sections.map((item) => {
+                const itemCount = item.type === "mcq" ? item.questionIds?.length ?? 0 : item.frqPrompts?.length ?? 0;
+                const elapsed = elapsedBySection[item.name] ?? 0;
+                return <li key={item.name} className="rule-bottom py-3">
+                  <div className="flex items-baseline justify-between gap-3"><strong className="text-[0.875rem]">{item.name}</strong><span className="tnum text-[0.75rem]">{clock(elapsed)} / {clock(item.timeMinutes * 60)}</span></div>
+                  <p className="mt-1 text-[0.75rem]" style={{ color: "var(--ink-soft)" }}>{itemCount} {item.type === "mcq" ? "questions" : "prompts"} · actual {itemCount ? `${clock(Math.round(elapsed / itemCount))} each` : "—"} · target {itemCount ? `${clock(Math.round((item.timeMinutes * 60) / itemCount))} each` : "—"}</p>
+                </li>;
+              })}
+            </ol>
+            <ol className="rule-top">
+              {skillRows.map((row) => <li key={row.skill} className="rule-bottom py-3">
+                <div className="flex items-baseline justify-between gap-3"><strong className="text-[0.875rem]">{row.skill}</strong><span className="tnum text-[0.75rem]">{row.correct}/{row.total}</span></div>
+                <p className="mt-1 text-[0.75rem]" style={{ color: "var(--ink-soft)" }}>{row.flagged} flagged · use the explanations below to choose another retrieval pass.</p>
+              </li>)}
+            </ol>
+          </div>
+        </section>
 
         {allMcq.length > 0 ? (
           <section className="mt-10" aria-labelledby="mcq-review-heading">
@@ -288,23 +354,24 @@ export function TimedPaper({
                         className="mt-0.5 shrink-0 tabular-nums text-[0.6875rem]"
                         style={{ fontFamily: "var(--font-mono)", color: ok ? "var(--good)" : "var(--mark)" }}
                       >
-                        {String(i + 1).padStart(2, "0")} {ok ? "✓" : "✗"}
+                        {String(i + 1).padStart(2, "0")} {ok ? "✓" : "✗"}{flags[q.id] ? " ⚑" : ""}
                       </span>
                       <div className="min-w-0">
-                        <p className="text-[0.9375rem] font-medium">{q.question}</p>
+                        <p className="text-[0.9375rem] font-medium"><MathAwareText>{q.question}</MathAwareText></p>
                         <p className="mt-1.5 text-[0.8125rem]" style={{ color: ok ? "var(--good)" : "var(--mark)" }}>
                           {given === undefined
                             ? "Left blank"
-                            : `You chose ${LETTERS[given]} — ${q.options[given]}`}
+                            : <>You chose {LETTERS[given]} — <MathAwareText>{q.options[given]}</MathAwareText></>}
                         </p>
                         {!ok ? (
                           <>
                             <p className="mt-1 text-[0.8125rem]" style={{ color: "var(--good)" }}>
-                              Answer: {LETTERS[q.correctIndex]} — {q.options[q.correctIndex]}
+                              Answer: {LETTERS[q.correctIndex]} — <MathAwareText>{q.options[q.correctIndex]}</MathAwareText>
                             </p>
                             <p className="mt-1.5 text-[0.8125rem]" style={{ color: "var(--ink-soft)" }}>
-                              {q.explanation}
+                              <MathAwareText>{q.explanation}</MathAwareText>
                             </p>
+                            {q.unitNumber ? <p className="mt-2 text-[0.75rem]"><Link href={`/course/${courseSlug}/notes#unit-${q.unitNumber}`} className="link-underlined">Review lesson {q.unitNumber}{q.lessonTitle ? ` · ${q.lessonTitle}` : ""} →</Link></p> : null}
                           </>
                         ) : null}
                       </div>
@@ -331,7 +398,7 @@ export function TimedPaper({
               <article key={prompt.id} className="sheet mb-6 p-5">
                 <p className="label mb-1.5">{prompt.type} · {prompt.points} points</p>
                 <p className="mb-4 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-                  {prompt.prompt}
+                  <MathAwareText>{prompt.prompt}</MathAwareText>
                 </p>
 
                 <h5 className="label mb-2">Your response</h5>
@@ -375,6 +442,8 @@ export function TimedPaper({
             setPhase("briefing");
             setMcqAnswers({});
             setSelfMarks({});
+            setFlags({});
+            setElapsedBySection({});
             setSectionIndex(0);
           }}
           className="btn btn-outline mt-6"
@@ -387,6 +456,11 @@ export function TimedPaper({
 
   /* ── Sitting ───────────────────────────────────────────────────────── */
   const low = remaining <= 300;
+  const answeredCount = sectionQuestions.filter((question) => mcqAnswers[question.id] !== undefined).length;
+  const elapsedSeconds = Math.max(0, section.timeMinutes * 60 - remaining);
+  const targetSeconds = sectionQuestions.length ? Math.round((section.timeMinutes * 60) / sectionQuestions.length) : 0;
+  const expectedAnswers = sectionQuestions.length ? Math.min(sectionQuestions.length, (elapsedSeconds / Math.max(1, section.timeMinutes * 60)) * sectionQuestions.length) : 0;
+  const paceDifference = answeredCount - expectedAnswers;
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -406,6 +480,10 @@ export function TimedPaper({
           </p>
           <p className="text-[0.9375rem] font-semibold">{section.name}</p>
         </div>
+        {section.type === "mcq" && sectionQuestions.length > 0 ? <div className="pace-readout">
+          <p>{answeredCount}/{sectionQuestions.length} answered · {sectionQuestions.filter((question) => flags[question.id]).length} flagged</p>
+          <p>Target {clock(targetSeconds)}/question · {paceDifference >= -0.75 ? "on or ahead of target" : `${Math.ceil(-paceDifference)} behind target`}</p>
+        </div> : null}
         <div className="text-right">
           <p
             className="tnum text-[1.625rem] leading-none"
@@ -427,6 +505,14 @@ export function TimedPaper({
         {section.instructions}
       </p>
 
+      {section.type === "mcq" && sectionQuestions.length > 0 ? <nav className="question-navigation no-print" aria-label={`${section.name} question navigation`}>
+        {sectionQuestions.map((question, index) => <a key={question.id} href={`#timed-${exam.id}-${question.id}`}
+          data-answered={mcqAnswers[question.id] !== undefined} data-flagged={Boolean(flags[question.id])}
+          aria-label={`Question ${index + 1}${mcqAnswers[question.id] !== undefined ? ", answered" : ", unanswered"}${flags[question.id] ? ", flagged" : ""}`}>
+          {index + 1}{flags[question.id] ? <span aria-hidden="true">⚑</span> : null}
+        </a>)}
+      </nav> : null}
+
       {expired ? (
         <p
           role="alert"
@@ -441,7 +527,7 @@ export function TimedPaper({
       {section.type === "mcq" ? (
         <ol className="space-y-8">
           {sectionQuestions.map((question, qIndex) => (
-            <li key={question.id}>
+            <li key={question.id} id={`timed-${exam.id}-${question.id}`} className="scroll-mt-40">
               <fieldset style={{ margin: 0, border: 0, padding: 0 }}>
                 <legend className="mb-3 flex gap-3 text-[0.9375rem]" style={{ fontFamily: "var(--font-display)", lineHeight: 1.45 }}>
                   <span
@@ -451,9 +537,15 @@ export function TimedPaper({
                   >
                     {String(qIndex + 1).padStart(2, "0")}
                   </span>
-                  <span>{question.question}</span>
+                  <span><MathAwareText>{question.question}</MathAwareText></span>
                 </legend>
 
+                <div className="mb-2 ml-[1.9rem] flex justify-end">
+                  <button type="button" className="flag-button" aria-pressed={Boolean(flags[question.id])}
+                    onClick={() => setFlags((current) => ({ ...current, [question.id]: !current[question.id] }))}>
+                    <span aria-hidden="true">⚑</span>{flags[question.id] ? "Flagged for review" : "Flag for review"}
+                  </button>
+                </div>
                 <div className="space-y-1.5 pl-[1.9rem]">
                   {question.options.map((option, optionIndex) => {
                     const selected = mcqAnswers[question.id] === optionIndex;
@@ -483,7 +575,7 @@ export function TimedPaper({
                         >
                           {LETTERS[optionIndex]}
                         </span>
-                        <span>{option}</span>
+                        <span><MathAwareText>{option}</MathAwareText></span>
                       </label>
                     );
                   })}
@@ -506,7 +598,7 @@ export function TimedPaper({
                   className="mb-5 text-[1rem]"
                   style={{ fontFamily: "var(--font-display)", lineHeight: 1.55 }}
                 >
-                  {prompt.prompt}
+                  <MathAwareText>{prompt.prompt}</MathAwareText>
                 </p>
 
                 {prompt.sources && prompt.sources.length > 0 ? (

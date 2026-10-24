@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
 import { site, absoluteUrl, formatDate } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
+import { getTotals } from "@/lib/catalog";
 
 export const metadata: Metadata = {
   title: "AI Disclosure — Where AI was used",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Disclosure · AP Study Hub",
     description:
-      "Where AI was used across AP Study Hub — code, content, design, and docs — and how everything was human-reviewed.",
+      "Where AI was used across AP Study Hub — code, content, design, and docs — with sources, validation, and editorial accountability.",
     url: absoluteUrl("/ai-disclosure"),
   },
 };
@@ -32,6 +33,11 @@ const tools = [
     name: "Claude",
     provider: "Anthropic",
     used: "Alternative drafting for long-form unit notes from CEDs, summarization, and proofreading for tone consistency.",
+  },
+  {
+    name: "Arena.ai Agent Mode",
+    provider: "Arena.ai",
+    used: "2026–27 deep-lesson expansion, official-source research workflow, catalog/search/practice/card integration, structured lesson renderer, validation script, and deterministic visual assets.",
   },
   {
     name: "GitHub Copilot",
@@ -57,7 +63,7 @@ const codeAreas = [
     area: "Search",
     files: "search.ts, api/search/route.ts, SiteSearch.tsx",
     ai: "Scoring draft: title weight, doc-type weight, one-result-per-title dedup",
-    human: "Tuned weights, 180ms debounce, GET form fallback at /search, 646 docs indexed at module scope",
+    human: "Tuned weights, 180ms debounce, GET form fallback at /search, and section-level deep links across the expanded lesson library",
   },
   {
     area: "Design system",
@@ -75,20 +81,20 @@ const codeAreas = [
 
 const contentAreas = [
   {
-    type: "Unit notes",
-    where: "unitsData in data.ts",
-    ai: "First-pass summaries from CEDs, key terms extraction, markdown",
-    human: "Rewrote in personal revision voice, kept CED order/numbering, flagged required docs/cases, added where-I-got-confused notes",
+    type: "Deep lessons",
+    where: "src/content/lessons/*",
+    ai: "Drafted 51 lessons from official curriculum/scoring pages and supporting open textbooks; generated objectives, examples, and original lesson practice",
+    human: "Official claims carry dated source IDs; automated checks require 10+ paragraphs per lesson, valid citations, course sequence, and practice structure; author retains editorial responsibility",
   },
   {
     type: "Flashcards",
-    where: "flashcardsData — 201 cards",
+    where: "flashcardsData + lesson glossaries",
     ai: "Front/back pairs from key terms, varied phrasing",
     human: "Pruned hallucinations, ensured back is what you must produce on exam, Fisher–Yates unbiased shuffle",
   },
   {
     type: "Practice Qs",
-    where: "quizData — 138 questions",
+    where: "quizData + lesson practice",
     ai: "Stems, plausible distractors, explanations",
     human: "Verified no secure material reproduced, distractors from real mistakes, explanations say why wrong options fail",
   },
@@ -100,7 +106,7 @@ const contentAreas = [
   },
   {
     type: "Resources",
-    where: "resourcesData (45 links), channels.ts (7 YouTube channels)",
+    where: "lesson source registry + resourcesData + channels.ts",
     ai: "Candidate link collection",
     human: "Every link opened by a person before listing, date-checked, channels not video IDs (handles survive reorgs)",
   },
@@ -113,6 +119,7 @@ const contentAreas = [
 ];
 
 export default function AiDisclosurePage() {
+  const totals = getTotals();
   const trail = [
     { name: "Home", href: "/" },
     { name: "AI Disclosure", href: "/ai-disclosure" },
@@ -125,7 +132,7 @@ export default function AiDisclosurePage() {
       <div className="wrap py-12 md:py-16">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">Last updated {formatDate("2026-10-04")} · Content revision {site.contentRevision}</p>
+          <p className="label mb-3">Last updated {formatDate("2026-10-24")} · Content revision {site.contentRevision}</p>
           <h1
             className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]"
             style={{ letterSpacing: "-0.028em", lineHeight: 1.05 }}
@@ -133,9 +140,10 @@ export default function AiDisclosurePage() {
             Where AI was used to build this site, written down plainly.
           </h1>
           <p className="lede mt-5">
-            AI was a collaborator, not an autopilot. Drafts and boilerplate were often AI-assisted,
-            but structure, fact-checking, curation, and final decisions were human. No student data is
-            ever sent to AI tools — there are no accounts, no analytics, and no runtime AI features.
+            AI was a collaborator, not an autopilot. Legacy material was human-reviewed; the 2026–27
+            expansion was AI-drafted against dated official sources and checked with automated content
+            and TypeScript validation. No student data is sent to AI tools — there are no accounts,
+            no analytics, and no runtime AI features.
           </p>
           <p className="mt-4 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
             This page is the live version of{" "}
@@ -156,9 +164,9 @@ export default function AiDisclosurePage() {
                 accessibility, static generation, and no UI library.
               </li>
               <li>
-                <strong>Content:</strong> Unit notes, cards, questions, and essay samples had AI-assisted
-                first drafts from College Board CEDs. Every item was human-reviewed, edited, and checked
-                against required documents/cases.
+                <strong>Content:</strong> Lessons, cards, questions, and essay samples had AI-assisted
+                drafts. The expanded library cites its sources at section level; automated checks enforce
+                depth and structure, while corrections and final editorial decisions remain the author’s responsibility.
               </li>
               <li>
                 <strong>Docs:</strong> README, colophon, about, guides, privacy — AI helped draft, human
@@ -166,7 +174,7 @@ export default function AiDisclosurePage() {
               </li>
               <li>
                 <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production.
-                Search is a hand-rolled scored index over 646 documents.
+                Search is a hand-rolled scored index over the course and lesson corpus.
               </li>
             </ul>
           </div>
@@ -231,9 +239,10 @@ export default function AiDisclosurePage() {
         <section className="mt-16" aria-labelledby="content-heading">
           <SectionHead folio="04" title="Course content — human-curated, AI-drafted" id="content-heading">
             <p className="mb-6 max-w-[68ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-              Structure follows the College Board Course and Exam Descriptions in order. AI accelerated
-              drafting; it did not replace study. Counts are computed at build time from <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>data.ts</code> via{" "}
-              <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>catalog.ts</code>.
+              Structure follows current College Board frameworks and scoring pages. AI accelerated
+              drafting; it did not replace study or source checking. The live catalog currently contains{" "}
+              {totals.units} lessons, {totals.paragraphs} teaching paragraphs, {totals.flashcards} cards,
+              and {totals.questions} original questions, computed at build time.
             </p>
           </SectionHead>
           <div className="table-scroll">
@@ -273,8 +282,8 @@ export default function AiDisclosurePage() {
                 p: "Paper #f6f3ec, ink #1c1b17, mark #b0392a (teacher's red pen), 7 binding-cloth colors, rules not cards, 4px max radius.",
               },
               {
-                h: "Fact-checking",
-                p: "Every note checked against CED, textbook, or primary source. No secure exam material reproduced — original questions only.",
+                h: "Editorial accountability",
+                p: "A named author, public source repository, dated citations, and a corrections route. No secure exam material is intentionally reproduced — original practice is labeled.",
               },
               {
                 h: "Accessibility & privacy",
@@ -352,9 +361,9 @@ export default function AiDisclosurePage() {
               If you reference this project, please use:
             </p>
             <blockquote style={{ borderLeft: "3px solid var(--mark)", paddingLeft: "1rem", color: "var(--ink-soft)", fontStyle: "italic" }}>
-              AP Study Hub uses AI tools (v0.dev, ChatGPT, Claude, GitHub Copilot) for drafting and
-              scaffolding. All course content was human-reviewed, fact-checked against College Board CEDs,
-              and edited by the author. See AI_DISCLOSURE.md for full breakdown.
+              AP Study Hub uses AI tools (v0.dev, ChatGPT, Claude, GitHub Copilot, and Arena.ai Agent Mode)
+              for drafting and scaffolding. The expanded lessons are source-linked and automatically validated;
+              the named author retains editorial and correction responsibility. See AI_DISCLOSURE.md.
             </blockquote>
             <p>
               Full file: <a href={`${site.repo}/blob/main/AI_DISCLOSURE.md`} target="_blank" rel="noopener noreferrer">AI_DISCLOSURE.md</a> · 

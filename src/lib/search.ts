@@ -1,5 +1,5 @@
 import { getCatalog } from "./catalog";
-import { toPlainText } from "./markdown";
+import { slugify, toPlainText } from "./markdown";
 import type { SubjectSlug } from "./subjects";
 
 /**
@@ -46,7 +46,7 @@ function buildIndex(): SearchDoc[] {
       id: `course:${subject.slug}`,
       kind: "course",
       title: subject.official,
-      context: `${course.counts.units} units · ${course.counts.questions} practice questions`,
+      context: `${course.counts.units} deep lessons · ${course.counts.paragraphs} teaching paragraphs`,
       body: `${subject.familiar} ${subject.official} ${subject.summary} ${subject.intro}`,
       href: base,
       subject: subject.slug,
@@ -60,11 +60,35 @@ function buildIndex(): SearchDoc[] {
         kind: "unit",
         title: unit.title,
         context: unit.description,
-        body: `${unit.title} ${unit.description} ${toPlainText(unit.content)} ${unit.keyTerms.join(" ")}`,
+        body: [
+          unit.title,
+          unit.description,
+          toPlainText(unit.content),
+          unit.keyTerms.join(" "),
+          unit.lesson?.objectives.join(" "),
+          unit.lesson?.glossary.map((entry) => `${entry.term} ${entry.definition}`).join(" "),
+          unit.lesson?.examAlignment.title,
+          unit.lesson?.examAlignment.description,
+          unit.lesson?.examAlignment.criteria.join(" "),
+        ].filter(Boolean).join(" "),
         href: `${base}/notes#unit-${unit.unitNumber}`,
         subject: subject.slug,
         subjectLabel: subject.familiar,
         weight: 2.5,
+      });
+
+      unit.lesson?.sections.forEach((section) => {
+        docs.push({
+          id: `section:${subject.slug}:${unit.unitNumber}:${slugify(section.heading)}`,
+          kind: "unit",
+          title: section.heading,
+          context: `${unit.title} · lesson section`,
+          body: `${section.heading} ${toPlainText(section.paragraphs.join(" "))}`,
+          href: `${base}/notes#unit-${unit.unitNumber}-section-${slugify(section.heading)}`,
+          subject: subject.slug,
+          subjectLabel: subject.familiar,
+          weight: 2.2,
+        });
       });
 
       unit.keyTerms.forEach((term) => {
@@ -103,10 +127,10 @@ function buildIndex(): SearchDoc[] {
         title: question.question,
         context: question.skill ? `Practice · ${question.skill}` : "Practice question",
         body: `${question.question} ${question.options.join(" ")} ${question.explanation}`,
-        href: `${base}/practice`,
+        href: question.unitNumber ? `${base}/practice?unit=${question.unitNumber}` : `${base}/practice`,
         subject: subject.slug,
         subjectLabel: subject.familiar,
-        weight: 1.2,
+        weight: question.unitNumber ? 1.4 : 1.2,
       });
     });
 

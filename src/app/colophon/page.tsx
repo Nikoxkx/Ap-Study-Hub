@@ -87,7 +87,7 @@ const stack = [
   ["Content", "TypeScript modules — no CMS, no database, no runtime data fetching"],
   ["Hosting", "Vercel, static output"],
   ["Analytics", "None"],
-  ["AI disclosure", "See /ai-disclosure — v0.dev scaffold, Copilot/ChatGPT/Claude drafts, human review"],
+  ["AI disclosure", "See /ai-disclosure — v0.dev, Copilot, ChatGPT, Claude, and Arena.ai workflows; sources and validation"],
 ];
 
 const aiTools = [
@@ -102,6 +102,12 @@ const aiTools = [
     role: "Code completion",
     detail:
       "Inline completion for CardDeck (Fisher–Yates, keyboard), PracticeSet (aria-live), TimedPaper (autosave), SiteSearch, search scoring, catalog types. All checked manually.",
+  },
+  {
+    tool: "Arena.ai Agent Mode",
+    role: "Deep-library expansion",
+    detail:
+      "Researched and drafted the 2026–27 lesson expansion, integrated it into catalog/search/cards/practice, added structured rendering and validation, and produced deterministic visual assets. Official claims carry dated source IDs; automated checks and public corrections remain visible.",
   },
   {
     tool: "ChatGPT / Claude",
@@ -322,8 +328,8 @@ export default function ColophonPage() {
           <div className="mt-8 grid gap-x-12 gap-y-5 md:grid-cols-2">
             {[
               {
-                h: "Content: AI-drafted, human-curated",
-                p: "Unit notes, 201 cards, 138 questions, 6 essays, 3 timed papers had AI first drafts from CEDs. Every item human-reviewed, edited in personal voice, checked against required docs/cases. No secure exam material reproduced.",
+                h: "Content: AI-drafted, source-linked",
+                p: "Deep lessons, cards, original questions, essays, and timed sets had AI-assisted drafts. The expanded library cites dated sources and passes automated depth, citation, sequence, and practice validation; the author retains correction responsibility.",
               },
               {
                 h: "Code: AI-assisted, human-reviewed",

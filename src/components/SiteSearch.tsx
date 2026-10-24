@@ -96,8 +96,8 @@ export function SiteSearch() {
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [open]);
 
-  // "/" focuses search, the convention on documentation sites. Ignored while the
-  // user is typing somewhere else.
+  // "/" focuses full search. Ctrl/Cmd+K belongs to the separate command palette,
+  // so the two keyboard systems never compete for the same shortcut.
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       const target = event.target as HTMLElement | null;
@@ -109,11 +109,6 @@ export function SiteSearch() {
       if (event.key === "/" && !typing && !event.metaKey && !event.ctrlKey) {
         event.preventDefault();
         inputRef.current?.focus();
-      }
-      if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        inputRef.current?.focus();
-        inputRef.current?.select();
       }
     }
     window.addEventListener("keydown", onKeyDown);

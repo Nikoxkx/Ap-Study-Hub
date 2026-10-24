@@ -45,7 +45,7 @@ export default async function CourseLayout({
   ];
 
   return (
-    <div style={subjectVars(subject)}>
+    <div className="subject-scope" style={subjectVars(subject)}>
       <JsonLd schema={[courseSchema(course), breadcrumbSchema(trail)]} />
 
       <header className="rule-bottom" style={{ background: "var(--paper-raised)" }}>
@@ -78,7 +78,8 @@ export default async function CourseLayout({
                 </p>
 
                 <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[0.75rem]" style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>
-                  <li>{counts.units} units</li>
+                  <li>{counts.units} lessons</li>
+                  <li>{counts.paragraphs} teaching paragraphs</li>
                   <li>{counts.flashcards} cards</li>
                   <li>{counts.questions} questions</li>
                   {counts.essays > 0 ? <li>{counts.essays} marked essays</li> : null}

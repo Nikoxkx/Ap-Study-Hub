@@ -8,9 +8,9 @@ This disclosure is also available as a page on the live site at **`/ai-disclosur
 
 ## TL;DR
 
-- **AI was used as a collaborator, not as an autopilot.** Drafts, boilerplate, and first passes were often AI-assisted, but structure, fact-checking, curation, and final editorial decisions were human.
+- **AI was used as a collaborator, not as an autopilot.** Legacy drafts were human-reviewed; the expanded library was drafted against dated official sources and checked with automated validation. The named author retains final editorial and correction responsibility.
 - **No student data is ever sent to AI tools** — the site has no accounts, no analytics, and no server-side AI features.
-- **All course content is human-reviewed.** AI helped expand coverage and draft explanations, but every unit, card, question, and essay sample was reviewed and edited by the author.
+- **The 2026–27 deep-lesson expansion is AI-drafted and source-linked.** Official curriculum and scoring claims carry dated citations; automated checks enforce lesson depth, sequence, citation IDs, and practice structure. The named author retains editorial and correction responsibility.
 
 ---
 
@@ -21,6 +21,7 @@ This disclosure is also available as a page on the live site at **`/ai-disclosur
 | **v0.dev** | Vercel | Initial project scaffolding and UI prototyping. The original deployment URL `v0-project-roan-six-20.vercel.app` comes from v0. Generated early versions of layout, course pages, and component shells. |
 | **ChatGPT / GPT-4 / GPT-4o** | OpenAI | Drafting README, colophon copy, accessibility statement, privacy page, study guides, flashcard wording, practice question distractors, essay outlines, and banner-generation script. Also used for refactoring suggestions and Tailwind class cleanup. |
 | **Claude** | Anthropic | Alternative drafting for long-form notes, summarization of College Board CEDs into unit structures, and proofreading for tone consistency. |
+| **Arena.ai Agent Mode** | Arena.ai | Researched and drafted the 51-lesson expansion; integrated it into catalog, search, cards, and practice; added structured rendering, validation, and deterministic visual assets. |
 | **GitHub Copilot** | GitHub / OpenAI | Inline code completion for components like `CardDeck.tsx`, `PracticeSet.tsx`, `TimedPaper.tsx`, `SiteSearch.tsx`, search scoring in `search.ts`, and type definitions in `catalog.ts`. |
 | **Cursor / Windsurf (if used)** | Various | Occasional code explanation and quick fixes. |
 
@@ -47,15 +48,15 @@ The **ideas and structure follow the College Board Course and Exam Descriptions 
 
 | Content Type | File | AI Contribution | Human Verification |
 | :--- | :--- | :--- | :--- |
-| **Unit notes** | `unitsData` in `data.ts` | First-pass summaries of CED topics, key terms extraction, markdown formatting | Rewrote in personal revision voice, checked against CED order, flagged required docs/cases, added personal mnemonics and where-I-got-confused notes |
-| **Flashcards** | `flashcardsData` | Generated front/back pairs from key terms, varied phrasing | Pruned wrong answers, ensured back is what you'd have to *produce* on exam, not just recognize; removed hallucinations |
-| **Practice questions** | `quizData` | Drafted stems, plausible distractors from common mistakes, explanations | Verified no secure exam material reproduced, rewrote distractors to reflect real student errors, ensured explanations say *why* wrong options fail |
+| **Deep lessons** | `src/content/lessons/*` | Drafted 51 lessons from official curriculum/scoring pages and supporting open sources, with objectives, examples, and original practice | Dated section-level citations; automated validation requires 10+ substantive paragraphs, sequential course coverage, valid source IDs, and structured practice; author retains correction responsibility |
+| **Flashcards** | `flashcardsData` + lesson glossaries | Generated front/back pairs from key terms, varied phrasing | Pruned wrong answers, ensured back is what you'd have to *produce* on exam, not just recognize; removed hallucinations |
+| **Practice questions** | `quizData` + lesson practice | Drafted stems, plausible distractors from common mistakes, explanations | Verified no secure exam material reproduced, rewrote distractors to reflect real student errors, ensured explanations say *why* wrong options fail |
 | **Essays & rubrics** | `essaysData` | Outlined sample responses (DBQ, LEQ, synthesis, rhetorical analysis, argument, IWA/IWR) and rubric breakdowns | Rewrote in exam register, checked rubric alignment, ensured no AI essay would earn sophistication without nuance |
 | **Study tips** | `tipsData` | Suggested study strategies | Filtered to only methods actually used before exams |
-| **Resources** | `resourcesData`, `channels.ts` | Collected candidate links | **Every outbound link was opened by a person before listing** — date-checked. YouTube linked as channels not video IDs |
-| **Mock exams** | `mockExamsData` | Drafted timed paper structures, source documents for synthesis/DBQ | Ensured full-length timing matches real exam, embedded sources, added self-check rubric instead of fake auto-grading |
+| **Resources** | lesson source registry, `resourcesData`, `channels.ts` | Collected candidate links and official framework/scoring pages | Legacy links were opened before listing; new official sources were fetched during research and carry checked dates. YouTube remains channel-linked |
+| **Timed practice** | `mockExamsData` | Drafted timed structures and constructed source packets | Relabeled as original timed practice rather than full-length simulations; constructed sources are identified; self-check criteria are not presented as automatic official grading |
 
-**Count transparency:** 44 units, 201 cards, 138 questions, 6 essays, 3 timed papers — all computed at build time from `data.ts` (see `catalog.ts`). Adding content updates counts everywhere automatically.
+**Count transparency:** 51 deep lessons, 510 substantive teaching paragraphs, 405 cards, 240 original practice questions, 6 essays, and 3 timed-practice sets — computed from the integrated catalog. The lesson validator separately confirms 32,803 words of teaching prose and 102 lesson-linked questions.
 
 ### C. Documentation & Copy (AI-Assisted Writing)
 
@@ -71,20 +72,20 @@ The **ideas and structure follow the College Board Course and Exam Descriptions 
 ### D. What Was NOT AI-Generated
 
 - **Personal experience & editorial judgment:** The decision to cover only 7 courses ("I have only sat seven"), the rule "nothing goes up that I would not have used myself," and the exam calendar from `subjects.ts` are human.
-- **Final fact-checking:** No note ships without checking against CED, textbook, or primary source.
+- **Editorial accountability:** A named author, public source repository, dated official citations, automated validation, and a public corrections route.
 - **Design decisions:** Paper color `#f6f3ec`, ink `#1c1b17`, accent `#b0392a` (red pen), subject colors from library binding cloth, hairline rules not cards, 4px max radius — all human choices documented in colophon.
 - **Accessibility testing:** Keyboard-only navigation of card deck, screen reader testing of practice sets, `prefers-reduced-motion` — manually tested.
-- **No runtime AI:** There is no chatbot, no AI grading, no AI API calls in production. The search API is a hand-rolled scored index over 646 documents, not an LLM.
+- **No runtime AI:** There is no chatbot, no AI grading, no AI API calls in production. The search API is a hand-rolled scored index over the course and lesson corpus, not an LLM.
 
 ---
 
 ## 3. Verification Process
 
 1. **CED-first:** Units follow College Board CED order and unit numbering. Where framework names a required document/case/practice, it is flagged verbatim, not paraphrased away.
-2. **Link check:** Every outbound link carries a checked date in `channels.ts` / `resourcesData`. Checked by opening, not by crawler.
-3. **Type safety:** Content lives in TypeScript modules, not a CMS. `pnpm typecheck` catches a card with no back or question with no answer at build time.
-4. **No secure material:** All practice questions are original, written to sit in same difficulty band. Released College Board material is linked, never reproduced.
-5. **Human review:** Author (Yeisbel Pena, student) reads every page before deploy. Corrections via GitHub issues are most-valued PRs.
+2. **Source check:** Lesson citations resolve through a typed registry with checked dates. Official curriculum and scoring pages were fetched during the expansion; supporting open textbooks and archives are labeled separately.
+3. **Content and type validation:** `pnpm validate:content` enforces 51 lessons, at least 10 paragraphs per lesson, substantive paragraph floors, sequential units, valid source IDs, and original practice structure. `pnpm typecheck` checks the application types.
+4. **No secure material:** Practice questions are original and labeled. Released College Board material is linked rather than reproduced; constructed source packets are explicitly identified.
+5. **Editorial review and corrections:** The author remains responsible for published material. Automated checks do not prove every nuanced claim; corrections through GitHub issues are explicitly invited.
 6. **Static output:** `pnpm build` generates static pages. No database, no runtime data fetching, so what you review is what ships.
 
 ---
@@ -102,7 +103,7 @@ The **ideas and structure follow the College Board Course and Exam Descriptions 
 
 If you reference this project:
 
-> AP Study Hub uses AI tools (v0.dev, ChatGPT, Claude, GitHub Copilot) for drafting and scaffolding. All course content was human-reviewed, fact-checked against College Board CEDs, and edited by the author. See `AI_DISCLOSURE.md` for full breakdown.
+> AP Study Hub uses AI tools (v0.dev, ChatGPT, Claude, GitHub Copilot, and Arena.ai Agent Mode) for drafting and scaffolding. The expanded lesson library is source-linked and automatically validated; the named author retains editorial and correction responsibility. See `AI_DISCLOSURE.md` for the full breakdown.
 
 ---
 
@@ -112,7 +113,7 @@ This file is versioned in Git. Any change to AI tooling or process updates this 
 
 `https://github.com/Nikoxkx/Ap-Study-Hub/commits/main/AI_DISCLOSURE.md`
 
-Last updated: **2026-10-04**
+Last updated: **2026-10-24**
 
 Author: Yeisbel Pena — student, not a content agency.
 

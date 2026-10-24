@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { subject, counts } = course;
   const title = `${subject.familiar} — notes, cards and practice`;
   const description = describe(
-    `${counts.units} units of notes, ${counts.flashcards} cards and ${counts.questions} practice questions for ${subject.official}.`,
+    `${counts.units} deep lessons, ${counts.flashcards} cards and ${counts.questions} practice questions for ${subject.official}.`,
     subject.summary,
     `Exam ${formatExamDate(subject, "short")}.`,
     "Free, no account.",
@@ -51,8 +51,8 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       href: `${base}/notes`,
       label: "Notes",
       count: counts.units,
-      unit: counts.units === 1 ? "unit" : "units",
-      body: "Read straight through, or jump to a unit from the contents list.",
+      unit: counts.units === 1 ? "lesson" : "lessons",
+      body: "Ten-plus teaching paragraphs per lesson, with sources and rubric links.",
       show: counts.units > 0,
     },
     {
@@ -84,7 +84,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       label: "Timed paper",
       count: course.mockExams.length,
       unit: course.mockExams.length === 1 ? "paper" : "papers",
-      body: "Full length, running clock, sources embedded.",
+      body: "Original timed practice, a running clock, and source packets.",
       show: course.mockExams.length > 0,
     },
     {
@@ -143,9 +143,9 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       {/* Unit index */}
       {units.length > 0 ? (
         <section className="mt-16" aria-labelledby="units-heading">
-          <SectionHead folio="02" title="Units at a glance" id="units-heading">
-            The College Board framework in order, with the terms each unit expects you to be able
-            to define without looking them up.
+          <SectionHead folio="02" title="Lessons at a glance" id="units-heading">
+            The official framework in order, with curriculum weighting and the terms each lesson expects
+            you to be able to define without looking them up.
           </SectionHead>
 
           <ol>
@@ -185,7 +185,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
         </section>
       ) : (
         <section className="mt-16">
-          <SectionHead folio="02" title="Units at a glance" />
+          <SectionHead folio="02" title="Lessons at a glance" />
           <EmptyNote>
             Unit notes for {subject.familiar} are not written yet. The cards and practice questions
             below are, and the sources page links to material that covers the full framework.

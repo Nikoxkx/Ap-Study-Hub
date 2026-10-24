@@ -6,7 +6,7 @@ import { isSubjectSlug } from "@/lib/subjects";
  * GET /api/search?q=federalism&limit=8&subject=ap-gov
  *
  * The header combobox calls this. It exists so the browser does not have to
- * download the whole content index (roughly 400 KB of note text) just to type
+ * download the full deep-lesson search index just to type
  * into a search box.
  *
  * Everything it searches is static, so the response is immutable for a given
