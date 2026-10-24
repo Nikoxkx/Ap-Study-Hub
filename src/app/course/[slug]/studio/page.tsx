@@ -10,7 +10,7 @@ import { getCourse, getCatalog } from "@/lib/catalog";
 import { getCourseLabs } from "@/content/labs";
 import { getStudioTasks } from "@/lib/studio-data";
 import { getStudyCourses } from "@/lib/study-data";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, socialImages } from "@/lib/site";
 
 export function generateStaticParams() {
   return getCatalog().map((course) => ({ slug: course.subject.slug }));
@@ -22,7 +22,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!course) return {};
   const title = `${course.subject.familiar} interactive studio`;
   const description = `Interactive ${course.subject.familiar} lessons, timed writing with transparent self-assessment, curriculum connections, and printable study work.`;
-  return { title, description, alternates: { canonical: `/course/${course.subject.slug}/studio` }, openGraph: { title, description, url: absoluteUrl(`/course/${course.subject.slug}/studio`) } };
+  return {
+    title,
+    description,
+    alternates: { canonical: `/course/${course.subject.slug}/studio` },
+    openGraph: { images: socialImages, title, description, url: absoluteUrl(`/course/${course.subject.slug}/studio`) },
+    twitter: { card: "summary_large_image", images: socialImages },
+  };
 }
 
 const tabs = [

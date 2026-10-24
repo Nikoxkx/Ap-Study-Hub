@@ -45,6 +45,9 @@ export function ProgressPanel({ items, courses, selectedCourse, now }: {
           <div><strong>{summary.minutes}</strong><span>focus + writing minutes</span></div>
           <div><strong>{summary.activeDays}/7</strong><span>active days</span></div>
         </div>
+        <p className="progress-footnote" style={{ marginTop: "-0.5rem" }}>
+          {summary.videos} unit-video {summary.videos === 1 ? "session" : "sessions"} logged this week. Watching is useful only if you retrieve the idea afterwards.
+        </p>
         <div className="weekly-chart" role="img" aria-label={`Daily activity: ${summary.days.map((day) => `${day.label} ${day.count}`).join(", ")}`}>
           {summary.days.map((day) => <div key={day.key}><span className="chart-count">{day.count || ""}</span><span className="chart-bar-track"><span className="chart-bar" style={{ height: `${Math.max(day.count ? 8 : 2, (day.count / maxDaily) * 100)}%` }} /></span><span>{day.label}</span></div>)}
         </div>

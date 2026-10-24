@@ -90,7 +90,7 @@ export function ResearchLab({ lab }: { lab: ResearchLabDefinition }) {
 
         {phase === "review" ? <div className="defense-review mt-6">
           <label className="label mb-2 block" htmlFor={`defense-notes-${lab.id}`}>Response notes / transcript from memory</label>
-          <textarea id={`defense-notes-${lab.id}`} className="field" rows={6} value={notes[`defense:${prompt.id}`] ?? ""}
+          <textarea id={`defense-notes-${lab.id}`} className="field scratch-paper" rows={6} value={notes[`defense:${prompt.id}`] ?? ""}
             onChange={(event) => setNotes((current) => ({ ...current, [`defense:${prompt.id}`]: event.target.value }))}
             placeholder="Write what you actually said or the reasoning you want to preserve." />
           <fieldset className="mt-4"><legend className="label mb-2">Your self-check · not an automated grade</legend>

@@ -5,7 +5,7 @@ import { getCourse } from "@/lib/catalog";
 import { Markdown } from "@/lib/markdown";
 import { UnitNav } from "@/components/UnitNav";
 import { LessonContent } from "@/components/LessonContent";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}/notes` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/notes`) },
+    openGraph: { images: socialImages, title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/notes`) }, twitter: { card: "summary_large_image", images: socialImages },
   };
 }
 

@@ -639,14 +639,8 @@ export function TimedPaper({
                   }
                   rows={16}
                   spellCheck
-                  className="field"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1rem",
-                    lineHeight: 1.7,
-                    resize: "vertical",
-                  }}
-                  placeholder="Write here. Nothing is uploaded anywhere — this stays in your browser."
+                  className="field frq-scratch scratch-paper"
+                  placeholder="Write here. Local by default; optional sync is off unless you enable it in the Study Desk."
                 />
                 <p
                   className="mt-1.5 text-right text-[0.75rem] tabular-nums"

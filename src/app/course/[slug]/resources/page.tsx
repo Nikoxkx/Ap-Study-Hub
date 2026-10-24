@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
 import { ExternalLink, SectionHead } from "@/components/Furniture";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 /**
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}/resources` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/resources`) },
+    openGraph: { images: socialImages, title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/resources`) }, twitter: { card: "summary_large_image", images: socialImages },
   };
 }
 
@@ -112,8 +112,7 @@ export default async function ResourcesPage({ params }: { params: Params }) {
             id="channels-heading"
             level={3}
           >
-            Linked as channels rather than as individual videos, so the links keep working. Each
-            comes with a search scoped to this course.
+            Unit-specific videos now play on the <a href={`/course/${subject.slug}/videos`} className="link-underlined">course video page</a>. These channels remain as durable, course-scoped places to search for a replacement or go deeper.
           </SectionHead>
 
           <ul>

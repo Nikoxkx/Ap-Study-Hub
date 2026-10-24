@@ -170,8 +170,8 @@ APUSH free-response design changes. Official course and exam pages remain the au
   generated; the search API is the dynamic exception.
 - **One integrated catalog.** `src/lib/catalog.ts` joins subject metadata, rich lessons,
   legacy drills, cards, questions, resources, counts, and reading time.
-- **No CMS or database.** Lessons and drills live in typed modules. There is no runtime
-  content fetch and no account system.
+- **No CMS or content database.** Lessons and drills live in typed modules. There is no runtime
+  content fetch and no account system; an opt-in Supabase edge function can store Study Desk snapshots.
 - **No-JavaScript reading path.** Notes, essays, questions, and `/search` are rendered
   on the server. The header search form has a GET fallback.
 - **Hand-built interface.** Native controls, hand-drawn SVG marks, Tailwind CSS, and a

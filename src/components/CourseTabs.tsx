@@ -19,6 +19,7 @@ interface CourseTabsProps {
   slug: string;
   available: {
     notes: boolean;
+    videos: boolean;
     cards: boolean;
     practice: boolean;
     essays: boolean;
@@ -34,6 +35,7 @@ export function CourseTabs({ slug, available }: CourseTabsProps) {
   const tabs = [
     { href: base, label: "Overview", show: true },
     { href: `${base}/notes`, label: "Notes", show: available.notes },
+    { href: `${base}/videos`, label: "Videos", show: available.videos },
     { href: `${base}/studio`, label: "Studio", show: true },
     { href: `${base}/cards`, label: "Cards", show: available.cards },
     { href: `${base}/practice`, label: "Practice", show: available.practice },

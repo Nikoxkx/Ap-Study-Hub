@@ -1,0 +1,6 @@
+# Supabase local project reference.
+# The connector reported this project as INACTIVE; restore it before deploying.
+project_id = "unfplzqqotubcfcswnlo"
+
+[functions.study-desk-sync]
+verify_jwt = false

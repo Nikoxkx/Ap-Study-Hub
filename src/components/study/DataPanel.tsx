@@ -72,7 +72,7 @@ export function DataPanel({ courses, selectedCourse }: { courses: StudyCourse[];
           {confirmReset ? <button type="button" className="btn btn-quiet" onClick={() => setConfirmReset(false)}>Cancel</button> : null}
         </div>
         <p className="data-status" role="status">{status}</p>
-        <div className="privacy-note"><strong>No account. No sync. No hidden upload.</strong><p>Local storage is not a cloud backup and may be cleared by your browser or school device policy. Export regularly if the work matters. Restore validates the shared study schema before writing anything.</p></div>
+        <div className="privacy-note"><strong>No account. Local by default. No hidden upload.</strong><p>Local storage is not a cloud backup and may be cleared by your browser or school device policy. Export regularly if the work matters. Optional Supabase sync in the Advanced tab is off until you explicitly enable it; restore validates the shared study schema before writing anything.</p></div>
       </section>
 
       <section className="offline-library" aria-labelledby="offline-library-heading">

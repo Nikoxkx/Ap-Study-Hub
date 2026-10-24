@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead, Stat } from "@/components/Furniture";
 import { getCatalog, getTotals } from "@/lib/catalog";
-import { site, absoluteUrl } from "@/lib/site";
+import { site, absoluteUrl, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -10,12 +10,13 @@ export const metadata: Metadata = {
   description:
     "Who writes AP Study Hub, how the notes and questions are produced and checked, what the site deliberately does not do, and where coverage is thin.",
   alternates: { canonical: "/about" },
-  openGraph: {
+  openGraph: { images: socialImages,
     title: "About AP Study Hub",
     description:
       "Who writes it, how it is checked, and where the gaps are — stated plainly.",
     url: absoluteUrl("/about"),
   },
+  twitter: { card: "summary_large_image", images: socialImages },
 };
 
 /**
@@ -108,7 +109,7 @@ export default function AboutPage() {
                 validation; no secure exam material is intentionally reproduced.
               </li>
               <li>
-                <strong>No runtime AI:</strong> No chatbot, no AI grading, no API calls in production.
+                <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production.
                 Search is hand-rolled scored index, not LLM. Timed papers use rubric checklists for
                 self-marking.
               </li>
@@ -141,7 +142,7 @@ export default function AboutPage() {
               {
                 rule: "Every outbound link is opened before it is listed",
                 detail:
-                  "Links carry the date they were last checked. Video lectures are linked as channels rather than individual video IDs, because channel handles survive a creator reorganising their playlists and video IDs do not.",
+                  "Links carry the date they were last checked. Unit videos are now verified IDs with player, watch, and replacement-search links; durable course channels remain for going deeper.",
               },
             ].map((item, index) => (
               <li key={item.rule} className="grid gap-x-6 gap-y-1.5 rule-bottom py-5 sm:grid-cols-[2rem_minmax(0,1fr)]">
@@ -254,7 +255,7 @@ export default function AboutPage() {
               },
               {
                 h: "Not tracking you",
-                p: "No analytics, no cookies, no third-party scripts, no fonts loaded from anyone else's server. The only thing stored is your own study progress, in your own browser.",
+                p: "No analytics, no cookies, no third-party scripts, and no remote fonts. Unit videos load only after you press play; optional sync is off unless you enable it.",
               },
             ].map((item) => (
               <li key={item.h} className="rule-top pt-4">

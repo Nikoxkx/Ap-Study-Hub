@@ -14,12 +14,13 @@ import { StudyPlanner } from "./study/StudyPlanner";
 import { FocusSession } from "./study/FocusSession";
 import { ProgressPanel } from "./study/ProgressPanel";
 import { DataPanel } from "./study/DataPanel";
+import { AdvancedDesk } from "./study/AdvancedDesk";
 
 const tabs = [
   { id: "today", label: "Today" }, { id: "review", label: "Review" },
   { id: "mistakes", label: "Mistakes" }, { id: "plan", label: "Plan" },
   { id: "focus", label: "Focus" }, { id: "progress", label: "Progress" },
-  { id: "data", label: "Data & offline" },
+  { id: "data", label: "Data & offline" }, { id: "advanced", label: "Advanced" },
 ] as const;
 type Tab = typeof tabs[number]["id"];
 
@@ -70,7 +71,7 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
     <div className={`study-dashboard ${selectedSubject ? "subject-scope" : ""}`} style={selectedSubject ? subjectVars(selectedSubject) : undefined}>
       <header className="study-hero">
         <div className="study-hero-mark">{selectedSubject ? <SubjectMark subject={selectedSubject.mark} size={48} /> : <span className="study-all-mark" aria-hidden="true">A+</span>}</div>
-        <div><p className="label">Your local study desk</p><h1>{activeTab === "today" ? "What should I do next?" : tabs.find((tab) => tab.id === activeTab)?.label}</h1><p>One connected queue for lessons, retrieval, mistakes, writing, and focused work. No account; progress stays in this browser.</p></div>
+        <div><p className="label">Your study desk</p><h1>{activeTab === "today" ? "What should I do next?" : tabs.find((tab) => tab.id === activeTab)?.label}</h1><p>One connected queue for lessons, videos, retrieval, mistakes, writing, and focused work. No account; local by default, with opt-in sync in Advanced.</p></div>
         <label className="study-course-select"><span className="label">Course filter</span><select className="field mt-2" value={selectedCourse} onChange={(event) => selectCourse(event.target.value as SubjectSlug | "all")}><option value="all">All seven courses</option>{courses.map((course) => <option key={course.slug} value={course.slug}>{course.label}</option>)}</select></label>
       </header>
 
@@ -97,6 +98,7 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
         {activeTab === "focus" ? <FocusSession courses={courses} items={allItems} reviewItems={getReviewQueue(allItems, study, now)} selectedCourse={selectedCourse} now={now} /> : null}
         {activeTab === "progress" ? <ProgressPanel items={allItems} courses={courses} selectedCourse={selectedCourse} now={now} /> : null}
         {activeTab === "data" ? <DataPanel courses={courses} selectedCourse={selectedCourse} /> : null}
+        {activeTab === "advanced" ? <AdvancedDesk items={allItems} courses={courses} selectedCourse={selectedCourse} now={now} /> : null}
       </>}
     </div>
   );

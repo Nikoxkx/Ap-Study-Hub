@@ -394,7 +394,7 @@ export default function HomePage() {
                 "Not affiliated with the College Board, and not reviewed by them.",
                 "Not a source of real, unreleased exam questions. Everything here is written from scratch.",
                 "Not a replacement for your teacher, your textbook, or AP Classroom.",
-                "Not tracking you. No analytics, no cookies, no third-party scripts.",
+                "Not tracking you. No analytics, no cookies, no third-party scripts. Video and sync are opt-in.",
                 "Not finished. Coverage is uneven — the counts on each course tell you exactly how uneven.",
                 "Not hiding AI use — see /ai-disclosure for where AI helped draft and how it was checked.",
               ].map((line) => (

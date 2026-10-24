@@ -75,7 +75,7 @@ The **ideas and structure follow the College Board Course and Exam Descriptions 
 - **Editorial accountability:** A named author, public source repository, dated official citations, automated validation, and a public corrections route.
 - **Design decisions:** Paper color `#f6f3ec`, ink `#1c1b17`, accent `#b0392a` (red pen), subject colors from library binding cloth, hairline rules not cards, 4px max radius — all human choices documented in colophon.
 - **Accessibility testing:** Keyboard-only navigation of card deck, screen reader testing of practice sets, `prefers-reduced-motion` — manually tested.
-- **No runtime AI:** There is no chatbot, no AI grading, no AI API calls in production. The search API is a hand-rolled scored index over the course and lesson corpus, not an LLM.
+- **No runtime AI:** There is no chatbot, no AI grading, no AI API calls in production. The search API is a hand-rolled scored index over the course and lesson corpus, not an LLM. Optional Study Desk sync is an ordinary storage API, not an AI service.
 
 ---
 
@@ -86,7 +86,7 @@ The **ideas and structure follow the College Board Course and Exam Descriptions 
 3. **Content and type validation:** `pnpm validate:content` enforces 51 lessons, at least 10 paragraphs per lesson, substantive paragraph floors, sequential units, valid source IDs, and original practice structure. `pnpm typecheck` checks the application types.
 4. **No secure material:** Practice questions are original and labeled. Released College Board material is linked rather than reproduced; constructed source packets are explicitly identified.
 5. **Editorial review and corrections:** The author remains responsible for published material. Automated checks do not prove every nuanced claim; corrections through GitHub issues are explicitly invited.
-6. **Static output:** `pnpm build` generates static pages. No database, no runtime data fetching, so what you review is what ships.
+6. **Static output:** `pnpm build` generates static pages. No CMS or content database; optional Study Desk sync is off by default, so what you review is what ships.
 
 ---
 

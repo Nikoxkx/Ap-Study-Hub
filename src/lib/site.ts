@@ -73,6 +73,24 @@ export function absoluteUrl(path = "/"): string {
 }
 
 /**
+ * A real static file, not a generated ImageResponse route.
+ *
+ * The old /opengraph-image route could fail at runtime in production and left
+ * social scrapers with no picture. A committed 1200×630 PNG is boring, cacheable,
+ * and available at the same origin as the page. Every page's metadata points at
+ * this exact URL so previews do not depend on route inheritance or a renderer.
+ */
+export const socialImage = {
+  url: absoluteUrl("/og-image.png"),
+  width: 1200,
+  height: 630,
+  type: "image/png",
+  alt: "AP Study Hub — 51 deep lessons, active recall, original practice, and 66 curated unit videos for seven AP courses.",
+} as const;
+
+export const socialImages = [socialImage];
+
+/**
  * `2026-08-24` -> `24 August 2026`.
  *
  * Parsed as UTC on purpose: `new Date("2026-08-24")` is already midnight UTC,

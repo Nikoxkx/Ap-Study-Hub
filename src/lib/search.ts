@@ -1,6 +1,7 @@
 import { getCatalog } from "./catalog";
 import { slugify, toPlainText } from "./markdown";
-import type { SubjectSlug } from "./subjects";
+import { unitVideos } from "./video-lessons";
+import { getSubject, type SubjectSlug } from "./subjects";
 
 /**
  * Search.
@@ -15,7 +16,7 @@ import type { SubjectSlug } from "./subjects";
  * and the /api/search route reuses it across requests.
  */
 
-export type DocKind = "course" | "unit" | "term" | "question" | "essay" | "guide";
+export type DocKind = "course" | "unit" | "term" | "question" | "essay" | "guide" | "video";
 
 export interface SearchDoc {
   id: string;
@@ -163,6 +164,21 @@ function buildIndex(): SearchDoc[] {
     });
   }
 
+  for (const video of unitVideos) {
+    const subject = getSubject(video.courseSlug);
+    docs.push({
+      id: `video:${video.courseSlug}:${video.unit}:${video.id}`,
+      kind: "video",
+      title: video.title,
+      context: `Unit video · ${subject?.familiar ?? video.courseSlug} unit ${video.unit} · ${video.creator}`,
+      body: `${video.title} ${video.creator} ${video.role} ${video.focus} ${subject?.official ?? video.courseSlug} unit ${video.unit}`,
+      href: `/course/${video.courseSlug}/videos#unit-${video.unit}-video`,
+      subject: video.courseSlug,
+      subjectLabel: subject?.familiar ?? video.courseSlug,
+      weight: 2.1,
+    });
+  }
+
   return docs;
 }
 
@@ -248,4 +264,5 @@ export const kindLabels: Record<DocKind, string> = {
   question: "Practice",
   essay: "Essay",
   guide: "Guide",
+  video: "Video",
 };

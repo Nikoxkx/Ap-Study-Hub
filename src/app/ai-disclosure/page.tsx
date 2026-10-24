@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
-import { site, absoluteUrl, formatDate } from "@/lib/site";
+import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 import { getTotals } from "@/lib/catalog";
 
@@ -10,12 +10,13 @@ export const metadata: Metadata = {
   description:
     "Full disclosure of where AI tools were used to build AP Study Hub: scaffolding, components, content drafts, docs, and what was human-checked.",
   alternates: { canonical: "/ai-disclosure" },
-  openGraph: {
+  openGraph: { images: socialImages,
     title: "AI Disclosure · AP Study Hub",
     description:
       "Where AI was used across AP Study Hub — code, content, design, and docs — with sources, validation, and editorial accountability.",
     url: absoluteUrl("/ai-disclosure"),
   },
+  twitter: { card: "summary_large_image", images: socialImages },
 };
 
 const tools = [
@@ -143,7 +144,7 @@ export default function AiDisclosurePage() {
             AI was a collaborator, not an autopilot. Legacy material was human-reviewed; the 2026–27
             expansion was AI-drafted against dated official sources and checked with automated content
             and TypeScript validation. No student data is sent to AI tools — there are no accounts,
-            no analytics, and no runtime AI features.
+            no analytics, and no runtime AI features. Optional third-party video and sync requests are opt-in.
           </p>
           <p className="mt-4 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
             This page is the live version of{" "}
@@ -173,7 +174,7 @@ export default function AiDisclosurePage() {
                 rewrote in personal voice and verified claims.
               </li>
               <li>
-                <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production.
+                <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production. Optional sync is an ordinary storage API, not an AI service.
                 Search is a hand-rolled scored index over the course and lesson corpus.
               </li>
             </ul>
@@ -318,7 +319,7 @@ export default function AiDisclosurePage() {
               {
                 n: "02",
                 title: "Link check",
-                body: "Every outbound link opened by a person before listing, with date in channels.ts / resourcesData. YouTube linked as channels not video IDs.",
+                body: "Every outbound link opened by a person before listing, with date in channels.ts / resourcesData. Unit video IDs are validated and paired with channel fallbacks.",
               },
               {
                 n: "03",
@@ -333,7 +334,7 @@ export default function AiDisclosurePage() {
               {
                 n: "05",
                 title: "Static output",
-                body: "Every content page generated at build time. One dynamic route: /api/search. No DB, no CMS, no runtime fetching.",
+                body: "Every content page generated at build time. One dynamic route: /api/search. No CMS or content database; optional Study Desk sync is opt-in.",
               },
               {
                 n: "06",

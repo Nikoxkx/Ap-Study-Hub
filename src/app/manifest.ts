@@ -25,6 +25,8 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       { name: "Your study desk", short_name: "Study", url: "/study" },
+      { name: "Advanced desk", short_name: "Advanced", url: "/study?tab=advanced" },
+      { name: "Unit videos", short_name: "Videos", url: "/videos" },
       { name: "Search", short_name: "Search", url: "/search" },
       { name: "Study guides", short_name: "Guides", url: "/guides" },
     ],

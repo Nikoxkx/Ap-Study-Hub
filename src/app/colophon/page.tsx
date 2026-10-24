@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
 import { subjects } from "@/lib/subjects";
 import { indexSize } from "@/lib/search";
-import { site, absoluteUrl } from "@/lib/site";
+import { site, absoluteUrl, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -11,11 +11,12 @@ export const metadata: Metadata = {
   description:
     "The typefaces, palette, build and design decisions behind AP Study Hub, written down so they can be argued with.",
   alternates: { canonical: "/colophon" },
-  openGraph: {
+  openGraph: { images: socialImages,
     title: "Colophon · AP Study Hub",
     description: "Typefaces, palette, stack and the reasoning behind each choice.",
     url: absoluteUrl("/colophon"),
   },
+  twitter: { card: "summary_large_image", images: socialImages },
 };
 
 /**
@@ -84,7 +85,7 @@ const stack = [
   ["Styling", "Tailwind CSS 4 for layout, hand-written CSS custom properties for the design tokens"],
   ["Type", "Self-hosted WOFF2 variable fonts, latin subset, 192 KB total"],
   ["Search", "Hand-rolled scored index over the content, no search dependency"],
-  ["Content", "TypeScript modules — no CMS, no database, no runtime data fetching"],
+  ["Content", "TypeScript modules — no CMS, no content database, no runtime content fetching"],
   ["Hosting", "Vercel, static output"],
   ["Analytics", "None"],
   ["AI disclosure", "See /ai-disclosure — v0.dev, Copilot, ChatGPT, Claude, and Arena.ai workflows; sources and validation"],
@@ -340,7 +341,7 @@ export default function ColophonPage() {
                 p: "Paper #f6f3ec, ink #1c1b17, mark #b0392a (red pen), binding-cloth subject colors, hand-drawn 32-unit SVG marks, rules not cards. Palette checked at actual size.",
               },
               {
-                h: "No runtime AI",
+                h: "No runtime AI or grading",
                 p: "No chatbot, no AI grading, no AI API calls in production. Search is hand-rolled scored index, not LLM. Timed papers use rubric checklists for self-marking, not word counters.",
               },
             ].map((item) => (

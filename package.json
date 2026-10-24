@@ -21,7 +21,10 @@
     "validate:content": "tsx scripts/validate-lessons.ts",
     "validate:study": "tsx scripts/validate-study.ts",
     "build:banners": "node assets/readme/build-banners.mjs",
-    "check": "corepack pnpm validate:content && corepack pnpm validate:study && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build"
+    "build:social": "node scripts/build-social-image.mjs",
+    "validate:videos": "tsx scripts/validate-videos.ts",
+    "export:videos": "tsx scripts/export-video-registry.ts",
+    "check": "corepack pnpm validate:content && corepack pnpm validate:study && corepack pnpm validate:videos && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build"
   },
   "dependencies": {
     "katex": "^0.19.1",
@@ -30,6 +33,7 @@
     "react-dom": "19.2.6"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/postcss": "4.1.17",
     "@types/katex": "^0.16.8",
     "@types/node": "22.19.15",

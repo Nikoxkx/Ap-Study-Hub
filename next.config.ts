@@ -3,10 +3,10 @@ import type { NextConfig } from "next";
 /**
  * Security headers.
  *
- * The Content-Security-Policy is deliberately tight because this site loads
- * nothing from anywhere: fonts are self-hosted, there is no analytics, and the
- * only third-party frame is the YouTube privacy-enhanced player, which is why
- * youtube-nocookie.com is the sole frame-src entry.
+ * Fonts are self-hosted and there is no analytics. The site now has two opt-in
+ * third-party boundaries: privacy-enhanced YouTube frames for unit videos and
+ * an optional Supabase sync endpoint for Study Desk. Both are allowlisted
+ * explicitly; nothing is contacted until the visitor chooses to use them.
  *
  * `unsafe-inline` is present for style-src because Tailwind and the inline
  * `style` props used for CSS custom properties require it, and for script-src
@@ -20,7 +20,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://i.ytimg.com",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://*.supabase.co",
   "frame-src https://www.youtube-nocookie.com",
   "form-action 'self'",
   "frame-ancestors 'self'",
@@ -64,6 +64,26 @@ const nextConfig: NextConfig = {
         source: "/fonts/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
+      {
+        // Social scrapers fetch this directly, sometimes from a different origin
+        // and often with an aggressive cache. Explicit CORS and a day of browser
+        // cache with a long CDN cache keep the preview reliable without making a
+        // changed card impossible to roll out.
+        source: "/og-image.png",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=86400, s-maxage=604800, stale-while-revalidate=604800" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+        ],
+      },
+      {
+        source: "/social-preview.png",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=86400, s-maxage=604800, stale-while-revalidate=604800" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+        ],
+      },
     ];
   },
 
@@ -80,6 +100,12 @@ const nextConfig: NextConfig = {
       { source: "/ai", destination: "/ai-disclosure", permanent: true },
       { source: "/ai-disclosures", destination: "/ai-disclosure", permanent: true },
       { source: "/ai-use", destination: "/ai-disclosure", permanent: true },
+      // The previous generated social-image route could return 500. Keep old
+      // caches pointed at a real static PNG instead of a broken endpoint.
+      { source: "/opengraph-image", destination: "/og-image.png", permanent: true },
+      { source: "/opengraph-image.png", destination: "/og-image.png", permanent: true },
+      { source: "/twitter-image", destination: "/og-image.png", permanent: true },
+      { source: "/twitter-image.png", destination: "/og-image.png", permanent: true },
     ];
   },
 };

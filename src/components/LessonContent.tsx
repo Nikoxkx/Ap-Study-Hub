@@ -6,6 +6,8 @@ import { Markdown, slugify } from "@/lib/markdown";
 import { getWorkedExamples } from "@/content/worked";
 import { WorkedPaper } from "@/components/WorkedPaper";
 import { ObjectiveTracker } from "@/components/ObjectiveTracker";
+import { UnitVideoPlayer } from "@/components/UnitVideoPlayer";
+import { getUnitVideos } from "@/lib/video-lessons";
 
 /**
  * Structured lesson body. Paragraphs stay separate instead of being collapsed
@@ -41,6 +43,13 @@ export function LessonContent({ lesson, courseSlug }: { lesson: Lesson; courseSl
           Rate what you can do, not what feels familiar. These choices stay on this device and shape your progress map.
         </p>
       </section>
+
+      <UnitVideoPlayer
+        videos={getUnitVideos(courseSlug, lesson.unitNumber)}
+        courseSlug={courseSlug}
+        unit={lesson.unitNumber}
+        heading={`Video for lesson ${lesson.unitNumber}`}
+      />
 
       <div className="prose">
         {lesson.sections.map((section, sectionIndex) => {

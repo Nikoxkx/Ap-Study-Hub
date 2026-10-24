@@ -19,6 +19,8 @@ const columns = [
       { href: "/about", label: "About & method" },
       { href: "/ai-disclosure", label: "AI disclosure" },
       { href: "/guides", label: "Study guides" },
+      { href: "/videos", label: "Unit video library" },
+      { href: "/integrations", label: "Integrations & press kit" },
       { href: "/search", label: "Search everything" },
       { href: "/colophon", label: "Colophon" },
     ],

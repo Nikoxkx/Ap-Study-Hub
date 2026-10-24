@@ -5,7 +5,8 @@ import { getCourse } from "@/lib/catalog";
 import { formatExamDate } from "@/lib/subjects";
 import { SectionHead, EmptyNote, ExternalLink } from "@/components/Furniture";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
-import { absoluteUrl, describe } from "@/lib/site";
+import { getCourseVideos } from "@/lib/video-lessons";
+import { absoluteUrl, describe, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 
@@ -27,13 +28,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}` },
-    openGraph: {
+    openGraph: { images: socialImages,
       type: "article",
       title: `${subject.official} · AP Study Hub`,
       description,
       url: absoluteUrl(`/course/${subject.slug}`),
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: socialImages },
   };
 }
 
@@ -54,6 +55,14 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       unit: counts.units === 1 ? "lesson" : "lessons",
       body: "Ten-plus teaching paragraphs per lesson, with sources and rubric links.",
       show: counts.units > 0,
+    },
+    {
+      href: `${base}/videos`,
+      label: "Videos",
+      count: getCourseVideos(subject.slug).length,
+      unit: "videos",
+      body: "Curated unit-by-unit teaching videos, playable directly on the page.",
+      show: getCourseVideos(subject.slug).length > 0,
     },
     {
       href: `${base}/cards`,
@@ -102,8 +111,8 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       {/* Study modes */}
       <section aria-labelledby="modes-heading">
         <SectionHead folio="01" title="Where to start" id="modes-heading">
-          Six ways into the same material. If you have a week, do the notes then the practice; if
-          you have a night, do the cards.
+          Seven ways into the same material. If you have a week, do the notes then the practice; if
+          you have a night, watch the unit video and do the cards.
         </SectionHead>
 
         <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -215,10 +224,17 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       {channels.length > 0 ? (
         <section className="mt-16" aria-labelledby="lectures-heading">
           <SectionHead folio={tips.length > 0 ? "04" : "03"} title="Who to watch" id="lectures-heading">
-            Channels rather than individual videos. A channel handle keeps working when a creator
-            reorganises their playlists; a hardcoded video ID does not, and a page full of dead
-            embeds is worse than no embeds. Each link is scoped to this course.
+            Every unit now has a checked, playable video with a direct YouTube link and a replacement
+            search. The channels below are still here for going deeper when a creator reorganises a
+            playlist or removes an individual upload.
           </SectionHead>
+
+          <p className="mb-8 max-w-[68ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+            <Link href={`${base}/videos`} className="link-underlined" style={{ color: "var(--ink)" }}>
+              Open the {subject.familiar} video library
+            </Link>{" "}
+            to play the {getCourseVideos(subject.slug).length} curated videos for this course, or find them embedded inside the notes for each unit.
+          </p>
 
           <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             {channels.map((channel) => (
