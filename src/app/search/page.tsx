@@ -3,14 +3,19 @@ import Link from "next/link";
 import { search, kindLabels, indexSize } from "@/lib/search";
 import { subjects, isSubjectSlug } from "@/lib/subjects";
 import { Breadcrumbs } from "@/components/Furniture";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Search",
   description: "Search every unit note, key term, card and practice question on AP Study Hub.",
+  path: "/search",
+  ogTitle: "Find the paragraph you can only half remember",
+  ogDescription:
+    "One index across seven AP courses: lesson text, glossary terms, cards and questions, each with the unit it came from.",
   // A results page is thin and infinitely variable. Keeping it out of the index
   // stops it generating near-duplicate pages for every query string.
   robots: { index: false, follow: true },
-};
+});
 
 /**
  * Search results, rendered on the server.

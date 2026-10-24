@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCourse } from "@/lib/catalog";
 import { PracticeSet } from "@/components/PracticeSet";
-import { absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
 type Params = Promise<{ slug: string }>;
 type SearchParams = Promise<{ unit?: string | string[] }>;
@@ -16,12 +16,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const title = `${subject.familiar} practice questions`;
   const description = `${counts.questions} original ${subject.familiar} practice questions with reasoned explanations and lesson-linked sets for every unit.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/practice` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/practice`) },
-  };
+    path: `/course/${subject.slug}/practice`,
+    ogTitle: `${counts.questions} questions, every wrong answer explained`,
+    ogDescription: description,
+    type: "article",
+    modified: subject.revised,
+    keywords: [`${subject.familiar} practice questions`, `${subject.familiar} multiple choice`, `AP ${subject.familiar} quiz`],
+  });
 }
 
 export default async function PracticePage({ params, searchParams }: { params: Params; searchParams: SearchParams }) {

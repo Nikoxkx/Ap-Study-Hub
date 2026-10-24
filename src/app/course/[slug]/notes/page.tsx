@@ -5,7 +5,7 @@ import { getCourse } from "@/lib/catalog";
 import { Markdown } from "@/lib/markdown";
 import { UnitNav } from "@/components/UnitNav";
 import { LessonContent } from "@/components/LessonContent";
-import { absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
 type Params = Promise<{ slug: string }>;
 
@@ -18,12 +18,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const title = `${subject.familiar} deep lessons`;
   const description = `${counts.units} curriculum-aligned ${subject.official} lessons with ${counts.paragraphs} substantive teaching paragraphs, glossaries, exam and rubric connections, and visible sources.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/notes` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/notes`) },
-  };
+    path: `/course/${subject.slug}/notes`,
+    ogTitle: `${counts.units} units, ${counts.paragraphs} paragraphs, no filler`,
+    ogDescription: `${description} About ${counts.readingMinutes} minutes end to end.`,
+    type: "article",
+    modified: subject.revised,
+    keywords: [`${subject.familiar} notes`, `${subject.official} study guide`, `${subject.familiar} unit review`],
+  });
 }
 
 /** Server-rendered, long-form course lessons with a contents rail. */

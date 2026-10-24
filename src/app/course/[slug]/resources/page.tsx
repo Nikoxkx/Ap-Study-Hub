@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
 import { ExternalLink, SectionHead } from "@/components/Furniture";
-import { absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
 type Params = Promise<{ slug: string }>;
 /**
@@ -25,12 +25,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const title = `${subject.familiar} sources and links`;
   const description = `${counts.resources} checked links for ${subject.official}: College Board material, primary archives, and the teachers worth watching.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/resources` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/resources`) },
-  };
+    path: `/course/${subject.slug}/resources`,
+    ogTitle: `${counts.resources} links, each one opened first`,
+    ogDescription: description,
+    type: "article",
+    modified: subject.revised,
+    keywords: [`${subject.familiar} resources`, `${subject.official} CED`, `${subject.familiar} review channels`],
+  });
 }
 
 /** Human-readable grouping for the `type` field on each resource record. */

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCourse } from "@/lib/catalog";
 import { CardDeck } from "@/components/CardDeck";
-import { absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
 type Params = Promise<{ slug: string }>;
 
@@ -16,12 +16,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const title = `${subject.familiar} flashcards`;
   const description = `${counts.flashcards} ${subject.familiar} cards covering the terms the exam expects you to define. Keyboard-driven, marks what you miss, no account.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/cards` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/cards`) },
-  };
+    path: `/course/${subject.slug}/cards`,
+    ogTitle: `${counts.flashcards} cards, and a queue that remembers what you missed`,
+    ogDescription: description,
+    type: "article",
+    modified: subject.revised,
+    keywords: [`${subject.familiar} flashcards`, `${subject.familiar} vocabulary`, `AP ${subject.familiar} terms`],
+  });
 }
 
 /**

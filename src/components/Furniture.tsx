@@ -64,7 +64,7 @@ export function SectionHead({
 }) {
   const Heading = level === 3 ? "h3" : "h2";
   return (
-    <div className="mb-8 flex flex-col gap-3 rule-top pt-5 md:flex-row md:items-baseline md:gap-8">
+    <div className="mb-10 flex flex-col gap-3 rule-top pt-6 md:flex-row md:items-baseline md:gap-8">
       <span className="folio shrink-0" aria-hidden="true">
         {folio}
       </span>
@@ -73,7 +73,10 @@ export function SectionHead({
           {title}
         </Heading>
         {children ? (
-          <div className="mt-2 max-w-[56ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+          <div
+            className="mt-3 max-w-[58ch] text-[0.9375rem]"
+            style={{ color: "var(--ink-soft)", lineHeight: 1.68 }}
+          >
             {children}
           </div>
         ) : null}

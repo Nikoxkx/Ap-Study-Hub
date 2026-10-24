@@ -37,6 +37,77 @@ function reviveChoice(value: unknown): ThemeChoice | null {
   return value === "light" || value === "dark" || value === "system" ? value : null;
 }
 
+/* --------------------------------------------------------------------------
+   Lamp
+   --------------------------------------------------------------------------
+   A control that exists only in the dark theme. It changes how much light the
+   room has — a softer board, a warmer glow, a brighter desk — and nothing else:
+   text and paper contrast are unaffected, because a theme switch that can make
+   the page unreadable is a trap rather than a preference.
+   -------------------------------------------------------------------------- */
+
+export type LampChoice = "soft" | "warm" | "clear";
+
+const LAMP_KEY = "aps.lamp";
+const warmDefault: LampChoice = "warm";
+
+const lamps: { value: LampChoice; label: string; title: string }[] = [
+  { value: "soft", label: "Low", title: "Low light: the darkest board, the smallest glow" },
+  { value: "warm", label: "Warm", title: "Warm light: the default night desk" },
+  { value: "clear", label: "Bright", title: "Reading lamp: a lighter board and stronger glare" },
+];
+
+function reviveLamp(value: unknown): LampChoice | null {
+  return value === "soft" || value === "warm" || value === "clear" ? value : null;
+}
+
+function LampGlyph({ level }: { level: LampChoice }) {
+  const rays = level === "soft" ? 3 : level === "clear" ? 5 : 4;
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true">
+      <circle cx="8" cy="8" r={level === "soft" ? 2 : 2.4} fill="currentColor" stroke="none" />
+      {Array.from({ length: rays }, (_, index) => {
+        const angle = (Math.PI * 2 * index) / rays - Math.PI / 2;
+        return (
+          <line
+            key={index}
+            x1={8 + Math.cos(angle) * 4}
+            y1={8 + Math.sin(angle) * 4}
+            x2={8 + Math.cos(angle) * 5.8}
+            y2={8 + Math.sin(angle) * 5.8}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+export function LampControl() {
+  const [lamp, setLamp] = useStoredState<LampChoice>(LAMP_KEY, warmDefault, reviveLamp);
+
+  useEffect(() => {
+    document.documentElement.dataset.lamp = lamp;
+  }, [lamp]);
+
+  return (
+    <div className="lamp-control" role="group" aria-label="Lamp brightness">
+      <span aria-hidden="true">Lamp</span>
+      {lamps.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          title={option.title}
+          aria-label={option.title}
+          aria-pressed={lamp === option.value}
+          onClick={() => setLamp(option.value)}
+        >
+          <LampGlyph level={option.value} />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function ThemeControl() {
   const [choice, setChoice] = useStoredState<ThemeChoice>(STORAGE_KEY, "system", reviveChoice);
 
@@ -99,6 +170,6 @@ export function ThemeControl() {
  * rather than blocking render.
  */
 export function ThemeScript() {
-  const source = `(function(){try{var c=localStorage.getItem("${STORAGE_KEY}");var m=window.matchMedia("(prefers-color-scheme: dark)").matches;if(c==="dark"||((c==="system"||!c)&&m)){document.documentElement.classList.add("dark")}document.documentElement.dataset.theme=c||"system"}catch(e){}})();`;
+  const source = `(function(){try{var c=localStorage.getItem("${STORAGE_KEY}");var l=localStorage.getItem("${LAMP_KEY}");var m=window.matchMedia("(prefers-color-scheme: dark)").matches;if(c==="dark"||((c==="system"||!c)&&m)){document.documentElement.classList.add("dark")}document.documentElement.dataset.theme=c||"system";document.documentElement.dataset.lamp=(l==="soft"||l==="clear")?l:"warm"}catch(e){}})();`;
   return <script dangerouslySetInnerHTML={{ __html: source }} />;
 }

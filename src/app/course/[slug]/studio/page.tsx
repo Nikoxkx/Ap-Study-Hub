@@ -10,7 +10,7 @@ import { getCourse, getCatalog } from "@/lib/catalog";
 import { getCourseLabs } from "@/content/labs";
 import { getStudioTasks } from "@/lib/studio-data";
 import { getStudyCourses } from "@/lib/study-data";
-import { absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
   return getCatalog().map((course) => ({ slug: course.subject.slug }));
@@ -22,7 +22,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!course) return {};
   const title = `${course.subject.familiar} interactive studio`;
   const description = `Interactive ${course.subject.familiar} lessons, timed writing with transparent self-assessment, curriculum connections, and printable study work.`;
-  return { title, description, alternates: { canonical: `/course/${course.subject.slug}/studio` }, openGraph: { title, description, url: absoluteUrl(`/course/${course.subject.slug}/studio`) } };
+  return pageMetadata({
+    title,
+    description,
+    path: `/course/${course.subject.slug}/studio`,
+    ogTitle: "Write it, draw it, then get it marked",
+    ogDescription: description,
+    type: "article",
+    modified: course.subject.revised,
+    keywords: [`${course.subject.familiar} interactive`, `${course.subject.familiar} writing practice`],
+  });
 }
 
 const tabs = [

@@ -4,20 +4,18 @@ import { channels, channelUrl } from "@/lib/channels";
 import { subjects } from "@/lib/subjects";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
-import { absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "How to revise for an AP exam",
   description:
     "Study methods that survive contact with a real AP exam: spacing, self-testing, reading a stimulus, the last fortnight, and what a score is actually worth.",
-  alternates: { canonical: "/guides" },
-  openGraph: {
-    title: "How to revise for an AP exam · AP Study Hub",
-    description:
-      "Spacing, self-testing, reading a stimulus, the last fortnight, and where AP credit actually gets accepted.",
-    url: absoluteUrl("/guides"),
-  },
-};
+  path: "/guides",
+  ogTitle: "Six weeks, in the order that actually works",
+  ogDescription:
+    "Diagnose with real questions, compress your weakest unit, retrieve daily, then write under a clock. Plus where AP credit actually gets accepted.",
+  keywords: ["how to study for AP exams", "AP revision plan", "AP exam tips", "spaced repetition"],
+});
 
 /**
  * Study guides.

@@ -119,6 +119,15 @@
   --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
 
   --measure: 68ch;
+
+  /* Vertical rhythm. Sections, blocks and stacks each get one value so a
+     headline, its standfirst and the first paragraph under it keep the same
+     distance on every page instead of drifting by a few pixels per file. */
+  --space-section: clamp(3.75rem, 6vw, 5.5rem);
+  --space-block: 2.5rem;
+  --space-stack: 1.15rem;
+  --space-stack-tight: 0.6rem;
+  --space-label: 0.55rem;
 }
 
 :root {
@@ -145,23 +154,51 @@
 
 .dark {
   color-scheme: dark;
-  --paper: #11120f;
-  --paper-raised: #1b1d19;
-  --paper-sunk: #0b0c0a;
-  --ink: #f0ece2;
-  --ink-soft: #b8b2a5;
-  --ink-faint: #958f82;
-  --rule: #34372f;
-  --rule-strong: #4a4d42;
-  --mark: #e69a86;
-  --mark-wash: #301c18;
-  --good: #9ac69d;
-  --good-wash: #19261b;
-  --warn: #dfbc72;
-  --warn-wash: #292315;
+  /* Night desk, not "invert the light theme". Surfaces sit on a green-black
+     board (#0f1210) rather than straight #000, because pure black makes the
+     warm ink look grey and flattens every sheet into the page. Each step up
+     is deliberately small: raised sheets should look lit, not painted. */
+  --paper: #0f1210;
+  --paper-raised: #181c18;
+  --paper-sunk: #0a0c0a;
+  --paper-inset: #060806;
+  --ink: #f3eee0;
+  --ink-soft: #c5bfb1;
+  --ink-faint: #9d978a;
+  --rule: #2d322b;
+  --rule-strong: #474d43;
+  --mark: #f2a68e;
+  --mark-wash: #2f1b15;
+  --good: #a9d5a5;
+  --good-wash: #14221a;
+  --warn: #e9c67f;
+  --warn-wash: #2a2213;
   --subject-tint: var(--color-subject-wash-dark, #221f1b);
-  --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.035), 0 14px 30px -18px rgb(0 0 0 / 0.95);
+  --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.04), 0 18px 36px -22px rgb(0 0 0 / 0.95);
+  /* Light thrown from a desk lamp in the corner of the room. Used by the
+     masthead, the sheet edges and the night card only. */
+  --lamp: rgb(255 186 116 / 0.14);
+  --lamp-strong: rgb(255 194 126 / 0.3);
 }
+
+/* Three lamp settings, dark theme only. They change the board and the sheen,
+   never the text/paper contrast ratio: every step still clears WCAG AA. */
+.dark[data-lamp="soft"] {
+  --paper: #0d0f0d;
+  --paper-raised: #161a16;
+  --lamp: rgb(255 176 104 / 0.09);
+  --lamp-strong: rgb(255 186 118 / 0.22);
+}
+
+.dark[data-lamp="clear"] {
+  --paper: #141814;
+  --paper-raised: #1e231e;
+  --ink: #f7f3e8;
+  --ink-soft: #cdc8ba;
+  --lamp: rgb(255 201 138 / 0.2);
+  --lamp-strong: rgb(255 208 150 / 0.38);
+}
+
 
 /* Resolve aliases on the same node that receives the course custom props.
    A root-level alias would lock in the default color before the course scope. */
@@ -1565,4 +1602,1764 @@ main,
   .objective-levels, .review-grades, .studio-task-picker, .criterion-buttons { display: none !important; }
   .study-tabs, .studio-tabs, .packet-toolbar, .site-header { display: none !important; }
   a { color: #000 !important; }
+}
+
+/* ==========================================================================
+   Night edition
+   --------------------------------------------------------------------------
+   Everything in this block is either dark-only or a dark-first restatement of
+   something that was tuned against light paper. The dark theme is not a filter:
+   the board is green-black, the sheets are lit from one side, and the only warm
+   light in the room comes from the lamp control in the masthead.
+   ========================================================================== */
+
+.dark body {
+  background-image:
+    radial-gradient(ellipse 52rem 30rem at 8% -8%, var(--lamp), transparent 70%),
+    radial-gradient(ellipse 38rem 26rem at 100% 8%, rgb(120 148 118 / 0.07), transparent 68%),
+    radial-gradient(ellipse 60rem 40rem at 50% 115%, rgb(0 0 0 / 0.4), transparent 70%);
+  background-attachment: fixed;
+}
+
+/* A very quiet star field. Two dot layers at different scales, so it reads as
+   texture rather than a pattern. Decorative, and inert to pointer events. */
+.dark body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(1px 1px at 18% 12%, rgb(255 244 220 / 0.5), transparent 100%),
+    radial-gradient(1px 1px at 72% 8%, rgb(255 244 220 / 0.32), transparent 100%),
+    radial-gradient(1.2px 1.2px at 41% 26%, rgb(255 244 220 / 0.24), transparent 100%),
+    radial-gradient(1px 1px at 88% 33%, rgb(255 244 220 / 0.3), transparent 100%),
+    radial-gradient(1px 1px at 9% 44%, rgb(255 244 220 / 0.18), transparent 100%),
+    radial-gradient(1.4px 1.4px at 63% 52%, rgb(255 244 220 / 0.2), transparent 100%),
+    radial-gradient(1px 1px at 30% 71%, rgb(255 244 220 / 0.16), transparent 100%),
+    radial-gradient(1px 1px at 81% 84%, rgb(255 244 220 / 0.2), transparent 100%);
+  background-size: 100% 100%;
+  mask-image: linear-gradient(to bottom, #000 0, #000 42rem, transparent 62rem);
+}
+
+.dark body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* The masthead gets a lamp line: one warm hairline under the nav, brightest at
+   the left where the light source is. */
+.dark header[data-site-header] > div:last-child {
+  box-shadow:
+    inset 0 -1px 0 var(--rule),
+    0 1px 0 rgb(255 186 116 / 0.07);
+}
+
+.dark header[data-site-header] > div:first-child {
+  background:
+    linear-gradient(90deg, rgb(255 186 116 / 0.16), transparent 55%),
+    #070907;
+}
+
+/* Lit edges: a sheet on a dark desk catches light on its top edge and casts a
+   soft shadow underneath. */
+.dark .sheet,
+.dark .sheet-tabbed,
+.dark .sunk,
+.dark .course-lab,
+.dark .review-card,
+.dark .worked-wrap,
+.dark .study-empty {
+  border-color: var(--rule);
+  box-shadow:
+    inset 0 1px 0 rgb(255 236 205 / 0.055),
+    0 1px 0 rgb(0 0 0 / 0.5),
+    0 22px 44px -30px rgb(0 0 0 / 0.95);
+}
+
+.dark .sheet-tabbed {
+  border-top-color: color-mix(in srgb, var(--subject-ink) 78%, white 8%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 236 205 / 0.05),
+    0 -1px 18px -12px color-mix(in srgb, var(--subject-ink) 55%, transparent),
+    0 22px 44px -30px rgb(0 0 0 / 0.95);
+}
+
+.dark .sunk {
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.015), transparent 40%);
+}
+
+/* Ruled background behind the homepage becomes a faint dot grid at night —
+   lines catch too much of the lamp and turn into stripes. */
+.dark .ruled {
+  background-image: radial-gradient(rgb(255 244 220 / 0.075) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.5;
+}
+
+.dark .grain::after {
+  mix-blend-mode: screen;
+  opacity: 0.22;
+}
+
+.dark .rule-double {
+  border-top-color: var(--ink);
+  box-shadow: 0 3px 0 -2px rgb(255 236 205 / 0.16);
+}
+
+.dark ::selection {
+  background: var(--mark);
+  color: #120d0a;
+}
+
+.dark .btn-solid {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #101310;
+}
+
+.dark .btn-solid:hover:not(:disabled) {
+  background: var(--mark);
+  border-color: var(--mark);
+  color: #170f0c;
+}
+
+.dark .btn-outline:hover:not(:disabled) {
+  border-color: var(--ink-faint);
+  background: var(--paper-raised);
+}
+
+.dark .field {
+  background: var(--paper-sunk);
+  border-color: var(--rule-strong);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.45);
+}
+
+.dark .data-table thead th,
+.dark .prose thead th {
+  background: var(--paper-sunk);
+  color: var(--ink-soft);
+}
+
+/* Night-only ornament: a moon and "lights down" mark in section rules. */
+.dark .night-mark {
+  display: inline-flex;
+}
+
+.night-mark {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+/* Lamp control — appears only while the dark theme is active. */
+.lamp-control {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-cut);
+}
+
+.dark .lamp-control,
+:root[data-theme="dark"] .lamp-control {
+  display: inline-flex;
+}
+
+.lamp-control > span {
+  padding-inline: 0.15rem 0.3rem;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.lamp-control button {
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: background-color 120ms var(--ease-snap), color 120ms var(--ease-snap);
+}
+
+.lamp-control button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--mark) 26%, transparent);
+  color: var(--ink);
+}
+
+.lamp-control button:hover {
+  background: var(--paper-sunk);
+  color: var(--ink);
+}
+
+.lamp-control svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+/* ==========================================================================
+   Vertical rhythm
+   --------------------------------------------------------------------------
+   One section value, one block value, one stack value. Applied to the page
+   shells so a section header, its standfirst and the content beneath it keep
+   the same distances everywhere.
+   ========================================================================== */
+
+.page-head {
+  display: block;
+  max-width: 64ch;
+  margin-bottom: var(--space-block);
+}
+
+.page-head h1,
+.page-head h2 {
+  margin: 0;
+  font-size: clamp(1.65rem, 1.3rem + 1.4vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.026em;
+}
+
+.page-head .label {
+  margin-bottom: 0.55rem;
+}
+
+/* A standfirst sits closer to the headline it belongs to than to the body copy
+   beneath it: ~14px above, ~26px below. Equal gaps are what make a page feel
+   either cramped or loose, depending on which side you are standing. */
+.page-head .lede {
+  max-width: 58ch;
+  margin-top: 0.85rem;
+}
+
+.page-head .lede + * {
+  margin-top: 1.6rem;
+}
+
+.section-pad {
+  padding-block: var(--space-section);
+}
+
+/* Prose rhythm, restated with the section tokens. The old values were close,
+   but heading-to-paragraph gaps and paragraph-to-paragraph gaps disagreed. */
+.prose {
+  --prose-gap: 1.05em;
+  line-height: 1.78;
+}
+
+.prose p + p {
+  margin-top: var(--prose-gap);
+}
+
+.prose h2 {
+  margin-top: 2.1em;
+  margin-bottom: 0.7em;
+  padding-bottom: 0.32em;
+}
+
+.prose h3 {
+  margin-top: 1.75em;
+  margin-bottom: 0.55em;
+}
+
+.prose h4 {
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+}
+
+.prose > h2:first-child,
+.prose > h3:first-child,
+.prose > h4:first-child {
+  margin-top: 0;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 0.55em;
+}
+
+.prose blockquote {
+  margin-block: 1.35em;
+}
+
+/* ==========================================================================
+   Study desk additions
+   ========================================================================== */
+
+.desk-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.85rem 1.1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+}
+
+.desk-strip .quick-find {
+  min-width: 0;
+}
+
+.quick-find {
+  position: relative;
+}
+
+.quick-find label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.quick-find input {
+  width: 100%;
+}
+
+.quick-find-results {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  max-height: 19rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  box-shadow: 0 20px 40px -26px rgb(0 0 0 / 0.55);
+}
+
+.quick-find-results li + li {
+  border-top: 1px solid var(--rule);
+}
+
+.quick-find-results a {
+  display: grid;
+  grid-template-columns: 2.9rem minmax(0, 1fr);
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  text-decoration: none;
+}
+
+.quick-find-results a:hover,
+.quick-find-results a:focus-visible {
+  background: var(--subject-tint);
+}
+
+.quick-find-results span {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  padding-top: 0.15rem;
+}
+
+.quick-find-results strong {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.quick-find-results small {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--ink-faint);
+  font-size: 0.6875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.desk-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.desk-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--rule);
+}
+
+.desk-stat strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.desk-stat span {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.goal-ring {
+  --pct: 0%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  background: conic-gradient(var(--subject-ink) var(--pct), var(--paper-sunk) 0);
+}
+
+.goal-ring::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 999px;
+  background: var(--paper-raised);
+}
+
+.goal-ring span {
+  position: relative;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.desk-goal-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.key-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.7rem;
+  margin-top: 0.6rem;
+  color: var(--ink-faint);
+  font-size: 0.6875rem;
+}
+
+.key-hints kbd,
+kbd.key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding-inline: 0.25rem;
+  border: 1px solid var(--rule-strong);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+}
+
+/* Night card. Only rendered after dark and only shown in the dark theme. */
+.night-card {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  padding: 1.1rem;
+  border: 1px solid var(--rule-strong);
+  border-top: 3px solid var(--mark);
+  background: var(--paper-raised);
+}
+
+.dark .night-card {
+  display: block;
+}
+
+.night-card::after {
+  content: "";
+  position: absolute;
+  inset: -40% -20% auto auto;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, var(--lamp-strong), transparent 65%);
+  pointer-events: none;
+}
+
+.night-card h3 {
+  margin-top: 0.35rem;
+  font-size: 1.2rem;
+}
+
+.night-card p:not(.label) {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.45rem;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.night-card a {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  margin-top: 0.7rem;
+  color: var(--mark);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Share control ----------------------------------------------------------- */
+
+.share-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-cut);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.share-btn:hover {
+  border-color: var(--ink-faint);
+  color: var(--ink);
+}
+
+.share-btn svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.share-note {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+}
+
+/* Video page furniture ---------------------------------------------------- */
+
+.reel-section {
+  margin-top: var(--space-section);
+}
+
+.reel-legend {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 1rem 1.15rem;
+  border-left: 3px solid var(--subject-ink);
+  background: var(--paper-sunk);
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.reel-legend strong {
+  color: var(--ink);
+}
+
+
+/* ==========================================================================
+   Scratch paper
+   --------------------------------------------------------------------------
+   The rules are 2rem apart and the text sits on them, because a notebook
+   background that ignores its own line height is the single thing that makes a
+   fake page look fake. Four stocks, four rule styles, four inks, all remembered.
+   ========================================================================== */
+
+.scrap {
+  --scrap-line: 2rem;
+  --scrap-rule-x: 3.4rem;
+  --scrap-stock: #fffdf6;
+  --scrap-edge: #e2dbc9;
+  --scrap-line-color: #cfdce9;
+  --scrap-margin: #d7837b;
+  --scrap-ink: #26385c;
+  --scrap-hole: var(--paper);
+  position: relative;
+  margin-block: 1.75rem 1rem;
+  isolation: isolate;
+}
+
+/* The sheets underneath. Two of them, barely rotated, so the top sheet reads
+   as part of a stack rather than a floating card. */
+.scrap::before,
+.scrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid var(--scrap-edge);
+  background: var(--scrap-stock);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.scrap::before {
+  transform: rotate(0.5deg) translate(3px, 4px);
+  opacity: 0.75;
+}
+
+.scrap::after {
+  transform: rotate(-0.35deg) translate(-2px, 2px);
+  opacity: 0.5;
+}
+
+.scrap-sheet {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--scrap-edge);
+  border-radius: 2px;
+  background-color: var(--scrap-stock);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.7) inset,
+    0 1px 2px rgb(28 27 23 / 0.06),
+    0 20px 36px -30px rgb(28 27 23 / 0.5);
+  transition: box-shadow 180ms var(--ease-snap), transform 180ms var(--ease-snap);
+}
+
+/* Stocks. Pale yellow is the legal pad; graph is the green engineer's pad. */
+.scrap[data-tone="white"] { --scrap-stock: #fffefb; --scrap-edge: #e6e1d3; --scrap-line-color: #d5dee8; }
+.scrap[data-tone="yellow"] { --scrap-stock: #fdf7dd; --scrap-edge: #e5d9b4; --scrap-line-color: #ded1a4; --scrap-margin: #c98a6a; }
+.scrap[data-tone="graph"] { --scrap-stock: #f2f7f1; --scrap-edge: #d5e0d1; --scrap-line-color: #c2d5c6; --scrap-margin: #bb8478; }
+
+.dark .scrap {
+  --scrap-stock: #191c17;
+  --scrap-edge: #2a3026;
+  --scrap-line-color: #2c352e;
+  --scrap-margin: #6d4038;
+}
+
+.dark .scrap[data-tone="cream"] { --scrap-stock: #191c17; --scrap-edge: #2a3026; --scrap-line-color: #2c352e; --scrap-margin: #6d4038; --scrap-hole: #0b0d0a; }
+.dark .scrap[data-tone="white"] { --scrap-stock: #171a17; --scrap-edge: #262b24; --scrap-line-color: #28312b; --scrap-margin: #6a3f37; --scrap-hole: #0b0d0a; }
+.dark .scrap[data-tone="yellow"] { --scrap-stock: #1d1c13; --scrap-edge: #2f2c1f; --scrap-line-color: #37331f; --scrap-margin: #6f4a33; --scrap-hole: #0b0d0a; }
+.dark .scrap[data-tone="graph"] { --scrap-stock: #141a16; --scrap-edge: #243028; --scrap-line-color: #24362b; --scrap-margin: #6a453c; --scrap-hole: #0b0d0a; }
+
+.scrap-sheet:focus-within {
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.75) inset,
+    0 1px 2px rgb(28 27 23 / 0.07),
+    0 24px 40px -30px rgb(28 27 23 / 0.55),
+    0 0 0 3px color-mix(in srgb, var(--mark) 16%, transparent);
+}
+
+/* Punched holes. Below the text, above the paper, aligned to the margin rule. */
+.scrap-holes {
+  position: absolute;
+  left: 0.95rem;
+  top: 2.25rem;
+  bottom: 2.25rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 0.85rem;
+  pointer-events: none;
+}
+
+.scrap-holes span {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: var(--scrap-hole, #0b0d0a);
+  box-shadow:
+    inset 0 1.5px 2px rgb(0 0 0 / 0.3),
+    0 1px 0 rgb(255 255 255 / 0.65);
+}
+
+.dark .scrap-holes span {
+  box-shadow:
+    inset 0 1.5px 3px rgb(0 0 0 / 0.8),
+    0 1px 0 rgb(255 255 255 / 0.07);
+}
+
+/* Printed header: the worksheet fields, in a real form's arrangement. */
+.scrap-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+  padding: 1.05rem 1.25rem 0.55rem calc(var(--scrap-rule-x) + 0.75rem);
+  border-bottom: 1px solid color-mix(in srgb, var(--scrap-line-color) 70%, transparent);
+}
+
+.scrap-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.scrap-field span {
+  color: #8d8778;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.scrap-field strong {
+  min-height: 1.25rem;
+  padding-bottom: 0.1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--scrap-line-color) 90%, transparent);
+  color: var(--scrap-ink);
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dark .scrap-field span {
+  color: #928c7d;
+}
+
+/* The margin rule is printed on the sheet, so it runs the full height behind
+   the printed header and footer the way it does on a real pad. */
+.scrap-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 0;
+  width: var(--scrap-rule-x);
+  border-right: 1px solid var(--scrap-margin);
+  pointer-events: none;
+}
+
+.scrap-head,
+.scrap-body,
+.scrap-foot {
+  position: relative;
+  z-index: 1;
+}
+
+.scrap-body {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--scrap-line) - 1px),
+    var(--scrap-line-color) calc(var(--scrap-line) - 1px),
+    var(--scrap-line-color) var(--scrap-line)
+  );
+}
+
+/* Ruled paper means the writing sits *on* the line. The padding above the first
+   line plus half a line box puts the first baseline exactly at the first rule,
+   and every following baseline lands on the next one. The stock, rule style and
+   ink all come from data attributes so one component covers four pads. */
+.scrap[data-rule="grid"] .scrap-body {
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--scrap-line) - 1px), var(--scrap-line-color) calc(var(--scrap-line) - 1px), var(--scrap-line-color) var(--scrap-line)),
+    repeating-linear-gradient(to right, transparent 0, transparent calc(var(--scrap-line) - 1px), var(--scrap-line-color) calc(var(--scrap-line) - 1px), var(--scrap-line-color) var(--scrap-line));
+}
+
+.scrap[data-rule="dot"] .scrap-body {
+  background-image: radial-gradient(circle, var(--scrap-line-color) 1px, transparent 1.6px);
+  background-size: var(--scrap-line) var(--scrap-line);
+  background-position: 0.4rem 0.9rem;
+}
+
+.scrap[data-rule="plain"] .scrap-body {
+  background-image: none;
+}
+
+.scrap-input {
+  display: block;
+  width: 100%;
+  padding: 0.72rem 1.25rem 0.5rem calc(var(--scrap-rule-x) + 0.75rem);
+  border: 0;
+  outline: 0;
+  resize: vertical;
+  background: transparent;
+  color: var(--scrap-ink);
+  caret-color: var(--scrap-ink);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-style: italic;
+  line-height: var(--scrap-line);
+  letter-spacing: 0.006em;
+}
+
+.scrap-input::placeholder {
+  color: color-mix(in srgb, var(--scrap-ink) 46%, transparent);
+  font-style: italic;
+}
+
+.dark .scrap-input::placeholder {
+  color: color-mix(in srgb, var(--scrap-ink) 40%, transparent);
+}
+
+.scrap-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  padding: 0.5rem 1.25rem 0.6rem calc(var(--scrap-rule-x) + 0.75rem);
+  border-top: 1px solid color-mix(in srgb, var(--scrap-line-color) 70%, transparent);
+  color: #8d8778;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scrap-foot strong {
+  color: var(--scrap-ink);
+  font-weight: 500;
+}
+
+/* Writing inks. Four desk-standard colours, each restated for the dark sheet
+   so the writing stays legible without glowing. */
+.scrap[data-ink="pencil"] { --scrap-ink: #4b4a42; }
+.scrap[data-ink="blue"] { --scrap-ink: #26385c; }
+.scrap[data-ink="black"] { --scrap-ink: #1a1915; }
+.scrap[data-ink="red"] { --scrap-ink: #7a2f26; }
+
+.dark .scrap[data-ink="pencil"] { --scrap-ink: #d3cdbe; }
+.dark .scrap[data-ink="blue"] { --scrap-ink: #a9c2ea; }
+.dark .scrap[data-ink="black"] { --scrap-ink: #efe9db; }
+.dark .scrap[data-ink="red"] { --scrap-ink: #eda292; }
+
+.scrap-swatch[data-ink="pencil"] { background: #6b6a5f; }
+.scrap-swatch[data-ink="blue"] { background: #2f4a78; }
+.scrap-swatch[data-ink="black"] { background: #1a1915; }
+.scrap-swatch[data-ink="red"] { background: #8c372c; }
+
+/* Tools sit on the desk, not on the paper. */
+.scrap-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.scrap-group {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+}
+
+.scrap-group button,
+.scrap-standalone {
+  min-height: 1.9rem;
+  padding: 0.3rem 0.6rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 120ms var(--ease-snap), color 120ms var(--ease-snap);
+}
+
+.scrap-group button + button {
+  border-left: 1px solid var(--rule);
+}
+
+.scrap-standalone {
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+}
+
+.scrap-group button:hover,
+.scrap-standalone:hover {
+  background: var(--paper-sunk);
+  color: var(--ink);
+}
+
+.scrap-group button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper-raised);
+}
+
+.scrap-swatches {
+  display: inline-flex;
+  gap: 0.3rem;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+}
+
+.scrap-swatch {
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1px solid rgb(0 0 0 / 0.18);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.scrap-swatch[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--paper-raised), 0 0 0 3.5px var(--ink);
+}
+
+.scrap-note {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+}
+
+/* ==========================================================================
+   The screening room
+   ========================================================================== */
+
+.cinema {
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-lift);
+}
+
+.cinema-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cinema-head h3 {
+  margin-top: 0.35rem;
+  font-size: clamp(1.2rem, 1.05rem + 0.5vw, 1.45rem);
+  letter-spacing: -0.015em;
+}
+
+.cinema-run {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.cinema-stage {
+  --cinema-bg: #fbf8ef;
+  --cinema-ink: #1c1b17;
+  --cinema-soft: #6a6457;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  padding: clamp(1.1rem, 3vw, 2.2rem);
+  background-color: var(--cinema-bg);
+  color: var(--cinema-ink);
+}
+
+.dark .cinema-stage {
+  --cinema-bg: #0a0c0a;
+  --cinema-ink: #f4efe1;
+  --cinema-soft: #a9a395;
+}
+
+/* Ruled stage: the film is set on paper, not on a black rectangle. */
+.cinema-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 88% 0%, color-mix(in srgb, var(--subject-ink, #b0392a) 12%, transparent), transparent 70%),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--scrap-line, 2rem) - 1px), color-mix(in srgb, currentColor 7%, transparent) calc(var(--scrap-line, 2rem) - 1px), color-mix(in srgb, currentColor 7%, transparent) var(--scrap-line, 2rem));
+  opacity: 0.9;
+}
+
+/* Sprocket holes down both edges, like a strip of film. */
+.cinema-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 0.55rem, color-mix(in srgb, currentColor 16%, transparent) 0.55rem 1.15rem, transparent 1.15rem 1.7rem);
+  background-size: 0.28rem 100%;
+  background-repeat: repeat-x, repeat-y;
+  background-position: 0.28rem 0, calc(100% - 0.28rem) 0;
+  opacity: 0.5;
+}
+
+.cinema-topline {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  color: var(--cinema-soft);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cinema-topline strong {
+  color: var(--subject-ink);
+  font-weight: 600;
+}
+
+.dark .cinema-topline strong {
+  color: var(--subject-lit);
+}
+
+.cinema-scene {
+  position: relative;
+  z-index: 1;
+  max-width: 46rem;
+  animation: scene-in 320ms var(--ease-settle) both;
+}
+
+.cinema-scene h4 {
+  font-size: clamp(1.35rem, 1rem + 2vw, 2.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--cinema-ink);
+}
+
+.cinema-scene ul {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.9rem;
+  padding: 0;
+  list-style: none;
+}
+
+.cinema-scene li {
+  color: var(--cinema-soft);
+  font-size: clamp(0.75rem, 0.68rem + 0.35vw, 0.9375rem);
+  line-height: 1.5;
+}
+
+.cinema-scene li::before {
+  content: "— ";
+  color: var(--subject-ink);
+}
+
+.dark .cinema-scene li::before {
+  color: var(--subject-lit);
+}
+
+@keyframes scene-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.cinema-watermark {
+  position: absolute;
+  right: clamp(0.75rem, 2vw, 1.75rem);
+  bottom: clamp(3.5rem, 8vw, 4.5rem);
+  z-index: 1;
+  color: var(--subject-ink);
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+.dark .cinema-watermark {
+  color: var(--subject-lit);
+  opacity: 0.22;
+}
+
+.cinema-captions {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  max-width: 42rem;
+  margin-top: auto;
+  padding: 0.55rem 0.9rem;
+  border-radius: 2px;
+  background: rgb(14 16 13 / 0.88);
+  color: #f7f1e3;
+  font-family: var(--font-ui);
+  font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  line-height: 1.55;
+  text-align: center;
+  text-wrap: balance;
+  backdrop-filter: blur(2px);
+}
+
+.cinema-captions[data-hidden="true"] {
+  visibility: hidden;
+}
+
+.cinema-progress {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 3;
+  height: 3px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.cinema-progress span {
+  display: block;
+  height: 100%;
+  background: var(--subject-ink);
+}
+
+.dark .cinema-progress span {
+  background: var(--subject-lit);
+}
+
+.cinema-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.5rem;
+  padding: 0.6rem 0.85rem;
+  border-top: 1px solid var(--rule);
+  background: var(--paper-sunk);
+}
+
+.cinema-play {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper-raised);
+  cursor: pointer;
+}
+
+.cinema-play:hover {
+  border-color: var(--mark);
+  background: var(--mark);
+}
+
+.cinema-play svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.cinema-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.9rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cinema-btn:hover {
+  border-color: var(--ink-faint);
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+
+.cinema-btn[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper-raised);
+}
+
+.cinema-scrub {
+  flex: 1 1 8rem;
+  min-width: 5rem;
+  display: flex;
+  align-items: center;
+}
+
+.cinema-scrub input[type="range"] {
+  width: 100%;
+  accent-color: var(--subject-ink);
+  cursor: pointer;
+}
+
+.cinema-time {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.cinema-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.6rem 0.85rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+}
+
+.cinema-transcript {
+  border-top: 1px solid var(--rule);
+}
+
+.cinema-transcript summary {
+  padding: 0.6rem 0.85rem;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.cinema-transcript ol {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0 0.85rem 1rem;
+  list-style: none;
+}
+
+.cinema-transcript li {
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent);
+}
+
+.cinema-transcript li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.cinema-transcript li[data-active="true"] strong {
+  color: var(--subject-ink);
+}
+
+.dark .cinema-transcript li[data-active="true"] strong {
+  color: var(--subject-lit);
+}
+
+.cinema-transcript strong {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cinema-transcript button {
+  border: 0;
+  background: none;
+  color: var(--subject-ink);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  cursor: pointer;
+}
+
+.dark .cinema-transcript button {
+  color: var(--subject-lit);
+}
+
+.cinema-transcript p {
+  margin-top: 0.35rem;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.cinema-chapters {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0;
+  list-style: none;
+}
+
+.cinema-chapters button {
+  display: grid;
+  grid-template-columns: 1.8rem minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.4rem 0;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  text-align: left;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.cinema-chapters span:first-child {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+}
+
+.cinema-chapters small {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+}
+
+/* The reel grid on /course/[slug]/videos. */
+.video-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+}
+
+.video-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--subject-ink);
+  background: var(--paper-raised);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform 160ms var(--ease-snap), box-shadow 160ms var(--ease-snap);
+}
+
+.video-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px -26px rgb(0 0 0 / 0.5);
+}
+
+.video-thumb {
+  position: relative;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  aspect-ratio: 16 / 9;
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--rule);
+  background-image:
+    linear-gradient(160deg, color-mix(in srgb, var(--subject-ink) 20%, transparent), transparent 60%),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.35rem - 1px), color-mix(in srgb, var(--rule) 60%, transparent) calc(1.35rem - 1px), var(--rule) 1.35rem);
+}
+
+.video-thumb strong {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.video-thumb em {
+  position: absolute;
+  inset: auto 0.7rem 0.35rem auto;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-style: normal;
+  line-height: 1;
+  color: var(--subject-ink);
+  opacity: 0.32;
+}
+
+.video-thumb span {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  padding: 0.05rem 0.3rem;
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+}
+
+.video-card-body {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.85rem 0.9rem 1rem;
+}
+
+.video-card-body strong {
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+
+.video-card-body p {
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.video-card-body span {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.reel-section {
+  margin-top: var(--space-section);
+}
+
+.reel-legend {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 62ch;
+  margin-top: var(--space-block);
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--subject-ink);
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.reel-legend strong {
+  color: var(--ink);
+}
+
+/* Player furniture needs a little room in the course shell. */
+.subject-scope .cinema {
+  border-top-color: var(--subject-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema-scene {
+    animation: none;
+  }
+
+  .video-card:hover {
+    transform: none;
+  }
+}
+
+/* Unit film, folded into the lesson so it is there at the moment a paragraph
+   fails rather than three clicks away. Closed by default: reading is the
+   primary mode, watching is the second pass. */
+.film-collapse {
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+}
+
+.film-collapse > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.85rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.film-collapse > summary::-webkit-details-marker {
+  display: none;
+}
+
+.film-collapse > summary::after {
+  content: "+";
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.film-collapse[open] > summary::after {
+  content: "−";
+}
+
+.film-collapse > summary strong {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.film-collapse__run {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+}
+
+.film-collapse__body {
+  padding: 0 0.85rem 0.85rem;
+}
+
+.film-collapse .cinema {
+  box-shadow: none;
+}
+
+/* Desk bar details that the shared strip cannot express. */
+.desk-goal {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.desk-goal > span {
+  max-width: 5.5rem;
+  line-height: 1.35;
+}
+
+.quick-find-empty {
+  display: block;
+  padding: 0.75rem 0.9rem;
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.quick-find-empty a {
+  color: var(--mark);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .desk-goal {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+
+
+/* ==========================================================================
+   Continue watching
+   --------------------------------------------------------------------------
+   Sits under the desk bar and only appears once something has been started.
+   Deliberately quiet: four lines, one thin progress rule each.
+   ========================================================================== */
+.film-shelf {
+  margin-top: 1.5rem;
+  padding: 1rem 1.15rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper-raised);
+}
+
+.film-shelf-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.film-shelf-head .label {
+  margin: 0;
+}
+
+.film-shelf ul {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.film-shelf li a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.1rem 1rem;
+  padding: 0.55rem 0.5rem 0.6rem;
+  border-radius: 2px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background-color 140ms var(--ease-snap);
+}
+
+.film-shelf li a:hover {
+  background: color-mix(in srgb, var(--mark) 6%, transparent);
+}
+
+.film-shelf li a:focus-visible {
+  outline: 2px solid var(--mark);
+  outline-offset: 1px;
+}
+
+.film-shelf-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.film-shelf-meta {
+  grid-row: 1;
+  grid-column: 2;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.film-shelf-bar {
+  grid-column: 1 / -1;
+  display: block;
+  height: 2px;
+  margin-top: 0.35rem;
+  background: var(--rule);
+}
+
+.film-shelf-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--mark);
+}
+
+@media (max-width: 700px) {
+  .film-shelf li a {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .film-shelf-meta {
+    grid-row: auto;
+    grid-column: 1;
+    white-space: normal;
+  }
+}
+
+/* ==========================================================================
+   Responsive and print guards for the new pieces
+   --------------------------------------------------------------------------
+   These come last on purpose: they override single-class rules defined above,
+   and a media query does not win on specificity, only on order.
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .desk-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .desk-stats {
+    justify-content: space-between;
+  }
+
+  .desk-stat:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .cinema-foot {
+    align-items: start;
+  }
+}
+
+@media (max-width: 700px) {
+  /* The margin rule and the punched holes eat a third of a phone screen; keep
+     the rule, drop the width, and shrink the holes to match. */
+  .scrap {
+    --scrap-rule-x: 2.1rem;
+  }
+
+  .scrap-holes {
+    left: 0.7rem;
+    width: 0.6rem;
+  }
+
+  .scrap-holes span {
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+
+  .scrap-input {
+    font-size: 1rem;
+  }
+
+  .cinema-stage {
+    aspect-ratio: auto;
+    min-height: 19rem;
+  }
+
+  .cinema-time {
+    min-width: 0;
+  }
+
+  .cinema-controls {
+    gap: 0.4rem;
+  }
+
+  .cinema-scrub {
+    flex-basis: 100%;
+    order: 10;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema-scene {
+    animation: none;
+  }
+
+  .video-card:hover {
+    transform: none;
+  }
+}
+
+@media print {
+  .scrap-tools,
+  .cinema-controls,
+  .cinema-transcript,
+  .cinema-head .cinema-run,
+  .quick-find-results,
+  .night-card,
+  .desk-strip,
+  .film-collapse > summary::after {
+    display: none !important;
+  }
+
+  .scrap::before,
+  .scrap::after {
+    display: none;
+  }
+
+  .scrap-sheet,
+  .cinema {
+    box-shadow: none;
+  }
+
+  .cinema-stage {
+    aspect-ratio: auto;
+    min-height: 0;
+    border: 1px solid #999;
+  }
+
+  .cinema-captions {
+    background: transparent;
+    color: #000;
+  }
 }

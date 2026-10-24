@@ -7,6 +7,7 @@ import { useStudyState } from "@/lib/use-study-state";
 import { questionStudyId, scheduleReview, type StudyState } from "@/lib/study-model";
 import type { SubjectSlug } from "@/lib/subjects";
 import { MathAwareText } from "@/lib/math";
+import { ScratchPaper } from "./ScratchPaper";
 
 /**
  * Timed paper.
@@ -588,7 +589,6 @@ export function TimedPaper({
         <div className="space-y-12">
           {section.frqPrompts?.map((prompt) => {
             const text = drafts[prompt.id] ?? "";
-            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
             return (
               <article key={prompt.id}>
                 <p className="label mb-2">
@@ -628,32 +628,15 @@ export function TimedPaper({
                   </div>
                 ) : null}
 
-                <label className="label mb-2 block" htmlFor={`frq-${prompt.id}`}>
-                  Your response
-                </label>
-                <textarea
-                  id={`frq-${prompt.id}`}
+                <ScratchPaper
                   value={text}
-                  onChange={(event) =>
-                    setDrafts((current) => ({ ...current, [prompt.id]: event.target.value }))
-                  }
-                  rows={16}
-                  spellCheck
-                  className="field"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1rem",
-                    lineHeight: 1.7,
-                    resize: "vertical",
-                  }}
-                  placeholder="Write here. Nothing is uploaded anywhere — this stays in your browser."
+                  onChange={(next) => setDrafts((current) => ({ ...current, [prompt.id]: next }))}
+                  course={courseSlug.toUpperCase().replace("AP-", "AP ")}
+                  heading={`${section.name} · ${prompt.type}`}
+                  minHeight={22}
+                  placeholder="Start with the claim, not the throat-clearing. Nothing is uploaded anywhere — this sheet stays in your browser."
+                  note="Drafts survive a reload, a wrong tab, and a dead battery."
                 />
-                <p
-                  className="mt-1.5 text-right text-[0.75rem] tabular-nums"
-                  style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
-                >
-                  {words} words
-                </p>
               </article>
             );
           })}

@@ -13,12 +13,16 @@ import { usePathname } from "next/navigation";
  *
  * Tabs for content that does not exist are not rendered at all. A disabled tab
  * that says "Essays (0)" is worse than no tab: it advertises a gap.
+ *
+ * "Films" sits immediately after "Notes" because that is the order the loop
+ * actually happens in: read it, watch the part that did not land, then test it.
  */
 
 interface CourseTabsProps {
   slug: string;
   available: {
     notes: boolean;
+    videos: boolean;
     cards: boolean;
     practice: boolean;
     essays: boolean;
@@ -34,6 +38,7 @@ export function CourseTabs({ slug, available }: CourseTabsProps) {
   const tabs = [
     { href: base, label: "Overview", show: true },
     { href: `${base}/notes`, label: "Notes", show: available.notes },
+    { href: `${base}/videos`, label: "Films", show: available.videos },
     { href: `${base}/studio`, label: "Studio", show: true },
     { href: `${base}/cards`, label: "Cards", show: available.cards },
     { href: `${base}/practice`, label: "Practice", show: available.practice },

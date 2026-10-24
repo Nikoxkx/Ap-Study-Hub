@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SiteSearch } from "./SiteSearch";
-import { ThemeControl } from "./ThemeControl";
+import { LampControl, ThemeControl } from "./ThemeControl";
 import { SiteMark } from "./SubjectMark";
 import { MobileNav } from "./MobileNav";
 import { CommandPalette } from "./CommandPalette";
@@ -72,7 +72,8 @@ export function SiteHeader() {
             <div className="hidden min-w-0 max-w-[19rem] flex-1 lg:block">
               <SiteSearch />
             </div>
-            <div className="hidden md:block">
+            <div className="hidden items-center gap-2 md:flex">
+              <LampControl />
               <ThemeControl />
             </div>
             <MobileNav />

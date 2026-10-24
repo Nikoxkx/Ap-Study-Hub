@@ -2,21 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
 import { site, absoluteUrl, formatDate } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 import { getTotals } from "@/lib/catalog";
 
-export const metadata: Metadata = {
-  title: "AI Disclosure — Where AI was used",
+export const metadata: Metadata = pageMetadata({
+  title: "AI Disclosure — where AI was used",
   description:
     "Full disclosure of where AI tools were used to build AP Study Hub: scaffolding, components, content drafts, docs, and what was human-checked.",
-  alternates: { canonical: "/ai-disclosure" },
-  openGraph: {
-    title: "AI Disclosure · AP Study Hub",
-    description:
-      "Where AI was used across AP Study Hub — code, content, design, and docs — with sources, validation, and editorial accountability.",
-    url: absoluteUrl("/ai-disclosure"),
-  },
-};
+  path: "/ai-disclosure",
+  ogTitle: "Where AI was used, and where it was not",
+  ogDescription:
+    "Drafting help, voice edits and code scaffolding. Not: sources, scores, or anything presented as a primary document.",
+  keywords: ["AP Study Hub AI disclosure", "AI written study guide"],
+});
 
 const tools = [
   {

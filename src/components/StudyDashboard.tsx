@@ -14,6 +14,8 @@ import { StudyPlanner } from "./study/StudyPlanner";
 import { FocusSession } from "./study/FocusSession";
 import { ProgressPanel } from "./study/ProgressPanel";
 import { DataPanel } from "./study/DataPanel";
+import { DeskBar, NightCard } from "./study/DeskBar";
+import { FilmShelf, type ShelfFilm } from "./study/FilmShelf";
 
 const tabs = [
   { id: "today", label: "Today" }, { id: "review", label: "Review" },
@@ -23,9 +25,10 @@ const tabs = [
 ] as const;
 type Tab = typeof tabs[number]["id"];
 
-export function StudyDashboard({ items, courses, initialTab = "today", initialCourse = "all" }: {
+export function StudyDashboard({ items, courses, films, initialTab = "today", initialCourse = "all" }: {
   items: StudyItem[];
   courses: StudyCourse[];
+  films: ShelfFilm[];
   initialTab?: Tab;
   initialCourse?: SubjectSlug | "all";
 }) {
@@ -48,6 +51,7 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
   const unresolved = Object.values(study.mistakes).filter((mistake) => !mistake.resolvedAt && (selectedCourse === "all" || allItems.find((item) => item.id === mistake.itemId)?.courseSlug === selectedCourse)).length;
   const scheduledDue = allItems.filter((item) => (selectedCourse === "all" || item.courseSlug === selectedCourse) && study.reviews[item.id] && study.reviews[item.id].due <= now).length;
   const weekly = getWeeklySummary(study.events.filter((event) => selectedCourse === "all" || event.courseSlug === selectedCourse), now);
+  const todayMinutes = weekly.days.at(-1)?.minutes ?? 0;
   const selectedSubject = subjects.find((subject) => subject.slug === selectedCourse);
   const nextCourse = selectedCourse === "all"
     ? [...courses].sort((a, b) => a.examDate.localeCompare(b.examDate)).find((course) => Date.parse(`${course.examDate}T23:59:59`) >= now) ?? courses[0]
@@ -74,6 +78,19 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
         <label className="study-course-select"><span className="label">Course filter</span><select className="field mt-2" value={selectedCourse} onChange={(event) => selectCourse(event.target.value as SubjectSlug | "all")}><option value="all">All seven courses</option>{courses.map((course) => <option key={course.slug} value={course.slug}>{course.label}</option>)}</select></label>
       </header>
 
+      <DeskBar
+        items={allItems}
+        due={scheduledDue}
+        unresolved={unresolved}
+        minutes={todayMinutes}
+        attempts={weekly.attempts}
+        selectedCourse={selectedCourse}
+      />
+
+      <FilmShelf
+        films={selectedCourse === "all" ? films : films.filter((film) => film.courseSlug === selectedCourse)}
+      />
+
       <nav className="study-tabs" aria-label="Study dashboard sections">
         {tabs.map((tab) => <button key={tab.id} type="button" aria-pressed={activeTab === tab.id} onClick={() => selectTab(tab.id)}>{tab.label}{tab.id === "mistakes" && unresolved ? <span>{unresolved}</span> : null}</button>)}
       </nav>
@@ -87,6 +104,10 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
           <aside className="today-sidebar">
             <section className="deadline-card"><p className="label">Next deadline</p><h3>{nextCourse.label}</h3><p>{nextCourse.examDate} · {nextCourse.examLabel}</p><strong>{Math.max(0, Math.ceil((Date.parse(`${nextCourse.examDate}T23:59:59`) - now) / 86_400_000))} days</strong><Link href={`/course/${nextCourse.slug}/studio`}>Open course studio →</Link></section>
             <section className="today-plan"><p className="label">Today’s plan</p>{todayPlan ? <ol>{todayPlan.tasks.map((task) => <li key={task.id} data-complete={Boolean(study.completedPlanItems[task.id])}><Link href={task.href}><span>{task.kind} · {task.minutes} min</span><strong>{task.title}</strong></Link></li>)}</ol> : <><p>No study plan is saved yet. Choose your deadline, available days, and minutes.</p><button type="button" className="btn btn-outline btn-sm" onClick={() => selectTab("plan")}>Build my plan</button></>}</section>
+            <NightCard
+              course={nextCourse}
+              days={Math.max(0, Math.ceil((Date.parse(`${nextCourse.examDate}T23:59:59`) - now) / 86_400_000))}
+            />
             <section className="today-week"><p className="label">This week</p><div><strong>{weekly.attempts}</strong><span>attempts</span><strong>{weekly.minutes}</strong><span>minutes</span></div><button type="button" className="link-underlined" onClick={() => selectTab("progress")}>See weekly summary →</button></section>
           </aside>
         </div> : null}

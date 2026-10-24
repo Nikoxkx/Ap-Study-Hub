@@ -5,16 +5,23 @@ import { subjects, formatExamDate, examInstant, examTimeLabel, subjectVars } fro
 import { daysUntil } from "@/lib/clock";
 import { SubjectMark } from "@/components/SubjectMark";
 import { Countdown } from "@/components/Countdown";
+import { LessonFilm } from "@/components/LessonFilm";
+import { getCourseFilm } from "@/lib/films";
 import { StudySystemVisual } from "@/components/StudySystemVisual";
 import { SectionHead, Stat } from "@/components/Furniture";
 import { JsonLd, catalogSchema, faqSchema } from "@/lib/schema";
 import { site } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: `${site.name} — ${site.tagline}`,
+export const metadata: Metadata = pageMetadata({
+  title: { absolute: `${site.name} — deep AP lessons, cards and practice` },
   description: site.description,
-  alternates: { canonical: "/" },
-};
+  path: "/",
+  ogTitle: "Seven AP courses, written to be understood once",
+  ogDescription:
+    "51 deep lessons, 405 cards, 240 original questions and marked essays. Sources on every page, progress in your own browser, nothing behind an account.",
+  keywords: ["AP study guide", "AP notes", "AP flashcards", "AP practice questions", "free AP review"],
+});
 
 /**
  * Home page.
@@ -51,6 +58,7 @@ export default function HomePage() {
   const catalog = getCatalog();
   const totals = getTotals();
   const upcoming = nextExam();
+  const homeFilm = upcoming ? getCourseFilm(upcoming.slug) : null;
   const daysToNext = upcoming ? daysUntil(examInstant(upcoming)) : 0;
 
   return (
@@ -133,6 +141,41 @@ export default function HomePage() {
             </aside>
           ) : null}
         </div>
+      </section>
+
+      {/* ── Films ──────────────────────────────────────────────────────── */}
+      <section className="wrap py-16 md:py-20" aria-labelledby="films-heading">
+        <SectionHead folio="02" title="When the paragraph does not land, watch it" id="films-heading">
+          Every course opens with a ninety-second film about what the exam is really testing, and every
+          unit has its own. They are made here, from the notes, with captions instead of audio — so they
+          play instantly, cannot 404, and work with the sound off in a library.
+        </SectionHead>
+        {upcoming ? (
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-start">
+            <div className="subject-scope" style={subjectVars(upcoming)}>
+              {homeFilm ? <LessonFilm film={homeFilm} /> : null}
+            </div>
+            <aside className="night-card">
+              <p className="label">Night shift</p>
+              <h3>Reading at midnight is not revision</h3>
+              <p>
+                If it is late, skip the new lesson. Watch the unit film, run eight cards, and close the
+                laptop. The queue will still be here tomorrow, and so will the notes.
+              </p>
+              <Link href="/study">Open the study desk →</Link>
+            </aside>
+            <p className="text-[0.875rem]" style={{ color: "var(--ink-soft)", lineHeight: 1.65 }}>
+              The film above is for{" "}
+              <Link href={`/course/${upcoming.slug}`} className="link-draw" style={{ color: "var(--subject-ink)" }}>
+                {upcoming.familiar}
+              </Link>
+              , the course with the nearest deadline.{" "}
+              <Link href={`/course/${upcoming.slug}/videos`} className="link-draw">
+                All {upcoming.familiar} films →
+              </Link>
+            </p>
+          </div>
+        ) : null}
       </section>
 
       {/* ── Catalogue ───────────────────────────────────────────────────── */}
@@ -230,7 +273,7 @@ export default function HomePage() {
         aria-labelledby="anatomy-heading"
       >
         <div className="wrap">
-          <SectionHead folio="02" title="What is on a course page" id="anatomy-heading">
+          <SectionHead folio="03" title="What is on a course page" id="anatomy-heading">
             Six things, in the order you are likely to want them. Each one is its own URL, so you
             can bookmark the bit you are working through instead of scrolling past the rest.
           </SectionHead>
@@ -301,7 +344,7 @@ export default function HomePage() {
 
       {/* ── Exam calendar ───────────────────────────────────────────────── */}
       <section className="wrap py-16 md:py-20" aria-labelledby="calendar-heading">
-        <SectionHead folio="03" title="2027 exam and deadline calendar" id="calendar-heading">
+        <SectionHead folio="04" title="2027 exam and deadline calendar" id="calendar-heading">
           Dates and the AP Research portfolio deadline as published for 2027. Confirm your own reporting
           time with your AP coordinator — school schedules and late-testing windows can differ.
         </SectionHead>
@@ -349,7 +392,7 @@ export default function HomePage() {
       >
         <div className="wrap grid gap-12 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
           <div>
-            <SectionHead folio="04" title="Why this exists" id="note-heading" />
+            <SectionHead folio="05" title="Why this exists" id="note-heading" />
             <div className="prose">
               <p className="dropcap">
                 Halfway through junior year I had eleven tabs open and none of them were useful. One
@@ -412,7 +455,7 @@ export default function HomePage() {
 
       {/* ── Questions ───────────────────────────────────────────────────── */}
       <section className="wrap py-16 md:py-20" aria-labelledby="faq-heading">
-        <SectionHead folio="05" title="Questions people actually ask" id="faq-heading" />
+        <SectionHead folio="06" title="Questions people actually ask" id="faq-heading" />
         <dl className="grid gap-x-12 gap-y-7 md:grid-cols-2">
           {faqs.map((faq) => (
             <div key={faq.question} className="rule-top pt-4">

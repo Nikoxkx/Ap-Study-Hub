@@ -78,7 +78,7 @@ export function FocusSession({ courses, items, reviewItems, selectedCourse, now 
           <p className="label">Explain without copying</p><h3>Lesson {unit.unitNumber} · {unit.title}</h3><p>{unit.description}</p>
           <p className="focus-instruction">Say or write an explanation for each objective, then rate the highest level you can demonstrate.</p>
           <ol>{unit.objectives.map((objective, index) => <li key={objective}><ObjectiveTracker courseSlug={course.slug} unitNumber={unit.unitNumber} index={index} objective={objective} /></li>)}</ol>
-          <div className="mt-5 flex flex-wrap gap-3"><Link href={`/course/${course.slug}/notes#unit-${unit.unitNumber}`} target="_blank" className="link-underlined">Open lesson in a new tab ↗</Link><button type="button" className="btn btn-solid btn-sm" onClick={() => setStep(2)}>Continue to apply</button></div>
+          <div className="mt-5 flex flex-wrap gap-3"><Link href={`/course/${course.slug}/notes#unit-${unit.unitNumber}`} target="_blank" className="link-underlined">Open lesson in a new tab ↗</Link><Link href={`/course/${course.slug}/videos#${course.slug}-u${unit.unitNumber}`} target="_blank" className="link-underlined">Watch the {unit.unitNumber ? `Unit ${unit.unitNumber} ` : ""}film ↗</Link><button type="button" className="btn btn-solid btn-sm" onClick={() => setStep(2)}>Continue to apply</button></div>
         </div> : null}
         {step === 2 ? <div className="focus-apply">
           <p className="label">Apply in a new context</p><h3>Choose production, not more recognition</h3><p>Use a new tab so this timer keeps running. Return when you have a draft, graph, conclusion, or set of answers to inspect.</p>

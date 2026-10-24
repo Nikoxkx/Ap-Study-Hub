@@ -116,6 +116,7 @@ export default async function CourseLayout({
         slug={subject.slug}
         available={{
           notes: counts.units > 0,
+          videos: counts.units > 0,
           cards: counts.flashcards > 0,
           practice: counts.questions > 0,
           essays: counts.essays > 0,

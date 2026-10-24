@@ -5,7 +5,8 @@ import { getCourse } from "@/lib/catalog";
 import { formatExamDate } from "@/lib/subjects";
 import { SectionHead, EmptyNote, ExternalLink } from "@/components/Furniture";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
-import { absoluteUrl, describe } from "@/lib/site";
+import { describe } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
 type Params = Promise<{ slug: string }>;
 
@@ -23,18 +24,22 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     "Free, no account.",
   );
 
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}` },
-    openGraph: {
-      type: "article",
-      title: `${subject.official} · AP Study Hub`,
-      description,
-      url: absoluteUrl(`/course/${subject.slug}`),
-    },
-    twitter: { card: "summary_large_image", title, description },
-  };
+    path: `/course/${subject.slug}`,
+    ogTitle: `${subject.familiar}, taught in the order the exam tests it`,
+    ogDescription: description,
+    type: "article",
+    modified: subject.revised,
+    keywords: [
+      `${subject.familiar} notes`,
+      `${subject.familiar} review`,
+      `${subject.official} exam`,
+      `${subject.familiar} practice questions`,
+      `${subject.familiar} flashcards`,
+    ],
+  });
 }
 
 export default async function CourseOverviewPage({ params }: { params: Params }) {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { TimedPaper } from "@/components/TimedPaper";
-import { absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
 type Params = Promise<{ slug: string }>;
 /**
@@ -25,12 +25,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const title = `${subject.familiar} timed practice paper`;
   const description = `A ${minutes}-minute original ${subject.familiar} timed practice set with a running clock, constructed source packets, and transparent self-check criteria.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/exam` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/exam`) },
-  };
+    path: `/course/${subject.slug}/exam`,
+    ogTitle: `${minutes} minutes, one clock, no pausing`,
+    ogDescription: description,
+    type: "article",
+    modified: subject.revised,
+    keywords: [`${subject.familiar} practice exam`, `${subject.familiar} timed essay`, `AP ${subject.familiar} mock`],
+  });
 }
 
 export default async function ExamPage({ params }: { params: Params }) {

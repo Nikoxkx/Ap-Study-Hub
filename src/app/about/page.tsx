@@ -3,20 +3,19 @@ import Link from "next/link";
 import { Breadcrumbs, SectionHead, Stat } from "@/components/Furniture";
 import { getCatalog, getTotals } from "@/lib/catalog";
 import { site, absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About, and how the content is made",
   description:
     "Who writes AP Study Hub, how the notes and questions are produced and checked, what the site deliberately does not do, and where coverage is thin.",
-  alternates: { canonical: "/about" },
-  openGraph: {
-    title: "About AP Study Hub",
-    description:
-      "Who writes it, how it is checked, and where the gaps are — stated plainly.",
-    url: absoluteUrl("/about"),
-  },
-};
+  path: "/about",
+  ogTitle: "One student, seven courses, a pile of primary documents",
+  ogDescription:
+    "How these notes are written, what gets checked against the official framework, and where coverage is honestly thin.",
+  keywords: ["about AP Study Hub", "who writes AP notes", "AP study site method"],
+});
 
 /**
  * About.

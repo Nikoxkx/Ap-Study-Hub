@@ -6,6 +6,8 @@ import { Markdown, slugify } from "@/lib/markdown";
 import { getWorkedExamples } from "@/content/worked";
 import { WorkedPaper } from "@/components/WorkedPaper";
 import { ObjectiveTracker } from "@/components/ObjectiveTracker";
+import { LessonFilm } from "@/components/LessonFilm";
+import { getUnitFilm } from "@/lib/films";
 
 /**
  * Structured lesson body. Paragraphs stay separate instead of being collapsed
@@ -13,6 +15,7 @@ import { ObjectiveTracker } from "@/components/ObjectiveTracker";
  * reference into the lesson's bibliography.
  */
 export function LessonContent({ lesson, courseSlug }: { lesson: Lesson; courseSlug: string }) {
+  const film = getUnitFilm(courseSlug, lesson.unitNumber);
   const sourceIds = [...new Set<SourceId>([
     ...lesson.sections.flatMap((section) => section.sources),
     ...lesson.examAlignment.sources,
@@ -41,6 +44,21 @@ export function LessonContent({ lesson, courseSlug }: { lesson: Lesson; courseSl
           Rate what you can do, not what feels familiar. These choices stay on this device and shape your progress map.
         </p>
       </section>
+
+      {film ? (
+        <details className="film-collapse">
+          <summary>
+            <span className="label">Unit film</span>
+            <strong>{film.title}</strong>
+            <span className="film-collapse__run">
+              {film.scenes.length} scenes · captions · no audio needed
+            </span>
+          </summary>
+          <div className="film-collapse__body">
+            <LessonFilm film={film} />
+          </div>
+        </details>
+      ) : null}
 
       <div className="prose">
         {lesson.sections.map((section, sectionIndex) => {

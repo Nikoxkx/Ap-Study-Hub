@@ -2,19 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
 import { site, absoluteUrl, formatDate } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy",
   description:
     "AP Study Hub sets no cookies, runs no analytics and loads no third-party scripts. What is stored in your browser, and how to clear it.",
-  alternates: { canonical: "/privacy" },
-  openGraph: {
-    title: "Privacy · AP Study Hub",
-    description: "No cookies, no analytics, no third-party scripts. Here is exactly what is stored and where.",
-    url: absoluteUrl("/privacy"),
-  },
-};
+  path: "/privacy",
+  ogTitle: "No cookies. No analytics. No third-party scripts.",
+  ogDescription: "What is stored in your browser, what never leaves it, and the one button that deletes all of it.",
+  keywords: ["AP Study Hub privacy", "no-cookie study site"],
+});
 
 /**
  * Privacy.

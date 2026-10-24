@@ -55,6 +55,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // trust in the rest of the file.
     if (course.units.length) {
       pages.push({ url: absoluteUrl(`${base}/notes`), lastModified, changeFrequency: "monthly", priority: 0.85 });
+      pages.push({ url: absoluteUrl(`${base}/videos`), lastModified, changeFrequency: "monthly", priority: 0.8 });
     }
     if (course.flashcards.length) {
       pages.push({ url: absoluteUrl(`${base}/cards`), lastModified, changeFrequency: "monthly", priority: 0.7 });

@@ -4,19 +4,19 @@ import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
 import { subjects } from "@/lib/subjects";
 import { indexSize } from "@/lib/search";
 import { site, absoluteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Colophon",
   description:
     "The typefaces, palette, build and design decisions behind AP Study Hub, written down so they can be argued with.",
-  alternates: { canonical: "/colophon" },
-  openGraph: {
-    title: "Colophon · AP Study Hub",
-    description: "Typefaces, palette, stack and the reasoning behind each choice.",
-    url: absoluteUrl("/colophon"),
-  },
-};
+  path: "/colophon",
+  ogTitle: "Two typefaces and a paper palette",
+  ogDescription:
+    "Newsreader for reading, Public Sans for the interface, one red for the marks, and the reasoning behind each choice.",
+  keywords: ["AP Study Hub colophon", "Newsreader", "Public Sans", "web typography"],
+});
 
 /**
  * Colophon.
