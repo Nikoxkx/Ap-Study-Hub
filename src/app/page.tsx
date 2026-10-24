@@ -8,12 +8,16 @@ import { Countdown } from "@/components/Countdown";
 import { StudySystemVisual } from "@/components/StudySystemVisual";
 import { SectionHead, Stat } from "@/components/Furniture";
 import { JsonLd, catalogSchema, faqSchema } from "@/lib/schema";
-import { site } from "@/lib/site";
+import { pageSocial, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: `${site.name} — ${site.tagline}`,
   description: site.description,
-  alternates: { canonical: "/" },
+  ...pageSocial({
+    title: `${site.name} — ${site.tagline}`,
+    description: site.description,
+    path: "/",
+  }),
 };
 
 /**
@@ -150,7 +154,7 @@ export default function HomePage() {
               <li key={subject.slug} className="subject-scope" style={subjectVars(subject)}>
                 <Link
                   href={`/course/${subject.slug}`}
-                  className="group relative grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-2 rule-bottom py-5 no-underline transition-[padding,background-color] duration-200 ease-[cubic-bezier(0.2,0.7,0.3,1)] hover:pl-3 md:grid-cols-[2.6rem_minmax(0,1fr)_auto] md:gap-x-6 md:py-6"
+                  className="course-plate group relative grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-2 rule-bottom px-3 py-5 no-underline transition-[padding,background-color,border-color] duration-200 ease-[cubic-bezier(0.2,0.7,0.3,1)] hover:pl-4 md:grid-cols-[2.6rem_minmax(0,1fr)_auto] md:gap-x-6 md:px-4 md:py-6"
                 >
                   {/* Spine that draws in on hover — the one hover idiom, reused. */}
                   <span

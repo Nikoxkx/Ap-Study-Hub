@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
-import { site, absoluteUrl, formatDate } from "@/lib/site";
+import { site, formatDate, pageSocial } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Privacy",
   description:
     "AP Study Hub sets no cookies, runs no analytics and loads no third-party scripts. What is stored in your browser, and how to clear it.",
-  alternates: { canonical: "/privacy" },
-  openGraph: {
-    title: "Privacy · AP Study Hub",
-    description: "No cookies, no analytics, no third-party scripts. Here is exactly what is stored and where.",
-    url: absoluteUrl("/privacy"),
-  },
+  ...pageSocial({
+    title: "Privacy",
+    description:
+      "No cookies, no analytics, no third-party scripts. Every storage key the site writes is named, and this is how to clear it.",
+    path: "/privacy",
+  }),
 };
 
 /**
@@ -66,6 +66,11 @@ const storageKeys = [
     when: "Autosaved while you use the Seminar matrix.",
   },
   {
+    key: "aph:scratch-pad:v1",
+    what: "Whatever you typed on the scratch pad, which pen colour you chose, and when it last saved.",
+    when: "Written on every keystroke while the pad is open.",
+  },
+  {
     key: "aps.research.v1.{activity}",
     what: "Your Research question or oral-defense rehearsal notes.",
     when: "Autosaved while you use a Research lab.",
@@ -91,8 +96,9 @@ export default function PrivacyPage() {
           </h1>
           <p className="lede mt-5">
             No account, no cookies, no analytics, no advertising, no third-party scripts and no
-            fonts loaded from someone else&rsquo;s server. That is the whole policy; the rest of
-            this page is just the detail behind it.
+            fonts loaded from someone else&rsquo;s server. The one thing you can opt into is a video,
+            and nothing is requested from YouTube until you press play. That is the whole policy; the
+            rest of this page is the detail behind it.
           </p>
         </div>
 
@@ -156,9 +162,18 @@ export default function PrivacyPage() {
           <SectionHead folio="03" title="Third parties" id="third-heading" />
           <div className="prose">
             <p>
-              The site loads no third-party resources: no font CDN, no script CDN, no embedded
-              video, no tag manager, no social widgets. Everything you download when you open a page
-              comes from this domain.
+              Almost nothing. There is no font CDN, no script CDN, no tag manager and no social
+              widget: fonts, styles and code all come from this domain. The one exception is video,
+              and it is opt-in twice over.
+            </p>
+            <p>
+              Video cards on a course page or on your study desk show a still frame from{" "}
+              <code>i.ytimg.com</code> and load nothing else. Press play and the player itself is
+              embedded from <code>youtube-nocookie.com</code>, which YouTube says withholds
+              advertising cookies until playback. From that moment Google&rsquo;s own terms and
+              privacy policy apply to that frame, not mine. If you never press play, no request ever
+              reaches Google; if you would rather not at all, every card also links straight to
+              YouTube so you can choose the tab yourself.
             </p>
             <p>
               A backup is created only when you choose Export backup; it downloads as a JSON file

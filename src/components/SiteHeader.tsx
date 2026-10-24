@@ -33,8 +33,10 @@ export function SiteHeader() {
         style={{ background: "var(--ink)", color: "var(--paper)" }}
       >
         <div className="wrap flex h-7 items-center justify-between text-[0.6875rem]" style={{ fontFamily: "var(--font-mono)" }}>
-          <span style={{ letterSpacing: "0.06em" }}>
-            Free · No account · Written by one student
+          <span className="flex items-center gap-4" style={{ letterSpacing: "0.06em" }}>
+            <span>Free · No account · Written by one student</span>
+            {/* Dark mode gets its own marker rather than a recoloured light one. */}
+            <span className="night-mark dark-only">Night desk</span>
           </span>
           {upcoming ? (
             <span style={{ letterSpacing: "0.04em", opacity: 0.85 }}>

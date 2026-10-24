@@ -141,26 +141,71 @@
   --subject-ink: var(--subject);
   --subject-tint: var(--color-subject-wash);
   --shadow-lift: 0 1px 0 var(--rule), 0 6px 16px -12px rgb(28 27 23 / 0.5);
+
+  /* Paper system. --paper-photo is the photographed sheet that sits under the
+     page; --sheet-tex is the same photograph at a much lower strength inside a
+     panel. Both are real photographs of real paper, not gradients pretending. */
+  --paper-photo: url("/textures/paper-crumple.jpg");
+  --sheet-tex: url("/textures/paper-lines.jpg");
+  --paper-wash: rgb(246 243 236 / 0.9);
+  --paper-wash-strong: rgb(246 243 236 / 0.92);
+  --sheet-wash: rgb(255 253 247 / 0.9);
+  --torn-sheet: url("/textures/paper-torn.png");
+  --glass: transparent;
+  --glass-border: transparent;
+  --glass-sheen: transparent;
+  --glass-shadow: none;
+  --lamp-light: transparent;
+  --rule-blue: color-mix(in srgb, #6f87a8 52%, transparent);
+  --rule-pencil: color-mix(in srgb, #8a8478 40%, transparent);
+  --margin-red: color-mix(in srgb, #b2554a 55%, transparent);
+  --hole-shadow: rgb(28 27 23 / 0.14);
+  --scratch-line: 2rem;
 }
 
+/**
+ * Dark is not the light theme with the lights off.
+ *
+ * It is the same desk at 11 p.m.: the paper photograph is still there, but it
+ * is dim, and everything you read from is a sheet of glass lying on it. That
+ * gives the panels their own material — a cool translucent fill, a hairline of
+ * light along the top edge, and a shadow deep enough to lift them off the desk —
+ * which is the one thing a flat recolour can never do.
+ *
+ * Contrast, measured against --paper (#0e1a17 → #0d1210 average):
+ *   ink 15.9:1 · ink-soft 7.4:1 · ink-faint 4.6:1 · mark 6.2:1
+ */
 .dark {
   color-scheme: dark;
-  --paper: #11120f;
-  --paper-raised: #1b1d19;
-  --paper-sunk: #0b0c0a;
-  --ink: #f0ece2;
-  --ink-soft: #b8b2a5;
-  --ink-faint: #958f82;
-  --rule: #34372f;
-  --rule-strong: #4a4d42;
-  --mark: #e69a86;
-  --mark-wash: #301c18;
-  --good: #9ac69d;
-  --good-wash: #19261b;
-  --warn: #dfbc72;
-  --warn-wash: #292315;
+  --paper: #0e1412;
+  --paper-raised: #161d1a;
+  --paper-sunk: #0a0f0d;
+  --ink: #f1ece1;
+  --ink-soft: #bdb7a9;
+  --ink-faint: #9a9487;
+  --rule: #2c3630;
+  --rule-strong: #45514a;
+  --mark: #f0a184;
+  --mark-wash: #33201a;
+  --good: #a3cfa6;
+  --good-wash: #17261b;
+  --warn: #e6c47e;
+  --warn-wash: #2a2315;
   --subject-tint: var(--color-subject-wash-dark, #221f1b);
-  --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.035), 0 14px 30px -18px rgb(0 0 0 / 0.95);
+  --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.04), 0 18px 34px -20px rgb(0 0 0 / 0.95);
+
+  --paper-wash: rgb(11 16 14 / 0.905);
+  --paper-wash-strong: rgb(10 15 13 / 0.93);
+  --sheet-wash: rgb(20 27 23 / 0.82);
+  --glass: rgb(32 42 37 / 0.55);
+  --glass-border: rgb(214 231 216 / 0.12);
+  --glass-sheen: rgb(255 255 255 / 0.06);
+  --glass-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.9), inset 0 1px 0 rgb(255 255 255 / 0.05);
+  --lamp-light: rgb(255 214 156 / 0.13);
+  --rule-blue: color-mix(in srgb, #7d97bb 30%, transparent);
+  --rule-pencil: color-mix(in srgb, #8e897d 26%, transparent);
+  --margin-red: color-mix(in srgb, #c87568 38%, transparent);
+  --hole-shadow: rgb(0 0 0 / 0.6);
 }
 
 /* Resolve aliases on the same node that receives the course custom props.
@@ -200,6 +245,17 @@ body {
   font-feature-settings: "kern", "liga", "cv05";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* The photographed desk sits underneath everything, fixed, so the page feels
+     like a surface you are writing on rather than a document that scrolls past
+     it. The photograph keeps its own textures; the text never sits on it
+     without the wash in between, which is why contrast is unchanged. */
+  background-image:
+    linear-gradient(var(--paper-wash), var(--paper-wash)),
+    var(--paper-photo);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-attachment: fixed, fixed;
+  background-repeat: no-repeat, no-repeat;
 }
 
 /* Numerals line up in tables, timers and scores. */
@@ -748,15 +804,22 @@ hr {
   opacity: 0.35;
 }
 
-/* Faint ruled-paper lines. Used behind the masthead only. */
+/* The masthead sits on a photographed sheet of lined notebook paper, washed
+   back far enough that the headline still has full contrast against it. */
 .ruled {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 27px,
-    color-mix(in srgb, var(--rule) 55%, transparent) 27px,
-    color-mix(in srgb, var(--rule) 55%, transparent) 28px
-  );
+  background-image:
+    linear-gradient(var(--paper-wash-strong), var(--paper-wash-strong)),
+    url("/textures/paper-lines.jpg");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.dark .ruled {
+  background-image:
+    linear-gradient(var(--paper-wash-strong), var(--paper-wash-strong)),
+    url("/textures/paper-lines.jpg");
+  filter: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -852,10 +915,29 @@ hr {
    ========================================================================== */
 
 .dark body {
+  /* Night: a lamp, low and warm, from the top-left; a cool spill on the right
+     edge; the photographed paper dimmed underneath both. */
   background-image:
-    radial-gradient(ellipse at 12% -10%, rgb(255 244 220 / 0.035), transparent 42rem),
-    radial-gradient(ellipse at 95% 20%, rgb(112 130 103 / 0.035), transparent 36rem);
+    radial-gradient(ellipse 70rem 42rem at 6% -14%, var(--lamp-light), transparent 62%),
+    radial-gradient(ellipse 46rem 32rem at 108% 12%, rgb(104 132 118 / 0.09), transparent 66%),
+    linear-gradient(var(--paper-wash), var(--paper-wash)),
+    var(--paper-photo);
+  background-size: auto, auto, cover, cover;
+  background-position: center, center, center, center;
   background-attachment: fixed;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
+.dark body::before {
+  /* Film grain, one fixed layer, so large dark fields do not band. */
+  content: "";
+  position: fixed;
+  inset: 0;
+  /* Behind every panel: the grain has to sit under the type, not on it. */
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
 }
 
 .dark .sheet,
@@ -1565,4 +1647,1069 @@ main,
   .objective-levels, .review-grades, .studio-task-picker, .criterion-buttons { display: none !important; }
   .study-tabs, .studio-tabs, .packet-toolbar, .site-header { display: none !important; }
   a { color: #000 !important; }
+}
+
+/* ==========================================================================
+   Paper, glass and night
+   --------------------------------------------------------------------------
+   Three materials, and every surface on the site is one of them.
+
+     PAPER   a photographed sheet. Used for anything you write on: worked
+             solutions, scratch pads, the writing studio, the annotated passage.
+             The photograph supplies the crumple and the fibre; the rules are
+             drawn, because a drawn rule can be made to line up with real text
+             and a photographed one cannot.
+
+     GLASS   the dark-theme panel. A translucent fill, a lit top edge, a deep
+             soft shadow. This is what makes dark mode feel like a different
+             material rather than a colour filter.
+
+     CARD    a card stock panel in light mode: warm white, hairline edge, and a
+             breath of the same paper photograph inside it.
+   ========================================================================== */
+
+/* --- Paper-sheet geometry ------------------------------------------------- */
+
+.paper-sheet {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--paper-raised);
+  background-image:
+    linear-gradient(var(--sheet-wash), var(--sheet-wash)),
+    var(--sheet-tex);
+  background-size: auto, 100% auto;
+  background-position: center, top center;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-cut);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.55) inset,
+    0 16px 30px -26px rgb(28 27 23 / 0.55);
+}
+
+/* Punched holes down the left edge — the one detail that reads as "ring binder"
+   at any size, and costs two radial gradients. */
+.paper-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 1.5rem auto 1.5rem 0.85rem;
+  width: 0.6rem;
+  pointer-events: none;
+  background-image: radial-gradient(circle at center, var(--hole-shadow) 0 42%, transparent 46%);
+  background-size: 0.6rem 2.4rem;
+  background-repeat: repeat-y;
+  opacity: 0.75;
+}
+
+/* --- Torn scrap ----------------------------------------------------------- */
+
+.torn-note {
+  position: relative;
+  max-width: 46rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 3vw, 2rem) clamp(2rem, 4vw, 2.75rem);
+  background-color: #f8f5ea;
+  background-image:
+    linear-gradient(rgb(252 250 243 / 0.24), rgb(252 250 243 / 0.24)),
+    var(--torn-sheet);
+  background-size: 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #23221d;
+  box-shadow: 0 22px 34px -30px rgb(28 27 23 / 0.65);
+  transform: rotate(var(--tilt, 0deg));
+  transform-origin: center;
+}
+
+.torn-note-inner > * + * {
+  margin-top: 0.7rem;
+}
+
+.torn-note-label {
+  color: color-mix(in srgb, #6d6557 82%, transparent);
+}
+
+.torn-note p {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.dark .torn-note {
+  background-color: #1d231f;
+  background-image:
+    linear-gradient(rgb(16 22 19 / 0.72), rgb(16 22 19 / 0.72)),
+    var(--torn-sheet);
+  color: var(--ink);
+  box-shadow: 0 26px 44px -30px rgb(0 0 0 / 0.95);
+}
+
+.dark .torn-note-label {
+  color: var(--ink-faint);
+}
+
+/* --- Ruled writing paper: worked solutions, drafts, annotation -------------
+   One line height drives the rules, the text and the padding. Change
+   --ruled-line in one place and everything stays registered.                */
+
+.worked-paper,
+.scratch-sheet,
+.studio-draft,
+.annotation-passage {
+  --ruled-line: 2rem;
+  --ruled-ink: var(--rule-blue);
+  --margin-gutter: 2.75rem;
+  position: relative;
+  background-color: #fbf8ee;
+  /* Layer order is paint order: margin rule and text rules on top, then a wash
+     that tones the photograph down, then the photograph itself. The wash is a
+     layer rather than an ::after overlay so the rules stay crisp above it. */
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0 var(--margin-gutter),
+      var(--margin-red) var(--margin-gutter),
+      var(--margin-red) calc(var(--margin-gutter) + 1px),
+      transparent calc(var(--margin-gutter) + 1px)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--ruled-line) - 1px),
+      var(--ruled-ink) calc(var(--ruled-line) - 1px),
+      var(--ruled-ink) var(--ruled-line)
+    ),
+    linear-gradient(var(--ruled-wash, rgb(253 250 242 / 0.62)), var(--ruled-wash, rgb(253 250 242 / 0.62))),
+    url("/textures/paper-crumple.jpg");
+  background-size: auto, auto, auto, cover;
+  /* The rules tile starts one baseline below the first line's top, which is what
+     makes the writing sit on the line instead of floating between two of them.
+     --ruled-pad is the sheet's own top padding; --ruled-baseline is where the
+     first text baseline falls inside its line box. */
+  background-position:
+    center,
+    0 calc(var(--ruled-pad, calc(var(--ruled-line) * 0.7)) + var(--ruled-baseline, 1.2rem)),
+    center,
+    center;
+  background-repeat: no-repeat, repeat-y, no-repeat, no-repeat;
+  color: #23221d;
+}
+
+.dark .worked-paper,
+.dark .scratch-sheet,
+.dark .studio-draft,
+.dark .annotation-passage {
+  --ruled-ink: var(--rule-blue);
+  --ruled-wash: rgb(13 19 16 / 0.86);
+  background-color: #171d1a;
+  color: var(--ink);
+}
+
+/* Existing worked-solution paper keeps its own layout, but now inherits the
+   photographed sheet and the aligned rules. */
+.worked-paper {
+  --margin-gutter: clamp(2.5rem, 6vw, 4rem);
+  --ruled-pad: calc(var(--ruled-line) * 0.9);
+  padding-block: calc(var(--ruled-line) * 0.9);
+}
+
+.worked-paper .worked-problem {
+  padding-bottom: calc(var(--ruled-line) * 0.6);
+}
+
+/* --- Panels: card stock in daylight, glass at night ---------------------- */
+
+.sheet,
+.sheet-tabbed,
+.sunk {
+  transition: background-color 160ms var(--ease-snap), border-color 160ms var(--ease-snap),
+    box-shadow 160ms var(--ease-snap);
+}
+
+.sheet,
+.sunk {
+  background-image:
+    linear-gradient(var(--sheet-wash), var(--sheet-wash)),
+    var(--paper-photo);
+  background-size: auto, cover;
+  background-position: center, center;
+}
+
+.dark .sheet,
+.dark .sheet-tabbed,
+.dark .sunk,
+.dark .sheet-tabbed,
+.dark .today-plan,
+.dark .today-week,
+.dark .deadline-card,
+.dark .today-tools,
+.dark .study-hero,
+.dark .course-lab,
+.dark .review-card,
+.dark .plan-day,
+.dark .connection-card,
+.dark .variant-card,
+.dark .comparison-grid > article,
+.dark .prerequisite-map a,
+.dark .video-card {
+  background-color: transparent;
+  background-image:
+    linear-gradient(var(--glass-sheen), transparent 42%),
+    linear-gradient(var(--glass), var(--glass));
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(14px) saturate(115%);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
+}
+
+.dark .sheet-tabbed {
+  border-top-color: color-mix(in srgb, var(--subject-lit, var(--subject-ink)) 78%, transparent);
+}
+
+/* Hovering a glass panel picks up the lamp. Very slight: a 1px lift and a
+   warmer shadow, not a colour change. */
+.dark .video-card:hover,
+.dark .connection-card:hover,
+.dark .variant-card:hover {
+  border-color: color-mix(in srgb, var(--mark) 34%, var(--glass-border));
+  box-shadow: var(--glass-shadow), 0 0 0 1px color-mix(in srgb, var(--mark) 16%, transparent);
+}
+
+/* --- Dark-only furniture -------------------------------------------------- */
+
+.dark-only {
+  display: none;
+}
+
+.dark .dark-only {
+  display: revert;
+}
+
+.dark .light-only {
+  display: none;
+}
+
+/* The night marker: a small moon-and-rule stamp used in the masthead and in
+   section heads, so dark mode is visibly designed rather than recoloured. */
+.night-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--mark) 88%, var(--ink));
+}
+
+.night-mark::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 34% 30%, #fff6e2, #f0c489 52%, transparent 58%);
+  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--lamp-light) 220%, transparent);
+}
+
+/* Glow rules: in dark, a hard 1px rule next to a soft one, the way a lit edge
+   behaves. Light mode keeps the flat rule it already had. */
+.dark .rule-top,
+.dark .rule-bottom {
+  border-color: var(--rule);
+}
+
+.dark .section-glow {
+  position: relative;
+}
+
+.dark .section-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--mark), transparent);
+  opacity: 0.45;
+}
+
+/* --- Type rhythm ----------------------------------------------------------
+   Headings, sub-headings and body copy were crowded in places and adrift in
+   others, because each page set its own margins. These rules set one vertical
+   rhythm and let the pages inherit it.
+
+     heading above body        0.5rem
+     body below heading        0.75rem  (0.9 for display headings)
+     block to block            1.35em
+     section to section        clamp(4rem, 6vw, 6.5rem)
+   ------------------------------------------------------------------------- */
+
+:where(h1, h2, h3, h4) + :where(p, ul, ol, dl, .lede, .label) {
+  margin-top: 0.75rem;
+}
+
+:where(h1, h2) + .lede {
+  margin-top: 1.1rem;
+}
+
+:where(.label) + :where(h1, h2, h3, h4) {
+  margin-top: 0.55rem;
+}
+
+.prose {
+  line-height: 1.78;
+}
+
+.prose > * + * {
+  margin-top: 1.32em;
+}
+
+.prose p + p {
+  margin-top: 1.05em;
+}
+
+.prose h2 {
+  margin-top: 2.4em;
+  margin-bottom: 0.85em;
+  padding-bottom: 0.4em;
+}
+
+.prose h3 {
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  line-height: 1.25;
+}
+
+.prose h4 {
+  margin-top: 1.9em;
+  margin-bottom: 0.5em;
+  line-height: 1.35;
+}
+
+.prose > h2:first-child,
+.prose > h3:first-child,
+.prose > h4:first-child,
+.prose section > h2:first-child,
+.prose section > h3:first-child,
+.prose section > h4:first-child {
+  margin-top: 0;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 0.85em;
+}
+
+.prose li + li {
+  margin-top: 0.42em;
+}
+
+.prose blockquote {
+  margin-block: 1.4em;
+}
+
+.prose .source-line {
+  margin-top: 1em;
+}
+
+/* Section furniture: a predictable gap after the head, and between sections. */
+.section-head > * + * {
+  margin-top: 0.6rem;
+}
+
+.section-stack > * + * {
+  margin-top: clamp(3.5rem, 5.5vw, 6rem);
+}
+
+.lede {
+  max-width: 46ch;
+  line-height: 1.55;
+}
+
+/* Lesson openers: number, title, description, meta. Each step a fixed step. */
+.lesson-opener > * + * {
+  margin-top: 0.55rem;
+}
+
+.lesson-opener > p:last-child {
+  margin-top: 0.9rem;
+}
+
+/* --- Video shelf ---------------------------------------------------------- */
+
+.video-shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.video-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-cut);
+  background-color: var(--paper-raised);
+  background-image:
+    linear-gradient(var(--sheet-wash), var(--sheet-wash)),
+    var(--sheet-tex);
+  background-size: auto, 100% auto;
+  background-position: center, top center;
+  box-shadow: 0 18px 30px -30px rgb(28 27 23 / 0.6);
+  transition: transform 180ms var(--ease-settle), box-shadow 180ms var(--ease-settle);
+}
+
+.video-card:hover {
+  transform: translateY(-2px);
+}
+
+.video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #1c1b17;
+  border-bottom: 1px solid var(--rule);
+}
+
+.video-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  /* If the still is blocked or slow, the card still reads as a video: a dark
+     plate with the play control on it, not a broken-image icon. */
+  background:
+    radial-gradient(ellipse at 50% 40%, #33352e, #1c1b17 72%);
+  position: relative;
+}
+
+.video-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* YouTube stills are 4:3; cover-cropping to 16:9 keeps the frame honest
+     without letterboxing two black bars into every card. */
+  filter: saturate(0.82) contrast(1.02);
+  transition: transform 320ms var(--ease-settle), filter 200ms var(--ease-snap);
+}
+
+.video-poster:hover img,
+.video-poster:focus-visible img {
+  transform: scale(1.035);
+  filter: saturate(1) contrast(1.04);
+}
+
+.video-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(12 14 12 / 0.45), transparent 58%);
+}
+
+.video-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 3.25rem;
+  height: 3.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgb(252 250 243 / 0.94);
+  color: #23221d;
+  box-shadow: 0 8px 22px -8px rgb(0 0 0 / 0.65);
+  transition: transform 160ms var(--ease-settle), background-color 160ms var(--ease-snap);
+  z-index: 1;
+}
+
+.video-poster:hover .video-play {
+  transform: scale(1.07);
+  background: #fffdf7;
+}
+
+.dark .video-play {
+  background: var(--mark);
+  color: #1b1512;
+}
+
+.video-duration {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  z-index: 1;
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  background: rgb(15 17 15 / 0.78);
+  color: #f4efe4;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+}
+
+.video-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.45rem;
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.video-channel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.video-units {
+  color: var(--subject-ink);
+  letter-spacing: 0.06em;
+}
+
+.video-title {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: -0.008em;
+}
+
+.video-verbatim {
+  color: var(--ink-faint);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.video-verbatim cite {
+  font-style: italic;
+}
+
+.video-why {
+  flex: 1;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.video-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  color: var(--ink-faint);
+  font-size: 0.75rem;
+}
+
+.video-links a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 0.2em;
+}
+
+.video-links a:hover {
+  color: var(--mark);
+  text-decoration-color: var(--mark);
+}
+
+/* The separator belongs to the second link, not between them: when the row
+   wraps, a standalone dot is left dangling at the end of the first line. */
+.video-links a + a::before {
+  content: "·";
+  margin-right: 0.35rem;
+  color: var(--ink-faint);
+}
+
+.video-shelf.is-compact {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 1.15rem;
+}
+
+.video-shelf.is-compact .video-body {
+  padding: 0.85rem 0.9rem 1rem;
+}
+
+.video-shelf.is-compact .video-verbatim {
+  color: var(--ink-faint);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.video-verbatim cite {
+  font-style: italic;
+}
+
+.video-why {
+  font-size: 0.8125rem;
+}
+
+.video-shelf.is-compact .video-links {
+  display: none;
+}
+
+/* --- Scratch pad ---------------------------------------------------------- */
+
+.scratch {
+  margin-top: 2rem;
+}
+
+.scratch-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.scratch-title {
+  margin-top: 0.35rem;
+  font-size: clamp(1.35rem, 1.15rem + 0.6vw, 1.7rem);
+}
+
+.scratch-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scratch-pens {
+  display: inline-flex;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0.25rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-cut);
+  background: var(--paper-raised);
+}
+
+.scratch-pens button {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.scratch-pens button span {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  box-shadow: inset 0 -1px 2px rgb(0 0 0 / 0.35);
+}
+
+.scratch-pens button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--paper-sunk);
+}
+
+.scratch-sheet {
+  --ruled-line: 2rem;
+  --margin-gutter: 2.75rem;
+  --ruled-pad: calc(var(--ruled-line) * 0.7);
+  --ruled-baseline: 1.075rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  border-left-width: 1px;
+  border-radius: 2px;
+  box-shadow: 0 20px 34px -30px rgb(28 27 23 / 0.75);
+}
+
+/* Punch holes down the left margin: three, the way a ring binder punches a
+   sheet, each one a shadowed well with a lit lower lip. */
+.scratch-sheet::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 2.2rem;
+  bottom: 3.4rem;
+  left: 0.9rem;
+  width: 0.55rem;
+  pointer-events: none;
+  /* Three holes, not a column of dots: one gradient per punch, positioned by
+     percentage so the count stays right whatever the pad's height. */
+  background-image:
+    radial-gradient(circle at 50% 45%, rgb(28 27 23 / 0.34) 0 46%, rgb(255 255 255 / 0.6) 54%, transparent 62%),
+    radial-gradient(circle at 50% 45%, rgb(28 27 23 / 0.34) 0 46%, rgb(255 255 255 / 0.6) 54%, transparent 62%),
+    radial-gradient(circle at 50% 45%, rgb(28 27 23 / 0.34) 0 46%, rgb(255 255 255 / 0.6) 54%, transparent 62%);
+  background-size: 0.55rem 0.55rem, 0.55rem 0.55rem, 0.55rem 0.55rem;
+  background-position: 50% 0, 50% 50%, 50% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+}
+
+.scratch-input {
+  display: block;
+  width: 100%;
+  min-height: calc(var(--ruled-line) * 11);
+  padding: calc(var(--ruled-line) * 0.7) 1.1rem calc(var(--ruled-line) * 0.6) calc(var(--margin-gutter) + 0.9rem);
+  border: 0;
+  outline: 0;
+  resize: vertical;
+  background: transparent;
+  color: #23221d;
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  line-height: var(--ruled-line);
+  caret-color: var(--mark);
+}
+
+.scratch-sheet[data-pen="pencil"] .scratch-input {
+  color: #5f5b52;
+}
+
+.scratch-sheet[data-pen="red"] .scratch-input {
+  color: #a83324;
+}
+
+.scratch-sheet[data-pen="blue"] .scratch-input {
+  color: #2b4779;
+}
+
+.dark .scratch-input {
+  color: var(--ink);
+}
+
+.dark .scratch-sheet[data-pen="ink"] .scratch-input {
+  color: #efe9dd;
+}
+
+.dark .scratch-sheet[data-pen="pencil"] .scratch-input {
+  color: #b5b0a3;
+}
+
+.dark .scratch-sheet[data-pen="red"] .scratch-input {
+  color: #f0a08b;
+}
+
+.dark .scratch-sheet[data-pen="blue"] .scratch-input {
+  color: #9db6e2;
+}
+
+.scratch-input::placeholder {
+  color: color-mix(in srgb, #6f6a5f 68%, transparent);
+  font-style: italic;
+}
+
+.dark .scratch-input::placeholder {
+  color: color-mix(in srgb, var(--ink-faint) 80%, transparent);
+}
+
+.scratch-input:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--mark) 55%, transparent);
+  outline-offset: -2px;
+}
+
+.scratch-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem 0.65rem calc(var(--margin-gutter) + 0.9rem);
+  border-top: 1px solid rgb(28 27 23 / 0.12);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6f6a5f;
+}
+
+.dark .scratch-foot {
+  border-top-color: rgb(255 255 255 / 0.08);
+  color: var(--ink-faint);
+}
+
+.scratch-note {
+  margin-top: 0.6rem;
+  color: var(--ink-faint);
+  font-size: 0.75rem;
+}
+
+/* --- Dark-mode affordances on existing controls -------------------------- */
+
+.dark .btn-solid {
+  background: color-mix(in srgb, var(--mark) 88%, var(--paper));
+  border-color: color-mix(in srgb, var(--mark) 88%, var(--paper));
+  color: #1a1210;
+  box-shadow: 0 8px 22px -14px color-mix(in srgb, var(--mark) 70%, transparent);
+}
+
+.dark .btn-solid:hover:not(:disabled) {
+  background: var(--mark);
+  border-color: var(--mark);
+}
+
+.dark .btn-outline {
+  border-color: var(--glass-border);
+  background: rgb(255 255 255 / 0.03);
+  color: var(--ink);
+}
+
+.dark .btn-outline:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--mark) 45%, var(--glass-border));
+  background: rgb(255 255 255 / 0.06);
+}
+
+.dark .field {
+  background: rgb(9 13 11 / 0.55);
+  border-color: var(--glass-border);
+  color: var(--ink);
+}
+
+.dark .field:focus {
+  border-color: var(--mark);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mark) 22%, transparent);
+}
+
+.dark .tag {
+  border-color: var(--glass-border);
+  background: rgb(255 255 255 / 0.035);
+  color: var(--ink-soft);
+}
+
+.dark .tag-subject {
+  border-color: color-mix(in srgb, var(--subject-lit, var(--subject-ink)) 42%, transparent);
+  background: color-mix(in srgb, var(--subject-lit, var(--subject-ink)) 12%, transparent);
+  color: var(--subject-lit, var(--subject-ink));
+}
+
+.dark :focus-visible {
+  outline-color: color-mix(in srgb, var(--mark) 90%, white 10%);
+  outline-offset: 3px;
+}
+
+.dark .link-underlined {
+  text-decoration-color: color-mix(in srgb, var(--ink-faint) 60%, transparent);
+}
+
+.dark .objective-levels,
+.dark .segmented,
+.dark .criterion-buttons,
+.dark .scratch-pens {
+  border-color: var(--glass-border);
+  background: rgb(255 255 255 / 0.03);
+}
+
+.dark .objective-level[aria-pressed="true"],
+.dark .segmented button[aria-pressed="true"],
+.dark .criterion-buttons button[aria-pressed="true"] {
+  background: var(--subject-tint);
+  color: var(--subject-lit, var(--ink));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--subject-lit, var(--mark)) 34%, transparent);
+}
+
+/* Headers and footers in dark: unframed, darker, lit along the bottom edge. */
+.dark header[data-site-header] > div:nth-child(2) {
+  background: color-mix(in srgb, var(--paper) 76%, transparent);
+  border-bottom-color: var(--glass-border);
+}
+
+.dark header[data-site-header] nav {
+  background: rgb(11 16 14 / 0.6);
+  border-bottom-color: var(--glass-border);
+}
+
+.dark footer[data-site-footer] {
+  background: rgb(10 14 12 / 0.72);
+  border-top-color: var(--glass-border);
+}
+
+/* --- Print ---------------------------------------------------------------- */
+
+@media print {
+  .desk-scene,
+  .video-shelf,
+  .scratch,
+  .torn-note::before,
+  .night-mark {
+    display: none !important;
+  }
+
+  body {
+    background-image: none !important;
+  }
+
+  .torn-note {
+    background: none !important;
+    box-shadow: none;
+    transform: none;
+    padding: 0;
+  }
+
+  .scratch-sheet,
+  .worked-paper {
+    background-image: none !important;
+    background-color: #fff !important;
+  }
+}
+
+/* --- Study-desk additions: video groups, desk tools, aligned draft -------- */
+
+.today-tools > p:not(.label) {
+  margin-block: 0.6rem 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.today-tools > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.today-tools button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.today-tools button:hover {
+  color: var(--mark);
+}
+
+.watch-groups {
+  display: grid;
+  gap: 2.75rem;
+}
+
+.watch-group-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.watch-group-head h3 {
+  font-size: 1.375rem;
+}
+
+.watch-group-head a {
+  color: var(--subject-ink);
+  font-size: 0.8125rem;
+  text-decoration: none;
+}
+
+.watch-group-head a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* The writing studio draft is ruled paper too, and its text has to sit on the
+   rules rather than float above them. */
+.studio-draft {
+  --margin-gutter: 2.75rem;
+  --ruled-line: 2rem;
+  padding-left: calc(var(--margin-gutter) + 0.9rem) !important;
+  line-height: var(--ruled-line);
+  font-size: 1.0625rem;
+}
+
+.annotation-passage {
+  --margin-gutter: 2.5rem;
+  --ruled-line: 2rem;
+  padding-left: calc(var(--margin-gutter) + 1rem);
+}
+
+/* --- Courses index and lesson openers ------------------------------------ */
+
+/* A plate, not a row: the course colour arrives as a 3px spine at the left
+   edge on hover and on focus, which is the same idiom the rest of the site
+   uses for "this is the one you are pointing at". */
+.course-plate {
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Course index: each course is a plate on the desk -------------------- */
+
+.course-plate:hover {
+  background-color: color-mix(in srgb, var(--subject-wash) 55%, var(--paper-raised));
+  border-color: color-mix(in srgb, var(--subject-ink) 34%, var(--rule-strong));
+}
+
+.dark .course-plate {
+  background-color: transparent;
+  background-image: linear-gradient(rgb(255 255 255 / 0.035), transparent 60%);
+  border-color: var(--glass-border);
+  border-radius: var(--radius-cut);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+  backdrop-filter: blur(10px) saturate(112%);
+  -webkit-backdrop-filter: blur(10px) saturate(112%);
+}
+
+.dark .course-plate:hover {
+  background-image: linear-gradient(color-mix(in srgb, var(--subject-lit, var(--mark)) 12%, transparent), transparent 70%);
+  border-color: color-mix(in srgb, var(--subject-lit, var(--mark)) 40%, var(--glass-border));
+}
+
+/* --- Section head rhythm -------------------------------------------------- */
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.section-head > .section-head-body > * + * {
+  margin-top: 0.65rem;
+}
+
+@media (min-width: 768px) {
+  .section-head {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .dark .sheet,
+  .dark .sunk,
+  .dark .sheet-tabbed {
+    backdrop-filter: blur(10px) saturate(112%);
+    -webkit-backdrop-filter: blur(10px) saturate(112%);
+  }
+
+  .scratch-input {
+    padding-left: calc(var(--margin-gutter) + 0.55rem);
+    font-size: 1rem;
+  }
+
+  .scratch-sheet::before {
+    left: 0.45rem;
+  }
 }

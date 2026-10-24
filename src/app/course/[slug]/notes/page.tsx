@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
+import { formatExamDate } from "@/lib/subjects";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCourse } from "@/lib/catalog";
 import { Markdown } from "@/lib/markdown";
 import { UnitNav } from "@/components/UnitNav";
 import { LessonContent } from "@/components/LessonContent";
-import { absoluteUrl } from "@/lib/site";
+import { VideoShelf } from "@/components/VideoShelf";
+import { TornNote } from "@/components/Paper";
+import { videosForUnit } from "@/lib/videos";
+import { describe, pageSocial } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 
@@ -14,15 +18,19 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const course = getCourse(slug);
   if (!course) return {};
 
-  const { subject, counts } = course;
+  const { subject, counts, units } = course;
   const title = `${subject.familiar} deep lessons`;
-  const description = `${counts.units} curriculum-aligned ${subject.official} lessons with ${counts.paragraphs} substantive teaching paragraphs, glossaries, exam and rubric connections, and visible sources.`;
+  const description = describe(
+    `${counts.units} curriculum-aligned ${subject.official} lessons and ${counts.paragraphs} teaching paragraphs.`,
+    `Each lesson carries objectives, a glossary, worked solutions and cited sources.`,
+    `About ${counts.readingMinutes} minutes of reading, exam ${formatExamDate(subject, "short")}.`,
+    units.length > 0 ? `Unit 1: ${units[0].title}.` : "",
+  );
 
   return {
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/notes` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/notes`) },
+    ...pageSocial({ title, description, path: `/course/${subject.slug}/notes`, type: "article" }),
   };
 }
 
@@ -67,7 +75,7 @@ export default async function NotesPage({ params }: { params: Params }) {
               id={`unit-${unit.unitNumber}`}
               className="mb-20 scroll-mt-32"
             >
-              <div className="mb-7 rule-top pt-6">
+              <div className="mb-7 rule-top pt-6 lesson-opener">
                 <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                   <p
                     className="text-[0.75rem] tabular-nums"
@@ -111,13 +119,39 @@ export default async function NotesPage({ params }: { params: Params }) {
                 </div>
               )}
 
-              <p className="mt-7 text-[0.8125rem]">
+              {videosForUnit(subject.slug, unit.unitNumber).length > 0 ? (
+                <section aria-label={`Video for ${unit.title}`} className="mt-10">
+                  <h4 className="mb-1 text-[1.0625rem]">If this unit is still not landing</h4>
+                  <p className="mb-4 max-w-[60ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
+                    A teacher working the same unit in the same order, embedded here rather than
+                    linked away. Checked and playable; nothing loads until you press play.
+                  </p>
+                  <VideoShelf
+                    videos={videosForUnit(subject.slug, unit.unitNumber)}
+                    compact
+                  />
+                </section>
+              ) : null}
+
+              <p className="mt-9 text-[0.8125rem]">
                 <a href="#unit-contents" className="link-underlined" style={{ color: "var(--ink-faint)" }}>
                   ↑ Back to contents
                 </a>
               </p>
             </article>
           ))}
+
+          <TornNote label="A note on the way out">
+            <p>
+              Reading is the easy part. Before you close this tab, write down — on paper, from memory —
+              the three claims you would use in an essay on this course, and the one piece of evidence
+              for each. If you cannot, you have found what to review, and the mistake notebook on your{" "}
+              <Link href="/study" style={{ color: "inherit", textDecoration: "underline" }}>
+                study desk
+              </Link>{" "}
+              is where it should go.
+            </p>
+          </TornNote>
 
           <aside className="sunk mt-12 p-5">
             <h3 className="label mb-2">Next</h3>

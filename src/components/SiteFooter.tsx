@@ -143,7 +143,8 @@ export function SiteFooter() {
             Not affiliated with, endorsed by, or reviewed by the College Board. AP and Advanced
             Placement are registered trademarks of the College Board.
           </p>
-          <p style={{ fontFamily: "var(--font-mono)" }}>
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1" style={{ fontFamily: "var(--font-mono)" }}>
+            <span className="night-mark dark-only">Night desk</span>
             Content revision {site.contentRevision} ·{" "}
             <time dateTime={revised.toISOString().slice(0, 10)}>
               {revised.toISOString().slice(0, 10)}

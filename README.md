@@ -124,6 +124,8 @@ floors are safeguards, not claims that word count alone proves quality.
 | **Essays** | Six sample responses with point-by-point commentary. Constructed practice sources are identified rather than presented as genuine publications or quotations. |
 | **Timed practice** | Three original sets with autosaved answers and a running clock: APUSH (155 minutes), AP Lang (195 minutes), and AP Seminar (120 minutes). They are not full-length released exams and do not claim to provide official automatic essay scores. |
 | **Sources** | Ninety-two official, archival, textbook, writing, and supplemental links, including lesson bibliographies and checked dates where the source model provides them. |
+| **Video lessons** | Twenty-nine embedded videos — at least four for every course — matched to the units students get stuck on. Each id was checked against YouTube before it was listed; see [`src/lib/videos.ts`](src/lib/videos.ts). Click-to-load, so a page with five videos still requests nothing from YouTube until you press play. |
+| **Study desk** | Due Today spaced review, a mistake notebook, objective confidence, a plan built from your free evenings, focus sessions, a Watch tab that gathers every course's videos, and a Scratch tab: ruled paper with four pens that saves as you type. |
 
 Search indexes **1,196 documents**, including individual teaching sections. Results can
 therefore deep-link into a long lesson, preserve inline mathematical notation, and send
@@ -183,6 +185,18 @@ APUSH free-response design changes. Official course and exam pages remain the au
 - **Generated brand assets.** The favicon and Apple icon use the exact SiteMark sheet
   geometry. The Open Graph card and README banners use deterministic SVG/Next ImageResponse
   artwork rather than stock imagery or generated raster pictures.
+- **A social card per page.** Every indexable route has its own `opengraph-image.tsx`, and
+  they are drawn from one builder in `src/lib/og.tsx`, so a link to AP Bio cards previews as
+  AP Bio cards — title, a written description, and a stamp carrying that page's own number —
+  rather than as the home page. Cards are set in the site's real typefaces, subset and
+  instanced into `assets/og/` (which is why `outputFileTracingIncludes` lists them).
+- **Photographed paper.** `public/textures/` holds three photographs of real paper: a
+  crumpled ruled sheet used as the desk behind everything, a lined sheet behind the masthead,
+  and a torn edge cut to a transparency for note scraps. Dark mode keeps the same desk but
+  turns it down and puts every panel on translucent glass, so the two themes are different
+  materials rather than one palette inverted.
+- **One rhythm for type.** Headings, sub-headings and body copy are spaced by the rules at
+  the end of `globals.css` rather than by per-page margins, so nothing is crowded or adrift.
 
 ## 07 — Running it locally
 
@@ -234,6 +248,13 @@ src/
     apush.ts apLang.ts apSeminar.ts apGov.ts apBio.ts apCalc.ts apResearch.ts
   lib/
     catalog.ts                integrated content/count/search join
+    videos.ts                 checked video library, one entry per embed
+    og.tsx                    shared social-card builder
+  components/
+    VideoShelf.tsx            click-to-load video cards
+    ScratchPad.tsx            saved ruled scratch paper
+    Paper.tsx                 torn-note furniture
+  ../public/textures/         photographed paper: desk, lined sheet, torn edge
     data.ts                   legacy drills, essays, resources, and timed sets
     subjects.ts               course metadata and 2027 dates
     search.ts                 section-level scored index

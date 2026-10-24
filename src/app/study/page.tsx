@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
+import { pageSocial } from "@/lib/site";
 import { StudyDashboard } from "@/components/StudyDashboard";
 import { getStudyCourses, getStudyItems } from "@/lib/study-data";
 import { isSubjectSlug } from "@/lib/subjects";
 
 export const metadata: Metadata = {
   title: "Your study desk",
-  description: "Due Today spaced review, a mistake notebook, objective confidence, personal plans, Focus Sessions, weekly diagnostics, and local backups across every AP course.",
+  description:
+    "Due Today spaced review, a mistake notebook, objective confidence, personal plans, focus sessions, video lessons for every course, scratch paper, weekly diagnostics, and local backups.",
   robots: { index: false, follow: true },
+  ...pageSocial({
+    title: "Your study desk",
+    description:
+      "One connected queue for seven AP courses: what is due today, what you keep getting wrong, a plan built around your evenings, and scratch paper that saves itself.",
+    path: "/study",
+  }),
 };
 
-const validTabs = ["today", "review", "mistakes", "plan", "focus", "progress", "data"] as const;
+const validTabs = ["today", "review", "mistakes", "plan", "focus", "watch", "scratch", "progress", "data"] as const;
 type StudyTab = typeof validTabs[number];
 
 export default async function StudyPage({ searchParams }: { searchParams: Promise<{ tab?: string | string[]; course?: string | string[] }> }) {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { EssayReader } from "@/components/EssayReader";
-import { absoluteUrl } from "@/lib/site";
+import { describe, pageSocial } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 /**
@@ -25,13 +25,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { subject, essays } = course;
   const types = [...new Set(essays.map((e) => e.type))].join(", ");
   const title = `${subject.familiar} sample essays with rubric`;
-  const description = `${essays.length} full ${subject.familiar} responses (${types}) with every rubric point broken out and explained.`;
+  const description = describe(
+    `${essays.length} full ${subject.familiar} responses with the rubric marked point by point.`,
+    `${types} covered, with the sentence that earned each point identified.`,
+    `Written against the ${subject.official} scoring guidelines.`,
+  );
 
   return {
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/essays` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/essays`) },
+    ...pageSocial({ title, description, path: `/course/${subject.slug}/essays`, type: "article" }),
   };
 }
 

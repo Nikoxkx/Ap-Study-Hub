@@ -14,11 +14,15 @@ import { StudyPlanner } from "./study/StudyPlanner";
 import { FocusSession } from "./study/FocusSession";
 import { ProgressPanel } from "./study/ProgressPanel";
 import { DataPanel } from "./study/DataPanel";
+import { ScratchPad } from "./ScratchPad";
+import { VideoShelf } from "./VideoShelf";
+import { videosFor } from "@/lib/videos";
 
 const tabs = [
   { id: "today", label: "Today" }, { id: "review", label: "Review" },
   { id: "mistakes", label: "Mistakes" }, { id: "plan", label: "Plan" },
-  { id: "focus", label: "Focus" }, { id: "progress", label: "Progress" },
+  { id: "focus", label: "Focus" }, { id: "watch", label: "Watch" },
+  { id: "scratch", label: "Scratch" }, { id: "progress", label: "Progress" },
   { id: "data", label: "Data & offline" },
 ] as const;
 type Tab = typeof tabs[number]["id"];
@@ -70,7 +74,7 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
     <div className={`study-dashboard ${selectedSubject ? "subject-scope" : ""}`} style={selectedSubject ? subjectVars(selectedSubject) : undefined}>
       <header className="study-hero">
         <div className="study-hero-mark">{selectedSubject ? <SubjectMark subject={selectedSubject.mark} size={48} /> : <span className="study-all-mark" aria-hidden="true">A+</span>}</div>
-        <div><p className="label">Your local study desk</p><h1>{activeTab === "today" ? "What should I do next?" : tabs.find((tab) => tab.id === activeTab)?.label}</h1><p>One connected queue for lessons, retrieval, mistakes, writing, and focused work. No account; progress stays in this browser.</p></div>
+        <div><p className="label">Your local study desk</p><h1>{activeTab === "today" ? "What should I do next?" : tabs.find((tab) => tab.id === activeTab)?.label}</h1><p>One connected queue for lessons, retrieval, mistakes, writing, video and focused work — plus a sheet of scratch paper that remembers what you wrote. No account; everything stays in this browser.</p></div>
         <label className="study-course-select"><span className="label">Course filter</span><select className="field mt-2" value={selectedCourse} onChange={(event) => selectCourse(event.target.value as SubjectSlug | "all")}><option value="all">All seven courses</option>{courses.map((course) => <option key={course.slug} value={course.slug}>{course.label}</option>)}</select></label>
       </header>
 
@@ -88,6 +92,14 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
             <section className="deadline-card"><p className="label">Next deadline</p><h3>{nextCourse.label}</h3><p>{nextCourse.examDate} · {nextCourse.examLabel}</p><strong>{Math.max(0, Math.ceil((Date.parse(`${nextCourse.examDate}T23:59:59`) - now) / 86_400_000))} days</strong><Link href={`/course/${nextCourse.slug}/studio`}>Open course studio →</Link></section>
             <section className="today-plan"><p className="label">Today’s plan</p>{todayPlan ? <ol>{todayPlan.tasks.map((task) => <li key={task.id} data-complete={Boolean(study.completedPlanItems[task.id])}><Link href={task.href}><span>{task.kind} · {task.minutes} min</span><strong>{task.title}</strong></Link></li>)}</ol> : <><p>No study plan is saved yet. Choose your deadline, available days, and minutes.</p><button type="button" className="btn btn-outline btn-sm" onClick={() => selectTab("plan")}>Build my plan</button></>}</section>
             <section className="today-week"><p className="label">This week</p><div><strong>{weekly.attempts}</strong><span>attempts</span><strong>{weekly.minutes}</strong><span>minutes</span></div><button type="button" className="link-underlined" onClick={() => selectTab("progress")}>See weekly summary →</button></section>
+            <section className="today-tools">
+              <p className="label">Desk</p>
+              <p>Stuck on a unit, or working something out by hand?</p>
+              <div>
+                <button type="button" className="link-underlined" onClick={() => selectTab("watch")}>Video lessons →</button>
+                <button type="button" className="link-underlined" onClick={() => selectTab("scratch")}>Scratch paper →</button>
+              </div>
+            </section>
           </aside>
         </div> : null}
 
@@ -95,6 +107,15 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
         {activeTab === "mistakes" ? <MistakeNotebook items={allItems} courseSlug={selectedCourse} onReview={() => selectTab("review")} /> : null}
         {activeTab === "plan" ? <StudyPlanner courses={courses} items={allItems} selectedCourse={selectedCourse} now={now} /> : null}
         {activeTab === "focus" ? <FocusSession courses={courses} items={allItems} reviewItems={getReviewQueue(allItems, study, now)} selectedCourse={selectedCourse} now={now} /> : null}
+        {activeTab === "watch" ? <section aria-labelledby="watch-heading">
+          <div className="panel-heading"><div><p className="label">Video lessons</p><h2 id="watch-heading">Watch a teacher work through it</h2><p>Every video was opened and checked before it was listed: it plays, it is still public, and it teaches this course. Nothing loads from YouTube until you press play.</p></div><span className="tag">{selectedCourse === "all" ? "All courses" : selectedSubject?.familiar}</span></div>
+          {selectedCourse === "all" ? <div className="watch-groups">{subjects.filter((subject) => videosFor(subject.slug).length > 0).map((subject) => <section key={subject.slug} className="subject-scope" style={subjectVars(subject)} aria-labelledby={`watch-${subject.slug}`}><div className="watch-group-head"><h3 id={`watch-${subject.slug}`}>{subject.familiar}</h3><Link href={`/course/${subject.slug}`}>Course page →</Link></div><VideoShelf videos={videosFor(subject.slug)} compact /></section>)}</div> : <VideoShelf videos={videosFor(selectedCourse)} />}
+          <p className="mt-6 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>Prefer to read? The same unit is covered in the{" "}<Link href={`/course/${selectedCourse === "all" ? "apush" : selectedCourse}/notes`} className="link-underlined">course notes</Link>.</p>
+        </section> : null}
+        {activeTab === "scratch" ? <section aria-labelledby="scratch-tab-heading">
+          <div className="panel-heading"><div><p className="label">Scratch paper</p><h2 id="scratch-tab-heading">Work it out by hand</h2><p>Ruled paper, four pens, saved as you type. Use it for a derivation, a DBQ outline, or the three sentences you would open an essay with.</p></div></div>
+          <ScratchPad courseLabel={selectedSubject ? selectedSubject.familiar : "All courses"} />
+        </section> : null}
         {activeTab === "progress" ? <ProgressPanel items={allItems} courses={courses} selectedCourse={selectedCourse} now={now} /> : null}
         {activeTab === "data" ? <DataPanel courses={courses} selectedCourse={selectedCourse} /> : null}
       </>}

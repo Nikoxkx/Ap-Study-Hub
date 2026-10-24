@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageSocial } from "@/lib/site";
 import Link from "next/link";
 import { search, kindLabels, indexSize } from "@/lib/search";
 import { subjects, isSubjectSlug } from "@/lib/subjects";
@@ -10,6 +11,14 @@ export const metadata: Metadata = {
   // A results page is thin and infinitely variable. Keeping it out of the index
   // stops it generating near-duplicate pages for every query string.
   robots: { index: false, follow: true },
+  // Shared links still deserve a real card: people paste search URLs into group
+  // chats, and a bare grey rectangle is a worse introduction than the site's own.
+  ...pageSocial({
+    title: "Search every lesson, card, question and essay",
+    description:
+      "One index across seven AP courses, searchable by topic, key term or exam skill. Press ⌘K or Ctrl-K on any page.",
+    path: "/search",
+  }),
 };
 
 /**

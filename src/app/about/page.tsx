@@ -2,20 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead, Stat } from "@/components/Furniture";
 import { getCatalog, getTotals } from "@/lib/catalog";
-import { site, absoluteUrl } from "@/lib/site";
+import { pageSocial, site } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "About, and how the content is made",
   description:
     "Who writes AP Study Hub, how the notes and questions are produced and checked, what the site deliberately does not do, and where coverage is thin.",
-  alternates: { canonical: "/about" },
-  openGraph: {
-    title: "About AP Study Hub",
+  ...pageSocial({
+    title: "About, and how the content is made",
     description:
-      "Who writes it, how it is checked, and where the gaps are — stated plainly.",
-    url: absoluteUrl("/about"),
-  },
+      "Who writes it, how the notes and questions are produced and checked, and where the gaps are — stated plainly rather than implied.",
+    path: "/about",
+  }),
 };
 
 /**

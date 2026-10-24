@@ -5,7 +5,9 @@ import { getCourse } from "@/lib/catalog";
 import { formatExamDate } from "@/lib/subjects";
 import { SectionHead, EmptyNote, ExternalLink } from "@/components/Furniture";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
-import { absoluteUrl, describe } from "@/lib/site";
+import { videosFor } from "@/lib/videos";
+import { VideoShelf } from "@/components/VideoShelf";
+import { describe, pageSocial } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 
@@ -26,14 +28,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}` },
-    openGraph: {
-      type: "article",
-      title: `${subject.official} · AP Study Hub`,
-      description,
-      url: absoluteUrl(`/course/${subject.slug}`),
-    },
-    twitter: { card: "summary_large_image", title, description },
+    ...pageSocial({ title, description, path: `/course/${subject.slug}`, type: "article" }),
   };
 }
 
@@ -45,6 +40,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
   const { subject, counts, units, tips } = course;
   const base = `/course/${subject.slug}`;
   const channels = channelsFor(subject.slug);
+  const videos = videosFor(subject.slug);
 
   const modes = [
     {
@@ -196,7 +192,10 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       {/* Course-specific advice */}
       {tips.length > 0 ? (
         <section className="mt-16" aria-labelledby="tips-heading">
-          <SectionHead folio="03" title={`Things I wish I had known about ${subject.familiar}`} id="tips-heading" />
+          <SectionHead folio="03" title={`Things I wish I had known about ${subject.familiar}`} id="tips-heading">
+            Written after the exam, not before it. The pattern in these is almost always the same:
+            the content was known, the form of the answer was not.
+          </SectionHead>
           <div className="grid gap-x-10 gap-y-7 md:grid-cols-2">
             {tips.map((tip) => (
               <article key={tip.title} className="rule-top pt-4">
@@ -211,13 +210,36 @@ export default async function CourseOverviewPage({ params }: { params: Params })
         </section>
       ) : null}
 
+      {/* Video lessons — embeds that were checked one by one */}
+      {videos.length > 0 ? (
+        <section className="mt-20" aria-labelledby="videos-heading">
+          <SectionHead folio={tips.length > 0 ? "04" : "03"} title="Watch a teacher work through it" id="videos-heading">
+            {videos.length} videos chosen for the units students actually get stuck on, embedded here
+            so you do not have to leave the notes. Each one was opened and checked before it was
+            listed: it plays, it has not been taken down, and it teaches this course rather than a
+            neighbouring one. Press play when you want it; nothing loads from YouTube until you do.
+          </SectionHead>
+
+          <VideoShelf videos={videos} headingId="videos-heading" />
+
+          <p className="mt-5 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
+            Videos are third-party teaching, not part of this site&apos;s own material. If one has
+            been removed since it was checked,{" "}
+            <ExternalLink href={`${channels[0] ? channelUrl(channels[0]) : "https://www.youtube.com"}`} className="link-underlined">
+              the channel
+            </ExternalLink>{" "}
+            will still have the rest of the series.
+          </p>
+        </section>
+      ) : null}
+
       {/* Lectures */}
       {channels.length > 0 ? (
-        <section className="mt-16" aria-labelledby="lectures-heading">
-          <SectionHead folio={tips.length > 0 ? "04" : "03"} title="Who to watch" id="lectures-heading">
-            Channels rather than individual videos. A channel handle keeps working when a creator
-            reorganises their playlists; a hardcoded video ID does not, and a page full of dead
-            embeds is worse than no embeds. Each link is scoped to this course.
+        <section className="mt-20" aria-labelledby="lectures-heading">
+          <SectionHead folio={videos.length > 0 ? (tips.length > 0 ? "05" : "04") : tips.length > 0 ? "04" : "03"} title="Who to watch" id="lectures-heading">
+            The channels behind those videos, plus the ones worth following for the whole course. A
+            channel handle keeps working when a creator reorganises their playlists, which is why
+            these are links rather than another row of embeds.
           </SectionHead>
 
           <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2">

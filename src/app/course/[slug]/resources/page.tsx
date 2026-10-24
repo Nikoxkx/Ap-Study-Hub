@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
 import { ExternalLink, SectionHead } from "@/components/Furniture";
-import { absoluteUrl } from "@/lib/site";
+import { describe, pageSocial } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 /**
@@ -23,13 +23,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const { subject, counts } = course;
   const title = `${subject.familiar} sources and links`;
-  const description = `${counts.resources} checked links for ${subject.official}: College Board material, primary archives, and the teachers worth watching.`;
+  const description = describe(
+    `${counts.resources} checked links for ${subject.official}: College Board material, primary archives, and teachers worth watching.`,
+    `Every link was opened and dated before it was listed; dead ones are removed rather than left in.`,
+  );
 
   return {
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/resources` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/resources`) },
+    ...pageSocial({ title, description, path: `/course/${subject.slug}/resources`, type: "article" }),
   };
 }
 

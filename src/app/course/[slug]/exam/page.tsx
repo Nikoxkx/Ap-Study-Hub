@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { formatExamDate } from "@/lib/subjects";
 import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { TimedPaper } from "@/components/TimedPaper";
-import { absoluteUrl } from "@/lib/site";
+import { describe, pageSocial } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 /**
@@ -23,13 +24,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { subject, mockExams } = course;
   const minutes = mockExams[0]?.sections.reduce((sum, s) => sum + s.timeMinutes, 0) ?? 0;
   const title = `${subject.familiar} timed practice paper`;
-  const description = `A ${minutes}-minute original ${subject.familiar} timed practice set with a running clock, constructed source packets, and transparent self-check criteria.`;
+  const description = describe(
+    `Sit an original ${minutes}-minute ${subject.familiar} paper with a running clock and constructed source packets.`,
+    `Every question is written for this site, with the answers and self-check criteria shown afterwards.`,
+    `Exam ${formatExamDate(subject, "short")}. Free, no account.`,
+  );
 
   return {
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/exam` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/exam`) },
+    ...pageSocial({ title, description, path: `/course/${subject.slug}/exam`, type: "article" }),
   };
 }
 

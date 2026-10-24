@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
-import { site, absoluteUrl, formatDate } from "@/lib/site";
+import { site, formatDate, pageSocial } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Accessibility",
   description:
     "What AP Study Hub does to meet WCAG 2.2 AA, the keyboard shortcuts on every study tool, and the known problems that have not been fixed yet.",
-  alternates: { canonical: "/accessibility" },
-  openGraph: {
-    title: "Accessibility · AP Study Hub",
-    description: "Conformance, keyboard shortcuts, and an honest list of what is still broken.",
-    url: absoluteUrl("/accessibility"),
-  },
+  ...pageSocial({
+    title: "Accessibility",
+    description:
+      "Conformance, keyboard shortcuts for every study tool, reduced-motion support, and an honest list of what is still broken.",
+    path: "/accessibility",
+  }),
 };
 
 /**

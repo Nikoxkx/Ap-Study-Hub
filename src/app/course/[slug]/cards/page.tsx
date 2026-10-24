@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCourse } from "@/lib/catalog";
 import { CardDeck } from "@/components/CardDeck";
-import { absoluteUrl } from "@/lib/site";
+import { describe, pageSocial } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 
@@ -14,13 +14,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const { subject, counts } = course;
   const title = `${subject.familiar} flashcards`;
-  const description = `${counts.flashcards} ${subject.familiar} cards covering the terms the exam expects you to define. Keyboard-driven, marks what you miss, no account.`;
+  const description = describe(
+    `${counts.flashcards} ${subject.familiar} index cards covering the terms the exam expects you to define.`,
+    `Answer on the back, keyboard-driven, and it remembers which ones you keep missing.`,
+    `Free, no account.`,
+  );
 
   return {
     title,
     description,
-    alternates: { canonical: `/course/${subject.slug}/cards` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/cards`) },
+    ...pageSocial({ title, description, path: `/course/${subject.slug}/cards`, type: "article" }),
   };
 }
 

@@ -55,6 +55,18 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
 
+  /**
+   * The social cards are drawn at request time and read their fonts and the
+   * paper photograph off disk. Serverless bundles only include what the tracer
+   * can see, and `process.cwd()` paths are not visible, so list them here —
+   * without this the cards fail on the first deployment and work locally,
+   * which is the worst possible way to find out.
+   */
+  outputFileTracingIncludes: {
+    "/**/opengraph-image*": ["./assets/og/**", "./public/textures/**"],
+    "/opengraph-image*": ["./assets/og/**", "./public/textures/**"],
+  },
+
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

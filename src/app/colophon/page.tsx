@@ -3,19 +3,19 @@ import Link from "next/link";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
 import { subjects } from "@/lib/subjects";
 import { indexSize } from "@/lib/search";
-import { site, absoluteUrl } from "@/lib/site";
+import { site, pageSocial } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Colophon",
   description:
     "The typefaces, palette, build and design decisions behind AP Study Hub, written down so they can be argued with.",
-  alternates: { canonical: "/colophon" },
-  openGraph: {
-    title: "Colophon · AP Study Hub",
-    description: "Typefaces, palette, stack and the reasoning behind each choice.",
-    url: absoluteUrl("/colophon"),
-  },
+  ...pageSocial({
+    title: "Colophon",
+    description:
+      "Typefaces, palette, stack and the reasoning behind each choice — including the paper the site is set on and why nothing is loaded from a third party.",
+    path: "/colophon",
+  }),
 };
 
 /**
@@ -190,8 +190,40 @@ export default function ColophonPage() {
           </div>
         </section>
 
+        <section className="mt-16" aria-labelledby="paper-heading">
+          <SectionHead folio="02" title="Paper and glass" id="paper-heading">
+            The surface the site is set on changed from a flat colour to three photographs of real
+            paper, used differently in each theme.
+          </SectionHead>
+
+          <div className="prose">
+            <p>
+              The desk behind everything is a crumpled sheet of ruled paper, photographed and then
+              washed back far enough that body copy still clears its contrast ratios unchanged. Inside
+              panels the same photograph appears at a fraction of its strength. Anything you write on —
+              the worked-solution paper, the writing studio, the scratch pad — is a photographed sheet
+              with <em>drawn</em> rules on top: the photograph supplies the crumple and the fibre, the
+              drawn rules supply accuracy, because a photographed rule can never be made to line up
+              with real text at every font size.
+            </p>
+            <p>
+              Dark mode is not an inversion of that. It is the same desk at eleven at night: the paper
+              is still there, dim and warm under one lamp, and everything you read from is a sheet of
+              translucent glass lying on it — a cool fill, a hairline of light along the top edge, and
+              a shadow deep enough to lift it. The colour of the accent changes with it, from marking
+              red to a lit peach, because #b0392a on near-black reads as a bruise.
+            </p>
+            <p>
+              Two details are drawn rather than photographed, and both are cheaper and more honest for
+              it: the punch holes down the left edge of the scratch pad, and the grain that keeps large
+              dark fields from banding. The torn edge of a note scrap is a photograph, cut to a
+              transparency so the shadow underneath it follows the tear.
+            </p>
+          </div>
+        </section>
+
         <section className="mt-16" aria-labelledby="palette-heading">
-          <SectionHead folio="02" title="Palette" id="palette-heading">
+          <SectionHead folio="03" title="Palette" id="palette-heading">
             Seven subject colours plus a neutral paper-and-ink base and one accent. Every pairing
             used for text was checked against WCAG AA at its actual size.
           </SectionHead>
@@ -241,7 +273,7 @@ export default function ColophonPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="decisions-heading">
-          <SectionHead folio="03" title="Decisions, and why" id="decisions-heading" />
+          <SectionHead folio="04" title="Decisions, and why" id="decisions-heading" />
           <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
             {decisions.map((item) => (
               <article key={item.heading} className="rule-top pt-4">
@@ -255,7 +287,7 @@ export default function ColophonPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="stack-heading">
-          <SectionHead folio="04" title="Build" id="stack-heading" />
+          <SectionHead folio="05" title="Build" id="stack-heading" />
           <div className="table-scroll">
             <table className="data-table">
               <caption className="sr-only">The technical stack behind AP Study Hub</caption>
@@ -288,7 +320,7 @@ export default function ColophonPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="ai-heading">
-          <SectionHead folio="05" title="AI & tooling — where it was used" id="ai-heading">
+          <SectionHead folio="06" title="AI & tooling — where it was used" id="ai-heading">
             AI was a collaborator, not an autopilot. Drafts and boilerplate were often AI-assisted,
             but structure, fact-checking, and final decisions were human. Full breakdown lives at{" "}
             <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>

@@ -4,19 +4,19 @@ import { channels, channelUrl } from "@/lib/channels";
 import { subjects } from "@/lib/subjects";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
-import { absoluteUrl } from "@/lib/site";
+import { pageSocial } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "How to revise for an AP exam",
   description:
     "Study methods that survive contact with a real AP exam: spacing, self-testing, reading a stimulus, the last fortnight, and what a score is actually worth.",
-  alternates: { canonical: "/guides" },
-  openGraph: {
-    title: "How to revise for an AP exam · AP Study Hub",
+  ...pageSocial({
+    title: "How to revise for an AP exam",
     description:
-      "Spacing, self-testing, reading a stimulus, the last fortnight, and where AP credit actually gets accepted.",
-    url: absoluteUrl("/guides"),
-  },
+      "Spacing, self-testing, reading a stimulus, the last fortnight, and where AP credit actually gets accepted — the methods that survive contact with a real exam.",
+    path: "/guides",
+    type: "article",
+  }),
 };
 
 /**

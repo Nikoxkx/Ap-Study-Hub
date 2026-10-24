@@ -87,3 +87,44 @@ export function formatDate(iso: string): string {
     timeZone: "UTC",
   });
 }
+
+/**
+ * Social and canonical metadata for one page, in one call.
+ *
+ * Pages used to each write their own `openGraph` object, which meant most of
+ * them quietly dropped `siteName`, `locale` and the Twitter card, and three of
+ * them disagreed about whether the title should carry the site name — so the
+ * same link previewed differently depending on which page you shared. This
+ * returns the whole block, and the OG image itself comes from the route's
+ * `opengraph-image.tsx`, which Next wires up automatically.
+ */
+export function pageSocial({
+  title,
+  description,
+  path,
+  type = "website",
+}: {
+  title: string;
+  description: string;
+  path: string;
+  type?: "website" | "article";
+}) {
+  const url = absoluteUrl(path);
+  const fullTitle = title.includes(site.name) ? title : `${title} · ${site.name}`;
+  return {
+    alternates: { canonical: path },
+    openGraph: {
+      type,
+      siteName: site.name,
+      locale: site.locale,
+      url,
+      title: fullTitle,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: fullTitle,
+      description,
+    },
+  };
+}
