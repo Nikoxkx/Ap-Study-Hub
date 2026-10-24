@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
+import { useStudyState } from "@/lib/use-study-state";
+import { cardStudyId, scheduleReview } from "@/lib/study-model";
+import type { SubjectSlug } from "@/lib/subjects";
 
 /**
  * Card deck.
@@ -22,6 +25,7 @@ import { useStoredState } from "@/lib/use-stored-state";
  */
 
 export interface Card {
+  id: string;
   front: string;
   back: string;
   unitNumber?: number;
@@ -32,7 +36,7 @@ type Verdict = "again" | "got";
 
 interface DeckProps {
   cards: Card[];
-  courseSlug: string;
+  courseSlug: SubjectSlug;
   courseLabel: string;
 }
 
@@ -85,6 +89,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
     NO_VERDICTS,
     reviveVerdicts,
   );
+  const [, setStudy] = useStudyState();
 
   const missedCount = useMemo(
     () => Object.values(verdicts).filter((v) => v === "again").length,
@@ -116,9 +121,17 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
   const mark = useCallback(
     (verdict: Verdict) => {
       setVerdicts((current) => ({ ...current, [cardIndex]: verdict }));
+      setStudy((current) => scheduleReview(current, {
+        itemId: cardStudyId(courseSlug, card.id),
+        courseSlug,
+        kind: "review",
+        grade: verdict === "got" ? "good" : "again",
+        correct: verdict === "got",
+        chosen: verdict === "again" ? "Marked for another pass" : undefined,
+      }));
       step(1);
     },
-    [cardIndex, step, setVerdicts],
+    [card.id, cardIndex, courseSlug, step, setVerdicts, setStudy],
   );
 
   const shuffle = useCallback(() => {

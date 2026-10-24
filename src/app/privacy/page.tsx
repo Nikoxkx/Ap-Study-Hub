@@ -40,6 +40,36 @@ const storageKeys = [
     what: "Draft text you typed into a timed paper's written sections, so a refresh does not destroy it.",
     when: "Autosaved while you are sitting a paper.",
   },
+  {
+    key: "aps.study.v1",
+    what: "Review schedules, confidence, mistakes, plans, objective evidence, writing tasks, focus minutes, and weekly history.",
+    when: "Updated as you use the shared study tools.",
+  },
+  {
+    key: "aps.frq.v1.{course}",
+    what: "Your FRQ drafts, self-assessment marks, and rubric reflections.",
+    when: "Saved when you leave the FRQ Studio.",
+  },
+  {
+    key: "aps.frq-marks.v1.{course}",
+    what: "Your self-assessment marks for marked essay and writing examples.",
+    when: "Saved as you work through a rubric.",
+  },
+  {
+    key: "aps.lab.v1.{activity}",
+    what: "Your annotations or data-analysis notes for a course activity.",
+    when: "Autosaved while you use an interactive lab.",
+  },
+  {
+    key: "aps.matrix.v1.{activity}",
+    what: "Your synthesis-matrix entries and source notes.",
+    when: "Autosaved while you use the Seminar matrix.",
+  },
+  {
+    key: "aps.research.v1.{activity}",
+    what: "Your Research question or oral-defense rehearsal notes.",
+    when: "Autosaved while you use a Research lab.",
+  },
 ];
 
 export default function PrivacyPage() {
@@ -85,9 +115,9 @@ export default function PrivacyPage() {
 
         <section className="mt-14" aria-labelledby="storage-heading">
           <SectionHead folio="02" title="What is stored on your device" id="storage-heading">
-            Three keys in <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>localStorage</code>,
-            all of them your own study state. They stay on your machine — there is no server to send
-            them to.
+            The localStorage keys below hold your own study state. They stay on your machine —
+            there is no server to send them to. Course and paper placeholders are replaced by the
+            relevant subject or activity ID.
           </SectionHead>
 
           <div className="table-scroll">
@@ -115,9 +145,10 @@ export default function PrivacyPage() {
           </div>
 
           <p className="mt-4 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            To clear them, clear site data for this domain in your browser settings, or open a
-            private window and none will be written at all. Nothing on the site breaks without them
-            — you just lose your place.
+            To clear them, clear site data for this domain in your browser settings, use Reset local
+            study data on the Study page, or open a private window. Offline course packs also use
+            this browser’s Cache Storage for pages and assets. Nothing on the site breaks without
+            local data — you just lose your place and saved work.
           </p>
         </section>
 
@@ -128,6 +159,10 @@ export default function PrivacyPage() {
               The site loads no third-party resources: no font CDN, no script CDN, no embedded
               video, no tag manager, no social widgets. Everything you download when you open a page
               comes from this domain.
+            </p>
+            <p>
+              A backup is created only when you choose Export backup; it downloads as a JSON file
+              on your device. Restoring reads only the file you explicitly choose in the file picker.
             </p>
             <p>
               There are outbound links, to the College Board, to reference archives and to YouTube

@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { useCallback, useId, useMemo, useState } from "react";
+import { useStudyState } from "@/lib/use-study-state";
+import { questionStudyId, scheduleReview } from "@/lib/study-model";
+import type { SubjectSlug } from "@/lib/subjects";
+import { MathAwareText } from "@/lib/math";
 
 /**
  * Practice set.
@@ -26,6 +30,7 @@ export interface Question {
   skill?: string;
   unitNumber?: number;
   lessonTitle?: string;
+  optionExplanations?: string[];
 }
 
 const LETTERS = ["A", "B", "C", "D", "E", "F"];
@@ -36,7 +41,7 @@ export function PracticeSet({
   initialUnit,
 }: {
   questions: Question[];
-  courseSlug: string;
+  courseSlug: SubjectSlug;
   initialUnit?: number;
 }) {
   const groupId = useId();
@@ -46,6 +51,7 @@ export function PracticeSet({
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [finished, setFinished] = useState(false);
   const [unitFilter, setUnitFilter] = useState(initialUnit ? String(initialUnit) : "all");
+  const [, setStudy] = useStudyState();
 
   const unitOptions = useMemo(() => {
     const units = new Map<number, string>();
@@ -74,11 +80,33 @@ export function PracticeSet({
     [answers, questions],
   );
 
+  const skillDiagnostics = useMemo(() => {
+    const rows = new Map<string, { skill: string; answered: number; correct: number }>();
+    for (const item of questions) {
+      if (!(item.id in answers)) continue;
+      const skill = item.skill || "Course-wide reasoning";
+      const row = rows.get(skill) ?? { skill, answered: 0, correct: 0 };
+      row.answered += 1;
+      if (answers[item.id] === item.correctIndex) row.correct += 1;
+      rows.set(skill, row);
+    }
+    return [...rows.values()].sort((a, b) => a.correct / a.answered - b.correct / b.answered);
+  }, [answers, questions]);
+
   const check = useCallback(() => {
     if (choice === null) return;
+    const correct = choice === question.correctIndex;
     setChecked(true);
     setAnswers((current) => ({ ...current, [question.id]: choice }));
-  }, [choice, question.id]);
+    setStudy((current) => scheduleReview(current, {
+      itemId: questionStudyId(courseSlug, question.id),
+      courseSlug,
+      kind: "practice",
+      grade: correct ? "good" : "again",
+      correct,
+      chosen: question.options[choice],
+    }));
+  }, [choice, question, courseSlug, setStudy]);
 
   const advance = useCallback(() => {
     if (index + 1 >= questions.length) {
@@ -128,11 +156,9 @@ export function PracticeSet({
             <span style={{ color: "var(--ink-faint)", fontSize: "1.5rem" }}>/{answered}</span>
           </p>
           <p className="mt-3 max-w-[46ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            {percent >= 80
-              ? "That is comfortably in the range you want. Move on to the harder material — timed writing, or the units you have been avoiding."
-              : percent >= 55
-                ? "Roughly where most people are a few weeks out. The gap is almost always specific rather than general: look at what you missed below."
-                : "Worth going back to the notes before doing more questions. Getting the same thing wrong faster does not help."}
+            {answered > 0
+              ? `You answered ${percent}% of this original set correctly. This describes this session only; use the skill breakdown and explanations below to choose what to revisit.`
+              : "No answers were recorded in this session."}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2">
@@ -147,6 +173,28 @@ export function PracticeSet({
           </div>
         </div>
 
+        {skillDiagnostics.length > 0 ? (
+          <section className="mt-10" aria-labelledby="skill-diagnostics-heading">
+            <h3 id="skill-diagnostics-heading" className="mb-2 rule-top pt-5 text-[1.25rem]">Skill diagnostics</h3>
+            <p className="mb-4 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
+              These are counts from this set, not a predicted AP score. Small samples are directional, not definitive.
+            </p>
+            <ol className="rule-top">
+              {skillDiagnostics.map((row) => (
+                <li key={row.skill} className="grid gap-2 rule-bottom py-3 sm:grid-cols-[minmax(0,1fr)_7rem_4rem] sm:items-center">
+                  <span className="text-[0.875rem] font-semibold">{row.skill}</span>
+                  <span className="h-1.5" style={{ background: "var(--paper-sunk)" }} aria-hidden="true">
+                    <span className="block h-full" style={{ width: `${(row.correct / row.answered) * 100}%`, background: row.correct === row.answered ? "var(--good)" : "var(--subject-ink)" }} />
+                  </span>
+                  <span className="tnum text-[0.75rem] sm:text-right" style={{ fontFamily: "var(--font-mono)", color: "var(--ink-soft)" }}>
+                    {row.correct}/{row.answered}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ) : null}
+
         {missed.length > 0 ? (
           <section className="mt-10" aria-labelledby="missed-heading">
             <h3 id="missed-heading" className="mb-4 rule-top pt-5 text-[1.25rem]">
@@ -155,15 +203,15 @@ export function PracticeSet({
             <ol className="space-y-6">
               {missed.map((q) => (
                 <li key={q.id} className="rule-top pt-4">
-                  <p className="text-[0.9375rem] font-semibold">{q.question}</p>
+                  <p className="text-[0.9375rem] font-semibold"><MathAwareText>{q.question}</MathAwareText></p>
                   <p className="mt-2 text-[0.875rem]" style={{ color: "var(--mark)" }}>
-                    You chose {LETTERS[answers[q.id]]} — {q.options[answers[q.id]]}
+                    You chose {LETTERS[answers[q.id]]} — <MathAwareText>{q.options[answers[q.id]]}</MathAwareText>
                   </p>
                   <p className="mt-1 text-[0.875rem]" style={{ color: "var(--good)" }}>
-                    Correct: {LETTERS[q.correctIndex]} — {q.options[q.correctIndex]}
+                    Correct: {LETTERS[q.correctIndex]} — <MathAwareText>{q.options[q.correctIndex]}</MathAwareText>
                   </p>
                   <p className="mt-2.5 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
-                    {q.explanation}
+                    <MathAwareText>{q.explanation}</MathAwareText>
                   </p>
                   {q.unitNumber ? (
                     <p className="mt-2 text-[0.8125rem]">
@@ -183,6 +231,7 @@ export function PracticeSet({
 
   /* ── Question ──────────────────────────────────────────────────────── */
   const correct = checked && choice === question.correctIndex;
+  const selectedOptionExplanation = choice === null ? undefined : question.optionExplanations?.[choice];
 
   return (
     <div>
@@ -257,7 +306,7 @@ export function PracticeSet({
           className="mb-5 block text-[clamp(1.0625rem,1rem+0.35vw,1.1875rem)]"
           style={{ fontFamily: "var(--font-display)", lineHeight: 1.4, float: "left", width: "100%" }}
         >
-          {question.question}
+          <MathAwareText>{question.question}</MathAwareText>
         </legend>
 
         <div className="space-y-2">
@@ -328,7 +377,7 @@ export function PracticeSet({
                   {LETTERS[optionIndex]}
                 </span>
                 <span className="text-[0.9375rem]" style={{ lineHeight: 1.5 }}>
-                  {option}
+                  <MathAwareText>{option}</MathAwareText>
                 </span>
               </label>
             );
@@ -357,8 +406,13 @@ export function PracticeSet({
                 : `Not quite — the answer is ${LETTERS[question.correctIndex]}`}
             </p>
             <p className="text-[0.9375rem]" style={{ color: "var(--ink)", lineHeight: 1.6 }}>
-              {question.explanation}
+              <MathAwareText>{question.explanation}</MathAwareText>
             </p>
+            {selectedOptionExplanation ? (
+              <p className="mt-2 text-[0.875rem]" style={{ color: "var(--ink-soft)", lineHeight: 1.6 }}>
+                <strong>About your option:</strong> {selectedOptionExplanation}
+              </p>
+            ) : null}
             {question.unitNumber ? (
               <p className="mt-3 text-[0.8125rem]">
                 <Link

@@ -114,6 +114,7 @@ export function MobileNav() {
             <p className="label mb-2">Elsewhere</p>
             <ul className="mb-4 grid grid-cols-2 gap-x-4">
               {[
+                { href: "/study", label: "Your study desk" },
                 { href: "/guides", label: "Study guides" },
                 { href: "/about", label: "About" },
                 { href: "/search", label: "Search" },

@@ -295,7 +295,7 @@ export const flashcardsData: Record<string, { front: string; back: string }[]> =
     { front: "What is the derivative of sin(x)?", back: "d/dx[sin x] = cos x" },
     { front: "What is the derivative of e^x?", back: "d/dx[e^x] = e^x (it's its own derivative)" },
     { front: "What is the derivative of ln(x)?", back: "d/dx[ln x] = 1/x" },
-    { front: "What is the Fundamental Theorem of Calculus?", back: "Part 1: d/dx[���[a,x] f(t)dt] = f(x). Part 2: ∫[a,b] f(x)dx = F(b) - F(a)" },
+    { front: "What is the Fundamental Theorem of Calculus?", back: "Part 1: d/dx[∫[a,x] f(t)dt] = f(x). Part 2: ∫[a,b] f(x)dx = F(b) − F(a)." },
     { front: "What is u-substitution?", back: "Integration technique: let u = inner function, du = derivative, substitute to simplify." },
     { front: "What is the disk method?", back: "V = π∫[a,b] [R(x)]² dx — for volume of revolution around an axis." },
     { front: "How do you find critical points?", back: "Set f'(x) = 0 or find where f'(x) is undefined." },

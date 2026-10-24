@@ -29,6 +29,8 @@ export interface Unit {
 }
 
 export interface Flashcard {
+  /** Stable content identity, independent of deck order. */
+  id: string;
   front: string;
   back: string;
   unitNumber?: number;
@@ -144,11 +146,15 @@ export function getCourse(slug: SubjectSlug | string): CourseBundle | null {
   // where they add something, with a unit inferred only from an exact topic map.
   const seenTerms = new Set<string>();
   const flashcards: Flashcard[] = [];
-  const addCard = (card: Flashcard) => {
+  const addCard = (card: Omit<Flashcard, "id"> & { id?: string }) => {
     const key = normalized(card.front);
     if (seenTerms.has(key)) return;
     seenTerms.add(key);
-    flashcards.push(card);
+    const contentKey = key.replace(/\s+/g, "-").slice(0, 140);
+    flashcards.push({
+      ...card,
+      id: card.id ?? `${card.unitNumber ?? "course"}:${contentKey}`,
+    });
   };
 
   for (const lesson of lessons) {

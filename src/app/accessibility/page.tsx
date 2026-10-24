@@ -61,7 +61,9 @@ const shortcuts = [
   { keys: "S", where: "Card deck", does: "Shuffle the deck" },
   { keys: "↑ / ↓", where: "Practice questions", does: "Move between answer options within a question" },
   { keys: "Enter", where: "Search box", does: "Go to the full results page" },
-  { keys: "Esc", where: "Search box, mobile menu", does: "Close the panel and restore focus" },
+  { keys: "Ctrl / Cmd + K", where: "Everywhere", does: "Open the course and lesson command navigator" },
+  { keys: "↑ / ↓ + Enter", where: "Command navigator", does: "Choose and open a command" },
+  { keys: "Esc", where: "Search, navigator, mobile menu", does: "Close the panel and restore focus" },
 ];
 
 const known = [

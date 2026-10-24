@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import "katex/dist/katex.min.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ThemeScript } from "@/components/ThemeControl";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { site } from "@/lib/site";
 import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
 
@@ -69,7 +71,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#f6f3ec" },
-    { media: "(prefers-color-scheme: dark)", color: "#141412" },
+    { media: "(prefers-color-scheme: dark)", color: "#11120f" },
   ],
 };
 
@@ -102,6 +104,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <SiteFooter />
+        <ServiceWorkerRegister />
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
       </body>
     </html>

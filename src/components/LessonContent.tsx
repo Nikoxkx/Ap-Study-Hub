@@ -3,6 +3,9 @@ import type { Lesson, SourceId } from "@/content/lessons";
 import { getSource } from "@/content/lessons";
 import { ExternalLink } from "@/components/Furniture";
 import { Markdown, slugify } from "@/lib/markdown";
+import { getWorkedExamples } from "@/content/worked";
+import { WorkedPaper } from "@/components/WorkedPaper";
+import { ObjectiveTracker } from "@/components/ObjectiveTracker";
 
 /**
  * Structured lesson body. Paragraphs stay separate instead of being collapsed
@@ -22,16 +25,21 @@ export function LessonContent({ lesson, courseSlug }: { lesson: Lesson; courseSl
         <h4 id={`unit-${lesson.unitNumber}-objectives`} className="label mb-3">
           By the end of this lesson, you should be able to
         </h4>
-        <ol className="space-y-2.5">
+        <ol className="space-y-3">
           {lesson.objectives.map((objective, index) => (
-            <li key={objective} className="flex gap-3 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-              <span aria-hidden="true" className="shrink-0 tabular-nums" style={{ fontFamily: "var(--font-mono)", color: "var(--subject-ink)" }}>
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span>{objective}</span>
+            <li key={objective}>
+              <ObjectiveTracker
+                courseSlug={courseSlug}
+                unitNumber={lesson.unitNumber}
+                index={index}
+                objective={objective}
+              />
             </li>
           ))}
         </ol>
+        <p className="mt-4 text-[0.75rem]" style={{ color: "var(--ink-faint)" }}>
+          Rate what you can do, not what feels familiar. These choices stay on this device and shape your progress map.
+        </p>
       </section>
 
       <div className="prose">
@@ -67,6 +75,20 @@ export function LessonContent({ lesson, courseSlug }: { lesson: Lesson; courseSl
           );
         })}
       </div>
+
+      {getWorkedExamples(courseSlug, lesson.unitNumber).length > 0 ? (
+        <section aria-labelledby={`unit-${lesson.unitNumber}-worked`} className="mb-12">
+          <h4 id={`unit-${lesson.unitNumber}-worked`} className="mb-4 rule-top pt-6 text-[1.125rem]">
+            Worked solution & scratch work
+          </h4>
+          <p className="mb-5 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+            Cover the steps and try the problem first. Then compare both the notation and the reason for each line.
+          </p>
+          {getWorkedExamples(courseSlug, lesson.unitNumber).map((example) => (
+            <WorkedPaper key={example.id} example={example} />
+          ))}
+        </section>
+      ) : null}
 
       <section aria-labelledby={`unit-${lesson.unitNumber}-glossary`} className="mb-10 rule-top pt-6">
         <h4 id={`unit-${lesson.unitNumber}-glossary`} className="mb-4 text-[1.125rem]">
