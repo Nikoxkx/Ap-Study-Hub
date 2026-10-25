@@ -6,6 +6,8 @@ import type { StudyCourse } from "@/lib/study-data";
 import type { StudyItem, StudyPlanSettings } from "@/lib/study-model";
 import { useStudyState } from "@/lib/use-study-state";
 import type { SubjectSlug } from "@/lib/subjects";
+import { DownloadButton } from "@/components/ui/DownloadButton";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -38,7 +40,7 @@ export function StudyPlanner({ courses, items, selectedCourse, now }: {
 
   return (
     <section aria-labelledby="study-plan-heading">
-      <div className="panel-heading"><div><p className="label">A plan for your real week</p><h2 id="study-plan-heading">{days.length} {days.length === 1 ? "day that fits" : "days that fit"} your real life</h2><p>Lessons, review, and practice come from the selected course. Change any input and the plan and calendar regenerate.</p></div><button type="button" className="btn btn-solid btn-sm" onClick={download} disabled={days.length === 0}>Export calendar (.ics)</button></div>
+      <div className="panel-heading"><div><p className="label">A plan for your real week</p><h2 id="study-plan-heading">{days.length} {days.length === 1 ? "day that fits" : "days that fit"} your real life</h2><p>Lessons, review, and practice come from the selected course. Change any input and the plan and calendar regenerate.</p></div><DownloadButton onClick={download} disabled={days.length === 0}>Export .ics</DownloadButton></div>
 
       <div className="planner-settings">
         <label><span className="label">Course & deadline</span><select className="field mt-2" value={course.slug} onChange={(event) => update({ courseSlug: event.target.value as SubjectSlug })}>{courses.map((item) => <option key={item.slug} value={item.slug}>{item.label} · {item.examDate}</option>)}</select></label>
@@ -54,9 +56,9 @@ export function StudyPlanner({ courses, items, selectedCourse, now }: {
           return <details key={day.date} open={dayIndex < 2} className="plan-day">
             <summary><span><strong>{new Date(`${day.date}T12:00:00`).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}</strong><small>{day.tasks.reduce((sum, task) => sum + task.minutes, 0)} minutes</small></span><span className="label">{complete}/{day.tasks.length} complete</span></summary>
             <ol>{day.tasks.map((task) => <li key={task.id} data-complete={Boolean(study.completedPlanItems[task.id])}>
-              <input type="checkbox" id={`plan-${task.id}`} checked={Boolean(study.completedPlanItems[task.id])} onChange={(event) => setStudy((current) => {
+              <Checkbox id={`plan-${task.id}`} checked={Boolean(study.completedPlanItems[task.id])} onCheckedChange={(checked) => setStudy((current) => {
                 const completedPlanItems = { ...current.completedPlanItems };
-                if (event.target.checked) completedPlanItems[task.id] = now; else delete completedPlanItems[task.id];
+                if (checked) completedPlanItems[task.id] = now; else delete completedPlanItems[task.id];
                 return { ...current, completedPlanItems };
               })} />
               <label htmlFor={`plan-${task.id}`}><span className="label">{task.kind} · {task.minutes} min</span><strong>{task.title}</strong><p>{task.detail}</p><Link href={task.href}>Open task →</Link></label>

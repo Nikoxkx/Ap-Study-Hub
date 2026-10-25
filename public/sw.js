@@ -1,6 +1,6 @@
 /* AP Study Hub offline worker. Same-origin pages and assets only; YouTube thumbnails, opt-in player frames, and sync requests bypass this worker. */
-const PAGES = "aps-study-pages-v3";
-const ASSETS = "aps-study-assets-v3";
+const PAGES = "aps-study-pages-v6";
+const ASSETS = "aps-study-assets-v6";
 const CORE = ["/", "/study", "/videos", "/integrations", "/manifest.webmanifest", "/pwa-icon/192", "/pwa-icon/512", "/og-image.png", "/social-preview.png"];
 
 self.addEventListener("install", (event) => {
@@ -49,7 +49,9 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin || url.pathname.startsWith("/api/") || url.pathname === "/sw.js") return;
-  if (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/fonts/") || url.pathname.startsWith("/pwa-icon/") || url.pathname === "/icon" || url.pathname === "/apple-icon" || url.pathname === "/og-image.png" || url.pathname === "/social-preview.png") {
+  if (url.pathname.startsWith("/_next/static/")) {
+    event.respondWith(networkFirst(request));
+  } else if (url.pathname.startsWith("/fonts/") || url.pathname.startsWith("/icons/") || url.pathname.startsWith("/bg-") || url.pathname.startsWith("/pwa-icon/") || url.pathname === "/icon" || url.pathname === "/apple-icon" || url.pathname === "/og-image.png" || url.pathname === "/social-preview.png") {
     event.respondWith(cacheFirst(request));
   } else {
     event.respondWith(networkFirst(request));

@@ -6,6 +6,7 @@ import { useStoredState } from "@/lib/use-stored-state";
 import { useStudyState } from "@/lib/use-study-state";
 import { cardStudyId, scheduleReview } from "@/lib/study-model";
 import type { SubjectSlug } from "@/lib/subjects";
+import { NeumorphicSwitch } from "@/components/ui/NeumorphicSwitch";
 
 /**
  * Card deck.
@@ -322,19 +323,17 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
         <button type="button" onClick={shuffle} className="btn btn-quiet btn-sm">
           Shuffle
         </button>
-        <button
-          type="button"
-          onClick={() => {
-            setOnlyMissed((v) => !v);
-            setPosition(0);
-            setFlipped(false);
-          }}
-          className="btn btn-quiet btn-sm"
-          aria-pressed={onlyMissed}
-          disabled={missedCount === 0}
-        >
-          {onlyMissed ? "All cards" : `Redo missed (${missedCount})`}
-        </button>
+        {missedCount > 0 ? (
+          <NeumorphicSwitch
+            checked={onlyMissed}
+            onChange={(next) => {
+              setOnlyMissed(next);
+              setPosition(0);
+              setFlipped(false);
+            }}
+            label={`Missed only (${missedCount})`}
+          />
+        ) : null}
         {reviewed > 0 ? (
           <button type="button" onClick={reset} className="btn btn-quiet btn-sm">
             Clear marks
@@ -370,16 +369,12 @@ function CardFace({
         backfaceVisibility: "hidden",
         WebkitBackfaceVisibility: "hidden",
         transform: back ? "rotateX(180deg)" : undefined,
-        background: back ? "var(--subject-tint)" : "var(--paper-raised)",
-        border: "1px solid var(--rule-strong)",
-        borderTop: `3px solid var(--subject-ink)`,
-        borderRadius: "var(--radius-cut)",
+        background: "rgba(255, 255, 255, 0.42)",
+        border: "1px solid #ffffff",
+        borderRadius: "17px",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
         boxShadow: "var(--shadow-lift)",
-        // Faint ruling, so it reads as an index card rather than a div.
-        backgroundImage: back
-          ? undefined
-          : "repeating-linear-gradient(to bottom, transparent 0, transparent 31px, color-mix(in srgb, var(--rule) 60%, transparent) 31px, color-mix(in srgb, var(--rule) 60%, transparent) 32px)",
-        backgroundPosition: "0 3.4rem",
       }}
     >
       {children}

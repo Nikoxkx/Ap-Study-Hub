@@ -3,6 +3,7 @@ import Link from "next/link";
 import { channels, channelUrl } from "@/lib/channels";
 import { subjects } from "@/lib/subjects";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 import { absoluteUrl, socialImages } from "@/lib/site";
 
@@ -148,7 +149,8 @@ export default function GuidesPage() {
     <>
       <JsonLd schema={breadcrumbSchema(trail)} />
 
-      <div className="wrap py-12 md:py-16">
+      <div className="wrap py-10 md:py-14">
+        <GlassCard padding="lg">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
           <p className="label mb-3">A method that works for all seven courses</p>
@@ -323,6 +325,7 @@ export default function GuidesPage() {
             back to it.
           </p>
         </aside>
+        </GlassCard>
       </div>
     </>
   );

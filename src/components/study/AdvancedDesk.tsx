@@ -18,6 +18,9 @@ import { getSubject, type SubjectSlug } from "@/lib/subjects";
 import { integrations } from "@/lib/integrations";
 import { ExternalLink } from "@/components/Furniture";
 import { VideoThumbnail } from "@/components/VideoThumbnail";
+import { DownloadButton } from "@/components/ui/DownloadButton";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import roadmap from "@/data/roadmap.json";
 
 interface Goals {
@@ -359,10 +362,10 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
           <p className="label">Your week, to go</p>
           <h3 id="reports-heading">Your week, in a file you own</h3>
           <p>Generate a plain-text report from local data. Paste it into the Google Docs template, or download an HTML file that Docs can import.</p>
-          <div className="report-actions">
+          <div className="report-actions items-start">
             <button type="button" className="btn btn-solid btn-sm" onClick={copyReport}>Copy report</button>
-            <button type="button" className="btn btn-outline btn-sm" onClick={exportHtmlReport}>Download HTML report</button>
-            <button type="button" className="btn btn-outline btn-sm" onClick={exportCsv}>Export video CSV</button>
+            <DownloadButton onClick={exportHtmlReport}>HTML report</DownloadButton>
+            <DownloadButton onClick={exportCsv}>Video CSV</DownloadButton>
             <ExternalLink href={integrations.doc.url} className="btn btn-quiet btn-sm">Open Docs brief</ExternalLink>
           </div>
           <p className="advanced-note">The report contains no name, email, account, or analytics identifier.</p>
@@ -402,9 +405,11 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
                     <h4>{video.title}</h4>
                     <p>{video.creator} · {video.role}</p>
                   </div>
-                  <button type="button" className="btn btn-sm" aria-pressed={Boolean(entry?.watched)} onClick={() => toggleVideo(video)}>
-                    {entry?.watched ? "✓ Watched" : "Mark watched"}
-                  </button>
+                  <Checkbox
+                    checked={Boolean(entry?.watched)}
+                    onCheckedChange={() => toggleVideo(video)}
+                    label={entry?.watched ? "Watched" : "Mark"}
+                  />
                 </div>
                 <label className="video-notes-label" htmlFor={`video-note-${video.id}`}>Retrieval note</label>
                 <textarea
@@ -468,6 +473,11 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
           <button type="button" className="btn btn-quiet btn-sm" disabled={busy} onClick={() => void syncNow("delete")}>Delete remote</button>
           <button type="button" className="btn btn-quiet btn-sm" onClick={() => setSync((current) => ({ ...current, code: "" }))}>Forget code</button>
         </div>
+        {busy ? (
+          <div className="my-3">
+            <LoadingSpinner scale={0.55} label="Syncing study snapshot…" />
+          </div>
+        ) : null}
         <p className="status-line" role="status">{message}</p>
         <p className="advanced-note">
           Settings are stored as <code>{SYNC_KEY}</code>. The code is the only key: if you lose it, the snapshot cannot be

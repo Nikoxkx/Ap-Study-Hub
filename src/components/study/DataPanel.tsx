@@ -5,6 +5,7 @@ import type { StudyCourse } from "@/lib/study-data";
 import { reviveStudyState, STUDY_STORAGE_KEY } from "@/lib/study-model";
 import type { SubjectSlug } from "@/lib/subjects";
 import { OfflinePackButton } from "@/components/OfflinePackButton";
+import { DownloadButton } from "@/components/ui/DownloadButton";
 
 function downloadJson(value: unknown, filename: string) {
   const blob = new Blob([JSON.stringify(value, null, 2)], { type: "application/json" });
@@ -62,8 +63,8 @@ export function DataPanel({ courses, selectedCourse }: { courses: StudyCourse[];
     <div>
       <section aria-labelledby="backup-heading">
         <div className="panel-heading"><div><p className="label">Yours to keep</p><h2 id="backup-heading">Your progress belongs to you</h2><p>Export a JSON backup for another browser or restore it later. The file includes study state, drafts, timed work, card marks, annotations, and synthesis notes.</p></div></div>
-        <div className="backup-actions">
-          <button type="button" className="btn btn-solid" onClick={exportBackup}>Download JSON backup</button>
+        <div className="backup-actions items-start">
+          <DownloadButton onClick={exportBackup}>JSON backup</DownloadButton>
           <label className="btn btn-outline">Restore JSON backup<input ref={fileRef} type="file" accept="application/json,.json" className="sr-only" onChange={(event) => importBackup(event.target.files?.[0])} /></label>
           <button type="button" className="btn btn-quiet" data-danger={confirmReset} onClick={() => {
             if (!confirmReset) { setConfirmReset(true); return; }

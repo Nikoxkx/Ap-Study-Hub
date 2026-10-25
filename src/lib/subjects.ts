@@ -89,7 +89,7 @@ export const subjects: Subject[] = [
     washDark: "#1b1b1b",
     revised: "2026-10-24",
     topic: "RHETORIC",
-    symbolLabel: "Quotation marks — rhetoric and composition",
+    symbolLabel: "Open book — rhetoric and composition",
     mark: "ap-lang",
   },
   {
@@ -108,7 +108,7 @@ export const subjects: Subject[] = [
     washDark: "#1e1e1e",
     revised: "2026-10-24",
     topic: "INQUIRY",
-    symbolLabel: "Speech bubbles — discussion and inquiry",
+    symbolLabel: "Source documents — synthesis and inquiry",
     mark: "ap-seminar",
   },
   {
@@ -127,7 +127,7 @@ export const subjects: Subject[] = [
     washDark: "#1a1a1a",
     revised: "2026-10-24",
     topic: "GOVERNMENT",
-    symbolLabel: "Scales of justice — constitutional government",
+    symbolLabel: "Classical capitol — constitutional government",
     mark: "ap-gov",
   },
   {
@@ -165,7 +165,7 @@ export const subjects: Subject[] = [
     washDark: "#1f1f1f",
     revised: "2026-10-24",
     topic: "CALCULUS",
-    symbolLabel: "Integral sign — change and accumulation",
+    symbolLabel: "Right triangle trigonometry — calculus and analysis",
     mark: "ap-calc",
   },
   {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCourse } from "@/lib/catalog";
 import { PracticeSet } from "@/components/PracticeSet";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { absoluteUrl, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
@@ -20,7 +21,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}/practice` },
-    openGraph: { images: socialImages, title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/practice`) }, twitter: { card: "summary_large_image", images: socialImages },
+    openGraph: {
+      images: socialImages,
+      title: `${title} · AP Study Hub`,
+      description,
+      url: absoluteUrl(`/course/${subject.slug}/practice`),
+    },
+    twitter: { card: "summary_large_image", images: socialImages },
   };
 }
 
@@ -35,22 +42,25 @@ export default async function PracticePage({ params, searchParams }: { params: P
   const skills = [...new Set(questions.map((q) => q.skill).filter(Boolean))] as string[];
   const requestedUnit = Array.isArray(query.unit) ? query.unit[0] : query.unit;
   const parsedUnit = Number(requestedUnit);
-  const initialUnit = Number.isInteger(parsedUnit) && questions.some((question) => question.unitNumber === parsedUnit)
-    ? parsedUnit
-    : undefined;
+  const initialUnit =
+    Number.isInteger(parsedUnit) && questions.some((question) => question.unitNumber === parsedUnit)
+      ? parsedUnit
+      : undefined;
 
   return (
-    <div className="wrap py-12 md:py-16">
-      <div className="mx-auto max-w-3xl">
-        <header className="mb-9">
+    <div className="wrap py-8 md:py-12">
+      <div className="mx-auto max-w-3xl space-y-8">
+        <GlassCard as="header" padding="lg">
           <p className="label mb-2">{counts.questions} questions worth trying</p>
-          <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
+          <h2
+            className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)] font-semibold"
+            style={{ letterSpacing: "-0.025em" }}
+          >
             {subject.familiar} practice that explains your mistakes
           </h2>
-          <p className="lede mt-4">
+          <p className="lede mt-3">
             Original questions with reasoned feedback. Filter to one lesson for focused retrieval,
-            or work through the full course set; every lesson-linked answer includes a route back to
-            the teaching you need.
+            or work through the full course set.
           </p>
 
           {skills.length > 0 ? (
@@ -62,26 +72,27 @@ export default async function PracticePage({ params, searchParams }: { params: P
                     {skill}
                   </li>
                 ))}
-                  {skills.length > 12 ? <li className="tag">+ {skills.length - 12} more</li> : null}
+                {skills.length > 12 ? <li className="tag">+ {skills.length - 12} more</li> : null}
               </ul>
             </div>
           ) : null}
-        </header>
+        </GlassCard>
 
-        <PracticeSet questions={questions} courseSlug={subject.slug} initialUnit={initialUnit} />
+        <GlassCard padding="lg">
+          <PracticeSet questions={questions} courseSlug={subject.slug} initialUnit={initialUnit} />
+        </GlassCard>
 
-        <aside className="sunk mt-14 p-5">
+        <GlassCard as="aside" padding="md">
           <h3 className="label mb-2">A note on where these come from</h3>
           <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            None of these are real College Board questions. Reproducing secure exam material would
-            be both illegal and useless — you would be memorising items you will never see again.
-            Released official questions, which are the genuine article, are linked from the{" "}
-            <a href={`/course/${subject.slug}/resources`} className="link-underlined" style={{ color: "var(--ink)" }}>
+            None of these are real College Board questions. Released official questions are linked
+            from the{" "}
+            <a href={`/course/${subject.slug}/resources`} className="link-underlined">
               sources page
             </a>
             .
           </p>
-        </aside>
+        </GlassCard>
       </div>
     </div>
   );

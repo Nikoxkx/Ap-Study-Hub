@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { subjects } from "@/lib/subjects";
+import { SubjectMark } from "./SubjectMark";
 
 export interface CommandItem {
   id: string;
@@ -85,10 +87,40 @@ export function CommandPalette({ commands }: { commands: CommandItem[] }) {
             placeholder="Due Today, Biology lesson 4, writing studio…" role="combobox" aria-expanded="true" aria-controls={listId} aria-autocomplete="list" aria-activedescendant={results[active] ? `${listId}-${active}` : undefined} /><kbd>esc</kbd></div>
           <p className="command-hint">{query ? `${results.length} navigation matches` : "Study tools and course destinations"}</p>
           {results.length ? <ul id={listId} role="listbox" aria-label="Navigation results" className="command-results">
-            {results.map((command, index) => <li key={command.id} role="none"><Link id={`${listId}-${index}`} href={command.href} role="option" aria-selected={index === active} data-active={index === active}
-              onMouseEnter={() => setActive(index)} onClick={close}>
-              <span className="command-kind">{command.kind}</span><span><strong>{command.title}</strong><small>{command.context}</small></span><span aria-hidden="true">↵</span>
-            </Link></li>)}
+            {results.map((command, index) => {
+              const matchedSubject = subjects.find(
+                (s) => command.href === `/course/${s.slug}` || command.href.startsWith(`/course/${s.slug}/`),
+              );
+              return (
+                <li key={command.id} role="none">
+                  <Link
+                    id={`${listId}-${index}`}
+                    href={command.href}
+                    role="option"
+                    aria-selected={index === active}
+                    data-active={index === active}
+                    onMouseEnter={() => setActive(index)}
+                    onClick={close}
+                  >
+                    <span className="command-kind">{command.kind}</span>
+                    <span>
+                      <strong className="inline-flex items-center gap-2">
+                        {matchedSubject ? (
+                          <SubjectMark
+                            subject={matchedSubject.mark}
+                            size={15}
+                            label={matchedSubject.symbolLabel}
+                          />
+                        ) : null}
+                        <span>{command.title}</span>
+                      </strong>
+                      <small>{command.context}</small>
+                    </span>
+                    <span aria-hidden="true">↵</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul> : <div className="command-empty"><p>No destination matches “{query}”.</p><Link href={`/search?q=${encodeURIComponent(query)}`} onClick={close}>Search all notes, terms, and questions instead →</Link></div>}
           <div className="command-footer"><span>↑↓ move</span><span>↵ open</span><span>esc close</span><Link href="/search" onClick={close}>Full search</Link></div>
         </div>

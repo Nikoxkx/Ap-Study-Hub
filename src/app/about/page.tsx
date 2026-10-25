@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead, Stat } from "@/components/Furniture";
+import { SiteMark } from "@/components/SubjectMark";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { getCatalog, getTotals } from "@/lib/catalog";
 import { site, absoluteUrl, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
@@ -39,11 +41,15 @@ export default function AboutPage() {
     <>
       <JsonLd schema={breadcrumbSchema(trail)} />
 
-      <div className="wrap py-12 md:py-16">
+      <div className="wrap py-10 md:py-14">
+        <GlassCard padding="lg">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">The human behind the notes</p>
-          <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
+          <div className="mb-3 flex items-center gap-3">
+            <SiteMark size={28} />
+            <p className="label">The human behind the notes</p>
+          </div>
+          <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)] font-semibold" style={{ letterSpacing: "-0.028em" }}>
             One student, seven courses, and nothing to sell you.
           </h1>
           <p className="lede mt-5">
@@ -276,6 +282,7 @@ export default function AboutPage() {
           </Link>
           .
         </p>
+        </GlassCard>
       </div>
     </>
   );

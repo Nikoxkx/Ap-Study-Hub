@@ -1,120 +1,174 @@
-const courseColors = ["#9c3b2e", "#31456b", "#6b3f6e", "#2f5f56", "#4f6b32", "#9a6520", "#57534a"];
+"use client";
 
-/** Editorial diagram of the read → recall → respond study loop. */
+import Link from "next/link";
+import { useState } from "react";
+import { subjects, type SubjectSlug } from "@/lib/subjects";
+import { SubjectMark } from "./SubjectMark";
+
+/**
+ * Interactive 7-course cold-recall preview inside the homepage Library card.
+ *
+ * Displays each AP course's symbol (crisp dark in day mode, pure white in night
+ * mode) with generous spacing and tactile hover animations, letting visitors
+ * flip a real recall card right on the homepage.
+ */
+
+interface SamplePrompt {
+  unit: string;
+  term: string;
+  answer: string;
+}
+
+const sampleByCourse: Record<SubjectSlug, SamplePrompt> = {
+  apush: {
+    unit: "Unit 1 · 1491–1607",
+    term: "Columbian Exchange",
+    answer:
+      "Transatlantic transfer of crops, livestock, pathogens, and people after 1492 — driving Indigenous demographic collapse while reshaping Afro-Eurasian diets and colonial labor systems.",
+  },
+  "ap-lang": {
+    unit: "Unit 1 · Rhetorical Situation",
+    term: "Exigence vs. Purpose",
+    answer:
+      "Exigence is the urgent problem or spark that prompts a speaker to write now; purpose is the concrete change in belief or action the speaker seeks from the audience.",
+  },
+  "ap-seminar": {
+    unit: "Unit 2 · Evaluating Perspectives",
+    term: "Line of Reasoning",
+    answer:
+      "The logical sequence connecting thesis, sub-claims, and synthesized evidence so each paragraph advances the argument rather than stacking isolated source summaries.",
+  },
+  "ap-gov": {
+    unit: "Unit 1 · Constitutional Democracy",
+    term: "Federalist No. 10",
+    answer:
+      "Madison argues a large republic controls the mischiefs of faction better than a pure democracy by multiplying competing interests across elected representatives.",
+  },
+  "ap-bio": {
+    unit: "Unit 3 · Cellular Energetics",
+    term: "Allosteric Regulation",
+    answer:
+      "A molecule binds an enzyme away from its active site, shifting protein conformation to either inhibit or activate catalysis without competing directly with the substrate.",
+  },
+  "ap-calc": {
+    unit: "Unit 2 · Differentiation",
+    term: "Mean Value Theorem",
+    answer:
+      "If f is continuous on [a, b] and differentiable on (a, b), some c in (a, b) satisfies f'(c) = (f(b) − f(a)) / (b − a) — instantaneous rate equals average rate.",
+  },
+  "ap-research": {
+    unit: "Unit 2 · Research Design",
+    term: "Gap in the Literature",
+    answer:
+      "The specific unresolved question, population, context, or methodological limitation in prior scholarship that justifies your original 4,000–5,000 word inquiry.",
+  },
+};
+
 export function StudySystemVisual() {
+  const [selected, setSelected] = useState<SubjectSlug>("apush");
+  const [flipped, setFlipped] = useState(false);
+
+  const subject = subjects.find((s) => s.slug === selected) ?? subjects[0];
+  const sample = sampleByCourse[selected];
+
   return (
-    <svg
-      viewBox="0 0 1080 440"
-      className="h-auto w-full"
-      role="img"
-      aria-labelledby="study-system-title study-system-desc"
+    <div
+      className="space-y-6 rounded-2xl border border-white/80 bg-white/30 p-6 sm:p-7 dark:border-white/20 dark:bg-white/[0.04]"
+      role="region"
+      aria-label="Interactive recall preview across all seven AP courses"
     >
-      <title id="study-system-title">One lesson, three ways to make it stick</title>
-      <desc id="study-system-desc">
-        A cited ten-paragraph lesson connects to a glossary flashcard and an original multiple-choice
-        question, with a return path from practice feedback to the exact lesson section.
-      </desc>
-      <defs>
-        <pattern id="lesson-rules" width="12" height="24" patternUnits="userSpaceOnUse">
-          <path d="M0 23.5H12" fill="none" stroke="var(--rule)" strokeWidth="1" opacity="0.65" />
-        </pattern>
-      </defs>
+      {/* Header row with generous breathing room */}
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-4 dark:border-white/15">
+        <span className="label">Try a live recall card</span>
+        <span
+          className="rounded-full border border-white/75 bg-white/45 px-3 py-1 text-[0.74rem] font-medium dark:border-white/20 dark:bg-white/10"
+          style={{ fontFamily: "var(--font-mono)", color: "var(--ink-soft)" }}
+        >
+          {sample.unit}
+        </span>
+      </div>
 
-      <rect x="1" y="1" width="1078" height="438" fill="var(--paper)" stroke="var(--rule)" />
-      <rect x="1" y="1" width="1078" height="438" fill="url(#lesson-rules)" opacity="0.35" />
-      <path d="M42 52H1038" stroke="var(--ink)" strokeWidth="2" />
-      <text x="42" y="36" fill="var(--ink-faint)" fontSize="13" letterSpacing="2" fontFamily="var(--font-mono)">
-        THE AP STUDY HUB METHOD · 2026–27
-      </text>
+      {/* Spaced AP Course Pills with actual AP class symbols & hover lift */}
+      <div
+        className="flex flex-wrap items-center gap-2.5 sm:gap-3"
+        role="tablist"
+        aria-label="Choose an AP course sample"
+      >
+        {subjects.map((item) => {
+          const active = item.slug === selected;
+          return (
+            <button
+              key={item.slug}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              data-active={active ? "true" : "false"}
+              onClick={() => {
+                setSelected(item.slug);
+                setFlipped(false);
+              }}
+              className="recall-course-pill"
+            >
+              <SubjectMark
+                subject={item.mark}
+                size={18}
+                label={item.symbolLabel}
+                className="recall-course-pill-icon"
+              />
+              <span>{item.familiar}</span>
+            </button>
+          );
+        })}
+      </div>
 
-      {/* Deep lesson sheet */}
-      <g>
-        <rect x="54" y="86" width="290" height="280" fill="var(--paper-raised)" stroke="var(--rule-strong)" />
-        <path d="M310 86h34v34" fill="var(--paper-sunk)" stroke="var(--rule-strong)" />
-        <path d="M310 86v34h34" fill="none" stroke="var(--rule-strong)" />
-        {courseColors.map((color, index) => (
-          <rect key={color} x={70 + index * 34} y="74" width="24" height="12" fill={color} />
-        ))}
-        <text x="76" y="139" fill="var(--mark)" fontSize="12" letterSpacing="1.8" fontFamily="var(--font-mono)">
-          01 · READ DEEPLY
-        </text>
-        <text x="76" y="174" fill="var(--ink)" fontSize="25" fontFamily="var(--font-display)">
-          A complete lesson
-        </text>
-        <text x="76" y="199" fill="var(--ink-soft)" fontSize="14" fontFamily="var(--font-ui)">
-          Objectives · context · worked examples
-        </text>
-        {[0, 1, 2, 3, 4, 5].map((line) => (
-          <path
-            key={line}
-            d={`M76 ${229 + line * 19}H${line % 3 === 2 ? 272 : 310}`}
-            stroke="var(--ink-faint)"
-            strokeWidth="3"
-            opacity="0.55"
-          />
-        ))}
-        <path d="M287 217v104" stroke="var(--mark)" strokeWidth="2" />
-        <text x="76" y="346" fill="var(--ink-faint)" fontSize="12" fontFamily="var(--font-mono)">
-          10+ PARAGRAPHS · SOURCES AT SECTION LEVEL
-        </text>
-      </g>
+      {/* Interactive Flip Card */}
+      <button
+        type="button"
+        onClick={() => setFlipped((v) => !v)}
+        aria-pressed={flipped}
+        className="recall-flip-card flex min-h-[11.5rem] w-full flex-col justify-between gap-5 rounded-2xl border border-white/85 bg-white/45 p-6 text-left sm:p-7 dark:border-white/20 dark:bg-white/[0.06]"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <span className="label">{flipped ? "Exam-ready recall" : "Prompt · tap to flip"}</span>
+          <span className="tag">{flipped ? "Answer" : "Term"}</span>
+        </div>
 
-      <g fill="none" stroke="var(--mark)" strokeWidth="2">
-        <path d="M363 225h46m-9-9 9 9-9 9" />
-        <path d="M669 225h46m-9-9 9 9-9 9" />
-      </g>
+        {flipped ? (
+          <p className="text-[0.96rem] leading-relaxed" style={{ color: "var(--ink)" }}>
+            {sample.answer}
+          </p>
+        ) : (
+          <p
+            className="text-[1.5rem] font-semibold leading-snug sm:text-[1.65rem]"
+            style={{ fontFamily: "var(--font-display)", color: "var(--ink)" }}
+          >
+            {sample.term}
+          </p>
+        )}
 
-      {/* Flashcard */}
-      <g>
-        <rect x="432" y="104" width="214" height="244" fill="var(--paper-sunk)" stroke="var(--rule)" transform="rotate(3 539 226)" />
-        <rect x="420" y="88" width="226" height="260" fill="var(--paper-raised)" stroke="var(--subject-ink)" strokeWidth="1.5" />
-        <text x="442" y="127" fill="var(--subject-ink)" fontSize="12" letterSpacing="1.6" fontFamily="var(--font-mono)">
-          02 · RECALL
-        </text>
-        <path d="M442 145h182" stroke="var(--rule)" />
-        <text x="442" y="186" fill="var(--ink-faint)" fontSize="12" fontFamily="var(--font-mono)">
-          TERM → YOUR EXPLANATION
-        </text>
-        <text x="442" y="226" fill="var(--ink)" fontSize="26" fontStyle="italic" fontFamily="var(--font-display)">
-          Can you produce
-        </text>
-        <text x="442" y="258" fill="var(--ink)" fontSize="26" fontStyle="italic" fontFamily="var(--font-display)">
-          the idea cold?
-        </text>
-        <rect x="442" y="291" width="112" height="31" fill="var(--subject-tint)" />
-        <text x="456" y="312" fill="var(--subject-ink)" fontSize="12" fontFamily="var(--font-mono)">
-          FLIP · MARK · REDO
-        </text>
-      </g>
+        <span
+          className="text-[0.75rem]"
+          style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
+        >
+          {flipped ? "Tap to return to prompt" : "Explain it in your own words, then tap to check"}
+        </span>
+      </button>
 
-      {/* Original practice */}
-      <g>
-        <rect x="735" y="86" width="291" height="280" fill="var(--paper-raised)" stroke="var(--rule-strong)" />
-        <text x="757" y="127" fill="var(--mark)" fontSize="12" letterSpacing="1.6" fontFamily="var(--font-mono)">
-          03 · RESPOND
-        </text>
-        <text x="757" y="163" fill="var(--ink)" fontSize="24" fontFamily="var(--font-display)">
-          Original practice
-        </text>
-        {[0, 1, 2].map((option) => (
-          <g key={option}>
-            <rect x="757" y={187 + option * 42} width="247" height="31" fill="var(--paper)" stroke="var(--rule)" />
-            <circle cx="774" cy={202.5 + option * 42} r="6" fill="none" stroke={option === 1 ? "var(--mark)" : "var(--ink-faint)"} />
-            {option === 1 ? <circle cx="774" cy={202.5 + option * 42} r="3" fill="var(--mark)" /> : null}
-            <path d={`M791 ${202.5 + option * 42}h${option === 1 ? 161 : 128 + option * 19}`} stroke="var(--ink-faint)" strokeWidth="3" opacity="0.55" />
-          </g>
-        ))}
-        <path d="M757 324h247" stroke="var(--rule)" />
-        <text x="757" y="347" fill="var(--ink-soft)" fontSize="12" fontFamily="var(--font-mono)">
-          FEEDBACK → EXACT LESSON SECTION
-        </text>
-      </g>
-
-      <path d="M880 379v22H197v-22" fill="none" stroke="var(--mark)" strokeWidth="1.5" strokeDasharray="4 5" />
-      <path d="m191 393 6 8 6-8" fill="none" stroke="var(--mark)" strokeWidth="1.5" />
-      <text x="540" y="422" textAnchor="middle" fill="var(--ink-faint)" fontSize="13" fontFamily="var(--font-ui)">
-        A wrong answer becomes a route back to understanding—not just a score.
-      </text>
-    </svg>
+      {/* Spaced Action Pills with hover arrow transitions */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
+        <Link href={`/course/${subject.slug}/notes`} className="recall-action-pill">
+          <span>Read {subject.familiar} lessons</span>
+          <span aria-hidden="true" className="recall-action-arrow">
+            →
+          </span>
+        </Link>
+        <Link href={`/course/${subject.slug}/cards`} className="recall-action-pill">
+          <span>Open full card deck</span>
+          <span aria-hidden="true" className="recall-action-arrow">
+            →
+          </span>
+        </Link>
+      </div>
+    </div>
   );
 }

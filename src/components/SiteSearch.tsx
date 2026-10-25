@@ -4,20 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { kindLabels, type DocKind } from "@/lib/search";
-
-/**
- * Site search.
- *
- * Implemented as a WAI-ARIA combobox with a listbox popup: arrow keys move
- * aria-activedescendant, Enter opens the active option, Escape closes, and the
- * input keeps DOM focus throughout. That is the pattern screen readers expect,
- * and it is why the options are anchors inside a listbox rather than a stack of
- * divs with onClick.
- *
- * The form still posts to /search with method="get", so pressing Enter with no
- * option highlighted — or using the site with JavaScript disabled — lands on a
- * server-rendered results page instead of doing nothing.
- */
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 interface Hit {
   id: string;
@@ -30,7 +17,7 @@ interface Hit {
 
 const DEBOUNCE_MS = 180;
 
-export function SiteSearch() {
+export function SiteSearch({ label = "Search AP Hub" }: { label?: string }) {
   const router = useRouter();
   const listId = useId();
   const inputId = useId();
@@ -52,6 +39,7 @@ export function SiteSearch() {
     abortRef.current = controller;
 
     setPending(true);
+    setOpen(true);
     try {
       const response = await fetch(`/api/search?q=${encodeURIComponent(value)}&limit=8`, {
         signal: controller.signal,
@@ -62,7 +50,6 @@ export function SiteSearch() {
       setActive(-1);
       setOpen(true);
     } catch (error) {
-      // An aborted request is the expected outcome of typing another character.
       if ((error as Error).name !== "AbortError") {
         setHits([]);
         setOpen(false);
@@ -85,8 +72,6 @@ export function SiteSearch() {
     timerRef.current = setTimeout(() => runQuery(value.trim()), DEBOUNCE_MS);
   }
 
-  // Close on outside pointerdown. pointerdown rather than click so the panel is
-  // gone before a link underneath receives the press.
   useEffect(() => {
     if (!open) return;
     function onPointerDown(event: PointerEvent) {
@@ -95,25 +80,6 @@ export function SiteSearch() {
     document.addEventListener("pointerdown", onPointerDown);
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [open]);
-
-  // "/" focuses full search. Ctrl/Cmd+K belongs to the separate command palette,
-  // so the two keyboard systems never compete for the same shortcut.
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      const target = event.target as HTMLElement | null;
-      const typing =
-        target?.tagName === "INPUT" ||
-        target?.tagName === "TEXTAREA" ||
-        target?.isContentEditable;
-
-      if (event.key === "/" && !typing && !event.metaKey && !event.ctrlKey) {
-        event.preventDefault();
-        inputRef.current?.focus();
-      }
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
 
   useEffect(() => () => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -154,24 +120,7 @@ export function SiteSearch() {
 
   return (
     <div ref={rootRef} className="relative w-full">
-      <form action="/search" method="get" role="search" className="relative">
-        <label htmlFor={inputId} className="sr-only">
-          Search notes, terms and practice questions
-        </label>
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 16 16"
-          width="14"
-          height="14"
-          className="pointer-events-none absolute left-[0.6rem] top-1/2 -translate-y-1/2"
-          style={{ color: "var(--ink-faint)" }}
-        >
-          <g fill="none" stroke="currentColor" strokeWidth="1.6">
-            <circle cx="7" cy="7" r="4.6" />
-            <path d="m10.6 10.6 3.2 3.2" strokeLinecap="round" />
-          </g>
-        </svg>
-
+      <form action="/search" method="get" role="search" className="uiverse-input-group">
         <input
           ref={inputRef}
           id={inputId}
@@ -181,94 +130,91 @@ export function SiteSearch() {
           onChange={(event) => onChange(event.target.value)}
           onKeyDown={onKeyDown}
           onFocus={() => hits.length > 0 && setOpen(true)}
-          placeholder="Search notes and terms"
+          placeholder=" "
           autoComplete="off"
           spellCheck={false}
-          className="field"
-          style={{ paddingLeft: "2rem", paddingRight: "2.5rem", fontSize: "0.875rem" }}
+          className="uiverse-input pr-8 text-[0.875rem]"
+          style={{ paddingBlock: "0.52em" }}
           role="combobox"
           aria-expanded={open}
           aria-controls={listId}
           aria-autocomplete="list"
           aria-activedescendant={activeId}
         />
-
+        <label htmlFor={inputId} className="uiverse-input-label">
+          {label}
+        </label>
         <kbd
           aria-hidden="true"
-          className="pointer-events-none absolute right-[0.5rem] top-1/2 -translate-y-1/2 rounded-[3px] border px-[0.3rem] py-[0.05rem] text-[0.625rem]"
-          style={{
-            fontFamily: "var(--font-mono)",
-            borderColor: "var(--rule-strong)",
-            color: "var(--ink-faint)",
-          }}
+          className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md border border-white/70 bg-white/45 px-1.5 py-0.5 text-[0.625rem]"
+          style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
         >
           /
         </kbd>
       </form>
 
-      {(open && hits.length > 0) || showEmpty ? (
-        <div
-          className="absolute left-0 right-0 top-[calc(100%+0.375rem)] z-50 overflow-hidden enter-fade"
-          style={{
-            background: "var(--paper-raised)",
-            border: "1px solid var(--rule-strong)",
-            borderRadius: "var(--radius-cut)",
-            boxShadow: "var(--shadow-lift)",
-          }}
-        >
-          <ul id={listId} role="listbox" aria-label="Search results" className="max-h-[22rem] overflow-y-auto">
-            {hits.map((hit, i) => (
-              <li key={hit.id} role="none">
-                <Link
-                  id={`${listId}-opt-${i}`}
-                  role="option"
-                  aria-selected={i === active}
-                  href={hit.href}
-                  onClick={() => {
-                    setOpen(false);
-                    setQuery("");
-                  }}
-                  onMouseEnter={() => setActive(i)}
-                  className="flex items-baseline gap-2 px-3 py-2 no-underline"
-                  style={{
-                    background: i === active ? "var(--paper-sunk)" : "transparent",
-                    borderBottom: "1px solid var(--rule)",
-                  }}
-                >
-                  <span
-                    className="shrink-0 text-[0.625rem] uppercase tracking-[0.08em]"
-                    style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)", minWidth: "3.9rem" }}
+      {open && (pending || hits.length > 0 || showEmpty) ? (
+        <div className="glass-box absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 w-full overflow-hidden p-2 enter-fade">
+          {pending && hits.length === 0 ? (
+            <div className="flex items-center justify-center py-3">
+              <LoadingSpinner scale={0.55} label="Searching notes & cards…" />
+            </div>
+          ) : null}
+
+          {hits.length > 0 ? (
+            <ul id={listId} role="listbox" aria-label="Search results" className="max-h-[22rem] overflow-y-auto">
+              {hits.map((hit, i) => (
+                <li key={hit.id} role="none">
+                  <Link
+                    id={`${listId}-opt-${i}`}
+                    role="option"
+                    aria-selected={i === active}
+                    href={hit.href}
+                    onClick={() => {
+                      setOpen(false);
+                      setQuery("");
+                    }}
+                    onMouseEnter={() => setActive(i)}
+                    className="flex items-baseline gap-2.5 rounded-xl px-3 py-2 no-underline transition-colors"
+                    style={{
+                      background: i === active ? "rgba(255,255,255,0.45)" : "transparent",
+                    }}
                   >
-                    {kindLabels[hit.kind]}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[0.875rem] font-medium">{hit.title}</span>
-                    <span className="block truncate text-[0.75rem]" style={{ color: "var(--ink-faint)" }}>
-                      {hit.subjectLabel ? `${hit.subjectLabel} · ` : ""}
-                      {hit.context}
+                    <span
+                      className="shrink-0 text-[0.625rem] uppercase tracking-[0.08em]"
+                      style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)", minWidth: "3.9rem" }}
+                    >
+                      {kindLabels[hit.kind]}
                     </span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[0.875rem] font-semibold">{hit.title}</span>
+                      <span className="block truncate text-[0.75rem]" style={{ color: "var(--ink-faint)" }}>
+                        {hit.subjectLabel ? `${hit.subjectLabel} · ` : ""}
+                        {hit.context}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : null}
 
           {showEmpty ? (
-            <p className="px-3 py-3 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
-              Nothing matches <strong style={{ color: "var(--ink)" }}>{query}</strong>. Try a
-              single keyword — <em>federalism</em>, <em>mitosis</em>, <em>DBQ</em>.
+            <p className="px-3 py-3 text-[0.8125rem]" style={{ color: "var(--ink-soft)" }}>
+              Nothing matches <strong>{query}</strong>. Try a single keyword — <em>federalism</em>,{" "}
+              <em>mitosis</em>, <em>DBQ</em>.
             </p>
-          ) : (
+          ) : hits.length > 0 ? (
             <p
-              className="flex items-center justify-between px-3 py-1.5 text-[0.6875rem]"
-              style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)", background: "var(--paper-sunk)" }}
+              className="mt-1 flex items-center justify-between rounded-xl px-3 py-1.5 text-[0.6875rem]"
+              style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)", background: "rgba(255,255,255,0.28)" }}
             >
-              <span>↑↓ to move · ↵ to open · esc to close</span>
+              <span>↑↓ move · ↵ open</span>
               <Link href={`/search?q=${encodeURIComponent(query)}`} className="link-underlined">
                 All results
               </Link>
             </p>
-          )}
+          ) : null}
         </div>
       ) : null}
     </div>

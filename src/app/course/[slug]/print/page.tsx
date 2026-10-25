@@ -35,7 +35,7 @@ export default async function PrintPacketPage({ params, searchParams }: {
   const letters = ["A", "B", "C", "D", "E", "F"];
 
   return (
-    <div className="print-packet">
+    <div className="print-packet glass-box my-8">
       <nav className="packet-toolbar no-print" aria-label="Packet options">
         <Link href={`${base}/studio`} className="btn btn-quiet btn-sm">← Studio</Link>
         <div className="packet-unit-links">

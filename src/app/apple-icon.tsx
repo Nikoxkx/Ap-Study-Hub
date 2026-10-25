@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-/** Maskable home-screen version of the same SiteMark sheet geometry. */
+/** Maskable home-screen version of the universal rotated 7-square logo. */
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
@@ -14,13 +14,19 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#f6f3ec",
+          background: "#1c1c1c",
         }}
       >
-        <svg width="116" height="116" viewBox="0 0 32 32">
-          <path d="M6 27V9l6-5h14v23z" fill="#fffdf7" stroke="#1c1b17" strokeWidth={1.65} strokeLinejoin="miter" />
-          <path d="M12 4v5H6z" fill="#ddd6c6" stroke="#1c1b17" strokeWidth={1.65} strokeLinejoin="miter" />
-          <path d="M11 15h10M11 20h10" fill="none" stroke="#b0392a" strokeWidth={1.45} />
+        <svg width="132" height="132" viewBox="0 0 136 136">
+          <g transform="translate(68 8) rotate(45)" fill="#ffffff">
+            <rect x="2" y="2" width="24" height="24" />
+            <rect x="34" y="2" width="24" height="24" />
+            <rect x="66" y="2" width="24" height="24" />
+            <rect x="66" y="34" width="24" height="24" />
+            <rect x="34" y="34" width="24" height="24" />
+            <rect x="34" y="66" width="24" height="24" />
+            <rect x="2" y="66" width="24" height="24" />
+          </g>
         </svg>
       </div>
     ),

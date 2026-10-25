@@ -2,19 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
-import { ExternalLink, SectionHead } from "@/components/Furniture";
+import { ExternalLink } from "@/components/Furniture";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { absoluteUrl, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
-/**
- * Same as the essays route: no link list, no page.
- */
+
 export function generateStaticParams() {
   return getCatalog()
     .filter((course) => course.resources.length > 0)
     .map((course) => ({ slug: course.subject.slug }));
 }
-
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
@@ -29,11 +27,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}/resources` },
-    openGraph: { images: socialImages, title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/resources`) }, twitter: { card: "summary_large_image", images: socialImages },
+    openGraph: {
+      images: socialImages,
+      title: `${title} · AP Study Hub`,
+      description,
+      url: absoluteUrl(`/course/${subject.slug}/resources`),
+    },
+    twitter: { card: "summary_large_image", images: socialImages },
   };
 }
 
-/** Human-readable grouping for the `type` field on each resource record. */
 const groupNames: Record<string, string> = {
   official: "Straight from the College Board",
   practice: "Practice you can actually do",
@@ -61,29 +64,30 @@ export default async function ResourcesPage({ params }: { params: Params }) {
   const orderedGroups = Object.keys(groupNames).filter((key) => grouped[key]?.length);
 
   return (
-    <div className="wrap py-12 md:py-16">
-      <header className="mb-12 max-w-[62ch]">
+    <div className="wrap space-y-8 py-8 md:py-12">
+      <GlassCard as="header" padding="lg">
         <p className="label mb-2">{resources.length} checked links</p>
-        <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
+        <h2
+          className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)] font-semibold"
+          style={{ letterSpacing: "-0.025em" }}
+        >
           {subject.familiar} sources you can check
         </h2>
-        <p className="lede mt-4">
-          Short on purpose. Every link here was opened before it was listed, and anything that turned
-          into a paywall three clicks in is not here.
+        <p className="lede mt-3">
+          Short on purpose. Every link here was opened before it was listed, and anything that
+          turned into a paywall three clicks in is not here.
         </p>
-      </header>
+      </GlassCard>
 
       {orderedGroups.map((key, index) => (
-        <section key={key} className="mb-14" aria-labelledby={`group-${key}`}>
-          <SectionHead
-            folio={String(index + 1).padStart(2, "0")}
-            title={groupNames[key]}
-            id={`group-${key}`}
-            level={3}
-          />
-          <ul>
+        <GlassCard key={key} as="section" padding="lg" aria-labelledby={`group-${key}`}>
+          <p className="label mb-1">{String(index + 1).padStart(2, "0")}</p>
+          <h3 id={`group-${key}`} className="mb-4 text-[1.45rem] font-semibold">
+            {groupNames[key]}
+          </h3>
+          <ul className="divide-y divide-white/60 border-t border-white/60">
             {grouped[key].map((resource) => (
-              <li key={resource.url} className="rule-top py-4">
+              <li key={resource.url} className="py-4">
                 <h4 className="text-[1.0625rem] font-semibold">
                   <ExternalLink href={resource.url} className="link-draw">
                     {resource.title}
@@ -101,23 +105,26 @@ export default async function ResourcesPage({ params }: { params: Params }) {
               </li>
             ))}
           </ul>
-        </section>
+        </GlassCard>
       ))}
 
       {channels.length > 0 ? (
-        <section aria-labelledby="channels-heading">
-          <SectionHead
-            folio={String(orderedGroups.length + 1).padStart(2, "0")}
-            title="Teachers who go deeper"
-            id="channels-heading"
-            level={3}
-          >
-            Unit-specific videos now play on the <a href={`/course/${subject.slug}/videos`} className="link-underlined">course video page</a>. These channels remain as durable, course-scoped places to search for a replacement or go deeper.
-          </SectionHead>
+        <GlassCard as="section" padding="lg" aria-labelledby="channels-heading">
+          <p className="label mb-1">{String(orderedGroups.length + 1).padStart(2, "0")}</p>
+          <h3 id="channels-heading" className="text-[1.45rem] font-semibold">
+            Teachers who go deeper
+          </h3>
+          <p className="mt-2 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+            Unit-specific videos play on the{" "}
+            <a href={`/course/${subject.slug}/videos`} className="link-underlined">
+              course video page
+            </a>
+            . These channels remain durable places to search or go deeper.
+          </p>
 
-          <ul>
+          <ul className="mt-5 divide-y divide-white/60 border-t border-white/60">
             {channels.map((channel) => (
-              <li key={channel.handle} className="rule-top py-4">
+              <li key={channel.handle} className="py-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                   <h4 className="text-[1.0625rem] font-semibold">
                     <ExternalLink href={channelUrl(channel)} className="link-draw">
@@ -145,16 +152,8 @@ export default async function ResourcesPage({ params }: { params: Params }) {
               </li>
             ))}
           </ul>
-        </section>
+        </GlassCard>
       ) : null}
-
-      <aside className="sunk mt-14 max-w-[62ch] p-5">
-        <h3 className="label mb-2">Found a dead link?</h3>
-        <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-          Links rot. If one of these has gone, say so and it will be pulled or replaced — the point
-          of a short list is that all of it works.
-        </p>
-      </aside>
     </div>
   );
 }

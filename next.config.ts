@@ -15,40 +15,44 @@ import type { NextConfig } from "next";
  * the standard trade-off; the nonce-based alternative would force every page to
  * become dynamic, which would cost more than it buys on a static content site.
  */
+const isDev = process.env.NODE_ENV === "development";
+const allowPreviewEmbed = isDev || process.env.ALLOW_PREVIEW_IFRAME === "1";
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  isDev ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'" : "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://i.ytimg.com",
   "font-src 'self'",
   "connect-src 'self' https://*.supabase.co",
   "frame-src https://www.youtube-nocookie.com",
   "form-action 'self'",
-  "frame-ancestors 'self'",
+  allowPreviewEmbed ? "frame-ancestors *" : "frame-ancestors 'self'",
   "base-uri 'self'",
   "object-src 'none'",
-  "upgrade-insecure-requests",
+  ...(allowPreviewEmbed ? [] : ["upgrade-insecure-requests"]),
 ].join("; ");
 
 const securityHeaders = [
   { key: "Content-Security-Policy", value: csp },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  ...(allowPreviewEmbed ? [] : [{ key: "X-Frame-Options", value: "SAMEORIGIN" }]),
   {
     key: "Strict-Transport-Security",
     value: "max-age=31536000; includeSubDomains; preload",
   },
   {
-    // Nothing here needs a camera, a microphone or a location.
+    // Nothing here needs a camera, a microphone or a location; allow fullscreen for embedded unit videos.
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), fullscreen=*",
   },
 ];
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  allowedDevOrigins: ["*.e2b.app", "*.arena.site"],
 
   images: {
     // YouTube thumbnails are the only remote images on the site.

@@ -4,10 +4,13 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { ThemeScript } from "@/components/ThemeControl";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { PageBackground } from "@/components/ui/PageBackground";
+import { ScrollEffects } from "@/components/ui/ScrollEffects";
 import { site, socialImages } from "@/lib/site";
 import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
+
+const bootstrapScript = `(function(){try{var c=localStorage.getItem("aps.theme");var m=window.matchMedia("(prefers-color-scheme: dark)").matches;if(c==="dark"||((c==="system"||!c)&&m)){document.documentElement.classList.add("dark")}document.documentElement.dataset.theme=c||"system";if("serviceWorker"in navigator&&localStorage.getItem("aps:sw-ver")!=="v6"){localStorage.setItem("aps:sw-ver","v6");navigator.serviceWorker.getRegistrations().then(function(rs){if(!rs.length)return;Promise.all([Promise.all(rs.map(function(r){return r.unregister()})),window.caches?caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}):Promise.resolve()]).then(function(){location.reload()})})}}catch(e){}})();`;
 
 /**
  * Typography and preload.
@@ -72,7 +75,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f3ec" },
+    { media: "(prefers-color-scheme: light)", color: "#e8e8e8" },
     { media: "(prefers-color-scheme: dark)", color: "#101010" },
   ],
 };
@@ -81,7 +84,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en-US" suppressHydrationWarning>
       <head>
-        <ThemeScript />
+        <script dangerouslySetInnerHTML={{ __html: bootstrapScript }} />
         <link
           rel="preload"
           href="/fonts/newsreader-latin-var.woff2"
@@ -96,16 +99,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        <link
+          rel="preload"
+          href="/fonts/kalam-latin-300-normal.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
       </head>
-      <body className="flex min-h-screen flex-col">
+      <body suppressHydrationWarning className="relative flex min-h-screen flex-col bg-transparent">
+        <PageBackground />
         <a className="skip-link" href="#main">
           Skip to content
         </a>
         <SiteHeader />
-        <main id="main" tabIndex={-1} className="flex-1 outline-none">
+        <main id="main" tabIndex={-1} className="flex-1 bg-transparent outline-none">
           {children}
         </main>
         <SiteFooter />
+        <ScrollEffects />
         <ServiceWorkerRegister />
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
       </body>
