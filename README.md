@@ -64,10 +64,11 @@ The entire front-end was rebuilt around calm legibility, transparent glass surfa
   - **Directional scroll fade** smoothly hides the header while reading downward and restores it on upward scroll without breaking fixed modals (`CommandPalette`).
 - **Universal geometric & kinetic symbols** —
   - **45°-rotated 7-square `Logo`** — The universal emblem across the masthead, footer, README banners, and social preview card.
-  - **Monochrome `SubjectMark` course glyphs** — Seven human-crafted 32-unit black-and-white SVG symbols (U.S. flag, quotation marks, speech bubbles, scales of justice, DNA helix, integral sign, magnifying glass) — zero AI-generated icons or colored badges.
+  - **Monochrome `SubjectMark` course icons** — Seven transparent RGBA black-and-white subject illustrations (`public/icons/courses/*.png`: waving U.S. flag, open book, source documents, classical capitol, DNA double helix, right triangle trigonometry, magnifying glass) that invert cleanly in `.dark` mode.
   - **3-circle + 3-shadow bouncing `LoadingSpinner`** — Displayed seamlessly whenever routes (`loading.tsx`) or async components (`SiteSearch`, `StudyDashboard`, `AdvancedDesk`, `UnitVideoPlayer`, `OfflinePackButton`) load.
   - **9-box `BanterLoader`** — Tactile geometric accent accompanying the Study Desk workspace.
-- **Realistic college-ruled notebook paper (`StudySystemVisual`, `NotebookPaper`)** — Both the homepage **AP Study Hub Method (2026–27)** sheet and every scratchpad inside timed essays, mock exams, and Study Studio render authentic loose-leaf college-ruled paper (`#fbf9f3`, single pink vertical margin rule, horizontal `32px` blue lines, zero extra CSS dividers or dots). On the Method sheet, self-hosted `Caveat` handwriting sits directly on the blue baselines.
+- **Realistic loose-leaf notebook paper (`StudySystemVisual`, `NotebookPaper`, `.scratch-paper`)** — Styled directly after `realistichandwriting.com` loose-leaf sheets (`#ffffff` stock, full-height `#de7c7b` vertical margin rule, `#b8cee5` horizontal `32px` blue lines inset from the outer edges, clean white top & bottom margins, zero synthetic borders or dots) with self-hosted `Kalam` 300 ballpoint ink (`#30455a`) aligned directly onto every blue rule across both the homepage Method breakdown and every scratchpad / studio draft.
+- **Conflict-free full-screen unit videos (`UnitVideoPlayer`)** — Supports both native browser fullscreen (`fullscreen` Permissions-Policy + `allowFullScreen`) and a zero-reload edge-to-edge full-screen expansion (`Esc` to exit) that strips ancestor glass/scroll-fade stacking contexts so videos never clip or collide with the header.
 - **60fps bidirectional scroll fade (`ScrollEffects`)** — Time-normalized `requestAnimationFrame` exponential interpolation (`smoothstep` viewport edge bands) gently fades sections in and out at both top and bottom viewport edges without abrupt mouse-wheel snapping, while honoring `prefers-reduced-motion: reduce`.
 
 ---
@@ -79,13 +80,13 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 | Course | Mark | Units & Lessons | Cited Paragraphs | Recall Cards | Practice Qs | Essays & Mock Papers | Unit Videos |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **AP U.S. History** (`apush`) | U.S. flag | 9 | 90 | 89 | 48 | 1 essay · 1 mock | 13 |
-| **AP English Language** (`ap-lang`) | Quotation marks | 9 | 90 | 81 | 48 | 3 essays · 1 mock | 9 |
-| **AP Seminar** (`ap-seminar`) | Speech bubbles | 5 | 50 | 56 | 38 | 1 essay · 1 mock | 10 |
-| **AP U.S. Gov & Politics** (`ap-gov`) | Scales of justice | 5 | 50 | 40 | 25 | 0 · 0 | 6 |
-| **AP Biology** (`ap-bio`) | DNA | 8 | 80 | 52 | 31 | 0 · 0 | 8 |
-| **AP Calculus AB** (`ap-calc`) | Integral sign | 10 | 100 | 55 | 30 | 0 · 0 | 10 |
+| **AP English Language** (`ap-lang`) | Open book | 9 | 90 | 81 | 48 | 3 essays · 1 mock | 9 |
+| **AP Seminar** (`ap-seminar`) | Source documents | 5 | 50 | 56 | 38 | 1 essay · 1 mock | 10 |
+| **AP U.S. Gov & Politics** (`ap-gov`) | Classical capitol | 5 | 50 | 40 | 25 | 0 · 0 | 6 |
+| **AP Biology** (`ap-bio`) | DNA double helix | 8 | 80 | 52 | 31 | 0 · 0 | 8 |
+| **AP Calculus AB** (`ap-calc`) | Right triangle (`cos θ`) | 10 | 100 | 55 | 30 | 0 · 0 | 10 |
 | **AP Research** (`ap-research`) | Magnifying glass | 5 | 50 | 32 | 20 | 1 essay · 0 mocks | 10 |
-| **Total** | **7 glyphs** | **51** | **510** | **405** | **240** | **6 essays · 3 mocks** | **66** |
+| **Total** | **7 icons** | **51** | **510** | **405** | **240** | **6 essays · 3 mocks** | **66** |
 
 ---
 
@@ -140,9 +141,9 @@ corepack pnpm check                   # runs all 4 validators + tsc --noEmit + e
 ```text
 assets/
   readme/
-    build-banners.mjs           deterministic SVG generator (embeds SIL-OFL Caveat WOFF2)
-    banner-light.svg            light-mode frosted glass + college-ruled paper README banner
-    banner-dark.svg             dark-mode frosted glass + college-ruled paper README banner
+    build-banners.mjs           deterministic SVG generator (embeds SIL-OFL Kalam WOFF2)
+    banner-light.svg            light-mode frosted glass + loose-leaf paper README banner
+    banner-dark.svg             dark-mode frosted glass + loose-leaf paper README banner
   social/
     og-image.svg                1200×630 Open Graph / social card source SVG
 public/
@@ -150,7 +151,8 @@ public/
   bg-corridor.jpg               wallpaper: /study, /search, /integrations, /ai-disclosure
   bg-class.jpg                  wallpaper: /course/[slug], /cards, /videos, /guides
   bg-class2.jpg                 wallpaper: /notes, /practice, /studio, /essays, /exam, /resources, /print
-  fonts/                        self-hosted WOFF2 subsets (Newsreader, Public Sans, JetBrains Mono, Caveat)
+  fonts/                        self-hosted WOFF2 subsets (Newsreader, Public Sans, JetBrains Mono, Kalam)
+  icons/courses/                7 transparent RGBA monochrome AP course symbols
   og-image.png                  compiled 1200×630 Open Graph card
   social-preview.png            compiled 1200×630 GitHub / social preview card
   sw.js                         same-origin offline service worker
@@ -158,7 +160,7 @@ scripts/
   validate-lessons.ts           verifies lesson depth, citations, cards, and practice integrity
   validate-study.ts             verifies study catalog joins, KaTeX math, scheduling, backups, and exports
   validate-videos.ts            verifies curated YouTube IDs and unit coverage
-  validate-presentation.mjs     enforces neutral dark tokens, SubjectMark labels, video privacy, and PNG headers
+  validate-presentation.mjs     enforces neutral dark tokens, SubjectMark icons, video privacy, and PNG headers
   build-social-image.mjs        renders assets/social/og-image.svg to public/*.png via @resvg/resvg-js
 src/
   app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
@@ -167,9 +169,9 @@ src/
     SiteHeaderShell.tsx         directional scroll-fade shell preserving fixed modal viewports
     TopClassBar.tsx             hover-reveal AP Courses popover + mobile touch bottom sheet
     MobileNav.tsx               unified Menu popover (SiteSearch, Study Desk, links, ThemeSwitch)
-    StudySystemVisual.tsx       Caveat handwritten Method sheet locked to 32px blue notebook rules
-    SubjectMark.tsx             7 monochrome hand-drawn 32-unit SVG course symbols
-    UnitVideoPlayer.tsx         click-to-load youtube-nocookie player + static thumbnail previews
+    StudySystemVisual.tsx       Kalam 300 handwritten Method sheet locked to 32px blue notebook rules
+    SubjectMark.tsx             7 transparent monochrome course symbols with dark-mode inversion
+    UnitVideoPlayer.tsx         click-to-load youtube-nocookie player + conflict-free full-screen view
     CardDeck.tsx                keyboard-first active-recall flashcard deck
     PracticeSet.tsx             accessible multiple-choice runner with section-level remediation
     TimedPaper.tsx              essay & mock-exam workspace with autosave + NotebookPaper scratchpad
@@ -191,6 +193,6 @@ src/
 ## Honesty, Trademarks & License
 
 - **Independent student project** — AP® and Advanced Placement® are registered trademarks of the College Board, which was not involved in the production of, and does not endorse, this site. All 240 practice questions, 405 recall cards, and 51 lessons are original study material written from public curriculum frameworks and open textbooks; no secure exam items are reproduced.
-- **Fonts & artwork** — Self-hosted `Newsreader`, `Public Sans`, `JetBrains Mono`, and `Caveat` are licensed under the SIL Open Font License 1.1 (`public/fonts/`). Background classroom and corridor paintings are original environment illustrations by Arseniy Chebynkin.
+- **Fonts & artwork** — Self-hosted `Newsreader`, `Public Sans`, `JetBrains Mono`, and `Kalam` are licensed under the SIL Open Font License 1.1 (`public/fonts/`). Background classroom and corridor paintings are original environment illustrations by Arseniy Chebynkin.
 - **AI transparency** — Every place where AI tools assisted with scaffolding, drafting, or validation is documented openly in [`AI_DISCLOSURE.md`](./AI_DISCLOSURE.md) and [`/ai-disclosure`](https://v0-project-roan-six-20.vercel.app/ai-disclosure).
 - **Code license** — Released under the [MIT License](./LICENSE).

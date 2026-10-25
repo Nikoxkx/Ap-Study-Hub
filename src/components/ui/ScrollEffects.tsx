@@ -112,8 +112,21 @@ export function ScrollEffects() {
 
       let needsNextFrame = false;
 
+      const hasFullscreen = Boolean(
+        document.fullscreenElement ||
+          document.querySelector('.unit-video-frame[data-expanded="true"]'),
+      );
+
       for (let i = 0; i < targets.length; i++) {
         const el = targets[i];
+        if (
+          hasFullscreen ||
+          el.querySelector('.unit-video-frame[data-expanded="true"], :fullscreen')
+        ) {
+          currentAlpha.set(el, 1);
+          if (el.style.opacity !== "") el.style.opacity = "";
+          continue;
+        }
         const rect = el.getBoundingClientRect();
         const target = computeTargetAlpha(rect, vh, scrollY, remainingBottomScroll);
         const prev = currentAlpha.get(el);
@@ -154,19 +167,30 @@ export function ScrollEffects() {
       }
     }
 
-    const initTimer = window.setTimeout(() => {
-      collectTargets();
+    let activated = false;
+
+    function activateAndSchedule() {
+      activated = true;
       schedule();
-    }, 48);
+    }
+
+    const initTimer = window.setTimeout(() => {
+      activated = true;
+      collectTargets();
+      if ((window.scrollY || 0) > 2) {
+        schedule();
+      }
+    }, 350);
 
     const mainEl = document.getElementById("main");
     let mutationTimer: ReturnType<typeof setTimeout> | null = null;
     const observer = mainEl
       ? new MutationObserver(() => {
+          if (!activated) return;
           if (mutationTimer) clearTimeout(mutationTimer);
           mutationTimer = setTimeout(() => {
             collectTargets();
-            schedule();
+            if ((window.scrollY || 0) > 2) schedule();
           }, 80);
         })
       : null;
@@ -175,16 +199,16 @@ export function ScrollEffects() {
       observer.observe(mainEl, { childList: true, subtree: true });
     }
 
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("scroll", activateAndSchedule, { passive: true });
+    window.addEventListener("resize", activateAndSchedule, { passive: true });
 
     return () => {
       window.clearTimeout(initTimer);
       if (rafId) window.cancelAnimationFrame(rafId);
       if (mutationTimer) clearTimeout(mutationTimer);
       observer?.disconnect();
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("scroll", activateAndSchedule);
+      window.removeEventListener("resize", activateAndSchedule);
       for (const el of targets) {
         el.style.opacity = "";
       }

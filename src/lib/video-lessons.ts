@@ -142,7 +142,7 @@ export function videoWatchUrl(v: UnitVideo): string {
 }
 
 export function videoEmbedUrl(v: UnitVideo): string {
-  return `https://www.youtube-nocookie.com/embed/${v.id}?rel=0&modestbranding=1&playsinline=1`;
+  return `https://www.youtube-nocookie.com/embed/${v.id}?rel=0&modestbranding=1&playsinline=1&fs=1`;
 }
 
 /**

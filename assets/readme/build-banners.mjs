@@ -1,9 +1,10 @@
 /**
  * Build the 2026–27 README banners as dependency-free, resolution-independent SVG.
  *
- * Embeds the SIL-OFL `Caveat` Latin WOFF2 subset directly in the SVG so GitHub
- * viewers on every OS see genuine natural student handwriting aligned directly
- * on the blue college-ruled notebook lines — with zero extra lines or dots.
+ * Embeds the SIL-OFL `Kalam` 300 Latin WOFF2 subset directly in the SVG so GitHub
+ * viewers on every OS see genuine `realistichandwriting.com`-style loose-leaf
+ * paper (`#ffffff` sheet, `#de7c7b` full-height vertical rule, `#b8cee5` inset
+ * blue lines, and `#30455a` ballpoint ink resting directly on each blue line).
  *
  * Run: node assets/readme/build-banners.mjs
  */
@@ -13,7 +14,7 @@ import { dirname, join } from "node:path";
 
 const outDir = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(outDir, "../..");
-const caveatWoff2 = readFileSync(join(rootDir, "public/fonts/caveat-latin-var.woff2")).toString("base64");
+const kalamWoff2 = readFileSync(join(rootDir, "public/fonts/kalam-latin-300-normal.woff2")).toString("base64");
 
 const W = 1200;
 const H = 430;
@@ -21,7 +22,7 @@ const H = 430;
 const SERIF = "'Newsreader', Georgia, 'Iowan Old Style', 'Times New Roman', serif";
 const SANS = "'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 const MONO = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-const HAND = "'Caveat', 'Segoe Print', 'Bradley Hand', cursive";
+const HAND = "'Kalam', 'Segoe Print', 'Bradley Hand', cursive";
 
 const themes = {
   light: {
@@ -73,42 +74,42 @@ function rotatedSevenSquareLogo(fill) {
 
 function realisticNotebookSheet() {
   const sheetW = 446;
-  const sheetH = 354;
-  const lineStep = 30;
-  const firstRuleY = 46;
-  const ruleYs = Array.from({ length: 10 }, (_, i) => firstRuleY + i * lineStep);
+  const sheetH = 362;
+  const lineStep = 23;
+  const firstRuleY = 48;
+  const ruleYs = Array.from({ length: 13 }, (_, i) => firstRuleY + i * lineStep);
 
   return `
-    <g transform="translate(710 38)">
-      <rect x="4" y="6" width="${sheetW}" height="${sheetH}" rx="3" fill="rgba(0,0,0,0.16)" />
-      <rect width="${sheetW}" height="${sheetH}" rx="3" fill="#fbf9f3" stroke="#c8c1b2" stroke-width="1" />
+    <g transform="translate(710 34)">
+      <rect x="4" y="6" width="${sheetW}" height="${sheetH}" rx="3" fill="rgba(0,0,0,0.14)" />
+      <rect width="${sheetW}" height="${sheetH}" rx="3" fill="#ffffff" stroke="#b8c2d0" stroke-width="1" />
 
-      <!-- Single pink vertical margin rule -->
-      <line x1="48" y1="0" x2="48" y2="${sheetH}" stroke="rgba(226, 114, 124, 0.56)" stroke-width="1.4" />
-
-      <!-- Horizontal light-blue college-ruled lines (no extra borders or dots) -->
+      <!-- Horizontal light-blue lines inset from outer edges -->
       ${ruleYs
         .map(
           (y) =>
-            `<line x1="0" y1="${y}" x2="${sheetW}" y2="${y}" stroke="rgba(126, 168, 214, 0.54)" stroke-width="1" />`,
+            `<line x1="16" y1="${y}" x2="${sheetW - 16}" y2="${y}" stroke="#b8cee5" stroke-width="1" />`,
         )
         .join("\n      ")}
 
-      <!-- Natural Caveat handwriting sitting directly on each blue line -->
-      <g font-family="${HAND}" fill="#1d283a">
-        <text x="60" y="${ruleYs[0] - 2}" font-size="24" font-weight="700" fill="#151f2e">The AP Study Hub Method (2026–27)</text>
+      <!-- Full-height red vertical margin rule -->
+      <line x1="50" y1="0" x2="50" y2="${sheetH}" stroke="#de7c7b" stroke-width="1.4" />
 
-        <text x="22" y="${ruleYs[2] - 2}" font-size="22.5" font-weight="700" fill="#26354d">1.</text>
-        <text x="60" y="${ruleYs[2] - 2}" font-size="22.5" font-weight="700">Read deeply — A complete lesson</text>
-        <text x="60" y="${ruleYs[3] - 2}" font-size="21.5" font-weight="500" fill="#2e3f59">10+ cited paragraphs, objectives, worked examples</text>
+      <!-- Kalam 300 ballpoint ink aligned directly on the blue lines -->
+      <g font-family="${HAND}" font-weight="300" font-size="14.6" fill="#30455a">
+        <text x="62" y="${ruleYs[0] - 2}">The AP Study Hub Method (2026–27) — Read, Recall, Respond</text>
 
-        <text x="22" y="${ruleYs[5] - 2}" font-size="22.5" font-weight="700" fill="#26354d">2.</text>
-        <text x="60" y="${ruleYs[5] - 2}" font-size="22.5" font-weight="700">Recall — Produce the idea cold</text>
-        <text x="60" y="${ruleYs[6] - 2}" font-size="21.5" font-weight="500" fill="#2e3f59">Term on front, your own explanation before flipping</text>
+        <text x="62" y="${ruleYs[2] - 2}">1.</text>
+        <text x="62" y="${ruleYs[3] - 2}">Read deeply — A complete lesson (10+ cited paragraphs)</text>
+        <text x="62" y="${ruleYs[4] - 2}">Objectives, context, and worked examples written in full.</text>
 
-        <text x="22" y="${ruleYs[8] - 2}" font-size="22.5" font-weight="700" fill="#26354d">3.</text>
-        <text x="60" y="${ruleYs[8] - 2}" font-size="22.5" font-weight="700">Respond — Original practice</text>
-        <text x="60" y="${ruleYs[9] - 2}" font-size="21.5" font-weight="500" fill="#2e3f59">Wrong answers route straight back to the lesson</text>
+        <text x="62" y="${ruleYs[6] - 2}">2.</text>
+        <text x="62" y="${ruleYs[7] - 2}">Recall — Can you produce the idea cold? (Flip, mark, redo)</text>
+        <text x="62" y="${ruleYs[8] - 2}">Term on the front, your own explanation before flipping.</text>
+
+        <text x="62" y="${ruleYs[10] - 2}">3.</text>
+        <text x="62" y="${ruleYs[11] - 2}">Respond — Original practice (Feedback to lesson section)</text>
+        <text x="62" y="${ruleYs[12] - 2}">A wrong answer becomes a route back to understanding.</text>
       </g>
     </g>`;
 }
@@ -117,14 +118,14 @@ function banner(mode) {
   const t = themes[mode];
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-labelledby="title desc">
   <title id="title">AP Study Hub — learn seven AP subjects deeply on a quieter kind of study hub</title>
-  <desc id="desc">Frosted glass masthead with the 45-degree 7-square emblem alongside a college-ruled notebook sheet showing the Read, Recall, Respond study loop across 7 AP courses.</desc>
+  <desc id="desc">Frosted glass masthead with the 45-degree 7-square emblem alongside a realistic loose-leaf notebook sheet showing the Read, Recall, Respond study loop across 7 AP courses.</desc>
   <defs>
     <style>
       @font-face {
-        font-family: 'Caveat';
+        font-family: 'Kalam';
         font-style: normal;
-        font-weight: 400 700;
-        src: url("data:font/woff2;base64,${caveatWoff2}") format("woff2");
+        font-weight: 300;
+        src: url("data:font/woff2;base64,${kalamWoff2}") format("woff2");
       }
     </style>
     <linearGradient id="bg-${mode}" x1="0" y1="0" x2="1" y2="1">
@@ -136,7 +137,7 @@ function banner(mode) {
   <rect width="${W}" height="${H}" fill="url(#bg-${mode})" />
 
   <!-- Left Frosted Glass Card -->
-  <rect x="44" y="38" width="640" height="354" rx="17" fill="${t.glassFill}" stroke="${t.glassStroke}" stroke-width="1.2" />
+  <rect x="44" y="34" width="640" height="362" rx="17" fill="${t.glassFill}" stroke="${t.glassStroke}" stroke-width="1.2" />
 
   ${rotatedSevenSquareLogo(t.logoFill)}
   <text x="112" y="84" font-family="${SERIF}" font-size="28" font-weight="600" fill="${t.ink}">AP Study Hub</text>
@@ -147,11 +148,11 @@ function banner(mode) {
   <text x="72" y="158" font-family="${SERIF}" font-size="43" font-weight="600" letter-spacing="-1" fill="${t.ink}">Learn seven AP subjects</text>
   <text x="72" y="208" font-family="${SERIF}" font-size="43" font-weight="600" letter-spacing="-1" fill="${t.ink}">deeply — with zero noise.</text>
 
-  <text x="72" y="252" font-family="${SANS}" font-size="15" fill="${t.soft}">Transparent glass workspace, monochrome course glyphs, cited lessons,</text>
-  <text x="72" y="276" font-family="${SANS}" font-size="15" fill="${t.soft}">recall cards, unit videos, and lined notebook scratch paper.</text>
+  <text x="72" y="252" font-family="${SANS}" font-size="15" fill="${t.soft}">Transparent glass workspace, monochrome course icons, cited lessons,</text>
+  <text x="72" y="276" font-family="${SANS}" font-size="15" fill="${t.soft}">recall cards, full-screen unit videos, and lined scratch paper.</text>
 
   <text x="72" y="328" font-family="${MONO}" font-size="13" font-weight="600" fill="${t.ink}">51 LESSONS  ·  510 PARAGRAPHS  ·  405 CARDS  ·  240 QUESTIONS  ·  66 VIDEOS</text>
-  <text x="72" y="360" font-family="${MONO}" font-size="11.5" letter-spacing="1.1" fill="${t.faint}">NO ACCOUNT  ·  LOCAL-FIRST  ·  OPEN SOURCE  ·  2026–27 EDITION</text>
+  <text x="72" y="362" font-family="${MONO}" font-size="11.5" letter-spacing="1.1" fill="${t.faint}">NO ACCOUNT  ·  LOCAL-FIRST  ·  OPEN SOURCE  ·  2026–27 EDITION</text>
 
   ${realisticNotebookSheet()}
 </svg>\n`;

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">AP Study Hub — learn seven AP subjects deeply on a quieter kind of study hub</title>
-  <desc id="desc">Frosted glass card and college-ruled notebook paper for seven AP courses with 51 deep lessons, 405 recall cards, 240 original questions, and 66 real unit-video thumbnails.</desc>
+  <desc id="desc">Frosted glass card and realistic loose-leaf notebook paper for seven AP courses with 51 deep lessons, 405 recall cards, 240 original questions, and 66 real unit-video thumbnails.</desc>
   <defs>
     <linearGradient id="canvas" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#dde3f2"/>
@@ -11,7 +11,7 @@
   <rect width="1200" height="630" fill="url(#canvas)"/>
 
   <!-- Left Frosted Glass Showcase Card -->
-  <rect x="44" y="48" width="634" height="534" rx="17" fill="#f3f4f7" fill-opacity="0.78" stroke="#ffffff" stroke-width="2"/>
+  <rect x="44" y="48" width="628" height="534" rx="17" fill="#f3f4f7" fill-opacity="0.78" stroke="#ffffff" stroke-width="2"/>
 
   <!-- Universal 45-degree rotated 7-square logo -->
   <g transform="translate(88 102) scale(0.42) rotate(45)">
@@ -33,7 +33,7 @@
   <text x="74" y="378" font-family="DejaVu Serif, Georgia, serif" font-size="54" font-weight="600" letter-spacing="-1.5" fill="#0f0f0f">Zero noise.</text>
 
   <text x="74" y="424" font-family="DejaVu Sans, Arial, sans-serif" font-size="19.5" fill="#2e2e2e">Transparent glass study hub with cited lessons, recall cards,</text>
-  <text x="74" y="452" font-family="DejaVu Sans, Arial, sans-serif" font-size="19.5" fill="#2e2e2e">original practice, and real YouTube thumbnails per unit.</text>
+  <text x="74" y="452" font-family="DejaVu Sans, Arial, sans-serif" font-size="19.5" fill="#2e2e2e">original practice, and full-screen unit videos.</text>
 
   <g font-family="DejaVu Serif, Georgia, serif">
     <text x="74" y="514" font-size="34" font-weight="600" fill="#111111">51</text>
@@ -46,48 +46,52 @@
     <text x="440" y="538" font-size="14" fill="#4a4a4a">unit videos</text>
   </g>
 
-  <!-- Right Realistic College-Ruled Loose-Leaf Notebook Sheet (zero extra lines or dots) -->
-  <g transform="translate(706 58)">
-    <rect x="5" y="7" width="450" height="514" rx="4" fill="#000000" fill-opacity="0.14"/>
-    <rect width="450" height="514" rx="4" fill="#fbf9f3" stroke="#c8c1b2" stroke-width="1.5"/>
+  <!-- Right Realistic Loose-Leaf Sheet (exact realistichandwriting.com style) -->
+  <g transform="translate(700 48)">
+    <rect x="5" y="7" width="456" height="534" rx="3" fill="#000000" fill-opacity="0.13"/>
+    <rect width="456" height="534" rx="3" fill="#ffffff" stroke="#b8c2d0" stroke-width="1.2"/>
 
-    <!-- Single pink vertical margin rule -->
-    <line x1="50" y1="0" x2="50" y2="514" stroke="#e2727c" stroke-opacity="0.58" stroke-width="1.5"/>
-
-    <!-- Horizontal light-blue college-ruled lines every 36px -->
-    <g stroke="#7ea8d6" stroke-opacity="0.55" stroke-width="1">
-      <line x1="0" y1="62" x2="450" y2="62"/>
-      <line x1="0" y1="98" x2="450" y2="98"/>
-      <line x1="0" y1="134" x2="450" y2="134"/>
-      <line x1="0" y1="170" x2="450" y2="170"/>
-      <line x1="0" y1="206" x2="450" y2="206"/>
-      <line x1="0" y1="242" x2="450" y2="242"/>
-      <line x1="0" y1="278" x2="450" y2="278"/>
-      <line x1="0" y1="314" x2="450" y2="314"/>
-      <line x1="0" y1="350" x2="450" y2="350"/>
-      <line x1="0" y1="386" x2="450" y2="386"/>
-      <line x1="0" y1="422" x2="450" y2="422"/>
-      <line x1="0" y1="458" x2="450" y2="458"/>
-      <line x1="0" y1="494" x2="450" y2="494"/>
+    <!-- Horizontal light-blue lines inset from outer paper edges -->
+    <g stroke="#b8cee5" stroke-width="1">
+      <line x1="18" y1="66" x2="438" y2="66"/>
+      <line x1="18" y1="96" x2="438" y2="96"/>
+      <line x1="18" y1="126" x2="438" y2="126"/>
+      <line x1="18" y1="156" x2="438" y2="156"/>
+      <line x1="18" y1="186" x2="438" y2="186"/>
+      <line x1="18" y1="216" x2="438" y2="216"/>
+      <line x1="18" y1="246" x2="438" y2="246"/>
+      <line x1="18" y1="276" x2="438" y2="276"/>
+      <line x1="18" y1="306" x2="438" y2="306"/>
+      <line x1="18" y1="336" x2="438" y2="336"/>
+      <line x1="18" y1="366" x2="438" y2="366"/>
+      <line x1="18" y1="396" x2="438" y2="396"/>
+      <line x1="18" y1="426" x2="438" y2="426"/>
+      <line x1="18" y1="456" x2="438" y2="456"/>
+      <line x1="18" y1="486" x2="438" y2="486"/>
+      <line x1="18" y1="516" x2="438" y2="516"/>
     </g>
 
-    <!-- Authentic Caveat handwriting aligned directly on the blue ruled lines -->
-    <g font-family="Caveat, cursive" fill="#1d283a">
-      <text x="62" y="60" font-size="27" font-weight="700" fill="#141d2b">The AP Study Hub Method (2026–27)</text>
+    <!-- Full-height red vertical margin rule -->
+    <line x1="54" y1="0" x2="54" y2="534" stroke="#de7c7b" stroke-width="1.5"/>
 
-      <text x="22" y="132" font-size="25" font-weight="700" fill="#26354d">1.</text>
-      <text x="62" y="132" font-size="25" font-weight="700">Read deeply — A complete lesson</text>
-      <text x="62" y="168" font-size="23.5" font-weight="500" fill="#2e3f59">10+ paragraphs, cited at section level</text>
+    <!-- Authentic Kalam 300 ballpoint ink resting directly on the blue lines -->
+    <g font-family="Kalam, cursive" font-weight="300" font-size="16.5" fill="#30455a">
+      <text x="66" y="64">The AP Study Hub Method (2026–27)</text>
+      <text x="66" y="94">— Read, Recall, Respond</text>
 
-      <text x="22" y="240" font-size="25" font-weight="700" fill="#26354d">2.</text>
-      <text x="62" y="240" font-size="25" font-weight="700">Recall — Produce the idea cold</text>
-      <text x="62" y="276" font-size="23.5" font-weight="500" fill="#2e3f59">Term on front, your explanation on back</text>
+      <text x="66" y="154">1.</text>
+      <text x="66" y="184">Read deeply — A complete lesson (10+ cited</text>
+      <text x="66" y="214">paragraphs, sources at section level)</text>
 
-      <text x="22" y="348" font-size="25" font-weight="700" fill="#26354d">3.</text>
-      <text x="62" y="348" font-size="25" font-weight="700">Respond — Original practice</text>
-      <text x="62" y="384" font-size="23.5" font-weight="500" fill="#2e3f59">Wrong answers route back to the lesson</text>
+      <text x="66" y="274">2.</text>
+      <text x="66" y="304">Recall — Can you produce the idea cold?</text>
+      <text x="66" y="334">Term on front, your explanation before flipping.</text>
 
-      <text x="62" y="456" font-size="22" font-weight="700" fill="#182232">Mistakes route straight back to understanding.</text>
+      <text x="66" y="394">3.</text>
+      <text x="66" y="424">Respond — Original practice &amp; exact section links</text>
+
+      <text x="66" y="484">A wrong answer becomes a route back</text>
+      <text x="66" y="514">to understanding — not just a score.</text>
     </g>
   </g>
 </svg>

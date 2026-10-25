@@ -61,8 +61,13 @@ for (const field of ["topic", "symbolLabel"]) {
   const count = [...subjects.matchAll(new RegExp(`\\b${field}:\\s*"`, "g"))].length;
   if (count !== 7) fail(`Expected 7 subject ${field} values, found ${count}`);
 }
-for (const symbol of ["U.S. flag", "Quotation marks", "Speech bubbles", "Scales of justice", "DNA", "Integral sign", "Magnifying glass"]) {
+for (const symbol of ["U.S. flag", "Open book", "Source documents", "Classical capitol", "DNA", "Right triangle trigonometry", "Magnifying glass"]) {
   if (!marks.includes(symbol)) fail(`SubjectMark is missing the ${symbol} symbol`);
+}
+for (const slug of ["apush", "ap-lang", "ap-seminar", "ap-gov", "ap-bio", "ap-calc", "ap-research"]) {
+  const iconPath = `public/icons/courses/${slug}.png`;
+  const icon = readFileSync(iconPath);
+  if (icon.readUInt8(25) !== 6) fail(`${iconPath} is not a transparent RGBA PNG`);
 }
 
 // 3. Real YouTube thumbnails load automatically; the player frame stays opt-in.

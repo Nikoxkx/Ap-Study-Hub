@@ -100,7 +100,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
         <link
           rel="preload"
-          href="/fonts/caveat-latin-var.woff2"
+          href="/fonts/kalam-latin-300-normal.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

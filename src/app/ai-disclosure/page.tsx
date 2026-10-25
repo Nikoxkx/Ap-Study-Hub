@@ -71,7 +71,7 @@ const codeAreas = [
     area: "Design system",
     files: "globals.css, next.config.ts, SubjectMark.tsx, StudySystemVisual.tsx, build-banners.mjs",
     ai: "Tailwind 4 setup, CSP template, deterministic SVG & Resvg generation scripts",
-    human: "Hue-free frosted glass over classroom/corridor paintings, neutral #121212 dark mode, 45° 7-square logo, monochrome 32-unit SVG course glyphs, and Caveat handwriting locked to 32px blue college-ruled paper lines",
+    human: "Hue-free frosted glass over classroom/corridor paintings, neutral #121212 dark mode, 45° 7-square logo, 7 transparent monochrome course icons, and Kalam 300 ballpoint ink locked to 32px blue loose-leaf paper lines",
   },
   {
     area: "SEO & meta",

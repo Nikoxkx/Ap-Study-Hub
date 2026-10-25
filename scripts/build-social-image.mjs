@@ -3,7 +3,7 @@
  *
  * Run: pnpm build:social
  *
- * Uses @resvg/resvg-js with bundled Caveat (handwriting) and system DejaVu
+ * Uses @resvg/resvg-js with bundled Kalam (handwriting) and system DejaVu
  * fonts so the notebook sheet renders in authentic natural handwriting.
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -28,8 +28,8 @@ const fontFiles = [
   ...(existsSync(dejavuDir)
     ? dejavuNames.map((name) => join(dejavuDir, name)).filter(existsSync)
     : []),
-  join(root, "assets/social/Caveat-Medium.ttf"),
-  join(root, "assets/social/Caveat-Bold.ttf"),
+  join(root, "assets/social/Kalam-Light.ttf"),
+  join(root, "assets/social/Kalam-Regular.ttf"),
 ].filter(existsSync);
 
 const resvg = new Resvg(readFileSync(svgPath, "utf8"), {

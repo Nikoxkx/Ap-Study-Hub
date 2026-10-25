@@ -19,7 +19,7 @@ const isDev = process.env.NODE_ENV === "development";
 
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  isDev ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'" : "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://i.ytimg.com",
   "font-src 'self'",
@@ -42,9 +42,9 @@ const securityHeaders = [
     value: "max-age=31536000; includeSubDomains; preload",
   },
   {
-    // Nothing here needs a camera, a microphone or a location.
+    // Nothing here needs a camera, a microphone or a location; allow fullscreen for embedded unit videos.
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), fullscreen=*",
   },
 ];
 

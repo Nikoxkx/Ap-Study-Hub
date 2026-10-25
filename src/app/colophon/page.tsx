@@ -10,7 +10,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 export const metadata: Metadata = {
   title: "Colophon · how the hub is built and checked",
   description:
-    "How AP Study Hub is built: Next.js 16 static pages, self-hosted variable typefaces including Caveat handwriting, hue-free frosted glass surfaces, college-ruled notebook sheets, security headers, and zero tracking.",
+    "How AP Study Hub is built: Next.js 16 static pages, self-hosted typefaces including Kalam handwriting, hue-free frosted glass surfaces, loose-leaf notebook sheets, security headers, and zero tracking.",
   alternates: { canonical: "/colophon" },
   openGraph: {
     images: socialImages,
@@ -26,8 +26,8 @@ const spec: [string, string][] = [
   ["Framework", "Next.js 16 (App Router) on React 19, TypeScript 5 (`strict: true`)"],
   ["Rendering", "Static generation (`generateStaticParams`) for all 7 courses and sub-routes; one tiny edge-free search handler at `/api/search`"],
   ["Styling", "Tailwind CSS 4 + hand-authored design tokens in `src/app/globals.css` — hue-free `.glass-box` surfaces, neutral `.dark` charcoal palette, and `.realistic-paper` loose-leaf sheets"],
-  ["Typefaces", "Newsreader (editorial display & lesson prose), Public Sans (UI & controls), JetBrains Mono (citations, timers, shortcuts), and Caveat (natural handwriting on 32px college-ruled paper) — all self-hosted WOFF2 under SIL OFL 1.1"],
-  ["Iconography", "Universal 45°-rotated 7-square geometric `Logo`, 9-box `BanterLoader`, 3-circle bouncing `LoadingSpinner`, and 7 human-crafted monochrome 32-unit SVG `SubjectMark` course glyphs"],
+  ["Typefaces", "Newsreader (editorial display & lesson prose), Public Sans (UI & controls), JetBrains Mono (citations, timers, shortcuts), and Kalam 300 (natural ballpoint handwriting on 32px blue-lined paper) — all self-hosted WOFF2 under SIL OFL 1.1"],
+  ["Iconography", "Universal 45°-rotated 7-square geometric `Logo`, 9-box `BanterLoader`, 3-circle bouncing `LoadingSpinner`, and 7 monochrome transparent RGBA `SubjectMark` course symbols"],
   ["Motion", "60fps time-normalized exponential lerp viewport-edge scroll fade (`ScrollEffects`) + directional header hysteresis (`SiteHeaderShell`), automatically disabled under `prefers-reduced-motion: reduce`"],
   ["Persistence", "Browser `localStorage` only (`aps:*` keys) via `useSyncExternalStore` — zero accounts, zero cookies, zero third-party analytics"],
   ["Verification", "`pnpm check` runs `validate:content`, `validate:study`, `validate:presentation`, `validate:videos`, `tsc --noEmit`, `eslint .`, and `next build`"],
@@ -129,8 +129,8 @@ export default function ColophonPage() {
             Whenever you work through the <strong>Read → Recall → Respond</strong> method or write
             scratch notes during timed essays and mock exams, the workspace switches to realistic
             college-ruled loose-leaf paper (<code style={{ fontFamily: "var(--font-mono)" }}>.realistic-paper</code>)
-            with a single pink margin line and 32px horizontal blue rules — with{" "}
-            <code style={{ fontFamily: "var(--font-mono)" }}>Caveat</code> baselines locked directly
+            with a full-height <code style={{ fontFamily: "var(--font-mono)" }}>#de7c7b</code> margin rule and inset 32px horizontal blue rules — with{" "}
+            <code style={{ fontFamily: "var(--font-mono)" }}>Kalam</code> ballpoint ink locked directly
             onto the blue lines.
           </p>
         </GlassCard>
