@@ -3,19 +3,20 @@ import Link from "next/link";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
 import { subjects } from "@/lib/subjects";
 import { indexSize } from "@/lib/search";
-import { site, absoluteUrl } from "@/lib/site";
+import { site, absoluteUrl, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Colophon",
+  title: "Design notes · why the site looks this way",
   description:
-    "The typefaces, palette, build and design decisions behind AP Study Hub, written down so they can be argued with.",
+    "The type, palette, build, and design decisions behind AP Study Hub, written down so you can argue with them.",
   alternates: { canonical: "/colophon" },
-  openGraph: {
-    title: "Colophon · AP Study Hub",
-    description: "Typefaces, palette, stack and the reasoning behind each choice.",
+  openGraph: { images: socialImages,
+    title: "Why this site looks this way · AP Study Hub",
+    description: "Typefaces, neutral night mode, subject symbols, and the reasoning behind each choice.",
     url: absoluteUrl("/colophon"),
   },
+  twitter: { card: "summary_large_image", images: socialImages },
 };
 
 /**
@@ -53,28 +54,28 @@ const typefaces = [
 
 const decisions = [
   {
-    heading: "Paper, not white",
+    heading: "Paper, not glare",
     body: "The background is #f6f3ec, sampled off uncoated book stock, and the text is #1c1b17 rather than pure black. Pure black on pure white is 21:1 contrast, which sounds ideal and is uncomfortable to read for twenty minutes on a backlit screen. The warm pair still clears 16:1.",
   },
   {
-    heading: "One accent, and it is a red pen",
+    heading: "One accent, like a teacher’s pen",
     body: "Section numbers, the active state, and anything that needs to be noticed use #b0392a. It is the colour a teacher marks in, which is a reason, and it is used sparingly enough to still mean something. There is no second accent.",
   },
   {
-    heading: "Subject colours from bookbinding cloth",
+    heading: "Course colours from old book cloth",
     body: "Each course has one colour drawn from library binding swatches — brick, ink navy, aubergine, bottle, moss, ochre, graphite. Muted on purpose: seven saturated colours competing on one page is a toy, not an index. Each has a hand-checked light variant for the dark theme.",
   },
   {
-    heading: "Rules instead of cards",
+    heading: "Lines instead of boxes",
     body: "Structure comes from hairline rules and whitespace rather than from putting everything in a rounded box with a shadow. Radii top out at 4px. Where a surface does need to lift off the page, it gets a 3px coloured top edge, like a tabbed file card.",
   },
   {
-    heading: "One motion idiom",
+    heading: "One small movement, used everywhere",
     body: "Interactive things either draw a line in from one edge or move 1–3px. Two easing curves, both custom, and a documented reason for each. Everything is disabled under prefers-reduced-motion.",
   },
   {
-    heading: "No icon library",
-    body: "Every glyph on the site — the seven subject marks, the site mark, the arrows — is hand-drawn SVG on a 32-unit grid. There is no icon package, and there are no emoji standing in for icons. Emoji render differently on every platform, cannot inherit colour, and read as a placeholder nobody came back to.",
+    heading: "Real symbols, drawn once",
+    body: "Each course uses a recognisable symbol for what you actually study: a U.S. flag, quotation marks, speech bubbles, scales of justice, DNA, an integral, and a magnifier. They are hand-drawn SVG on a 32-unit grid, with a short topic label and an accessible name. No icon package and no platform-dependent emoji.",
   },
 ];
 
@@ -84,7 +85,7 @@ const stack = [
   ["Styling", "Tailwind CSS 4 for layout, hand-written CSS custom properties for the design tokens"],
   ["Type", "Self-hosted WOFF2 variable fonts, latin subset, 192 KB total"],
   ["Search", "Hand-rolled scored index over the content, no search dependency"],
-  ["Content", "TypeScript modules — no CMS, no database, no runtime data fetching"],
+  ["Content", "TypeScript modules — no CMS, no content database, no runtime content fetching"],
   ["Hosting", "Vercel, static output"],
   ["Analytics", "None"],
   ["AI disclosure", "See /ai-disclosure — v0.dev, Copilot, ChatGPT, Claude, and Arena.ai workflows; sources and validation"],
@@ -130,19 +131,18 @@ export default function ColophonPage() {
       <div className="wrap py-12 md:py-16">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">Colophon</p>
+          <p className="label mb-3">Design notes</p>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
-            How this site is set.
+            Why this site looks the way it does.
           </h1>
           <p className="lede mt-5">
-            Books used to print this at the back: the typefaces, the paper, who set it. It is a good
-            habit. A design decision you cannot explain is usually a default you did not notice
-            making.
+            Books used to print this at the back: the type, the paper, the choices. It is a good
+            habit — a design decision you cannot explain is usually a default you did not notice making.
           </p>
         </div>
 
         <section className="mt-16" aria-labelledby="type-heading">
-          <SectionHead folio="01" title="Typefaces" id="type-heading">
+          <SectionHead folio="01" title="Typefaces chosen for long reading" id="type-heading">
             Three faces, one job each. All three are self-hosted from{" "}
             <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>/fonts</code> as
             latin-subset variable WOFF2, so the site makes no request to Google or anyone else.
@@ -191,9 +191,10 @@ export default function ColophonPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="palette-heading">
-          <SectionHead folio="02" title="Palette" id="palette-heading">
-            Seven subject colours plus a neutral paper-and-ink base and one accent. Every pairing
-            used for text was checked against WCAG AA at its actual size.
+          <SectionHead folio="02" title="A paper-and-ink palette you can actually read" id="palette-heading">
+            Light mode uses seven subject colours over warm paper. Night mode is a strict,
+            equal-channel grayscale — no blue or green cast — with colour left only for small functional
+            accents. Every text pairing was checked against WCAG AA at its actual size.
           </SectionHead>
 
           <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
@@ -238,10 +239,35 @@ export default function ColophonPage() {
               </li>
             ))}
           </ul>
+
+          <h3 className="label mb-3 mt-8">Night mode · neutral only</h3>
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {[
+              ["Paper", "#101010", "background"],
+              ["Raised", "#171717", "cards"],
+              ["Ink", "#ededed", "body text"],
+              ["Rule", "#383838", "hairlines"],
+            ].map(([name, hex, role]) => (
+              <li key={name}>
+                <div
+                  className="mb-2 h-16 w-full"
+                  style={{ background: hex, border: "1px solid var(--rule)", borderRadius: "var(--radius-edge)" }}
+                  aria-hidden="true"
+                />
+                <p className="text-[0.8125rem] font-semibold">{name}</p>
+                <p
+                  className="text-[0.6875rem] uppercase"
+                  style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
+                >
+                  {hex} · {role}
+                </p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section className="mt-16" aria-labelledby="decisions-heading">
-          <SectionHead folio="03" title="Decisions, and why" id="decisions-heading" />
+          <SectionHead folio="03" title="Why the site looks and works this way" id="decisions-heading" />
           <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
             {decisions.map((item) => (
               <article key={item.heading} className="rule-top pt-4">
@@ -255,7 +281,7 @@ export default function ColophonPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="stack-heading">
-          <SectionHead folio="04" title="Build" id="stack-heading" />
+          <SectionHead folio="04" title="What it is built with" id="stack-heading" />
           <div className="table-scroll">
             <table className="data-table">
               <caption className="sr-only">The technical stack behind AP Study Hub</caption>
@@ -288,7 +314,7 @@ export default function ColophonPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="ai-heading">
-          <SectionHead folio="05" title="AI & tooling — where it was used" id="ai-heading">
+          <SectionHead folio="05" title="Where tools helped, and where I stepped in" id="ai-heading">
             AI was a collaborator, not an autopilot. Drafts and boilerplate were often AI-assisted,
             but structure, fact-checking, and final decisions were human. Full breakdown lives at{" "}
             <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>
@@ -337,10 +363,10 @@ export default function ColophonPage() {
               },
               {
                 h: "Design: human decisions",
-                p: "Paper #f6f3ec, ink #1c1b17, mark #b0392a (red pen), binding-cloth subject colors, hand-drawn 32-unit SVG marks, rules not cards. Palette checked at actual size.",
+                p: "Warm light paper, a teacher’s red pen, book-cloth course colours, recognisable 32-unit SVG symbols, and lines instead of boxes. Night mode is neutral grayscale. Contrast checked at actual size.",
               },
               {
-                h: "No runtime AI",
+                h: "No runtime AI or grading",
                 p: "No chatbot, no AI grading, no AI API calls in production. Search is hand-rolled scored index, not LLM. Timed papers use rubric checklists for self-marking, not word counters.",
               },
             ].map((item) => (

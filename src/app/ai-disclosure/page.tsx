@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
-import { site, absoluteUrl, formatDate } from "@/lib/site";
+import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 import { getTotals } from "@/lib/catalog";
 
 export const metadata: Metadata = {
-  title: "AI Disclosure — Where AI was used",
+  title: "AI Disclosure · what was automated, what was checked",
   description:
-    "Full disclosure of where AI tools were used to build AP Study Hub: scaffolding, components, content drafts, docs, and what was human-checked.",
+    "An honest map of where AI helped build AP Study Hub, where people made the decisions, and how everything was checked.",
   alternates: { canonical: "/ai-disclosure" },
-  openGraph: {
-    title: "AI Disclosure · AP Study Hub",
+  openGraph: { images: socialImages,
+    title: "AI helped. Here is where. · AP Study Hub",
     description:
-      "Where AI was used across AP Study Hub — code, content, design, and docs — with sources, validation, and editorial accountability.",
+      "Where AI drafted code, content, and docs — and where a person checked the sources and kept responsibility.",
     url: absoluteUrl("/ai-disclosure"),
   },
+  twitter: { card: "summary_large_image", images: socialImages },
 };
 
 const tools = [
@@ -132,18 +133,18 @@ export default function AiDisclosurePage() {
       <div className="wrap py-12 md:py-16">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">Last updated {formatDate("2026-10-24")} · Content revision {site.contentRevision}</p>
+          <p className="label mb-3">Checked {formatDate("2026-10-24")} · Content revision {site.contentRevision}</p>
           <h1
             className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]"
             style={{ letterSpacing: "-0.028em", lineHeight: 1.05 }}
           >
-            Where AI was used to build this site, written down plainly.
+            AI helped build this site. Here is exactly where.
           </h1>
           <p className="lede mt-5">
             AI was a collaborator, not an autopilot. Legacy material was human-reviewed; the 2026–27
             expansion was AI-drafted against dated official sources and checked with automated content
             and TypeScript validation. No student data is sent to AI tools — there are no accounts,
-            no analytics, and no runtime AI features.
+            no analytics, and no runtime AI features. Video players and optional sync are opt-in; static YouTube thumbnails load with video pages.
           </p>
           <p className="mt-4 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
             This page is the live version of{" "}
@@ -155,7 +156,7 @@ export default function AiDisclosurePage() {
         </div>
 
         <section className="mt-16" aria-labelledby="tldr-heading">
-          <SectionHead folio="01" title="TL;DR" id="tldr-heading" />
+          <SectionHead folio="01" title="The short, honest version" id="tldr-heading" />
           <div className="prose">
             <ul>
               <li>
@@ -173,7 +174,7 @@ export default function AiDisclosurePage() {
                 rewrote in personal voice and verified claims.
               </li>
               <li>
-                <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production.
+                <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production. Optional sync is an ordinary storage API, not an AI service.
                 Search is a hand-rolled scored index over the course and lesson corpus.
               </li>
             </ul>
@@ -181,7 +182,7 @@ export default function AiDisclosurePage() {
         </section>
 
         <section className="mt-16" aria-labelledby="tools-heading">
-          <SectionHead folio="02" title="Tools used" id="tools-heading" />
+          <SectionHead folio="02" title="Which tools touched the work" id="tools-heading" />
           <div className="table-scroll">
             <table className="data-table">
               <caption className="sr-only">AI tools used to build AP Study Hub</caption>
@@ -204,14 +205,15 @@ export default function AiDisclosurePage() {
             </table>
           </div>
           <p className="mt-4 max-w-[68ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
-            No AI image generators were used for content. All subject marks are hand-drawn SVG on a 32-unit
+            No AI image generators were used for content. The seven subject symbols — flag, quotation
+            marks, speech bubbles, scales, DNA, integral, and magnifier — are hand-drawn SVG on a 32-unit
             grid (<code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>SubjectMark.tsx</code>).
             README banners are deterministic SVG from <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>build-banners.mjs</code>, not diffusion models.
           </p>
         </section>
 
         <section className="mt-16" aria-labelledby="code-heading">
-          <SectionHead folio="03" title="Code & architecture — AI-assisted, human-reviewed" id="code-heading" />
+          <SectionHead folio="03" title="The code: AI-assisted, people-checked" id="code-heading" />
           <div className="table-scroll">
             <table className="data-table">
               <thead>
@@ -237,7 +239,7 @@ export default function AiDisclosurePage() {
         </section>
 
         <section className="mt-16" aria-labelledby="content-heading">
-          <SectionHead folio="04" title="Course content — human-curated, AI-drafted" id="content-heading">
+          <SectionHead folio="04" title="The lessons: drafted with AI, checked against sources" id="content-heading">
             <p className="mb-6 max-w-[68ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
               Structure follows current College Board frameworks and scoring pages. AI accelerated
               drafting; it did not replace study or source checking. The live catalog currently contains{" "}
@@ -270,31 +272,31 @@ export default function AiDisclosurePage() {
           </section>
 
         <section className="mt-16" aria-labelledby="not-heading">
-          <SectionHead folio="05" title="What was NOT AI-generated" id="not-heading" />
+          <SectionHead folio="05" title="The decisions no AI made for me" id="not-heading" />
           <ul className="grid gap-x-12 gap-y-5 md:grid-cols-2">
             {[
               {
-                h: "Personal experience",
+                h: "I sat these exams",
                 p: "Only 7 courses because I have only sat seven. Rule: nothing goes up unless I would have used it the week before the exam.",
               },
               {
-                h: "Editorial judgment",
+                h: "A person chose what to keep",
                 p: "Paper #f6f3ec, ink #1c1b17, mark #b0392a (teacher's red pen), 7 binding-cloth colors, rules not cards, 4px max radius.",
               },
               {
-                h: "Editorial accountability",
+                h: "I own the mistakes",
                 p: "A named author, public source repository, dated citations, and a corrections route. No secure exam material is intentionally reproduced — original practice is labeled.",
               },
               {
-                h: "Accessibility & privacy",
+                h: "Access and privacy come first",
                 p: "Keyboard-only card deck (Space/Enter flip, arrows, 1/2 mark, S shuffle), aria-live practice feedback, 3 localStorage keys listed in /privacy. Manually tested.",
               },
               {
-                h: "No runtime AI",
+                h: "No chatbot, no automated grading",
                 p: "No chatbot, no AI grading, no AI API. Timed papers use rubric checklists for self-marking — not a word counter wearing a rubric.",
               },
               {
-                h: "Affiliation",
+                h: "No College Board endorsement",
                 p: "Not affiliated with College Board. AP is their trademark. Nothing reviewed or endorsed by them. Errors are mine.",
               },
             ].map((item) => (
@@ -307,37 +309,37 @@ export default function AiDisclosurePage() {
         </section>
 
         <section className="mt-16" aria-labelledby="verify-heading">
-          <SectionHead folio="06" title="How it was checked" id="verify-heading" />
+          <SectionHead folio="06" title="How every claim gets checked" id="verify-heading" />
           <ol className="rule-top">
             {[
               {
                 n: "01",
-                title: "CED-first",
+                title: "Start with the official framework",
                 body: "Units follow CED order and numbering. Required documents, cases, and practices flagged verbatim.",
               },
               {
                 n: "02",
-                title: "Link check",
-                body: "Every outbound link opened by a person before listing, with date in channels.ts / resourcesData. YouTube linked as channels not video IDs.",
+                title: "Open every source",
+                body: "Every outbound link opened by a person before listing, with date in channels.ts / resourcesData. Unit video IDs are validated and paired with channel fallbacks.",
               },
               {
                 n: "03",
-                title: "Type safety",
+                title: "Let the compiler catch mistakes",
                 body: "Content is TypeScript modules. pnpm typecheck catches malformed units at build time rather than at read time. pnpm check = typecheck + lint + build.",
               },
               {
                 n: "04",
-                title: "Original questions",
+                title: "Write our own practice",
                 body: "Practice questions original, difficulty band matched, distractors from real mistakes. Released College Board questions linked, never reproduced.",
               },
               {
                 n: "05",
-                title: "Static output",
-                body: "Every content page generated at build time. One dynamic route: /api/search. No DB, no CMS, no runtime fetching.",
+                title: "Keep it fast and private",
+                body: "Every content page generated at build time. One dynamic route: /api/search. No CMS or content database; optional Study Desk sync is opt-in.",
               },
               {
                 n: "06",
-                title: "Human review",
+                title: "A person reads every page",
                 body: "Author Yeisbel Pena reads every page before deploy. Corrections via GitHub issues are most-valued contributions.",
               },
             ].map((item) => (
@@ -355,7 +357,7 @@ export default function AiDisclosurePage() {
         </section>
 
         <section className="mt-16" aria-labelledby="cite-heading">
-          <SectionHead folio="07" title="How to cite this disclosure" id="cite-heading" />
+          <SectionHead folio="07" title="How to quote this honestly" id="cite-heading" />
           <div className="prose">
             <p>
               If you reference this project, please use:

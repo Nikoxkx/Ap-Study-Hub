@@ -6,7 +6,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ThemeScript } from "@/components/ThemeControl";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
-import { site } from "@/lib/site";
+import { site, socialImages } from "@/lib/site";
 import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
 
 /**
@@ -41,9 +41,10 @@ export const metadata: Metadata = {
     "AP Calculus AB BC",
     "AP Research academic paper",
     "free AP study guide",
+    "AP college credit",
   ],
   alternates: { canonical: "/" },
-  openGraph: {
+  openGraph: { images: socialImages,
     type: "website",
     siteName: site.name,
     locale: site.locale,
@@ -53,6 +54,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    images: socialImages,
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
   },
@@ -71,7 +73,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#f6f3ec" },
-    { media: "(prefers-color-scheme: dark)", color: "#11120f" },
+    { media: "(prefers-color-scheme: dark)", color: "#101010" },
   ],
 };
 

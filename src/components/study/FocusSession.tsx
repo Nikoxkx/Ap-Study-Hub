@@ -62,7 +62,7 @@ export function FocusSession({ courses, items, reviewItems, selectedCourse, now 
 
   return (
     <section aria-labelledby="focus-heading">
-      <div className="panel-heading"><div><p className="label">Focus Session</p><h2 id="focus-heading">Recall → explain → apply</h2><p>A deadline-based timer stays accurate in a background tab. The steps use this course’s current queue and objectives.</p></div>{phase !== "idle" ? <p className="focus-clock" data-low={remaining <= 60}>{clock(remaining)}</p> : null}</div>
+      <div className="panel-heading"><div><p className="label">One focused block</p><h2 id="focus-heading">Remember it, explain it, use it</h2><p>A deadline-based timer stays accurate in a background tab. The steps use this course’s current queue and objectives.</p></div>{phase !== "idle" ? <p className="focus-clock" data-low={remaining <= 60}>{clock(remaining)}</p> : null}</div>
 
       {phase === "idle" ? <div className="focus-setup">
         <label><span className="label">Course</span><select className="field mt-2" value={slug} onChange={(event) => setSlug(event.target.value as SubjectSlug)}>{courses.map((item) => <option key={item.slug} value={item.slug}>{item.label}</option>)}</select></label>
@@ -75,20 +75,20 @@ export function FocusSession({ courses, items, reviewItems, selectedCourse, now 
         <ol className="focus-steps">{["Recall", "Explain", "Apply"].map((label, index) => <li key={label}><button type="button" aria-current={step === index ? "step" : undefined} onClick={() => setStep(index)}><span>{index + 1}</span>{label}</button></li>)}</ol>
         {step === 0 ? <ReviewSession key={`${course.slug}-${startedAt}`} items={queue} limit={Math.max(3, Math.round(duration / 5))} onComplete={() => setStep(1)} /> : null}
         {step === 1 ? <div className="focus-lesson">
-          <p className="label">Explain without copying</p><h3>Lesson {unit.unitNumber} · {unit.title}</h3><p>{unit.description}</p>
+          <p className="label">Explain it in your own words</p><h3>Lesson {unit.unitNumber} · {unit.title}</h3><p>{unit.description}</p>
           <p className="focus-instruction">Say or write an explanation for each objective, then rate the highest level you can demonstrate.</p>
           <ol>{unit.objectives.map((objective, index) => <li key={objective}><ObjectiveTracker courseSlug={course.slug} unitNumber={unit.unitNumber} index={index} objective={objective} /></li>)}</ol>
           <div className="mt-5 flex flex-wrap gap-3"><Link href={`/course/${course.slug}/notes#unit-${unit.unitNumber}`} target="_blank" className="link-underlined">Open lesson in a new tab ↗</Link><button type="button" className="btn btn-solid btn-sm" onClick={() => setStep(2)}>Continue to apply</button></div>
         </div> : null}
         {step === 2 ? <div className="focus-apply">
-          <p className="label">Apply in a new context</p><h3>Choose production, not more recognition</h3><p>Use a new tab so this timer keeps running. Return when you have a draft, graph, conclusion, or set of answers to inspect.</p>
+          <p className="label">Use it somewhere new</p><h3>Make something, don’t just recognise it</h3><p>Use a new tab so this timer keeps running. Return when you have a draft, graph, conclusion, or set of answers to inspect.</p>
           <div className="focus-apply-links"><Link href={`/course/${course.slug}/studio?tab=lab`} target="_blank">Interactive lab ↗<span>Change a parameter, annotate evidence, or defend a conclusion.</span></Link><Link href={`/course/${course.slug}/studio?tab=writing`} target="_blank">Writing studio ↗<span>Produce a timed response and compare it with the criteria.</span></Link><Link href={`/course/${course.slug}/practice`} target="_blank">Practice ↗<span>Work from the course bank of {practiceCount} questions.</span></Link></div>
           <button type="button" className="btn btn-solid btn-sm mt-5" onClick={finish}>Finish & record session</button>
         </div> : null}
         <button type="button" className="btn btn-quiet btn-sm mt-6" onClick={finish}>End session early</button>
       </div> : null}
 
-      {phase === "complete" ? <div className="study-empty"><p className="label">Session recorded</p><h3>{elapsedMinutes}-minute focus block recorded</h3><p>The elapsed time is in your weekly summary. Objective ratings and every reviewed item were saved as you worked.</p><button type="button" className="btn btn-outline btn-sm" onClick={() => setPhase("idle")}>Plan another session</button></div> : null}
+      {phase === "complete" ? <div className="study-empty"><p className="label">Session saved</p><h3>{elapsedMinutes} minutes of real work, saved</h3><p>The elapsed time is in your weekly summary. Objective ratings and every reviewed item were saved as you worked.</p><button type="button" className="btn btn-outline btn-sm" onClick={() => setPhase("idle")}>Plan another session</button></div> : null}
     </section>
   );
 }

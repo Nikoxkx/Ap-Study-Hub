@@ -39,7 +39,7 @@ export interface MistakeRecord {
 export interface StudyEvent {
   id: string;
   at: number;
-  type: "review" | "practice" | "focus" | "frq";
+  type: "review" | "practice" | "focus" | "frq" | "video";
   courseSlug?: SubjectSlug;
   itemId?: string;
   correct?: boolean;
@@ -145,7 +145,7 @@ export function reviveStudyState(value: unknown): StudyState | null {
 
   if (Array.isArray(value.events)) {
     clean.events = value.events.slice(-800).flatMap((raw, index) => {
-      if (!object(raw) || !["review", "practice", "focus", "frq"].includes(String(raw.type))) return [];
+      if (!object(raw) || !["review", "practice", "focus", "frq", "video"].includes(String(raw.type))) return [];
       const courseSlug = text(raw.courseSlug, 60);
       return [{
         id: text(raw.id, 240) || `restored-${index}`,
@@ -319,6 +319,7 @@ export function getWeeklySummary(events: StudyEvent[], now = Date.now()) {
   return {
     attempts: attempts.length,
     correct: attempts.filter((event) => event.correct).length,
+    videos: recent.filter((event) => event.type === "video").length,
     minutes: Math.round(recent.reduce((sum, event) => sum + (event.minutes ?? 0), 0)),
     activeDays: days.filter((day) => day.count > 0).length,
     days,

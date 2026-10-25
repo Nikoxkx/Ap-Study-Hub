@@ -21,7 +21,7 @@ export function MistakeNotebook({ items, courseSlug, onReview }: { items: StudyI
   return (
     <section aria-labelledby="mistake-notebook-heading">
       <div className="panel-heading">
-        <div><p className="label">Automatic mistake notebook</p><h2 id="mistake-notebook-heading">Correct the reasoning, not only the answer</h2><p>Missed practice, lab conclusions, case matches, variants, and “again” marks arrive here with their original explanation.</p></div>
+        <div><p className="label">Your mistake notebook</p><h2 id="mistake-notebook-heading">Fix the thinking, not just the answer</h2><p>Missed practice, lab conclusions, case matches, variants, and “again” marks arrive here with their original explanation.</p></div>
         <button type="button" className="btn btn-outline btn-sm" aria-pressed={showResolved} onClick={() => setShowResolved((value) => !value)}>{showResolved ? "Hide resolved" : "Include resolved"}</button>
       </div>
       {mistakes.length === 0 ? <div className="study-empty"><h3>No {showResolved ? "" : "unresolved "}mistakes in this filter</h3><p>Complete a practice item or review a card. A miss will appear here automatically; nothing is uploaded.</p></div> : <ol className="mistake-list">

@@ -30,14 +30,14 @@ export function MatrixLab({ lab }: { lab: MatrixLabDefinition }) {
           <div data-label="Evidence & limitation"><p>{source.evidence}</p><p className="matrix-limit"><strong>Limit:</strong> {source.limitation}</p></div>
           <div data-label="Your planned use">
             <label className="sr-only" htmlFor={`matrix-${lab.id}-${source.id}`}>How you will use {source.title}</label>
-            <textarea id={`matrix-${lab.id}-${source.id}`} className="field" rows={4} value={state.uses[source.id] ?? ""}
+            <textarea id={`matrix-${lab.id}-${source.id}`} className="field scratch-paper" rows={4} value={state.uses[source.id] ?? ""}
               onChange={(event) => setState((current) => ({ ...current, uses: { ...current.uses, [source.id]: event.target.value } }))}
               placeholder="Which claim will this source complicate or support?" />
           </div>
         </article>)}
       </div>
       <label className="label mt-6 block" htmlFor={`synthesis-${lab.id}`}>Your line of reasoning</label>
-      <textarea id={`synthesis-${lab.id}`} className="field mt-2" rows={6} value={state.synthesis}
+      <textarea id={`synthesis-${lab.id}`} className="field mt-2 scratch-paper" rows={6} value={state.synthesis}
         onChange={(event) => setState((current) => ({ ...current, synthesis: event.target.value }))}
         placeholder="Explain how at least two sources work together, where they tension, and what a defensible response must include." />
       <div className="mt-3 flex flex-wrap items-center gap-3">

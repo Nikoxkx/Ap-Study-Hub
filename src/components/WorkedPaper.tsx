@@ -13,7 +13,7 @@ export function WorkedPaper({ example, defaultOpen = false }: { example: WorkedE
         <span className="label shrink-0">Show steps</span>
       </summary>
 
-      <article className="worked-paper" aria-label={`Worked solution: ${example.title}`}>
+      <article className="worked-paper scratch-paper" aria-label={`Worked solution: ${example.title}`}>
         <header className="worked-problem">
           <p className="label mb-2">Problem</p>
           <p><InlineMathText>{example.problem}</InlineMathText></p>

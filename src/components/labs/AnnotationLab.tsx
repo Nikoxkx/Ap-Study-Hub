@@ -51,11 +51,11 @@ export function AnnotationLab({ lab }: { lab: AnnotationLabDefinition }) {
         <p className="label mb-2">Your annotation</p>
         <blockquote>“{selected.text}”</blockquote>
         <label className="label mt-4 block" htmlFor={`annotation-tag-${lab.id}`}>Analytical lens</label>
-        <select id={`annotation-tag-${lab.id}`} className="field mt-2" value={current.tag} onChange={(event) => update({ tag: event.target.value })}>
+        <select id={`annotation-tag-${lab.id}`} className="field mt-2 scratch-paper" value={current.tag} onChange={(event) => update({ tag: event.target.value })}>
           {lab.tags.map((tag) => <option key={tag}>{tag}</option>)}
         </select>
         <label className="label mt-4 block" htmlFor={`annotation-note-${lab.id}`}>Evidence → reasoning</label>
-        <textarea id={`annotation-note-${lab.id}`} className="field mt-2" rows={5} value={current.note}
+        <textarea id={`annotation-note-${lab.id}`} className="field mt-2 scratch-paper" rows={5} value={current.note}
           onChange={(event) => update({ note: event.target.value })}
           placeholder="Name the choice or feature, then explain how it works in this context. Saved on this device." />
         <button type="button" className="btn btn-outline btn-sm mt-3" disabled={!current.note.trim()} onClick={() => setShowModel((value) => !value)}>

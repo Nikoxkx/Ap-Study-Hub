@@ -26,9 +26,9 @@ export const site = {
   /** Used in <title> templates — short enough to leave room for the page name. */
   shortName: "AP Study Hub",
   origin: readOrigin(),
-  tagline: "Deep lessons, drills and marked essays for 7 courses",
+  tagline: "Learn seven AP subjects deeply and make the work count",
   description:
-    "Fifty-one curriculum-aligned deep lessons, index cards, original practice, marked essays and timed drills for seven AP courses, with visible sources and scoring guidance.",
+    "Fifty-one deep lessons, active recall, original practice, marked essays and unit videos for seven AP courses — free, private, and built to help you earn college credit where it is accepted.",
   author: {
     name: "Yeisbel Pena",
     role: "Student, and the person who writes everything here",
@@ -71,6 +71,24 @@ export function describe(...sentences: string[]): string {
 export function absoluteUrl(path = "/"): string {
   return new URL(path, `${site.origin}/`).toString();
 }
+
+/**
+ * A real static file, not a generated ImageResponse route.
+ *
+ * The old /opengraph-image route could fail at runtime in production and left
+ * social scrapers with no picture. A committed 1200×630 PNG is boring, cacheable,
+ * and available at the same origin as the page. Every page's metadata points at
+ * this exact URL so previews do not depend on route inheritance or a renderer.
+ */
+export const socialImage = {
+  url: absoluteUrl("/og-image.png"),
+  width: 1200,
+  height: 630,
+  type: "image/png",
+  alt: "AP Study Hub — learn seven AP subjects deeply, remember what matters, and make the work count toward college credit where it is accepted.",
+} as const;
+
+export const socialImages = [socialImage];
 
 /**
  * `2026-08-24` -> `24 August 2026`.

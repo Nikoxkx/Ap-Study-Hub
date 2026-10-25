@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { subjects } from "@/lib/subjects";
 
 export const metadata: Metadata = {
-  title: "Page not found",
+  title: "That link went nowhere",
   robots: { index: false, follow: false },
 };
 
@@ -20,7 +20,7 @@ export default function NotFound() {
       <div className="max-w-2xl">
         <p className="folio mb-4">Error 404</p>
         <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.75rem)]" style={{ letterSpacing: "-0.028em" }}>
-          There is nothing at this address.
+          That link led nowhere. Let&rsquo;s get you back.
         </h1>
         <p className="lede mt-5">
           Either the link was wrong, or something moved and I did not leave a redirect. The second
@@ -41,13 +41,13 @@ export default function NotFound() {
               style={{ flex: "1 1 16rem", minWidth: 0 }}
             />
             <button type="submit" className="btn btn-solid">
-              Search
+              Find it
             </button>
           </div>
         </form>
 
         <nav aria-label="All courses" className="mt-12">
-          <h2 className="label mb-3">Or start from a course</h2>
+          <h2 className="label mb-3">Or jump into a course</h2>
           <ul className="rule-top">
             {subjects.map((subject) => (
               <li key={subject.slug} className="rule-bottom">

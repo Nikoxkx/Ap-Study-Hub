@@ -9,7 +9,7 @@ export function StudySystemVisual() {
       role="img"
       aria-labelledby="study-system-title study-system-desc"
     >
-      <title id="study-system-title">One lesson, three ways to study</title>
+      <title id="study-system-title">One lesson, three ways to make it stick</title>
       <desc id="study-system-desc">
         A cited ten-paragraph lesson connects to a glossary flashcard and an original multiple-choice
         question, with a return path from practice feedback to the exact lesson section.

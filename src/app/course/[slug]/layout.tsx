@@ -58,12 +58,12 @@ export default async function CourseLayout({
                 className="hidden shrink-0 pt-1 sm:block"
                 style={{ color: "var(--subject-ink)" }}
               >
-                <SubjectMark subject={subject.mark} size={48} />
+                <SubjectMark subject={subject.mark} size={48} label={subject.symbolLabel} />
               </span>
 
               <div className="min-w-0">
                 <p className="label mb-2">
-                  <span style={{ color: "var(--subject-ink)" }}>{subject.code}</span>
+                  <span style={{ color: "var(--subject-ink)" }} title={subject.symbolLabel}>{subject.topic}</span>
                   <span aria-hidden="true"> · </span>
                   Advanced Placement
                 </p>
@@ -98,7 +98,7 @@ export default async function CourseLayout({
               style={{ borderColor: "var(--rule)" }}
             >
               <p className="label mb-2">
-                {subject.slug === "ap-research" ? "Portfolio deadline" : "Exam day"}
+                {subject.slug === "ap-research" ? "Your portfolio deadline" : "Your exam day"}
               </p>
               <p className="mb-3 text-[0.9375rem] font-semibold">
                 <time dateTime={subject.exam.date}>{formatExamDate(subject)}</time>
@@ -116,6 +116,7 @@ export default async function CourseLayout({
         slug={subject.slug}
         available={{
           notes: counts.units > 0,
+          videos: counts.units > 0,
           cards: counts.flashcards > 0,
           practice: counts.questions > 0,
           essays: counts.essays > 0,
@@ -130,7 +131,7 @@ export default async function CourseLayout({
         aria-label="Other courses"
         className="wrap rule-top py-8"
       >
-        <h2 className="label mb-3">Other courses</h2>
+        <h2 className="label mb-3">Keep exploring</h2>
         <ul className="flex flex-wrap gap-x-5 gap-y-2">
           {subjects
             .filter((other) => other.slug !== subject.slug)

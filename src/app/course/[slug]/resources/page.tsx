@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
 import { ExternalLink, SectionHead } from "@/components/Furniture";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 /**
@@ -22,25 +22,25 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!course) return {};
 
   const { subject, counts } = course;
-  const title = `${subject.familiar} sources and links`;
-  const description = `${counts.resources} checked links for ${subject.official}: College Board material, primary archives, and the teachers worth watching.`;
+  const title = `${subject.familiar} sources you can check`;
+  const description = `${counts.resources} links we actually opened for ${subject.official}: College Board material, primary archives, and teachers worth learning from.`;
 
   return {
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}/resources` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/resources`) },
+    openGraph: { images: socialImages, title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/resources`) }, twitter: { card: "summary_large_image", images: socialImages },
   };
 }
 
 /** Human-readable grouping for the `type` field on each resource record. */
 const groupNames: Record<string, string> = {
-  official: "From the College Board",
-  practice: "Practice and problem sets",
-  video: "Video and lectures",
-  reference: "Reference and archives",
-  reading: "Reading",
-  tool: "Tools",
+  official: "Straight from the College Board",
+  practice: "Practice you can actually do",
+  video: "Videos worth your time",
+  reference: "Sources and archives",
+  reading: "Reading worth doing",
+  tool: "Tools that help",
 };
 
 export default async function ResourcesPage({ params }: { params: Params }) {
@@ -63,13 +63,13 @@ export default async function ResourcesPage({ params }: { params: Params }) {
   return (
     <div className="wrap py-12 md:py-16">
       <header className="mb-12 max-w-[62ch]">
-        <p className="label mb-2">{resources.length} links</p>
+        <p className="label mb-2">{resources.length} checked links</p>
         <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
-          {subject.familiar} sources
+          {subject.familiar} sources you can check
         </h2>
         <p className="lede mt-4">
-          Short on purpose. Everything here was opened before it was listed, and anything that turned
-          out to be a content farm with a paywall three clicks in is not here.
+          Short on purpose. Every link here was opened before it was listed, and anything that turned
+          into a paywall three clicks in is not here.
         </p>
       </header>
 
@@ -108,12 +108,11 @@ export default async function ResourcesPage({ params }: { params: Params }) {
         <section aria-labelledby="channels-heading">
           <SectionHead
             folio={String(orderedGroups.length + 1).padStart(2, "0")}
-            title="Channels"
+            title="Teachers who go deeper"
             id="channels-heading"
             level={3}
           >
-            Linked as channels rather than as individual videos, so the links keep working. Each
-            comes with a search scoped to this course.
+            Unit-specific videos now play on the <a href={`/course/${subject.slug}/videos`} className="link-underlined">course video page</a>. These channels remain as durable, course-scoped places to search for a replacement or go deeper.
           </SectionHead>
 
           <ul>

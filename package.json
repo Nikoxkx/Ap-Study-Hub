@@ -2,7 +2,7 @@
   "name": "ap-study-hub",
   "version": "1.0.0",
   "private": true,
-  "description": "Deep curriculum-linked lessons, glossary cards, original practice, marked essays, and timed study for seven AP courses.",
+  "description": "Learn seven AP subjects deeply with free lessons, recall cards, original practice, marked essays, and real unit videos that can lead to college credit where accepted.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -21,7 +21,11 @@
     "validate:content": "tsx scripts/validate-lessons.ts",
     "validate:study": "tsx scripts/validate-study.ts",
     "build:banners": "node assets/readme/build-banners.mjs",
-    "check": "corepack pnpm validate:content && corepack pnpm validate:study && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build"
+    "build:social": "node scripts/build-social-image.mjs",
+    "validate:videos": "tsx scripts/validate-videos.ts",
+    "validate:presentation": "node scripts/validate-presentation.mjs",
+    "export:videos": "tsx scripts/export-video-registry.ts",
+    "check": "corepack pnpm validate:content && corepack pnpm validate:study && corepack pnpm validate:presentation && corepack pnpm validate:videos && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build"
   },
   "dependencies": {
     "katex": "^0.19.1",
@@ -30,6 +34,7 @@
     "react-dom": "19.2.6"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/postcss": "4.1.17",
     "@types/katex": "^0.16.8",
     "@types/node": "22.19.15",

@@ -10,7 +10,7 @@ import { getCourse, getCatalog } from "@/lib/catalog";
 import { getCourseLabs } from "@/content/labs";
 import { getStudioTasks } from "@/lib/studio-data";
 import { getStudyCourses } from "@/lib/study-data";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, socialImages } from "@/lib/site";
 
 export function generateStaticParams() {
   return getCatalog().map((course) => ({ slug: course.subject.slug }));
@@ -20,9 +20,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const course = getCourse(slug);
   if (!course) return {};
-  const title = `${course.subject.familiar} interactive studio`;
+  const title = `${course.subject.familiar}, in your own hands`;
   const description = `Interactive ${course.subject.familiar} lessons, timed writing with transparent self-assessment, curriculum connections, and printable study work.`;
-  return { title, description, alternates: { canonical: `/course/${course.subject.slug}/studio` }, openGraph: { title, description, url: absoluteUrl(`/course/${course.subject.slug}/studio`) } };
+  return {
+    title,
+    description,
+    alternates: { canonical: `/course/${course.subject.slug}/studio` },
+    openGraph: { images: socialImages, title, description, url: absoluteUrl(`/course/${course.subject.slug}/studio`) },
+    twitter: { card: "summary_large_image", images: socialImages },
+  };
 }
 
 const tabs = [
@@ -55,8 +61,8 @@ export default async function StudioPage({ params, searchParams }: {
     <div className="wrap py-12 md:py-16">
       <header className="studio-hero">
         <div>
-          <p className="label mb-2">Apply, make, rehearse</p>
-          <h2>{course.subject.familiar} studio</h2>
+          <p className="label mb-2">Try it yourself</p>
+          <h2>{course.subject.familiar}, in your own hands</h2>
           <p className="lede mt-4">Interactive work connected to the same lessons, review schedule, and local progress record. Original practice only; no automated AP score claims.</p>
         </div>
         <div className="studio-hero-actions no-print">

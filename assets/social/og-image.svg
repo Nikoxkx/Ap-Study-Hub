@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">AP Study Hub — learn seven AP subjects deeply and make the work count</title>
+  <desc id="desc">A paper-and-ink social card for seven AP courses with 51 deep lessons, 405 recall cards, 240 original questions, 66 real unit-video thumbnails, and credit where colleges accept it.</desc>
+  <defs>
+    <pattern id="paper-grain" width="120" height="120" patternUnits="userSpaceOnUse">
+      <rect width="120" height="120" fill="#f6f3ec"/>
+      <circle cx="12" cy="18" r="0.8" fill="#1c1b17" opacity="0.045"/>
+      <circle cx="74" cy="41" r="0.6" fill="#1c1b17" opacity="0.04"/>
+      <circle cx="33" cy="92" r="0.7" fill="#1c1b17" opacity="0.035"/>
+      <circle cx="101" cy="78" r="0.5" fill="#1c1b17" opacity="0.04"/>
+    </pattern>
+    <pattern id="rules" width="8" height="32" patternUnits="userSpaceOnUse">
+      <path d="M0 31.5H8" stroke="#ddd6c6" stroke-width="1" opacity="0.42"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#paper-grain)"/>
+  <rect width="1200" height="630" fill="url(#rules)" opacity="0.25"/>
+  <rect x="0.5" y="0.5" width="1199" height="629" fill="none" stroke="#c3baa5" stroke-width="1"/>
+  <rect width="12" height="630" fill="#b0392a"/>
+
+  <!-- Site mark -->
+  <g transform="translate(58 46)" fill="none" stroke="#1c1b17" stroke-width="2" stroke-linejoin="miter">
+    <path d="M8 36V12l8-6h19v30z" fill="#fffdf7"/>
+    <path d="M16 6v6H8z" fill="#ece7db"/>
+    <path d="M15 20h13M15 27h13" stroke="#b0392a" stroke-width="1.7"/>
+  </g>
+  <text x="116" y="81" font-family="DejaVu Serif, Georgia, serif" font-size="34" font-weight="600" fill="#1c1b17">AP Study Hub</text>
+  <text x="58" y="132" font-family="DejaVu Sans Mono, monospace" font-size="15" letter-spacing="2.2" fill="#7e786c">FREE  ·  SEVEN AP COURSES  ·  BUILT BY A STUDENT</text>
+
+  <text x="58" y="222" font-family="DejaVu Serif, Georgia, serif" font-size="62" font-weight="600" letter-spacing="-2" fill="#1c1b17">Learn deeply.</text>
+  <text x="58" y="292" font-family="DejaVu Serif, Georgia, serif" font-size="62" font-weight="600" letter-spacing="-2" fill="#1c1b17">Remember longer.</text>
+  <text x="58" y="362" font-family="DejaVu Serif, Georgia, serif" font-size="62" font-weight="600" letter-spacing="-2" fill="#1c1b17">Make it count.</text>
+
+  <text x="58" y="410" font-family="DejaVu Sans, Arial, sans-serif" font-size="22" fill="#57534a">Real lessons, visible sources, original practice, and</text>
+  <text x="58" y="440" font-family="DejaVu Sans, Arial, sans-serif" font-size="22" fill="#57534a">real YouTube thumbnails inside every unit.</text>
+
+  <path d="M58 480H712" stroke="#1c1b17" stroke-width="2"/>
+  <g font-family="DejaVu Serif, Georgia, serif">
+    <text x="58" y="527" font-size="38" font-weight="600" fill="#b0392a">51</text>
+    <text x="58" y="552" font-size="15" fill="#57534a">deep lessons</text>
+    <text x="178" y="527" font-size="38" font-weight="600" fill="#b0392a">405</text>
+    <text x="178" y="552" font-size="15" fill="#57534a">cards</text>
+    <text x="298" y="527" font-size="38" font-weight="600" fill="#b0392a">240</text>
+    <text x="298" y="552" font-size="15" fill="#57534a">questions</text>
+    <text x="438" y="527" font-size="38" font-weight="600" fill="#b0392a">66</text>
+    <text x="438" y="552" font-size="15" fill="#57534a">unit videos</text>
+  </g>
+  <text x="58" y="596" font-family="DejaVu Sans Mono, monospace" font-size="14" letter-spacing="1.5" fill="#7e786c">FREE  ·  NO ACCOUNT  ·  CREDIT WHERE ACCEPTED  ·  NO PAYWALL</text>
+
+  <!-- Study sheet -->
+  <g transform="translate(756 62)">
+    <rect x="26" y="34" width="360" height="470" fill="#ece7db" stroke="#c3baa5" stroke-width="2" transform="rotate(3 206 269)"/>
+    <rect x="12" y="16" width="360" height="470" fill="#fffdf7" stroke="#1c1b17" stroke-width="2"/>
+    <path d="M326 16h46v46" fill="#ece7db" stroke="#1c1b17" stroke-width="2"/>
+    <path d="M326 16v46h46" fill="none" stroke="#1c1b17" stroke-width="2"/>
+    <rect x="38" y="4" width="30" height="12" fill="#9c3b2e"/>
+    <rect x="76" y="4" width="30" height="12" fill="#31456b"/>
+    <rect x="114" y="4" width="30" height="12" fill="#6b3f6e"/>
+    <rect x="152" y="4" width="30" height="12" fill="#2f5f56"/>
+    <rect x="190" y="4" width="30" height="12" fill="#4f6b32"/>
+    <rect x="228" y="4" width="30" height="12" fill="#9a6520"/>
+    <rect x="266" y="4" width="30" height="12" fill="#57534a"/>
+    <text x="38" y="70" font-family="DejaVu Sans Mono, monospace" font-size="12" letter-spacing="1.4" fill="#b0392a">LEARN  →  RECALL  →  APPLY</text>
+    <text x="38" y="112" font-family="DejaVu Serif, Georgia, serif" font-size="27" fill="#1c1b17">One loop that makes it stick</text>
+    <path d="M38 140H330" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
+    <path d="M38 164H300" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
+    <path d="M38 188H330" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
+    <path d="M38 212H285" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
+    <path d="M38 236H330" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
+    <path d="M38 278H330" stroke="#c3baa5" stroke-width="2"/>
+    <rect x="38" y="300" width="128" height="42" fill="#e0ebe8" stroke="#2f5f56" stroke-width="1.5"/>
+    <text x="52" y="326" font-family="DejaVu Sans Mono, monospace" font-size="11" fill="#2f5f56">RECALL CARD</text>
+    <rect x="184" y="300" width="146" height="42" fill="#f3e6e2" stroke="#b0392a" stroke-width="1.5"/>
+    <text x="198" y="326" font-family="DejaVu Sans Mono, monospace" font-size="11" fill="#b0392a">REAL THUMBNAIL →</text>
+    <path d="M198 362H38v38h160" fill="none" stroke="#b0392a" stroke-width="1.6" stroke-dasharray="5 5"/>
+    <text x="118" y="420" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="11" letter-spacing="0.6" fill="#7e786c">FEEDBACK SENDS YOU BACK TO THE LESSON</text>
+    <text x="38" y="456" font-family="DejaVu Sans Mono, monospace" font-size="12" letter-spacing="1" fill="#57534a">YOUR WORK STAYS YOURS</text>
+  </g>
+</svg>

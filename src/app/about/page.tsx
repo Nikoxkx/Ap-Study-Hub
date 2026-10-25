@@ -2,20 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead, Stat } from "@/components/Furniture";
 import { getCatalog, getTotals } from "@/lib/catalog";
-import { site, absoluteUrl } from "@/lib/site";
+import { site, absoluteUrl, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "About, and how the content is made",
+  title: "Meet the student behind the lessons",
   description:
-    "Who writes AP Study Hub, how the notes and questions are produced and checked, what the site deliberately does not do, and where coverage is thin.",
+    "Meet the student who built AP Study Hub, see how every lesson is checked, and learn where the gaps still are.",
   alternates: { canonical: "/about" },
-  openGraph: {
-    title: "About AP Study Hub",
+  openGraph: { images: socialImages,
+    title: "A student-built AP study library",
     description:
-      "Who writes it, how it is checked, and where the gaps are — stated plainly.",
+      "Who made it, how the work is checked, and what is still missing — said plainly.",
     url: absoluteUrl("/about"),
   },
+  twitter: { card: "summary_large_image", images: socialImages },
 };
 
 /**
@@ -41,18 +42,18 @@ export default function AboutPage() {
       <div className="wrap py-12 md:py-16">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">About</p>
+          <p className="label mb-3">The human behind the notes</p>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
-            One person, seven courses, no business model.
+            One student, seven courses, and nothing to sell you.
           </h1>
           <p className="lede mt-5">
-            This page exists so you can decide how much to trust the rest of the site. Who wrote it,
-            how it was made, and where it is thin.
+            This page is here so you can decide how much to trust the rest of the site: who made
+            it, how the work was checked, and where I may still be wrong.
           </p>
         </div>
 
         <section className="mt-16" aria-labelledby="who-heading">
-          <SectionHead folio="01" title="Who writes this" id="who-heading" />
+          <SectionHead folio="01" title="A student, not a test-prep company" id="who-heading" />
           <div className="prose">
             <p>
               My name is {site.author.name}. I am a student, not a teacher, not a tutoring company,
@@ -75,7 +76,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="ai-heading">
-          <SectionHead folio="02" title="AI use — honestly" id="ai-heading">
+          <SectionHead folio="02" title="Where AI helped, and where a person decided" id="ai-heading">
             This site was built with AI as a collaborator. Full breakdown is on{" "}
             <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>
               /ai-disclosure
@@ -108,7 +109,7 @@ export default function AboutPage() {
                 validation; no secure exam material is intentionally reproduced.
               </li>
               <li>
-                <strong>No runtime AI:</strong> No chatbot, no AI grading, no API calls in production.
+                <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production.
                 Search is hand-rolled scored index, not LLM. Timed papers use rubric checklists for
                 self-marking.
               </li>
@@ -117,7 +118,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="method-heading">
-          <SectionHead folio="03" title="How the content is made" id="method-heading">
+          <SectionHead folio="03" title="How a lesson earns its place here" id="method-heading">
             Four rules, applied to everything here.
           </SectionHead>
 
@@ -141,7 +142,7 @@ export default function AboutPage() {
               {
                 rule: "Every outbound link is opened before it is listed",
                 detail:
-                  "Links carry the date they were last checked. Video lectures are linked as channels rather than individual video IDs, because channel handles survive a creator reorganising their playlists and video IDs do not.",
+                  "Links carry the date they were last checked. Unit videos are now verified IDs with player, watch, and replacement-search links; durable course channels remain for going deeper.",
               },
             ].map((item, index) => (
               <li key={item.rule} className="grid gap-x-6 gap-y-1.5 rule-bottom py-5 sm:grid-cols-[2rem_minmax(0,1fr)]">
@@ -164,7 +165,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="coverage-heading">
-          <SectionHead folio="04" title="Coverage, in real counts" id="coverage-heading">
+          <SectionHead folio="04" title="What is here, counted honestly" id="coverage-heading">
             Every course now has a complete deep-lesson spine. Essays and timed practice remain uneven,
             so those counts are shown plainly rather than hidden behind a comprehensive-sounding adjective.
           </SectionHead>
@@ -218,7 +219,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="corrections-heading">
-          <SectionHead folio="05" title="Corrections" id="corrections-heading" />
+          <SectionHead folio="05" title="If I got something wrong, tell me" id="corrections-heading" />
           <div className="prose">
             <p>
               There will be errors in here. History notes compress arguments, science notes simplify
@@ -237,24 +238,24 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="not-heading">
-          <SectionHead folio="06" title="What this is not" id="not-heading" />
+          <SectionHead folio="06" title="What this site will not pretend to do" id="not-heading" />
           <ul className="grid gap-x-12 gap-y-5 md:grid-cols-2">
             {[
               {
-                h: "Not affiliated with the College Board",
+                h: "No College Board seal of approval",
                 p: "AP and Advanced Placement are their registered trademarks. They have not seen, reviewed or approved anything here.",
               },
               {
-                h: "Not a source of real exam questions",
+                h: "No leaked exam questions",
                 p: "Everything is original. If a site is offering you this year's secure items, it is either lying or committing a fairly serious offence on your behalf.",
               },
               {
-                h: "Not a business",
+                h: "Nothing to buy here",
                 p: "Nothing is sold, nothing is upsold, there is no email list and there are no ads. It costs nothing to run because it is static files.",
               },
               {
-                h: "Not tracking you",
-                p: "No analytics, no cookies, no third-party scripts, no fonts loaded from anyone else's server. The only thing stored is your own study progress, in your own browser.",
+                h: "Your data stays yours",
+                p: "No analytics, no cookies, no third-party scripts, and no remote fonts. Real YouTube thumbnails are static images; players and optional sync load only after you choose them.",
               },
             ].map((item) => (
               <li key={item.h} className="rule-top pt-4">

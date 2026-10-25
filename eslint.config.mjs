@@ -6,7 +6,7 @@ export default defineConfig([
   // spreading it is the form that actually runs under the pinned ESLint 9 /
   // Next 16 pair. Importing the package root gives you the legacy shape.
   ...nextCoreWebVitals,
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "supabase/functions/**"]),
   {
     rules: {
       // Content data files carry long prose strings; wrapping them at 80

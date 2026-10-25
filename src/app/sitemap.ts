@@ -33,6 +33,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: absoluteUrl("/"), lastModified: isoDate(newestContent), changeFrequency: "weekly", priority: 1 },
     { url: absoluteUrl("/guides"), lastModified: isoDate(newestContent), changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/videos"), lastModified: isoDate(newestContent), changeFrequency: "monthly", priority: 0.85 },
+    { url: absoluteUrl("/integrations"), lastModified: policy, changeFrequency: "monthly", priority: 0.5 },
     { url: absoluteUrl("/about"), lastModified: policy, changeFrequency: "yearly", priority: 0.6 },
     { url: absoluteUrl("/colophon"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
     { url: absoluteUrl("/accessibility"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
@@ -54,7 +56,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // listing a URL that answers 404 is the fastest way to lose a crawler's
     // trust in the rest of the file.
     if (course.units.length) {
-      pages.push({ url: absoluteUrl(`${base}/notes`), lastModified, changeFrequency: "monthly", priority: 0.85 });
+      pages.push(
+        { url: absoluteUrl(`${base}/notes`), lastModified, changeFrequency: "monthly", priority: 0.85 },
+        { url: absoluteUrl(`${base}/videos`), lastModified, changeFrequency: "monthly", priority: 0.75 },
+      );
     }
     if (course.flashcards.length) {
       pages.push({ url: absoluteUrl(`${base}/cards`), lastModified, changeFrequency: "monthly", priority: 0.7 });

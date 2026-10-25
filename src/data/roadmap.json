@@ -1,0 +1,61 @@
+{
+  "project": "AP Study Hub — Video & Study Desk Expansion",
+  "projectId": "beeffc1c-0efd-4ae7-8fd7-6ae335087a75",
+  "syncedAt": "2026-10-24",
+  "issues": [
+    {
+      "id": "YEI-8",
+      "title": "Replace failing dynamic social image with a static 1200×630 PNG",
+      "status": "Done",
+      "priority": "Urgent",
+      "dueDate": "2026-10-25",
+      "url": "https://linear.app/yeisbel/issue/YEI-8/replace-failing-dynamic-social-image-with-a-static-1200630-png",
+      "label": "Website"
+    },
+    {
+      "id": "YEI-9",
+      "title": "Neutralize night mode and align every ruled scratch-work surface",
+      "status": "Done",
+      "priority": "High",
+      "dueDate": "2026-10-25",
+      "url": "https://linear.app/yeisbel/issue/YEI-9/neutralize-night-mode-and-align-every-ruled-scratch-work-surface",
+      "label": "Website"
+    },
+    {
+      "id": "YEI-10",
+      "title": "Curate and verify 51 unit-level AP videos",
+      "status": "Done",
+      "priority": "Urgent",
+      "dueDate": "2026-10-26",
+      "url": "https://linear.app/yeisbel/issue/YEI-10/curate-and-verify-51-unit-level-ap-videos",
+      "label": "Video"
+    },
+    {
+      "id": "YEI-11",
+      "title": "Embed privacy-enhanced video players inside every unit",
+      "status": "Done",
+      "priority": "Urgent",
+      "dueDate": "2026-10-27",
+      "url": "https://linear.app/yeisbel/issue/YEI-11/embed-privacy-enhanced-video-players-inside-every-unit",
+      "label": "Website"
+    },
+    {
+      "id": "YEI-12",
+      "title": "Ship the advanced Study Desk tab",
+      "status": "Done",
+      "priority": "High",
+      "dueDate": "2026-10-28",
+      "url": "https://linear.app/yeisbel/issue/YEI-12/ship-the-advanced-study-desk-tab",
+      "label": "Connector"
+    },
+    {
+      "id": "YEI-13",
+      "title": "Activate Supabase project and deploy study-desk-sync",
+      "status": "Todo",
+      "priority": "Medium",
+      "dueDate": "2026-10-31",
+      "url": "https://linear.app/yeisbel/issue/YEI-13/activate-supabase-project-and-deploy-study-desk-sync",
+      "label": "Connector"
+    }
+  ]
+}

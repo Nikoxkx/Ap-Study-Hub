@@ -69,7 +69,7 @@ export default async function PrintPacketPage({ params, searchParams }: {
       })}
 
       {questions.length ? <section className="packet-practice">
-        <header><p className="folio">Retrieval</p><h2>Practice without the key</h2><p>Answer every item, then mark the reasoning you used. The key begins on a separate page.</p></header>
+        <header><p className="folio">Retrieval</p><h2>Try it before you peek</h2><p>Answer every item, then mark the reasoning you used. The key begins on a separate page.</p></header>
         <ol>{questions.map((question, index) => <li key={question.id} className="packet-question">
           <p><strong>{index + 1}.</strong> <MathAwareText>{question.question}</MathAwareText></p>
           <ol type="A">{question.options.map((option, optionIndex) => <li key={optionIndex}><MathAwareText>{option}</MathAwareText></li>)}</ol>
@@ -78,7 +78,7 @@ export default async function PrintPacketPage({ params, searchParams }: {
       </section> : null}
 
       {questions.length ? <section className="packet-answer-key">
-        <header><p className="folio">Separate key</p><h2>Answers & explanations</h2><p>Do not only change the letter. Write why the correct answer works and why your original choice did not.</p></header>
+        <header><p className="folio">Separate key</p><h2>Why the answer works</h2><p>Do not only change the letter. Write why the correct answer works and why your original choice did not.</p></header>
         <ol>{questions.map((question, index) => <li key={question.id}>
           <p><strong>{index + 1}. {letters[question.correctIndex]} — <MathAwareText>{question.options[question.correctIndex]}</MathAwareText></strong></p>
           <p><MathAwareText>{question.explanation}</MathAwareText></p>

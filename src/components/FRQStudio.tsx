@@ -107,9 +107,9 @@ export function FRQStudio({ tasks, courseSlug }: { tasks: StudioTask[]; courseSl
           <p className="defense-clock" data-low={remaining <= 60}>{clock(remaining)}</p>
         </div>
         <label id={`draft-label-${task.id}`} className="label mb-2 block" htmlFor={`draft-${task.id}`}>Your response</label>
-        <textarea id={`draft-${task.id}`} className="field studio-draft" rows={18} value={draft} readOnly={phase === "review"}
+        <textarea id={`draft-${task.id}`} className="field studio-draft scratch-paper" rows={18} value={draft} readOnly={phase === "review"}
           onChange={(event) => setDrafts((current) => ({ ...current, [task.id]: event.target.value }))}
-          placeholder="Draft here. Nothing is uploaded; your browser stores this response." />
+          placeholder="Draft here. Stored in this browser by default; optional sync is off unless you enable it." />
         {phase === "writing" ? <div className="mt-3 flex justify-end no-print"><button type="button" className="btn btn-solid btn-sm" onClick={finish}>Finish & self-assess</button></div> : null}
       </section> : null}
 

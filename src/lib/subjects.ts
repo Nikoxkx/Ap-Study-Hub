@@ -5,10 +5,10 @@
  * components, each with a slightly different set of keys, and three of them
  * silently fell back to blue for four of the seven courses. One table, one place.
  *
- * Colours are drawn from bookbinding cloth swatches rather than a framework
- * palette, so nothing here is `blue-600`. Each has a `-lit` variant hand-checked
- * to clear 4.5:1 against the dark paper colour and a `-wash` tint that sits at
- * roughly 8% ink over the light paper colour.
+ * Light-mode colours are drawn from bookbinding cloth swatches rather than a
+ * framework palette, so nothing here is `blue-600`. The dark washes are strictly
+ * neutral greys: night mode never lays a blue, green, or purple cast over the
+ * page. Each `-lit` variant is hand-checked to clear 4.5:1 on the dark paper.
  */
 
 export type SubjectSlug =
@@ -38,7 +38,11 @@ export interface Subject {
   lit: string;
   wash: string;
   washDark: string;
-  /** Key into the SubjectMark glyph set. */
+  /** Short, human topic label shown with the subject symbol. */
+  topic: string;
+  /** What the subject symbol represents, used as its accessible name. */
+  symbolLabel: string;
+  /** Key into the SubjectMark symbol set. */
   mark: SubjectSlug;
   /**
    * ISO date this course's notes were last worked on. Shown on the course page
@@ -63,8 +67,10 @@ export const subjects: Subject[] = [
     ink: "#9c3b2e",
     lit: "#e59283",
     wash: "#f3e6e2",
-    washDark: "#2a1a17",
+    washDark: "#1d1d1d",
     revised: "2026-10-24",
+    topic: "U.S. HISTORY",
+    symbolLabel: "U.S. flag — American history",
     mark: "apush",
   },
   {
@@ -80,8 +86,10 @@ export const subjects: Subject[] = [
     ink: "#31456b",
     lit: "#93aada",
     wash: "#e3e7f0",
-    washDark: "#171c29",
+    washDark: "#1b1b1b",
     revised: "2026-10-24",
+    topic: "RHETORIC",
+    symbolLabel: "Quotation marks — rhetoric and composition",
     mark: "ap-lang",
   },
   {
@@ -97,8 +105,10 @@ export const subjects: Subject[] = [
     ink: "#6b3f6e",
     lit: "#c79aca",
     wash: "#eee4ef",
-    washDark: "#241a26",
+    washDark: "#1e1e1e",
     revised: "2026-10-24",
+    topic: "INQUIRY",
+    symbolLabel: "Speech bubbles — discussion and inquiry",
     mark: "ap-seminar",
   },
   {
@@ -114,8 +124,10 @@ export const subjects: Subject[] = [
     ink: "#2f5f56",
     lit: "#79bdb0",
     wash: "#e0ebe8",
-    washDark: "#13221f",
+    washDark: "#1a1a1a",
     revised: "2026-10-24",
+    topic: "GOVERNMENT",
+    symbolLabel: "Scales of justice — constitutional government",
     mark: "ap-gov",
   },
   {
@@ -131,8 +143,10 @@ export const subjects: Subject[] = [
     ink: "#4f6b32",
     lit: "#a9c67e",
     wash: "#e7ecdf",
-    washDark: "#1c2416",
+    washDark: "#1c1c1c",
     revised: "2026-10-24",
+    topic: "LIFE SCIENCE",
+    symbolLabel: "DNA double helix — living systems",
     mark: "ap-bio",
   },
   {
@@ -148,8 +162,10 @@ export const subjects: Subject[] = [
     ink: "#9a6520",
     lit: "#e0ad64",
     wash: "#f3e9d9",
-    washDark: "#2a2012",
+    washDark: "#1f1f1f",
     revised: "2026-10-24",
+    topic: "CALCULUS",
+    symbolLabel: "Integral sign — change and accumulation",
     mark: "ap-calc",
   },
   {
@@ -165,8 +181,10 @@ export const subjects: Subject[] = [
     ink: "#57534a",
     lit: "#bdb5a7",
     wash: "#eae7e0",
-    washDark: "#211f1c",
+    washDark: "#1d1d1d",
     revised: "2026-10-24",
+    topic: "RESEARCH",
+    symbolLabel: "Magnifying glass — original research",
     mark: "ap-research",
   },
 ];

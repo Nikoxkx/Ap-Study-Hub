@@ -3,7 +3,7 @@
   <a href="https://v0-project-roan-six-20.vercel.app">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/banner-dark.svg" />
-      <img src="./assets/readme/banner-light.svg" width="100%" alt="AP Study Hub — deep lessons, active recall, and original practice for seven AP courses" />
+      <img src="./assets/readme/banner-light.svg" width="100%" alt="AP Study Hub — learn seven AP subjects deeply and make the work count" />
     </picture>
   </a>
 
@@ -22,13 +22,14 @@
 
 </div>
 
-# Deep AP lessons, built for active study.
+# Learn seven AP subjects deeply — and make the work count.
 
-AP Study Hub is a free, independent study library for seven AP courses. Its expanded
-2026–27 edition combines complete lessons, glossary recall, original practice, marked
-essays, and visible curriculum and scoring sources. Read the explanation, retrieve the
-idea without looking, answer a question, then use the feedback to return to the exact
-section that needs another look.
+AP Study Hub is a free, student-built study library for seven AP courses. Its expanded
+2026–27 edition combines complete lessons, recall cards, original practice, marked essays,
+real YouTube unit videos, and visible curriculum and scoring sources. Learn the why, retrieve
+the idea without looking, answer a question, then use the feedback to return to the exact
+section that needs another look. The goal is understanding that can earn college credit where
+your school accepts it — and the tuition savings that can come with it.
 
 **Live at <https://v0-project-roan-six-20.vercel.app>** — no account, paywall, analytics,
 or runtime AI.
@@ -170,16 +171,19 @@ APUSH free-response design changes. Official course and exam pages remain the au
   generated; the search API is the dynamic exception.
 - **One integrated catalog.** `src/lib/catalog.ts` joins subject metadata, rich lessons,
   legacy drills, cards, questions, resources, counts, and reading time.
-- **No CMS or database.** Lessons and drills live in typed modules. There is no runtime
-  content fetch and no account system.
+- **No CMS or content database.** Lessons and drills live in typed modules. There is no runtime
+  content fetch and no account system; an opt-in Supabase edge function can store Study Desk snapshots.
 - **No-JavaScript reading path.** Notes, essays, questions, and `/search` are rendered
   on the server. The header search form has a GET fallback.
-- **Hand-built interface.** Native controls, hand-drawn SVG marks, Tailwind CSS, and a
-  paper-and-ink design system; no component kit or icon package.
+- **Hand-built interface.** Native controls, recognisable SVG subject symbols (flag, quotes,
+  speech bubbles, scales, DNA, integral, magnifier), Tailwind CSS, and a paper-and-ink design
+  system; no component kit or icon package.
+- **Real video posters.** Unit players fetch the actual YouTube thumbnail automatically from
+  `i.ytimg.com`. The privacy-enhanced player still loads only after you press play.
 - **Local study state only.** Theme, versioned card marks (`aps.cards.v2.{course}`), and
   timed-practice drafts stay in the browser. No student work is sent to an AI service.
 - **Self-hosted fonts.** Newsreader, Public Sans, and JetBrains Mono are bundled with
-  their licenses; no font CDN is required.
+  their licenses; no font CDN is required. Static YouTube thumbnails are the only remote images.
 - **Generated brand assets.** The favicon and Apple icon use the exact SiteMark sheet
   geometry. The Open Graph card and README banners use deterministic SVG/Next ImageResponse
   artwork rather than stock imagery or generated raster pictures.
@@ -288,7 +292,7 @@ Font License 1.1; license texts are in `public/fonts/`.
 
 <div align="center">
   <sub>
-    AP Study Hub · Independent · Est. 2025 · Not affiliated with or endorsed by the College Board<br />
+    AP Study Hub · Built by a student · Free since 2025 · Not affiliated with or endorsed by the College Board<br />
     AP and Advanced Placement are registered trademarks of the College Board.
   </sub>
 </div>

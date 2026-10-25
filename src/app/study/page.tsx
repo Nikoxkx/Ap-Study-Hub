@@ -4,12 +4,12 @@ import { getStudyCourses, getStudyItems } from "@/lib/study-data";
 import { isSubjectSlug } from "@/lib/subjects";
 
 export const metadata: Metadata = {
-  title: "Your study desk",
-  description: "Due Today spaced review, a mistake notebook, objective confidence, personal plans, Focus Sessions, weekly diagnostics, and local backups across every AP course.",
+  title: "What should I work on today?",
+  description: "A private study desk for spaced review, mistakes, realistic plans, focus sessions, video notes, goals, reports, and optional sync across seven AP courses.",
   robots: { index: false, follow: true },
 };
 
-const validTabs = ["today", "review", "mistakes", "plan", "focus", "progress", "data"] as const;
+const validTabs = ["today", "review", "mistakes", "plan", "focus", "progress", "data", "advanced"] as const;
 type StudyTab = typeof validTabs[number];
 
 export default async function StudyPage({ searchParams }: { searchParams: Promise<{ tab?: string | string[]; course?: string | string[] }> }) {

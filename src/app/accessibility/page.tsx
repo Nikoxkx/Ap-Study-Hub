@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
-import { site, absoluteUrl, formatDate } from "@/lib/site";
+import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Accessibility",
+  title: "Accessibility · study without barriers",
   description:
-    "What AP Study Hub does to meet WCAG 2.2 AA, the keyboard shortcuts on every study tool, and the known problems that have not been fixed yet.",
+    "How AP Study Hub works with keyboards, screen readers, and reduced motion — plus an honest list of what still needs fixing.",
   alternates: { canonical: "/accessibility" },
-  openGraph: {
-    title: "Accessibility · AP Study Hub",
-    description: "Conformance, keyboard shortcuts, and an honest list of what is still broken.",
+  openGraph: { images: socialImages,
+    title: "A site that works with you · AP Study Hub",
+    description: "Keyboard access, readable contrast, optional motion, and the places where it still falls short.",
     url: absoluteUrl("/accessibility"),
   },
+  twitter: { card: "summary_large_image", images: socialImages },
 };
 
 /**
@@ -106,19 +107,18 @@ export default function AccessibilityPage() {
       <div className="wrap py-12 md:py-16">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">Reviewed {formatDate(site.policyUpdated)}</p>
+          <p className="label mb-3">Checked {formatDate(site.policyUpdated)}</p>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
-            Accessibility
+            A site that works with you, not against you.
           </h1>
           <p className="lede mt-5">
-            The target is WCAG 2.2 level AA. I believe the site substantially meets it, and I know
-            of four places where it falls short. Those are listed below rather than left for you to
-            discover.
+            The target is WCAG 2.2 AA. I think the site mostly gets there, and I know four places
+            where it does not. They are listed below rather than left for you to discover.
           </p>
         </div>
 
         <section className="mt-14" aria-labelledby="measures-heading">
-          <SectionHead folio="01" title="What has been done" id="measures-heading" />
+          <SectionHead folio="01" title="How this site works for more people" id="measures-heading" />
           <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
             {measures.map((item) => (
               <article key={item.heading} className="rule-top pt-4">
@@ -132,7 +132,7 @@ export default function AccessibilityPage() {
         </section>
 
         <section className="mt-14" aria-labelledby="keys-heading">
-          <SectionHead folio="02" title="Keyboard" id="keys-heading">
+          <SectionHead folio="02" title="Every tool, reachable by keyboard" id="keys-heading">
             The study tools have shortcuts, because clicking through two hundred cards is worse than
             tapping a key two hundred times. Every shortcut has a visible on-screen control too —
             none of them are the only way to do something.
@@ -170,7 +170,7 @@ export default function AccessibilityPage() {
         </section>
 
         <section className="mt-14" aria-labelledby="known-heading">
-          <SectionHead folio="03" title="Known problems" id="known-heading">
+          <SectionHead folio="03" title="Where it still falls short" id="known-heading">
             A statement that claims perfect conformance and lists nothing is a statement nobody
             tested.
           </SectionHead>
@@ -200,7 +200,7 @@ export default function AccessibilityPage() {
         </section>
 
         <section className="mt-14" aria-labelledby="how-heading">
-          <SectionHead folio="04" title="How it was tested" id="how-heading" />
+          <SectionHead folio="04" title="How these claims were checked" id="how-heading" />
           <div className="prose">
             <p>
               Keyboard-only passes over every route; VoiceOver on macOS with Safari; NVDA on Windows
@@ -216,7 +216,7 @@ export default function AccessibilityPage() {
         </section>
 
         <section className="mt-14" aria-labelledby="feedback-heading">
-          <SectionHead folio="05" title="If something does not work" id="feedback-heading" />
+          <SectionHead folio="05" title="If the site gets in your way" id="feedback-heading" />
           <div className="prose">
             <p>
               Tell me. Access problems get priority over new content, and I would much rather fix

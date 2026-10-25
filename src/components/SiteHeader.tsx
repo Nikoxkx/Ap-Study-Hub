@@ -117,6 +117,15 @@ export function SiteHeader() {
             </li>
             <li className="shrink-0">
               <Link
+                href="/videos"
+                className="flex h-10 items-center px-3 text-[0.8125rem] font-medium no-underline"
+                style={{ color: "var(--ink-soft)" }}
+              >
+                Unit videos
+              </Link>
+            </li>
+            <li className="shrink-0">
+              <Link
                 href="/guides"
                 className="flex h-10 items-center px-3 text-[0.8125rem] font-medium no-underline"
                 style={{ color: "var(--ink-soft)" }}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCourse, getCatalog } from "@/lib/catalog";
 import { EssayReader } from "@/components/EssayReader";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
 /**
@@ -24,14 +24,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const { subject, essays } = course;
   const types = [...new Set(essays.map((e) => e.type))].join(", ");
-  const title = `${subject.familiar} sample essays with rubric`;
+  const title = `${subject.familiar} essays, marked and explained`;
   const description = `${essays.length} full ${subject.familiar} responses (${types}) with every rubric point broken out and explained.`;
 
   return {
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}/essays` },
-    openGraph: { title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/essays`) },
+    openGraph: { images: socialImages, title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/essays`) }, twitter: { card: "summary_large_image", images: socialImages },
   };
 }
 
@@ -50,7 +50,7 @@ export default async function EssaysPage({ params }: { params: Params }) {
           {essays.length} {essays.length === 1 ? "response" : "responses"}
         </p>
         <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
-          {subject.familiar} essays, marked
+          {subject.familiar} essays, marked so you can see why
         </h2>
         <p className="lede mt-4">
           A high-scoring response is not a magic text — it is a set of decisions, each of which

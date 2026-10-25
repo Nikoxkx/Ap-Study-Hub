@@ -4,19 +4,20 @@ import { channels, channelUrl } from "@/lib/channels";
 import { subjects } from "@/lib/subjects";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, socialImages } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "How to revise for an AP exam",
+  title: "Study smarter for an AP exam — and make it count",
   description:
-    "Study methods that survive contact with a real AP exam: spacing, self-testing, reading a stimulus, the last fortnight, and what a score is actually worth.",
+    "Study methods that survive a real AP exam: spacing, self-testing, reading a stimulus, the last fortnight, and how a score can turn into credit and tuition savings.",
   alternates: { canonical: "/guides" },
-  openGraph: {
-    title: "How to revise for an AP exam · AP Study Hub",
+  openGraph: { images: socialImages,
+    title: "Make your study count · AP Study Hub",
     description:
-      "Spacing, self-testing, reading a stimulus, the last fortnight, and where AP credit actually gets accepted.",
+      "Spacing, self-testing, reading a stimulus, the last two weeks, and where AP credit can save you tuition.",
     url: absoluteUrl("/guides"),
   },
+  twitter: { card: "summary_large_image", images: socialImages },
 };
 
 /**
@@ -150,19 +151,19 @@ export default function GuidesPage() {
       <div className="wrap py-12 md:py-16">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">General method · applies to all seven courses</p>
+          <p className="label mb-3">A method that works for all seven courses</p>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
-            How to revise for an AP exam
+            Study smarter for an AP exam — and make it count.
           </h1>
           <p className="lede mt-5">
             Course-specific advice lives on each course page. This is the part that does not change:
-            how to space the work, how to read a stimulus, and what to do in the fortnight when it
-            actually counts.
+            how to space the work, read a stimulus, and use the last two weeks to turn effort into a
+            score your college may reward.
           </p>
         </div>
 
         <section className="mt-16" aria-labelledby="method-heading">
-          <SectionHead folio="01" title="Method" id="method-heading">
+          <SectionHead folio="01" title="The five habits that actually move your score" id="method-heading">
             Five things that are worth doing. Everything else is a variation on them.
           </SectionHead>
           <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
@@ -178,7 +179,7 @@ export default function GuidesPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="reading-heading">
-          <SectionHead folio="02" title="Reading and annotating" id="reading-heading">
+          <SectionHead folio="02" title="Read like the question is already coming" id="reading-heading">
             Most AP exams are reading exams with a writing exam attached. These four apply whether
             the stimulus is a political cartoon, a scatter plot or a paragraph of Baldwin.
           </SectionHead>
@@ -195,7 +196,7 @@ export default function GuidesPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="fortnight-heading">
-          <SectionHead folio="03" title="The last fortnight" id="fortnight-heading">
+          <SectionHead folio="03" title="The two weeks that count most" id="fortnight-heading">
             A schedule, because at that point the hard part is deciding what not to do.
           </SectionHead>
           <ol className="rule-top">
@@ -216,7 +217,7 @@ export default function GuidesPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="exam-day-heading">
-          <SectionHead folio="04" title="In the room" id="exam-day-heading" />
+          <SectionHead folio="04" title="What to do when the clock starts" id="exam-day-heading" />
           <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
             {examDay.map((item) => (
               <article key={item.heading} className="rule-top pt-4">
@@ -230,9 +231,10 @@ export default function GuidesPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="credit-heading">
-          <SectionHead folio="05" title="What a score is actually worth" id="credit-heading">
-            Credit policy is set per institution and often per department, so the only authoritative
-            answer is your target school&rsquo;s own policy page. This is the shape of it.
+          <SectionHead folio="05" title="What a good score can save you" id="credit-heading">
+            Credit policy is set per institution and often per department, so your target school&rsquo;s
+            own policy page is the final word. Where credit is accepted, it can mean fewer required
+            courses and real tuition savings. This is the shape of it.
           </SectionHead>
 
           <div className="table-scroll">
@@ -272,7 +274,7 @@ export default function GuidesPage() {
         </section>
 
         <section className="mt-16" aria-labelledby="channels-heading">
-          <SectionHead folio="06" title="Teachers worth watching" id="channels-heading">
+          <SectionHead folio="06" title="Teachers worth learning from" id="channels-heading">
             Listed as channels, with who runs each one, because knowing whether the person
             explaining federalism is a teacher or an animation studio changes how much weight to
             give it. Every handle below was opened before it was listed.
@@ -313,7 +315,7 @@ export default function GuidesPage() {
         </section>
 
         <aside className="sunk mt-16 max-w-[62ch] p-5">
-          <h2 className="label mb-2">One more thing</h2>
+          <h2 className="label mb-2">Your wellbeing is worth more than a 5</h2>
           <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
             An AP score is one number on an application that has a lot of numbers on it. It is worth
             working for and it is not worth wrecking yourself over. If revision has stopped being

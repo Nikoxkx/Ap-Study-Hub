@@ -9,7 +9,7 @@ export interface CommandItem {
   title: string;
   context: string;
   href: string;
-  kind: "Study" | "Course" | "Lesson" | "Studio";
+  kind: "Study" | "Course" | "Lesson" | "Studio" | "Video" | "Site";
 }
 
 export function CommandPalette({ commands }: { commands: CommandItem[] }) {
