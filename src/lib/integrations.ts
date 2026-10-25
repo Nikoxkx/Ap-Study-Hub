@@ -34,10 +34,10 @@ export const integrations = {
   },
   supabase: {
     projectRef: "unfplzqqotubcfcswnlo",
-    status: "inactive" as const,
+    status: "active" as const,
     functionSlug: "study-desk-sync",
-    defaultEndpoint: "https://unfplzqqotubcfcswnlo.functions.supabase.co/study-desk-sync",
-    note: "Secrets are stored in Supabase. The project must be restored and the function deployed before this endpoint is live.",
+    defaultEndpoint: "https://unfplzqqotubcfcswnlo.supabase.co/functions/v1/study-desk-sync",
+    note: "Project restored, migration applied, and edge function deployed. Secrets stay in Supabase; sync remains opt-in.",
   },
   local: {
     socialImage: "/og-image.png",

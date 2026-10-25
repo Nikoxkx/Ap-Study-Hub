@@ -440,8 +440,8 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
         <h3 id="sync-heading">Take your work with you — only if you want to</h3>
         <p>
           The edge function stores a peppered hash of your sync code, not the code itself. No service-role key or pepper is
-          in this browser. The existing Supabase project is currently inactive, so this panel is ready but the live endpoint
-          is not deployed yet.
+          in this browser. The Supabase project is active and the sync function is deployed. Your progress stays local
+          unless you choose to save a snapshot. Use the same sync code on another device to load it.
         </p>
         <div className="sync-form">
           <label>

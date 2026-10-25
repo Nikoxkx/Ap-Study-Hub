@@ -238,27 +238,34 @@ export default function IntegrationsPage() {
             <p className="label">Project {integrations.supabase.projectRef}</p>
             <h3 className="font-semibold">Local-first remains the default.</h3>
             <p>
-              The existing Supabase project is currently{" "}
-              <strong>{integrations.supabase.status}</strong>. The SQL migration and{" "}
-              <code>study-desk-sync</code> edge function are committed under <code>supabase/</code>.
+              The Supabase project is <strong>{integrations.supabase.status}</strong>. The database migration
+              has been applied, and the <code>study-desk-sync</code> edge function is deployed.
+              The new Vercel site is configured to use it. Your progress stays on this device
+              unless you choose to save a snapshot through Advanced Desk.
+            </p>
+            <p>
+              Sync secrets stay on the server. The snapshot table has row-level security enabled
+              and cannot be read directly by browser roles. Browser-to-server sync still needs an
+              end-to-end verification.
             </p>
             <div className="integration-preview-actions">
               <Link href="/study?tab=advanced" className="btn btn-solid btn-sm">
                 Open Advanced Desk
               </Link>
               <ExternalLink href={integrations.linear.syncIssue} className="btn btn-outline btn-sm">
-                Track activation
+                View sync task
               </ExternalLink>
             </div>
           </div>
-          <pre className="code-block" aria-label="Supabase deployment commands">
-            <code>{`# after restoring the project
-supabase db push
-supabase functions deploy study-desk-sync --no-verify-jwt
+          <pre className="code-block whitespace-pre-wrap break-all" aria-label="Configured optional sync endpoint">
+            <code>{`# Configured in Vercel
+NEXT_PUBLIC_STUDY_SYNC_URL=${integrations.supabase.defaultEndpoint}
 
-# Vercel environment variable
-NEXT_PUBLIC_STUDY_SYNC_URL=
-  https://${integrations.supabase.projectRef}.functions.supabase.co/${integrations.supabase.functionSlug}`}</code>
+# Deployment status
+# Database migration: applied
+# Edge function: deployed
+# New site origin: allowed
+# Sync: opt-in; no automatic uploads`}</code>
           </pre>
         </div>
       </GlassCard>
