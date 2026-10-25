@@ -9,6 +9,7 @@ import { PageBackground } from "@/components/ui/PageBackground";
 import { ScrollEffects } from "@/components/ui/ScrollEffects";
 import { site, socialImages } from "@/lib/site";
 import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
+import { Analytics } from "@vercel/analytics/next";
 
 const bootstrapScript = `(function(){try{var c=localStorage.getItem("aps.theme");var m=window.matchMedia("(prefers-color-scheme: dark)").matches;if(c==="dark"||((c==="system"||!c)&&m)){document.documentElement.classList.add("dark")}document.documentElement.dataset.theme=c||"system";if("serviceWorker"in navigator&&localStorage.getItem("aps:sw-ver")!=="v6"){localStorage.setItem("aps:sw-ver","v6");navigator.serviceWorker.getRegistrations().then(function(rs){if(!rs.length)return;Promise.all([Promise.all(rs.map(function(r){return r.unregister()})),window.caches?caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}):Promise.resolve()]).then(function(){location.reload()})})}}catch(e){}})();`;
 
@@ -120,6 +121,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <ScrollEffects />
         <ServiceWorkerRegister />
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
+        <Analytics />
       </body>
     </html>
   );

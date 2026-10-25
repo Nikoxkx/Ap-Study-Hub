@@ -28,6 +28,7 @@
     "check": "corepack pnpm validate:content && corepack pnpm validate:study && corepack pnpm validate:presentation && corepack pnpm validate:videos && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "katex": "^0.19.1",
     "next": "16.2.6",
     "react": "19.2.6",
