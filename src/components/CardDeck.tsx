@@ -361,7 +361,7 @@ function CardFace({
   return (
     <span
       aria-hidden={hidden}
-      className="flex flex-col p-7 sm:p-9"
+      className="flashcard-face flex flex-col p-7 sm:p-9"
       style={{
         position: back ? "absolute" : "relative",
         inset: back ? 0 : undefined,
@@ -369,7 +369,7 @@ function CardFace({
         backfaceVisibility: "hidden",
         WebkitBackfaceVisibility: "hidden",
         transform: back ? "rotateX(180deg)" : undefined,
-        background: "rgba(255, 255, 255, 0.42)",
+        background: "var(--flashcard-surface)",
         border: "1px solid #ffffff",
         borderRadius: "17px",
         backdropFilter: "blur(6px)",

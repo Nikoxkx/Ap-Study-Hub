@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
  * never overlap, stack, or appear inside random content containers.
  *
  * Route → classroom wallpaper mapping:
- *   • /bg-music-class.jpg — Home (/), About (/about), Colophon (/colophon)
+ *   • /bg-music-class.jpg — Home (/), About (/about)
  *   • /bg-corridor.jpg    — Study Desk (/study), Search (/search),
  *                           Integrations (/integrations), AI Disclosure (/ai-disclosure)
  *   • /bg-class.jpg       — Course overviews (/course/[slug]), Cards, Course Videos,
@@ -20,7 +20,6 @@ import { usePathname } from "next/navigation";
 const EXACT_ROUTE_WALLPAPERS: Record<string, string> = {
   "/": "/bg-music-class.jpg",
   "/about": "/bg-music-class.jpg",
-  "/colophon": "/bg-music-class.jpg",
   "/study": "/bg-corridor.jpg",
   "/search": "/bg-corridor.jpg",
   "/integrations": "/bg-corridor.jpg",

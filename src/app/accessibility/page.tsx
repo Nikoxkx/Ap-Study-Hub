@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
@@ -233,13 +232,7 @@ export default function AccessibilityPage() {
           </div>
         </section>
 
-        <p className="mt-14 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-          The design decisions behind the type and colour choices are in the{" "}
-          <Link href="/colophon" className="link-underlined" style={{ color: "var(--ink)" }}>
-            colophon
-          </Link>
-          .
-        </p>
+
         </GlassCard>
       </div>
     </>

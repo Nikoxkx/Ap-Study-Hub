@@ -347,25 +347,25 @@ export function TimedPaper({
                 const given = mcqAnswers[q.id];
                 const ok = given === q.correctIndex;
                 return (
-                  <li key={q.id} className="rule-bottom py-4">
+                  <li key={q.id} className="answer-review py-4" data-correct={ok}>
                     <div className="flex gap-3">
                       <span
                         aria-hidden="true"
                         className="mt-0.5 shrink-0 tabular-nums text-[0.6875rem]"
-                        style={{ fontFamily: "var(--font-mono)", color: ok ? "var(--good)" : "var(--mark)" }}
+                        style={{ fontFamily: "var(--font-mono)", color: ok ? "var(--answer-correct)" : "var(--answer-wrong)" }}
                       >
                         {String(i + 1).padStart(2, "0")} {ok ? "✓" : "✗"}{flags[q.id] ? " ⚑" : ""}
                       </span>
                       <div className="min-w-0">
                         <p className="text-[0.9375rem] font-medium"><MathAwareText>{q.question}</MathAwareText></p>
-                        <p className="mt-1.5 text-[0.8125rem]" style={{ color: ok ? "var(--good)" : "var(--mark)" }}>
+                        <p className="mt-1.5 text-[0.8125rem]" style={{ color: ok ? "var(--answer-correct)" : "var(--answer-wrong)" }}>
                           {given === undefined
                             ? "Left blank"
                             : <>You chose {LETTERS[given]} — <MathAwareText>{q.options[given]}</MathAwareText></>}
                         </p>
                         {!ok ? (
                           <>
-                            <p className="mt-1 text-[0.8125rem]" style={{ color: "var(--good)" }}>
+                            <p className="mt-1 text-[0.8125rem]" style={{ color: "var(--answer-correct)" }}>
                               Answer: {LETTERS[q.correctIndex]} — <MathAwareText>{q.options[q.correctIndex]}</MathAwareText>
                             </p>
                             <p className="mt-1.5 text-[0.8125rem]" style={{ color: "var(--ink-soft)" }}>
@@ -468,8 +468,8 @@ export function TimedPaper({
       <div
         className="sticky top-28 z-20 mb-8 flex flex-wrap items-center justify-between gap-4 px-4 py-3"
         style={{
-          background: expired ? "var(--mark-wash)" : "var(--paper-raised)",
-          border: `1px solid ${expired ? "var(--mark)" : "var(--rule-strong)"}`,
+          background: expired ? "var(--answer-wrong-bg)" : "var(--paper-raised)",
+          border: `1px solid ${expired ? "var(--answer-wrong)" : "var(--rule-strong)"}`,
           borderRadius: "var(--radius-cut)",
           boxShadow: "var(--shadow-lift)",
         }}
@@ -489,7 +489,7 @@ export function TimedPaper({
             className="tnum text-[1.625rem] leading-none"
             style={{
               fontFamily: "var(--font-mono)",
-              color: expired ? "var(--mark)" : low ? "var(--warn)" : "var(--ink)",
+              color: expired ? "var(--answer-wrong)" : low ? "var(--warn)" : "var(--ink)",
             }}
           >
             {clock(remaining)}
@@ -517,7 +517,7 @@ export function TimedPaper({
         <p
           role="alert"
           className="mb-6 p-3 text-[0.875rem]"
-          style={{ background: "var(--mark-wash)", border: "1px solid var(--mark)", borderRadius: "var(--radius-cut)" }}
+          style={{ background: "var(--answer-wrong-bg)", border: "1px solid var(--answer-wrong)", borderRadius: "var(--radius-cut)" }}
         >
           Time is up for this section. In the real thing you would stop writing now. You can still
           finish if you want the practice — just be honest with yourself about it afterwards.
@@ -608,7 +608,7 @@ export function TimedPaper({
                       <details key={source.id} className="sheet overflow-hidden">
                         <summary
                           className="cursor-pointer list-none px-3.5 py-2.5 text-[0.875rem] font-semibold"
-                          style={{ background: "var(--paper-sunk)" }}
+                          style={{ background: "var(--reading-wash)" }}
                         >
                           {source.title}
                         </summary>

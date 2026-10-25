@@ -274,14 +274,7 @@ export default function AboutPage() {
           </ul>
         </section>
 
-        <p className="mt-14 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-          If you want the technical side — the typefaces, the palette, why the search works the way
-          it does — that is in the{" "}
-          <Link href="/colophon" className="link-underlined" style={{ color: "var(--ink)" }}>
-            colophon
-          </Link>
-          .
-        </p>
+
         </GlassCard>
       </div>
     </>

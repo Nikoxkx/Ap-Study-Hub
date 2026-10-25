@@ -71,9 +71,10 @@ export function DataLab({ lab, courseLabel }: { lab: DataLabDefinition; courseLa
       <fieldset className="mt-6" disabled={checked}>
         <legend className="mb-3 font-semibold">{lab.prompt}</legend>
         <div className="space-y-2">
-          {lab.choices.map((option, index) => <label key={option} className="lab-choice" data-selected={choice === index}>
+          {lab.choices.map((option, index) => <label key={option} className="lab-choice" data-selected={choice === index} data-correct={checked && (index === lab.correctIndex || choice === index) ? index === lab.correctIndex : undefined}>
             <input type="radio" name={`lab-${lab.id}`} checked={choice === index} onChange={() => setChoice(index)} />
             <span>{option}</span>
+                {checked && (index === lab.correctIndex || choice === index) ? <span className="answer-status">{index === lab.correctIndex ? "✓ Correct" : "✗ Incorrect"}</span> : null}
           </label>)}
         </div>
       </fieldset>

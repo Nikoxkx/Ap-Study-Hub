@@ -29,7 +29,7 @@ const tools = [
   {
     name: "ChatGPT / GPT-4o",
     provider: "OpenAI",
-    used: "Drafting README, colophon, privacy, accessibility, study guides, flashcard wording, practice question distractors, essay outlines, banner script, and refactoring Tailwind classes.",
+    used: "Drafting README, privacy, accessibility, study guides, flashcard wording, practice question distractors, essay outlines, banner script, and refactoring Tailwind classes.",
   },
   {
     name: "Claude",
@@ -114,7 +114,7 @@ const contentAreas = [
   },
   {
     type: "Docs",
-    where: "README.md, colophon, about, guides, privacy, accessibility",
+    where: "README.md, about, guides, privacy, accessibility",
     ai: "Drafted catalogue table, build/security notes, study method guides",
     human: "Rewrote voice to personal, added 11-tabs story, verified 3 localStorage keys, listed known defects",
   },
@@ -172,7 +172,7 @@ export default function AiDisclosurePage() {
                 depth and structure, while corrections and final editorial decisions remain the author’s responsibility.
               </li>
               <li>
-                <strong>Docs:</strong> README, colophon, about, guides, privacy — AI helped draft, human
+                <strong>Docs:</strong> README, about, guides, privacy — AI helped draft, human
                 rewrote in personal voice and verified claims.
               </li>
               <li>
@@ -380,7 +380,6 @@ export default function AiDisclosurePage() {
         <p className="mt-14 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
           See also:{" "}
           <Link href="/about" className="link-underlined" style={{ color: "var(--ink)" }}>how content is made</Link>,{" "}
-          <Link href="/colophon" className="link-underlined" style={{ color: "var(--ink)" }}>colophon</Link>,{" "}
           <Link href="/privacy" className="link-underlined" style={{ color: "var(--ink)" }}>privacy</Link>,{" "}
           <Link href="/accessibility" className="link-underlined" style={{ color: "var(--ink)" }}>accessibility</Link>.
         </p>

@@ -1,20 +1,20 @@
 <div align="center">
-  <a href="https://v0-project-roan-six-20.vercel.app">
+  <a href="https://ap-study-hub-five.vercel.app">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/banner-dark.png" />
       <source media="(prefers-color-scheme: light)" srcset="./assets/readme/banner-light.png" />
-      <img src="./assets/readme/banner-light.png" width="100%" alt="AP Study Hub — seven AP courses on a transparent frosted-glass study workspace" />
+      <img src="./assets/readme/banner-light.png" width="100%" alt="AP Study Hub — seven AP courses with lessons, flashcards, and practice" />
     </picture>
   </a>
 
   <br />
 
   <p>
-    <strong>Seven AP courses in one calm, transparent glass study hub — with 51 cited lessons, 405 recall cards, 240 original practice questions, 66 full-screen unit videos, and loose-leaf scratch paper.</strong>
+    <strong>Seven AP courses in one study hub — with 51 cited lessons, 405 recall cards, 240 original practice questions, 66 full-screen unit videos, and loose-leaf scratch paper.</strong>
   </p>
 
   <p>
-    <a href="https://v0-project-roan-six-20.vercel.app"><img alt="Live site" src="https://img.shields.io/badge/live_site-v0--project--roan--six--20.vercel.app-121212?style=flat-square&labelColor=262626" /></a>
+    <a href="https://ap-study-hub-five.vercel.app"><img alt="Live site" src="https://img.shields.io/badge/live_site-v0--project--roan--six--20.vercel.app-121212?style=flat-square&labelColor=262626" /></a>
     <a href="#the-catalogue"><img alt="7 AP courses · 51 lessons · 510 paragraphs" src="https://img.shields.io/badge/7_courses-51_lessons_·_510_paragraphs-121212?style=flat-square&labelColor=262626" /></a>
     <a href="#the-catalogue"><img alt="405 cards · 240 questions · 66 videos" src="https://img.shields.io/badge/practice-405_cards_·_240_questions_·_66_videos-121212?style=flat-square&labelColor=262626" /></a>
     <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-404040?style=flat-square&labelColor=262626" /></a>
@@ -22,15 +22,13 @@
   </p>
 
   <p>
-    <a href="https://v0-project-roan-six-20.vercel.app"><strong>Open the hub</strong></a>
+    <a href="https://ap-study-hub-five.vercel.app"><strong>Open the hub</strong></a>
     &nbsp;·&nbsp;
-    <a href="https://v0-project-roan-six-20.vercel.app/study">Study Desk</a>
+    <a href="https://ap-study-hub-five.vercel.app/study">Study Desk</a>
     &nbsp;·&nbsp;
-    <a href="https://v0-project-roan-six-20.vercel.app/videos">Unit Videos</a>
+    <a href="https://ap-study-hub-five.vercel.app/videos">Unit Videos</a>
     &nbsp;·&nbsp;
-    <a href="https://v0-project-roan-six-20.vercel.app/guides">Study Guides</a>
-    &nbsp;·&nbsp;
-    <a href="https://v0-project-roan-six-20.vercel.app/colophon">Colophon</a>
+    <a href="https://ap-study-hub-five.vercel.app/guides">Study Guides</a>
     &nbsp;·&nbsp;
     <a href="./AI_DISCLOSURE.md">AI Disclosure</a>
   </p>
@@ -49,28 +47,6 @@ Studying for several AP classes at once usually turns into eleven browser tabs �
 - **Exam-register practice & timed writing** — 240 original multiple-choice questions that link wrong answers back to the exact lesson section, plus timed essay outlines and mock papers with college-ruled scratch paper.
 
 There are **no accounts, no paywalls, no ad scripts, and no analytics trackers**. Progress, due cards, missed questions, and timed drafts live locally in `localStorage` on your own device and can be exported to JSON or Markdown at any time.
-
----
-
-## Interface & Design System (2026–27 Edition)
-
-The front-end is built around calm legibility, colorless frosted glass over painted classroom scenes, crisp white AP course symbols, and tactile physical study tools:
-
-- **Per-route painted classroom & corridor wallpapers (`PageBackground`)** — Full-viewport illustrations (`public/bg-music-class.jpg`, `bg-corridor.jpg`, `bg-class.jpg`, `bg-class2.jpg`) anchor distinct route families (`/`, `/study`, `/course/[slug]`, and deep study sub-tabs) without repeating inside interior containers. Switching into `.dark` mode disables photographic backgrounds (`background-image: none`) in favor of a pure neutral charcoal canvas (`#121212`).
-- **Hue-free frosted glass surfaces (`.glass-box`)** — Every card, lesson reader, header bar, and modal uses colorless translucent glass (`backdrop-filter: blur(5px)`, crisp `1px` borders, zero color tints) paired with monochrome ink tokens and a soft classroom-light periwinkle text `::selection` highlight.
-- **Single-row leveled navigation (`SiteHeaderShell`, `TopClassBar`, `MobileNav`)** — `AP Study Hub`, `AP Courses`, `Jump to ⌘K`, and the compact `Menu` button sit leveled on one `38px` row:
-  - **Hover-reveal `AP Courses` bar** (plus a touch-friendly popover on mobile) displays all 7 courses with their white AP symbols and fades away cleanly when unhovered or on scroll.
-  - **Unified `Menu` popover** houses instant `SiteSearch`, `Study Desk`, hub links, and the interactive Sun / Moon / Clouds / Stars `ThemeSwitch`.
-  - **Directional scroll fade** hides the header while reading downward and restores it on upward scroll without breaking fixed modals (`CommandPalette`).
-- **Universal geometric & white AP course symbols** —
-  - **45°-rotated 7-square `Logo`** — Universal geometric emblem across the masthead, footer, README banners, and social preview card.
-  - **Day / Night RGBA `SubjectMark` course symbols** — Seven transparent RGBA subject icons (`public/icons/courses/*-{dark,white}.png`: waving U.S. flag, open book, source documents, classical capitol, DNA double helix, right triangle `cos θ`, magnifying glass) that display crisp dark strokes on frosted glass in day mode and switch automatically to pure white (`#FFFFFF`) symbols in night mode.
-  - **3-circle + 3-shadow bouncing `LoadingSpinner`** — Displayed seamlessly across route `loading.tsx` boundaries and async panels (`SiteSearch`, `StudyDashboard`, `AdvancedDesk`, `UnitVideoPlayer`, `OfflinePackButton`).
-  - **9-box `BanterLoader`** — Tactile geometric symbol accompanying the connected Study Desk workspace.
-- **Interactive cold-recall preview & spacious Study Desk (`StudySystemVisual`, `StudyDashboard`)** — Visitors can sample live active-recall prompts across all seven AP courses right inside the homepage library window, then open a spacious local-first Study Desk (`/study`) with course symbol filters, spaced review, mistake notebooks, study plans, focus timers, and portable data backups.
-- **Realistic loose-leaf scratch paper (`NotebookPaper`, `.scratch-paper`)** — Modeled on `realistichandwriting.com` loose-leaf sheets (`#ffffff` paper stock, full-height `#de7c7b` vertical margin rule, `#b8cee5` horizontal `32px` blue lines inset from the outer edges, clean white top & bottom margins, zero synthetic dots) with self-hosted `Kalam` 300 ballpoint ink (`#30455a`) across studio notes, essay outlines, and mock exam scratchpads.
-- **Conflict-free full-screen unit videos (`UnitVideoPlayer`)** — Supports both native browser fullscreen (`fullscreen` Permissions-Policy + `allowFullScreen`) and a zero-reload edge-to-edge full-screen expansion (`Esc` to exit) that strips ancestor glass/scroll-fade stacking contexts so videos never clip or collide with the header.
-- **60fps bidirectional scroll fade (`ScrollEffects`)** — Time-normalized `requestAnimationFrame` exponential interpolation (`smoothstep` viewport edge bands) gently fades sections in and out at both top and bottom viewport edges while honoring `prefers-reduced-motion: reduce`.
 
 ---
 
@@ -148,7 +124,7 @@ assets/
   social/
     og-image.svg                1200×630 Open Graph / social card source SVG
 public/
-  bg-music-class.jpg            wallpaper: /, /about, /colophon
+  bg-music-class.jpg            wallpaper: /, /about
   bg-corridor.jpg               wallpaper: /study, /search, /integrations, /ai-disclosure
   bg-class.jpg                  wallpaper: /course/[slug], /cards, /videos, /guides
   bg-class2.jpg                 wallpaper: /notes, /practice, /studio, /essays, /exam, /resources, /print
@@ -196,5 +172,5 @@ src/
 
 - **Independent student project** — AP® and Advanced Placement® are registered trademarks of the College Board, which was not involved in the production of, and does not endorse, this site. All 240 practice questions, 405 recall cards, and 51 lessons are original study material written from public curriculum frameworks and open textbooks; no secure exam items are reproduced.
 - **Fonts & artwork** — Self-hosted `Newsreader`, `Public Sans`, `JetBrains Mono`, and `Kalam` are licensed under the SIL Open Font License 1.1 (`public/fonts/`). Background classroom and corridor paintings are original environment illustrations by Arseniy Chebynkin.
-- **AI transparency** — Every place where AI tools assisted with scaffolding, drafting, or validation is documented openly in [`AI_DISCLOSURE.md`](./AI_DISCLOSURE.md) and [`/ai-disclosure`](https://v0-project-roan-six-20.vercel.app/ai-disclosure).
+- **AI transparency** — Every place where AI tools assisted with scaffolding, drafting, or validation is documented openly in [`AI_DISCLOSURE.md`](./AI_DISCLOSURE.md) and [`/ai-disclosure`](https://ap-study-hub-five.vercel.app/ai-disclosure).
 - **Code license** — Released under the [MIT License](./LICENSE).

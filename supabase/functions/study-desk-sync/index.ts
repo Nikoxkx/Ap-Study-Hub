@@ -40,7 +40,7 @@ function json(body: unknown, status = 200, origin?: string | null): Response {
     "Content-Type": "application/json; charset=utf-8",
     "Vary": "Origin",
   };
-  return new Response(JSON.stringify(body), { status, headers });
+  return new Response(status === 204 ? null : JSON.stringify(body), { status, headers });
 }
 
 async function hashKey(code: string): Promise<string> {

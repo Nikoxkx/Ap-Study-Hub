@@ -36,7 +36,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: absoluteUrl("/videos"), lastModified: isoDate(newestContent), changeFrequency: "monthly", priority: 0.85 },
     { url: absoluteUrl("/integrations"), lastModified: policy, changeFrequency: "monthly", priority: 0.5 },
     { url: absoluteUrl("/about"), lastModified: policy, changeFrequency: "yearly", priority: 0.6 },
-    { url: absoluteUrl("/colophon"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
     { url: absoluteUrl("/accessibility"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
     { url: absoluteUrl("/privacy"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
     { url: absoluteUrl("/ai-disclosure"), lastModified: isoDate("2026-10-04"), changeFrequency: "yearly", priority: 0.6 },

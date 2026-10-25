@@ -56,6 +56,22 @@ for (const [, hex] of subjects.matchAll(/washDark:\s*"(#[0-9a-fA-F]{6})"/g)) {
 const darkThemeColor = layout.match(/prefers-color-scheme: dark\)[^\n]*color:\s*"(#[0-9a-fA-F]{6})"/)?.[1];
 if (!darkThemeColor || !isNeutralHex(darkThemeColor)) fail("Viewport dark themeColor is not neutral");
 
+// Semantic grading colors are an intentional exception to neutral surfaces.
+for (const token of ["answer-correct", "answer-correct-bg", "answer-wrong", "answer-wrong-bg"]) {
+  const values = [...css.matchAll(new RegExp(`--${token}:\\s*(#[0-9a-fA-F]{6});`, "g"))];
+  if (values.length !== 2) fail(`Expected light and dark grading colors for ${token}`);
+  for (const [, hex] of values) {
+    const red = parseInt(hex.slice(1, 3), 16);
+    const green = parseInt(hex.slice(3, 5), 16);
+    if (token.startsWith("answer-correct") ? green <= red : red <= green) {
+      fail(`${token} must remain ${token.startsWith("answer-correct") ? "green" : "red"}: ${hex}`);
+    }
+  }
+}
+for (const path of ["src/components/VariantLab.tsx", "src/components/labs/DataLab.tsx"]) {
+  if (!read(path).includes("data-correct={")) fail(`${path} is missing graded answer states`);
+}
+
 // 2. Every subject has a short topic and a symbol meaning.
 for (const field of ["topic", "symbolLabel"]) {
   const count = [...subjects.matchAll(new RegExp(`\\b${field}:\\s*"`, "g"))].length;
