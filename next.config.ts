@@ -16,6 +16,7 @@ import type { NextConfig } from "next";
  * become dynamic, which would cost more than it buys on a static content site.
  */
 const isDev = process.env.NODE_ENV === "development";
+const allowPreviewEmbed = isDev || process.env.ALLOW_PREVIEW_IFRAME === "1";
 
 const csp = [
   "default-src 'self'",
@@ -26,17 +27,17 @@ const csp = [
   "connect-src 'self' https://*.supabase.co",
   "frame-src https://www.youtube-nocookie.com",
   "form-action 'self'",
-  isDev ? "frame-ancestors *" : "frame-ancestors 'self'",
+  allowPreviewEmbed ? "frame-ancestors *" : "frame-ancestors 'self'",
   "base-uri 'self'",
   "object-src 'none'",
-  ...(isDev ? [] : ["upgrade-insecure-requests"]),
+  ...(allowPreviewEmbed ? [] : ["upgrade-insecure-requests"]),
 ].join("; ");
 
 const securityHeaders = [
   { key: "Content-Security-Policy", value: csp },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Content-Type-Options", value: "nosniff" },
-  ...(isDev ? [] : [{ key: "X-Frame-Options", value: "SAMEORIGIN" }]),
+  ...(allowPreviewEmbed ? [] : [{ key: "X-Frame-Options", value: "SAMEORIGIN" }]),
   {
     key: "Strict-Transport-Security",
     value: "max-age=31536000; includeSubDomains; preload",
@@ -51,7 +52,7 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  allowedDevOrigins: ["*.e2b.app"],
+  allowedDevOrigins: ["*.e2b.app", "*.arena.site"],
 
   images: {
     // YouTube thumbnails are the only remote images on the site.

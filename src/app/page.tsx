@@ -220,17 +220,24 @@ export default function HomePage() {
               <li key={subject.slug} className="flex">
                 <Link
                   href={`/course/${subject.slug}`}
-                  className="glass-box glass-box-interactive flex w-full flex-col justify-between p-6 no-underline"
+                  className="glass-box glass-box-interactive group flex w-full flex-col justify-between p-6 no-underline"
                 >
                   <div>
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <span
-                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/80 bg-white/45 transition-transform duration-200 group-hover:scale-105 dark:border-white/25 dark:bg-white/10"
+                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/80 bg-white/45 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:bg-white/75 group-hover:shadow-md dark:border-white/25 dark:bg-white/10 dark:group-hover:bg-white/20"
                         title={subject.symbolLabel}
                       >
-                        <SubjectMark subject={subject.mark} size={25} label={subject.symbolLabel} />
+                        <SubjectMark
+                          subject={subject.mark}
+                          size={25}
+                          label={subject.symbolLabel}
+                          className="transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-3"
+                        />
                       </span>
-                      <span className="tag">{subject.familiar}</span>
+                      <span className="tag transition-transform duration-200 group-hover:-translate-y-0.5">
+                        {subject.familiar}
+                      </span>
                     </div>
 
                     <p className="label mb-1.5">{subject.topic}</p>
@@ -242,7 +249,7 @@ export default function HomePage() {
                     </p>
                   </div>
 
-                  <div className="mt-6 border-t border-white/60 pt-4">
+                  <div className="mt-6 border-t border-white/60 pt-4 dark:border-white/15">
                     <div
                       className="flex flex-wrap gap-x-3 gap-y-1 text-[0.72rem]"
                       style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
@@ -256,7 +263,15 @@ export default function HomePage() {
                       <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>
                         {formatExamDate(subject, "short")}
                       </span>
-                      <span className="font-semibold">Open course →</span>
+                      <span className="inline-flex items-center gap-1 font-semibold">
+                        <span>Open course</span>
+                        <span
+                          aria-hidden="true"
+                          className="inline-block transition-transform duration-200 group-hover:translate-x-1"
+                        >
+                          →
+                        </span>
+                      </span>
                     </div>
                   </div>
                   <span className="sr-only">{`Course ${index + 1} of ${catalog.length}`}</span>

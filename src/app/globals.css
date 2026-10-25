@@ -2570,11 +2570,16 @@ main :has(:fullscreen) {
 }
 
 .uiverse-radio-inputs .radio .name:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.65);
+  transform: translateY(-1.5px);
+}
+
+.uiverse-radio-inputs .radio .name:hover .subject-mark-img {
+  transform: scale(1.16) rotate(-3deg);
 }
 
 .dark .uiverse-radio-inputs .radio .name:hover {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.14);
 }
 
 .uiverse-radio-inputs .radio input:checked + .name,
@@ -3023,14 +3028,14 @@ main :has(:fullscreen) {
 }
 
 .recall-course-pill:hover {
-  transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.78);
+  transform: translateY(-3px) scale(1.025);
+  background: rgba(255, 255, 255, 0.84);
   border-color: #ffffff;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
 }
 
 .recall-course-pill:hover .recall-course-pill-icon {
-  transform: scale(1.12);
+  transform: scale(1.16) rotate(-4deg);
 }
 
 .recall-course-pill[data-active="true"] {

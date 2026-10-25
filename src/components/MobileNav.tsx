@@ -185,9 +185,9 @@ export function MobileNav() {
                 href={`/course/${subject.slug}`}
                 tabIndex={open ? 0 : -1}
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-[0.84rem] font-medium no-underline transition-colors hover:bg-white/45 dark:hover:bg-white/10"
+                className="group flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-[0.84rem] font-medium no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/55 dark:hover:bg-white/12"
               >
-                <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 dark:border-white/20 dark:bg-white/10">
+                <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 transition-transform duration-200 group-hover:scale-110 dark:border-white/20 dark:bg-white/10">
                   <SubjectMark
                     subject={subject.mark}
                     size={15}
