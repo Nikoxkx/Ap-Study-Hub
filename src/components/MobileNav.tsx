@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { subjects } from "@/lib/subjects";
 import { SiteSearch } from "./SiteSearch";
-import { ThemeControl } from "./ThemeControl";
 
 /**
  * Mobile navigation.
@@ -84,8 +83,13 @@ export function MobileNav() {
         <div
           id="mobile-nav-panel"
           ref={panelRef}
-          className="absolute left-0 right-0 top-full rule-bottom enter-fade"
-          style={{ background: "var(--paper-raised)", borderTop: "1px solid var(--rule)" }}
+          className="absolute left-0 right-0 top-full enter-fade"
+          style={{
+            background: "var(--glass-raised)",
+            backdropFilter: "blur(20px) saturate(140%)",
+            WebkitBackdropFilter: "blur(20px) saturate(140%)",
+            borderBottom: "1px solid var(--glass-line)",
+          }}
         >
           <div className="wrap py-4">
             <div className="mb-4">
@@ -129,8 +133,6 @@ export function MobileNav() {
                 </li>
               ))}
             </ul>
-
-            <ThemeControl />
           </div>
         </div>
       ) : null}

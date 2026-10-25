@@ -298,7 +298,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
           className="btn btn-sm"
           style={{
             border: "1px solid var(--good)",
-            color: verdict === "got" ? "var(--paper-raised)" : "var(--good)",
+            color: verdict === "got" ? "var(--on-raised)" : "var(--good)",
             background: verdict === "got" ? "var(--good)" : "transparent",
           }}
         >
@@ -310,7 +310,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
           className="btn btn-sm"
           style={{
             border: "1px solid var(--mark)",
-            color: verdict === "again" ? "var(--paper-raised)" : "var(--mark)",
+            color: verdict === "again" ? "var(--on-raised)" : "var(--mark)",
             background: verdict === "again" ? "var(--mark)" : "transparent",
           }}
         >
@@ -370,8 +370,12 @@ function CardFace({
         backfaceVisibility: "hidden",
         WebkitBackfaceVisibility: "hidden",
         transform: back ? "rotateX(180deg)" : undefined,
-        background: back ? "var(--subject-tint)" : "var(--paper-raised)",
-        border: "1px solid var(--rule-strong)",
+        background: back
+          ? "color-mix(in srgb, var(--subject-tint) 78%, transparent)"
+          : "var(--glass-raised)",
+        backdropFilter: "blur(14px) saturate(140%)",
+        WebkitBackdropFilter: "blur(14px) saturate(140%)",
+        border: "1px solid var(--glass-line)",
         borderTop: `3px solid var(--subject-ink)`,
         borderRadius: "var(--radius-cut)",
         boxShadow: "var(--shadow-lift)",

@@ -210,8 +210,10 @@ export function SiteSearch() {
         <div
           className="absolute left-0 right-0 top-[calc(100%+0.375rem)] z-50 overflow-hidden enter-fade"
           style={{
-            background: "var(--paper-raised)",
-            border: "1px solid var(--rule-strong)",
+            background: "var(--glass-raised)",
+            backdropFilter: "blur(20px) saturate(140%)",
+            WebkitBackdropFilter: "blur(20px) saturate(140%)",
+            border: "1px solid var(--glass-line)",
             borderRadius: "var(--radius-cut)",
             boxShadow: "var(--shadow-lift)",
           }}

@@ -48,55 +48,45 @@ export default async function CourseLayout({
     <div className="subject-scope" style={subjectVars(subject)}>
       <JsonLd schema={[courseSchema(course), breadcrumbSchema(trail)]} />
 
-      <header className="rule-bottom" style={{ background: "var(--paper-raised)" }}>
-        <div className="wrap pb-7 pt-6">
+      <header className="rule-bottom" style={{ background: "var(--glass-raised)", backdropFilter: "blur(16px) saturate(140%)", WebkitBackdropFilter: "blur(16px) saturate(140%)" }}>
+        <div className="wrap pb-8 pt-6">
           <Breadcrumbs trail={trail} />
 
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-            <div className="flex gap-5">
-              <span
-                className="hidden shrink-0 pt-1 sm:block"
-                style={{ color: "var(--subject-ink)" }}
-              >
-                <SubjectMark subject={subject.mark} size={48} label={subject.symbolLabel} />
-              </span>
+          <div className="flex flex-col items-center text-center">
+            <span className="mb-3" style={{ color: "var(--subject-ink)" }}>
+              <SubjectMark subject={subject.mark} size={44} label={subject.symbolLabel} />
+            </span>
 
-              <div className="min-w-0">
-                <p className="label mb-2">
-                  <span style={{ color: "var(--subject-ink)" }} title={subject.symbolLabel}>{subject.topic}</span>
-                  <span aria-hidden="true"> · </span>
-                  Advanced Placement
-                </p>
-                <h1
-                  className="text-[clamp(1.6rem,1.25rem+1.6vw,2.5rem)]"
-                  style={{ letterSpacing: "-0.025em" }}
-                >
-                  {subject.official}
-                </h1>
-                <p className="mt-3 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-                  {subject.intro}
-                </p>
-
-                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[0.75rem]" style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>
-                  <li>{counts.units} lessons</li>
-                  <li>{counts.paragraphs} teaching paragraphs</li>
-                  <li>{counts.flashcards} cards</li>
-                  <li>{counts.questions} questions</li>
-                  {counts.essays > 0 ? <li>{counts.essays} marked essays</li> : null}
-                  <li>~{counts.readingMinutes} min of notes</li>
-                  {/* Dated so the freshness claim is checkable rather than
-                      implied. Matches the lastModified in the sitemap. */}
-                  <li>
-                    revised <time dateTime={subject.revised}>{formatDate(subject.revised)}</time>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div
-              className="shrink-0 border-l-0 pt-5 lg:border-l lg:pl-8 lg:pt-0"
-              style={{ borderColor: "var(--rule)" }}
+            <p className="label">
+              <span style={{ color: "var(--subject-ink)" }} title={subject.symbolLabel}>{subject.topic}</span>
+              <span aria-hidden="true"> · </span>
+              Advanced Placement
+            </p>
+            <h1
+              className="mt-2 text-[clamp(1.75rem,1.3rem+2vw,2.75rem)]"
+              style={{ letterSpacing: "-0.03em", fontWeight: 800, lineHeight: 1.08 }}
             >
+              {subject.official}
+            </h1>
+            <p className="mt-3 max-w-[58ch] text-[0.9375rem] leading-relaxed" style={{ color: "var(--ink-soft)" }}>
+              {subject.intro}
+            </p>
+
+            <ul className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[0.75rem]" style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>
+              <li>{counts.units} lessons</li>
+              <li>{counts.paragraphs} teaching paragraphs</li>
+              <li>{counts.flashcards} cards</li>
+              <li>{counts.questions} questions</li>
+              {counts.essays > 0 ? <li>{counts.essays} marked essays</li> : null}
+              <li>~{counts.readingMinutes} min of notes</li>
+              {/* Dated so the freshness claim is checkable rather than
+                  implied. Matches the lastModified in the sitemap. */}
+              <li>
+                revised <time dateTime={subject.revised}>{formatDate(subject.revised)}</time>
+              </li>
+            </ul>
+
+            <div className="mt-6">
               <p className="label mb-2">
                 {subject.slug === "ap-research" ? "Your portfolio deadline" : "Your exam day"}
               </p>

@@ -4,6 +4,7 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { RevealFX } from "@/components/RevealFX";
 import { ThemeScript } from "@/components/ThemeControl";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { site, socialImages } from "@/lib/site";
@@ -12,10 +13,10 @@ import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
 /**
  * Typography and preload.
  *
- * The @font-face declarations live in globals.css and the files are served from
- * /public/fonts. The two faces that paint above the fold — the display serif for
- * the headline and the interface sans for everything else — are preloaded here
- * so they are requested in parallel with the stylesheet rather than after it.
+ * The @font-face declarations live in globals.css and the files are served
+ * from /public/fonts. The interface face — Public Sans, now also the display
+ * face — paints above the fold, so it is preloaded here to arrive in parallel
+ * with the stylesheet rather than after it.
  *
  * The mono face is not preloaded: it only sets small labels, so swapping it in
  * a beat late costs nothing and saves 40 KB on the critical path.
@@ -72,8 +73,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f3ec" },
-    { media: "(prefers-color-scheme: dark)", color: "#101010" },
+    { media: "(prefers-color-scheme: light)", color: "#f5f6f8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1014" },
   ],
 };
 
@@ -82,13 +83,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en-US" suppressHydrationWarning>
       <head>
         <ThemeScript />
-        <link
-          rel="preload"
-          href="/fonts/newsreader-latin-var.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
         <link
           rel="preload"
           href="/fonts/public-sans-latin-var.woff2"
@@ -106,6 +100,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <SiteFooter />
+        <RevealFX />
         <ServiceWorkerRegister />
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
       </body>

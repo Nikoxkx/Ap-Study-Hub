@@ -468,8 +468,10 @@ export function TimedPaper({
       <div
         className="sticky top-28 z-20 mb-8 flex flex-wrap items-center justify-between gap-4 px-4 py-3"
         style={{
-          background: expired ? "var(--mark-wash)" : "var(--paper-raised)",
-          border: `1px solid ${expired ? "var(--mark)" : "var(--rule-strong)"}`,
+          background: expired ? "var(--mark-wash)" : "var(--glass-raised)",
+          backdropFilter: "blur(18px) saturate(140%)",
+          WebkitBackdropFilter: "blur(18px) saturate(140%)",
+          border: `1px solid ${expired ? "var(--mark)" : "var(--glass-line)"}`,
           borderRadius: "var(--radius-cut)",
           boxShadow: "var(--shadow-lift)",
         }}

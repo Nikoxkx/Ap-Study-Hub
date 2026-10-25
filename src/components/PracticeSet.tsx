@@ -253,9 +253,11 @@ export function PracticeSet({
             }}
             className="min-w-0 flex-1 px-3 py-2 text-[0.875rem] sm:max-w-md"
             style={{
-              border: "1px solid var(--rule-strong)",
+              border: "1px solid var(--glass-line)",
               borderRadius: "var(--radius-cut)",
-              background: "var(--paper-raised)",
+              background: "var(--glass-raised)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
               color: "var(--ink)",
             }}
           >
@@ -370,7 +372,7 @@ export function PracticeSet({
                             : "transparent",
                     color:
                       (checked && (isAnswer || selected)) || selected
-                        ? "var(--paper-raised)"
+                        ? "var(--on-raised)"
                         : "var(--ink-faint)",
                   }}
                 >

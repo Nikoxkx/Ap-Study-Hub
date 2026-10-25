@@ -37,12 +37,8 @@ export function Breadcrumbs({ trail }: { trail: { name: string; href: string }[]
 }
 
 /**
- * Section heading with a folio number, the way a chapter opener is set. The
- * number is decorative — it is not read out, because "03" adds nothing to a
- * screen reader user's understanding of "Choose a course".
- */
-/**
- * A numbered section heading, set as a folio in the margin beside the title.
+ * Section heading — centred, minimal, the way the reference sets its
+ * sections: a small folio above, a bold title, one line of support copy.
  *
  * `level` exists because these are used both directly under a page's h1 and
  * one rung further down inside a course child route, where the course masthead
@@ -64,20 +60,22 @@ export function SectionHead({
 }) {
   const Heading = level === 3 ? "h3" : "h2";
   return (
-    <div className="mb-8 flex flex-col gap-3 rule-top pt-5 md:flex-row md:items-baseline md:gap-8">
-      <span className="folio shrink-0" aria-hidden="true">
+    <div className="mb-9 flex flex-col items-center gap-2.5 text-center">
+      <span className="folio" aria-hidden="true">
         {folio}
       </span>
-      <div className="flex-1">
-        <Heading id={id} className="text-[clamp(1.35rem,1.1rem+0.8vw,1.75rem)]">
-          {title}
-        </Heading>
-        {children ? (
-          <div className="mt-2 max-w-[56ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            {children}
-          </div>
-        ) : null}
-      </div>
+      <Heading
+        id={id}
+        className="text-[clamp(1.6rem,1.2rem+1.4vw,2.4rem)]"
+        style={{ letterSpacing: "-0.03em", fontWeight: 700, lineHeight: 1.12 }}
+      >
+        {title}
+      </Heading>
+      {children ? (
+        <div className="max-w-[46ch] text-[1rem] leading-relaxed" style={{ color: "var(--ink-soft)" }}>
+          {children}
+        </div>
+      ) : null}
     </div>
   );
 }

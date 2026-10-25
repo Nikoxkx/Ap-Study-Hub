@@ -2,28 +2,41 @@ import Link from "next/link";
 import { subjects, formatExamDate } from "@/lib/subjects";
 import { getTotals } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { SiteMark } from "./SubjectMark";
+
+/**
+ * Footer.
+ *
+ * Four quiet columns on frosted glass: what is in the site, who wrote it,
+ * when it was revised, and what it is not affiliated with. No logo, no
+ * decorative imagery — the sky behind the glass does that work.
+ */
 
 const columns = [
   {
-    heading: "Look around",
+    heading: "Product",
     links: [
-      { href: "/about", label: "Meet the student" },
-      { href: "/ai-disclosure", label: "AI disclosure" },
-      { href: "/guides", label: "Study smarter" },
-      { href: "/videos", label: "Watch by unit" },
+      { href: "/guides", label: "Study guides" },
+      { href: "/videos", label: "Unit videos" },
+      { href: "/study", label: "Study desk" },
+      { href: "/search", label: "Search" },
       { href: "/integrations", label: "How it is built" },
-      { href: "/search", label: "Find anything" },
-      { href: "/colophon", label: "Design notes" },
     ],
   },
   {
-    heading: "The fine print",
+    heading: "Company",
     links: [
-      { href: "/accessibility", label: "Works for everyone" },
-      { href: "/privacy", label: "Your privacy" },
-      { href: "/sitemap.xml", label: "All pages" },
-      { href: site.repo, label: "See the code", external: true },
+      { href: "/about", label: "About" },
+      { href: "/ai-disclosure", label: "AI disclosure" },
+      { href: "/colophon", label: "Design notes" },
+      { href: site.repo, label: "GitHub", external: true },
+    ],
+  },
+  {
+    heading: "Resources",
+    links: [
+      { href: "/accessibility", label: "Accessibility" },
+      { href: "/privacy", label: "Privacy" },
+      { href: "/sitemap.xml", label: "Sitemap" },
       { href: `${site.repo}/blob/main/AI_DISCLOSURE.md`, label: "AI_DISCLOSURE.md", external: true },
     ],
   },
@@ -34,86 +47,59 @@ export function SiteFooter() {
   const revised = new Date();
 
   return (
-    <footer data-site-footer className="sky-footer-bg mt-24 rule-top relative overflow-hidden" style={{ background: "var(--paper-raised)" }}>
-      <div className="wrap py-12 relative">
-        {/* horizon thumbnail strip */}
-        <div className="mb-8 flex gap-1.5 overflow-hidden rounded-[10px] border" style={{ borderColor: "rgba(255,255,255,0.6)", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
-          {[
-            "/images/chris-doretz-skyvol1-artstation-store-thumbnail-02.jpg",
-            "/images/chris-doretz-skyvol1-artstation-store-thumbnail-06.jpg",
-            "/images/chris-doretz-skyvol1-artstation-store-thumbnail-04.jpg",
-            "/images/chris-doretz-skyvol1-artstation-store-thumbnail-05.jpg",
-            "/images/chris-doretz-skyvol1-artstation-store-thumbnail-08.jpg",
-            "/images/chris-doretz-skyvol1-artstation-store-thumbnail-01-wo.jpg",
-            "/images/chris-doretz-skyvol1-artstation-store-thumbnail-09.jpg",
-            "/images/chris-doretz-skyvol1-artstation-store-thumbnail-03.jpg",
-          ].map((src, i) => (
-            <img
-              key={src}
-              src={src}
-              alt=""
-              aria-hidden="true"
-              style={{ flex: "1 1 0", minWidth: 0, height: 46, objectFit: "cover", objectPosition: "center 35%", opacity: 0.92 }}
-              loading="lazy"
-            />
-          ))}
-        </div>
-        <p className="label mb-2" style={{ letterSpacing: "0.12em" }}>
-          All eight skies — Chris Doretz Sky Vol. 1 · shelf cloud to towering cumulus
-        </p>
-
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
+    <footer data-site-footer className="site-footer mt-20">
+      <div className="wrap py-14">
+        <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
-            <div className="mb-3 flex items-baseline gap-2">
-              <SiteMark size={22} className="self-center" />
-              <span className="text-[1.0625rem] font-semibold" style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.015em" }}>
-                AP Study Hub
-              </span>
-              <span className="tag" style={{ fontSize: "0.625rem" }}>
-                ☁︎ sky edition
-              </span>
-            </div>
-            <p className="max-w-[38ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
-              {totals.units} lessons that explain, {totals.flashcards} recall cards and {totals.questions} original questions across {totals.courses} skies. From shelf cloud to clear blue — AI-assisted drafts, dated sources, and public corrections — see{" "}
-              <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>
+            <p
+              className="mb-3 text-[1.0625rem]"
+              style={{ fontWeight: 700, letterSpacing: "-0.02em" }}
+            >
+              AP Study Hub
+            </p>
+            <p className="max-w-[36ch] text-[0.9375rem] leading-relaxed" style={{ color: "var(--ink-soft)" }}>
+              {totals.units} lessons, {totals.flashcards} flashcards and {totals.questions} original
+              questions across {totals.courses} AP courses. Free, no account, no tracking — AI-assisted
+              drafts with dated sources and public corrections.{" "}
+              <Link href="/ai-disclosure" className="link-draw" style={{ color: "var(--ink)" }}>
                 AI disclosure
               </Link>
               .
             </p>
-            <p className="mt-4 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
-              Built under open sky by <Link href="/about" className="link-underlined" style={{ color: "var(--ink)" }}>{site.author.name}</Link>.
-            </p>
-            <p className="mt-3 text-[0.75rem] leading-relaxed" style={{ color: "var(--ink-faint)", fontFamily: "var(--font-mono)" }}>
-              Every section you scrolled through rode a different cloud: the hero wore the dark shelf (02), the catalogue rode bright cumulus (04), the anatomy floated on cirrus (05), the calendar broke through shafts (06), the note settled in soft towers (08), the FAQ cleared to high blue (01). Dark mode pulls the whole site into dusk — the same storm, after sunset.
+            <p className="mt-5 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
+              Built by{" "}
+              <Link href="/about" className="link-draw" style={{ color: "var(--ink-soft)" }}>
+                {site.author.name}
+              </Link>
+              .
             </p>
           </div>
 
-          <nav aria-label="Pick a course">
-            <h2 className="label mb-3">Pick a course</h2>
-            <ul className="space-y-1.5">
-              {subjects.map((subject) => (
-                <li key={subject.slug}>
-                  <Link href={`/course/${subject.slug}`} className="link-draw text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
-                    {subject.familiar}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
           {columns.map((column) => (
             <nav key={column.heading} aria-label={column.heading}>
-              <h2 className="label mb-3">{column.heading}</h2>
-              <ul className="space-y-1.5">
+              <h2 className="mb-3.5 text-[0.8125rem]" style={{ color: "var(--ink-faint)", fontWeight: 600 }}>
+                {column.heading}
+              </h2>
+              <ul className="space-y-2.5">
                 {column.links.map((link) => (
                   <li key={link.href}>
                     {"external" in link && link.external ? (
-                      <a href={link.href} rel="noopener noreferrer" target="_blank" className="link-draw text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
+                      <a
+                        href={link.href}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="text-[0.9375rem] no-underline transition-colors hover:text-[var(--ink)]"
+                        style={{ color: "var(--ink-soft)" }}
+                      >
                         {link.label}
                         <span className="sr-only"> (opens in a new tab)</span>
                       </a>
                     ) : (
-                      <Link href={link.href} className="link-draw text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
+                      <Link
+                        href={link.href}
+                        className="text-[0.9375rem] no-underline transition-colors hover:text-[var(--ink)]"
+                        style={{ color: "var(--ink-soft)" }}
+                      >
                         {link.label}
                       </Link>
                     )}
@@ -124,23 +110,38 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="mt-10 rule-top pt-5">
-          <h2 className="label mb-3">Dates worth circling — like pressure minima on a chart</h2>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+        {/* Exam dates — useful, and the kind of thing only someone who sat
+            these exams would think to put in a footer. */}
+        <div className="mt-12 border-t pt-6" style={{ borderColor: "rgba(16,19,24,0.08)" }}>
+          <p className="mb-3 text-[0.8125rem]" style={{ color: "var(--ink-faint)", fontWeight: 600 }}>
+            2027 exam dates
+          </p>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[0.875rem]">
             {[...subjects]
               .sort((a, b) => a.exam.date.localeCompare(b.exam.date))
               .map((subject) => (
-                <li key={subject.slug} className="text-[0.8125rem]" style={{ color: "var(--ink-soft)" }}>
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>{formatExamDate(subject, "short")}</span> {subject.familiar}
+                <li key={subject.slug} style={{ color: "var(--ink-soft)" }}>
+                  <Link href={`/course/${subject.slug}`} className="no-underline hover:text-[var(--ink)]">
+                    <span className="tabular-nums" style={{ color: "var(--ink-faint)" }}>
+                      {formatExamDate(subject, "short")}
+                    </span>{" "}
+                    {subject.familiar}
+                  </Link>
                 </li>
               ))}
           </ul>
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 rule-top pt-5 text-[0.75rem] sm:flex-row sm:items-center sm:justify-between" style={{ color: "var(--ink-faint)" }}>
-          <p>Not affiliated with, endorsed by, or reviewed by the College Board. AP and Advanced Placement are registered trademarks of the College Board.</p>
-          <p style={{ fontFamily: "var(--font-mono)" }}>
-            Content revision {site.contentRevision} · <time dateTime={revised.toISOString().slice(0, 10)}>{revised.toISOString().slice(0, 10)}</time> · sky edition
+        <div
+          className="mt-8 flex flex-col gap-3 border-t pt-6 text-[0.75rem] sm:flex-row sm:items-center sm:justify-between"
+          style={{ borderColor: "rgba(16,19,24,0.08)", color: "var(--ink-faint)" }}
+        >
+          <p>
+            Not affiliated with, endorsed by, or reviewed by the College Board. AP and Advanced
+            Placement are registered trademarks of the College Board.
+          </p>
+          <p className="tabular-nums">
+            © {revised.getFullYear()} AP Study Hub · Content revision {site.contentRevision}
           </p>
         </div>
       </div>

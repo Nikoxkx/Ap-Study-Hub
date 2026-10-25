@@ -39,26 +39,3 @@ export function SkyRadio({
     </div>
   );
 }
-
-export function AtmosphericFilter({ onChange }: { onChange?: (v: string) => void }) {
-  return (
-    <div className="sky-radio-wrap">
-      <p className="label" style={{ marginBottom: 8 }}>
-        View through the atmosphere
-      </p>
-      <SkyRadio
-        name="atmosphere"
-        defaultValue="all"
-        options={[
-          { value: "all", label: "All skies" },
-          { value: "clear", label: "Clear" },
-          { value: "overcast", label: "Overcast" },
-        ]}
-        onChange={onChange}
-      />
-      <p style={{ marginTop: 8, color: "var(--ink-faint)", fontSize: "0.75rem" }}>
-        Clear — bright cumulus and high cirrus. Overcast — storm shelves and low stratus. Like sorting what you already know from what still feels heavy overhead.
-      </p>
-    </div>
-  );
-}
