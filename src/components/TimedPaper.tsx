@@ -466,7 +466,7 @@ export function TimedPaper({
     <div className="mx-auto max-w-3xl">
       {/* Invigilator's clock */}
       <div
-        className="sticky top-28 z-20 mb-8 flex flex-wrap items-center justify-between gap-4 px-4 py-3"
+        className="sticky top-28 md:top-[11.375rem] z-20 mb-8 flex flex-wrap items-center justify-between gap-4 px-4 py-3"
         style={{
           background: expired ? "var(--mark-wash)" : "var(--glass-raised)",
           backdropFilter: "blur(18px) saturate(140%)",

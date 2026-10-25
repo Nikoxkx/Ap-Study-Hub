@@ -56,7 +56,7 @@ export function UnitNav({ units }: UnitNavProps) {
     <nav
       id="unit-contents"
       aria-label="Unit contents"
-      className="lg:sticky lg:top-32 lg:max-h-[calc(100vh-10rem)] lg:self-start lg:overflow-y-auto"
+      className="lg:sticky lg:top-[198px] lg:max-h-[calc(100vh-14.5rem)] lg:self-start lg:overflow-y-auto"
     >
       {/* A <p>, not a heading: the <nav> is already named by aria-label, and a
           heading here lands in the outline before the page title, because the

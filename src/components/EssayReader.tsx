@@ -114,7 +114,7 @@ export function EssayReader({ essays }: { essays: Essay[] }) {
           ))}
         </article>
 
-        <aside className="lg:sticky lg:top-32 lg:self-start" aria-labelledby="rubric-heading">
+        <aside className="lg:sticky lg:top-[198px] lg:self-start" aria-labelledby="rubric-heading">
           <h3 id="rubric-heading" className="label mb-3">
             How it scored
           </h3>

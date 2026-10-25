@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { subjects } from "@/lib/subjects";
 import { SiteSearch } from "./SiteSearch";
+import { ThemeControl } from "./ThemeControl";
 
 /**
  * Mobile navigation.
@@ -133,6 +134,8 @@ export function MobileNav() {
                 </li>
               ))}
             </ul>
+
+            <ThemeControl />
           </div>
         </div>
       ) : null}

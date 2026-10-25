@@ -47,7 +47,7 @@ export function CourseTabs({ slug, available }: CourseTabsProps) {
   return (
     <nav
       aria-label="Study modes"
-      className="sticky top-[4.25rem] z-30 rule-bottom"
+      className="sticky top-[4.25rem] md:top-[8.625rem] z-30 rule-bottom"
       style={{
         background: "color-mix(in srgb, var(--paper) 90%, transparent)",
         backdropFilter: "saturate(140%) blur(8px)",

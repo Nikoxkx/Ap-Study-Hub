@@ -209,9 +209,16 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  /* Clears the 4.25rem header (plus the course tab strip where present)
+  /* Clears the sticky masthead (69px on phones; standing line + nameplate +
+     course rail = 138px on md+) plus the course tab strip where present,
      so anchor targets never land underneath the sticky chrome. */
   scroll-padding-top: 7.5rem;
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 12.25rem;
+  }
 }
 
 body {
@@ -2076,33 +2083,44 @@ main > :not(.band) {
   background: linear-gradient(180deg, transparent, rgba(13, 14, 17, 0.92) 88%);
 }
 
-/* One sky per band — all eight photographs stay in rotation. */
-.features-band::before {
-  background-image: var(--sky-05);
-  background-position: center 20%;
-}
-
-.dark .features-band::before {
-  background-image: var(--sky-09);
-}
-
-.courses-band::before {
+/* One sky per band — the five index sections rotate through the set. */
+.catalogue-band::before {
   background-image: var(--sky-08);
   background-position: center 30%;
 }
 
-.dark .courses-band::before {
+.dark .catalogue-band::before {
   background-image: var(--sky-03);
 }
 
-.plans-band::before {
+.anatomy-band::before {
+  background-image: var(--sky-05);
+  background-position: center 20%;
+}
+
+.dark .anatomy-band::before {
+  background-image: var(--sky-09);
+}
+
+.calendar-band::before {
   background-image: var(--sky-06);
   background-position: center 40%;
   opacity: 0.22;
 }
 
-.dark .plans-band::before {
+.dark .calendar-band::before {
   background-image: var(--sky-06);
+  opacity: 0.3;
+}
+
+.note-band::before {
+  background-image: var(--sky-09);
+  background-position: center 25%;
+  opacity: 0.24;
+}
+
+.dark .note-band::before {
+  background-image: var(--sky-02);
   opacity: 0.3;
 }
 
@@ -2115,6 +2133,29 @@ main > :not(.band) {
 .dark .faq-band::before {
   background-image: var(--sky-09);
   opacity: 0.26;
+}
+
+/* Catalogue rows — one row, one course; a soft lift on hover. */
+.catalogue-row {
+  transition: background 160ms var(--ease-settle), transform 160ms var(--ease-settle);
+}
+
+.catalogue-row:hover,
+.catalogue-row:focus-visible {
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.dark .catalogue-row:hover,
+.dark .catalogue-row:focus-visible {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+li + li > .catalogue-row {
+  border-top: 1px solid rgba(16, 18, 24, 0.07);
+}
+
+.dark li + li > .catalogue-row {
+  border-top-color: rgba(255, 255, 255, 0.07);
 }
 
 .site-footer {
@@ -2149,19 +2190,52 @@ main > :not(.band) {
 }
 
 /* ------------------------------------------------------------------
-   Header — one glass strip, pill navigation, no rails, no logos.
+   Header — one glass stack: standing line, nameplate, course rail.
+   The glass itself lives on ::before so no filter sits on the header
+   element — a backdrop-filter on the element would turn it into a
+   containing block for the command palette's fixed overlay.
    ------------------------------------------------------------------ */
 
 .site-header {
-  background: rgba(255, 255, 255, 0.58);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  backdrop-filter: blur(18px) saturate(140%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.7);
 }
 
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.58);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  pointer-events: none;
+}
+
 .dark .site-header {
-  background: rgba(14, 15, 18, 0.64);
   border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .site-header::before {
+  background: rgba(14, 15, 18, 0.64);
+}
+
+/* Standing line (md+): live free/no-account/exam data over the glass. */
+.header-standing {
+  height: 1.75rem;
+  border-bottom: 1px solid rgba(16, 18, 24, 0.06);
+}
+
+.dark .header-standing {
+  border-bottom-color: rgba(255, 255, 255, 0.07);
+}
+
+/* Course rail (md+): hairline above it, hidden below md with the row. */
+.header-rail {
+  border-top: 1px solid rgba(16, 18, 24, 0.06);
+}
+
+.dark .header-rail {
+  border-top-color: rgba(255, 255, 255, 0.07);
 }
 
 .site-wordmark {
@@ -2176,82 +2250,6 @@ main > :not(.band) {
 
 .site-wordmark:hover {
   color: var(--ink-soft);
-}
-
-.pill-nav {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  margin: 0;
-  padding: 5px;
-  list-style: none;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.66);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 1px 2px rgba(16, 18, 24, 0.05), 0 12px 28px -20px rgba(16, 18, 24, 0.3);
-}
-
-.pill-nav a {
-  padding: 0.5rem 0.95rem;
-  border-radius: 999px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--ink-soft);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 160ms var(--ease-settle), color 160ms var(--ease-settle);
-}
-
-.pill-nav a:hover {
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--ink);
-}
-
-.dark .pill-nav {
-  background: rgba(30, 31, 34, 0.72);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark .pill-nav a {
-  color: #b9bcc4;
-}
-
-.dark .pill-nav a:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #f2f2f3;
-}
-
-.pill-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.55rem 1.2rem;
-  border-radius: 999px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #fff;
-  background: rgba(17, 19, 24, 0.85);
-  border: 1px solid rgba(17, 19, 24, 0.92);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 24px -14px rgba(16, 18, 24, 0.6);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: transform 160ms var(--ease-settle), background 160ms var(--ease-settle);
-}
-
-.pill-cta:hover {
-  background: rgba(8, 9, 12, 0.95);
-  transform: translateY(-1px);
-}
-
-.dark .pill-cta {
-  color: #14161a;
-  background: rgba(246, 246, 247, 0.92);
-  border-color: rgba(246, 246, 247, 0.96);
 }
 
 .pill-link {
@@ -2877,24 +2875,6 @@ main > :not(.band) {
 .feature-tile svg {
   width: 1.2rem;
   height: 1.2rem;
-}
-
-/* Plan badge. */
-.plan-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.22rem 0.65rem;
-  border-radius: 999px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  background: rgba(17, 19, 24, 0.88);
-  color: #fff;
-}
-
-.dark .plan-badge {
-  background: rgba(246, 246, 247, 0.92);
-  color: #14161a;
 }
 
 /* Mild entrance used on hero children before the observer takes over. */
