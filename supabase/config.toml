@@ -1,5 +1,4 @@
-# Supabase local project reference.
-# The connector reported this project as INACTIVE; restore it before deploying.
+# Supabase project reference for optional Study Desk sync.
 project_id = "unfplzqqotubcfcswnlo"
 
 [functions.study-desk-sync]

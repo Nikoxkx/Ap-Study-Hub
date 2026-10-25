@@ -15,7 +15,6 @@ const columns = [
       { href: "/integrations", label: "How it is built" },
       { href: "/search", label: "Find anything" },
       { href: "/about", label: "Meet the student" },
-      { href: "/colophon", label: "Design notes" },
     ],
   },
   {

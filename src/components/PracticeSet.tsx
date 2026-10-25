@@ -184,7 +184,7 @@ export function PracticeSet({
                 <li key={row.skill} className="grid gap-2 rule-bottom py-3 sm:grid-cols-[minmax(0,1fr)_7rem_4rem] sm:items-center">
                   <span className="text-[0.875rem] font-semibold">{row.skill}</span>
                   <span className="h-1.5" style={{ background: "var(--paper-sunk)" }} aria-hidden="true">
-                    <span className="block h-full" style={{ width: `${(row.correct / row.answered) * 100}%`, background: row.correct === row.answered ? "var(--good)" : "var(--subject-ink)" }} />
+                    <span className="block h-full" style={{ width: `${(row.correct / row.answered) * 100}%`, background: row.correct === row.answered ? "var(--answer-correct)" : "var(--subject-ink)" }} />
                   </span>
                   <span className="tnum text-[0.75rem] sm:text-right" style={{ fontFamily: "var(--font-mono)", color: "var(--ink-soft)" }}>
                     {row.correct}/{row.answered}
@@ -204,10 +204,10 @@ export function PracticeSet({
               {missed.map((q) => (
                 <li key={q.id} className="rule-top pt-4">
                   <p className="text-[0.9375rem] font-semibold"><MathAwareText>{q.question}</MathAwareText></p>
-                  <p className="mt-2 text-[0.875rem]" style={{ color: "var(--mark)" }}>
+                  <p className="mt-2 text-[0.875rem]" style={{ color: "var(--answer-wrong)" }}>
                     You chose {LETTERS[answers[q.id]]} — <MathAwareText>{q.options[answers[q.id]]}</MathAwareText>
                   </p>
-                  <p className="mt-1 text-[0.875rem]" style={{ color: "var(--good)" }}>
+                  <p className="mt-1 text-[0.875rem]" style={{ color: "var(--answer-correct)" }}>
                     Correct: {LETTERS[q.correctIndex]} — <MathAwareText>{q.options[q.correctIndex]}</MathAwareText>
                   </p>
                   <p className="mt-2.5 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
@@ -320,11 +320,11 @@ export function PracticeSet({
 
             if (checked) {
               if (isAnswer) {
-                borderColor = "var(--good)";
-                background = "var(--good-wash)";
+                borderColor = "var(--answer-correct)";
+                background = "var(--answer-correct-bg)";
               } else if (selected) {
-                borderColor = "var(--mark)";
-                background = "var(--mark-wash)";
+                borderColor = "var(--answer-wrong)";
+                background = "var(--answer-wrong-bg)";
               } else {
                 textColor = "var(--ink-faint)";
               }
@@ -362,9 +362,9 @@ export function PracticeSet({
                     borderRadius: "var(--radius-edge)",
                     background:
                       checked && isAnswer
-                        ? "var(--good)"
+                        ? "var(--answer-correct)"
                         : checked && selected
-                          ? "var(--mark)"
+                          ? "var(--answer-wrong)"
                           : selected
                             ? "var(--subject-ink)"
                             : "transparent",
@@ -378,6 +378,7 @@ export function PracticeSet({
                 </span>
                 <span className="text-[0.9375rem]" style={{ lineHeight: 1.5 }}>
                   <MathAwareText>{option}</MathAwareText>
+                  {checked && (isAnswer || selected) ? <span className="answer-status">{isAnswer ? "✓ Correct answer" : "✗ Your answer · Incorrect"}</span> : null}
                 </span>
               </label>
             );
@@ -391,15 +392,15 @@ export function PracticeSet({
           <div
             className="mt-4 p-4 enter-fade"
             style={{
-              border: `1px solid ${correct ? "var(--good)" : "var(--mark)"}`,
+              border: `1px solid ${correct ? "var(--answer-correct)" : "var(--answer-wrong)"}`,
               borderLeftWidth: 3,
               borderRadius: "var(--radius-cut)",
-              background: correct ? "var(--good-wash)" : "var(--mark-wash)",
+              background: correct ? "var(--answer-correct-bg)" : "var(--answer-wrong-bg)",
             }}
           >
             <p
               className="mb-1.5 text-[0.75rem] uppercase tracking-[0.08em]"
-              style={{ fontFamily: "var(--font-mono)", color: correct ? "var(--good)" : "var(--mark)" }}
+              style={{ fontFamily: "var(--font-mono)", color: correct ? "var(--answer-correct)" : "var(--answer-wrong)" }}
             >
               {correct
                 ? "Correct"

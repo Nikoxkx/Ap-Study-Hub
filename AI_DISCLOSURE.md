@@ -1,7 +1,7 @@
 # AI Disclosure
 
 > **Last updated:** 2026-10-25  
-> **Live version:** [`/ai-disclosure`](https://v0-project-roan-six-20.vercel.app/ai-disclosure)
+> **Live version:** [`/ai-disclosure`](https://ap-study-hub-five.vercel.app/ai-disclosure)
 
 AP Study Hub is an open-source, student-built study workspace for seven Advanced Placement subjects. AI coding and writing assistants helped scaffold, draft, and refactor parts of this repository, while human authors chose the architecture, verified official curriculum alignment, checked every source link, and hold full responsibility for accuracy.
 

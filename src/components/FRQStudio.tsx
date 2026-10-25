@@ -124,7 +124,7 @@ export function FRQStudio({ tasks, courseSlug }: { tasks: StudioTask[]; courseSl
               return <li key={key}>
                 <div className="prose"><Markdown source={criterion} idPrefix={`${key}-`} /></div>
                 <div className="criterion-buttons" role="group" aria-label={`Assessment for criterion ${index + 1}`}>
-                  {([0, 0.5, 1] as const).map((value) => <button key={value} type="button" aria-pressed={(marks[key] ?? 0) === value}
+                  {([0, 0.5, 1] as const).map((value) => <button key={value} type="button" data-grade={value === 1 ? "secure" : value === 0.5 ? "partial" : "not-yet"} aria-pressed={(marks[key] ?? 0) === value}
                     onClick={() => setMarks((current) => ({ ...current, [key]: value }))}>
                     {value === 0 ? "Not yet" : value === 0.5 ? "Partial" : "Secure"}
                   </button>)}

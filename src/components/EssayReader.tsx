@@ -121,8 +121,8 @@ export function EssayReader({ essays }: { essays: Essay[] }) {
           <ol className="rule-top">
             {essay.rubricBreakdown.map((row) => {
               const full = row.points === row.maxPoints;
-              const zero = row.points === 0;
-              const tone = full ? "var(--good)" : zero ? "var(--mark)" : "var(--warn)";
+
+              const tone = full ? "var(--answer-correct)" : "var(--answer-wrong)";
               return (
                 <li key={row.category} className="rule-bottom py-3.5">
                   <div className="mb-1.5 flex items-baseline justify-between gap-3">
@@ -131,7 +131,7 @@ export function EssayReader({ essays }: { essays: Essay[] }) {
                       className="tnum shrink-0 text-[0.8125rem]"
                       style={{ fontFamily: "var(--font-mono)", color: tone }}
                     >
-                      {row.points}/{row.maxPoints}
+                      {row.points}/{row.maxPoints} · {full ? "Full points" : "Points to improve"}
                     </span>
                   </div>
 
@@ -141,8 +141,8 @@ export function EssayReader({ essays }: { essays: Essay[] }) {
                     {Array.from({ length: row.maxPoints }, (_, i) => (
                       <span
                         key={i}
-                        className="h-[3px] flex-1"
-                        style={{ background: i < row.points ? tone : "var(--rule)" }}
+                        className="h-[6px] rounded-full flex-1"
+                        style={{ background: i < row.points ? "var(--answer-correct)" : "var(--answer-wrong)" }}
                       />
                     ))}
                   </div>
@@ -173,7 +173,7 @@ export function EssayReader({ essays }: { essays: Essay[] }) {
               <details key={source.id} className="sheet overflow-hidden">
                 <summary
                   className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3"
-                  style={{ background: "var(--paper-sunk)" }}
+                  style={{ background: "var(--reading-wash)" }}
                 >
                   <span className="text-[0.9375rem] font-semibold">{source.title}</span>
                   <span className="label shrink-0">Read</span>

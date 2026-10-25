@@ -36,7 +36,7 @@ export function VariantLab({ courseSlug }: { courseSlug: SubjectSlug }) {
     <div>
       <div className="variant-toolbar no-print">
         <label><span className="label">Reproducible seed</span><input className="field mt-2" value={seed} maxLength={40}
-          onChange={(event) => setSeed(event.target.value)} /></label>
+          onChange={(event) => { setSeed(event.target.value); setAnswers({}); setChecked({}); }} /></label>
         <div><p className="label mb-2">Same seed, same questions</p><p className="text-[0.8125rem]">Share the seed to compare reasoning, or change it for a fresh validated set.</p></div>
         <button type="button" className="btn btn-outline btn-sm" onClick={() => { setAnswers({}); setChecked({}); setSeed((current) => String((Number.parseInt(current, 10) || 0) + 1)); }}>Next seed</button>
       </div>
@@ -50,9 +50,10 @@ export function VariantLab({ courseSlug }: { courseSlug: SubjectSlug }) {
             <p className="variant-prompt"><MathAwareText>{variant.prompt}</MathAwareText></p>
             {valid ? <fieldset disabled={done}>
               <legend className="sr-only">{variant.prompt}</legend>
-              {variant.options.map((option, index) => <label key={option} className="lab-choice" data-selected={choice === index}>
+              {variant.options.map((option, index) => <label key={option} className="lab-choice" data-selected={choice === index} data-correct={done && (index === variant.correctIndex || choice === index) ? index === variant.correctIndex : undefined}>
                 <input type="radio" name={variant.id} checked={choice === index} onChange={() => setAnswers((current) => ({ ...current, [variant.id]: index }))} />
                 <span><MathAwareText>{option}</MathAwareText></span>
+                {done && (index === variant.correctIndex || choice === index) ? <span className="answer-status">{index === variant.correctIndex ? "✓ Correct" : "✗ Incorrect"}</span> : null}
               </label>)}
             </fieldset> : <p role="alert">This variant failed validation and was not presented for scoring.</p>}
             <div className="mt-4 flex items-center gap-3">

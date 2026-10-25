@@ -17,12 +17,11 @@ export function ConnectionMap({ course, courses }: { course: StudyCourse; course
         <h3 id="prerequisite-map">Build this course in sequence</h3>
         <p className="map-intro">This is the site’s teaching sequence, not an official College Board prerequisite rule. Use a later lesson’s link back when a missing earlier idea blocks you.</p>
         <ol className="prerequisite-map">
-          {course.units.map((unit, index) => <li key={unit.unitNumber}>
+          {course.units.map((unit) => <li key={unit.unitNumber}>
             <Link href={`/course/${course.slug}/notes#unit-${unit.unitNumber}`}>
-              <span className="folio">{String(unit.unitNumber).padStart(2, "0")}</span>
-              <span>{unit.title}</span>
+              <span className="path-number">{String(unit.unitNumber).padStart(2, "0")}</span>
+              <span className="path-title"><small>Lesson {unit.unitNumber}</small>{unit.title}</span><span className="path-open" aria-hidden="true">↗</span>
             </Link>
-            {index < course.units.length - 1 ? <span className="map-arrow" aria-hidden="true">→</span> : null}
           </li>)}
         </ol>
       </section>
