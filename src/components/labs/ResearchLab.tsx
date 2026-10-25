@@ -5,6 +5,7 @@ import type { ResearchLab as ResearchLabDefinition } from "@/content/labs";
 import { useStoredState } from "@/lib/use-stored-state";
 import { useStudyState } from "@/lib/use-study-state";
 import { addStudyEvent } from "@/lib/study-model";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 const EMPTY: Record<string, string> = Object.freeze({});
 function revive(value: unknown): Record<string, string> | null {
@@ -94,10 +95,9 @@ export function ResearchLab({ lab }: { lab: ResearchLabDefinition }) {
             onChange={(event) => setNotes((current) => ({ ...current, [`defense:${prompt.id}`]: event.target.value }))}
             placeholder="Write what you actually said or the reasoning you want to preserve." />
           <fieldset className="mt-4"><legend className="label mb-2">Your self-check · not an automated grade</legend>
-            {lab.defenseCriteria.map((criterion, index) => <label key={criterion} className="check-row">
-              <input type="checkbox" checked={Boolean(criteria[index])} onChange={(event) => setCriteria((current) => ({ ...current, [index]: event.target.checked }))} />
-              <span>{criterion}</span>
-            </label>)}
+            {lab.defenseCriteria.map((criterion, index) => <div key={criterion} className="check-row items-center">
+              <Checkbox checked={Boolean(criteria[index])} onCheckedChange={(checked) => setCriteria((current) => ({ ...current, [index]: checked }))} label={criterion} />
+            </div>)}
           </fieldset>
         </div> : null}
       </section>

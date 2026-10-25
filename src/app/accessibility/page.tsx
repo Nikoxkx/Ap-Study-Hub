@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
@@ -104,7 +105,8 @@ export default function AccessibilityPage() {
     <>
       <JsonLd schema={breadcrumbSchema(trail)} />
 
-      <div className="wrap py-12 md:py-16">
+      <div className="wrap py-10 md:py-14">
+        <GlassCard padding="lg">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
           <p className="label mb-3">Checked {formatDate(site.policyUpdated)}</p>
@@ -238,6 +240,7 @@ export default function AccessibilityPage() {
           </Link>
           .
         </p>
+        </GlassCard>
       </div>
     </>
   );

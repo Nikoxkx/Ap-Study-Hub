@@ -3,9 +3,8 @@
  *
  * Run: pnpm build:social
  *
- * A static PNG is used in metadata because the previous runtime ImageResponse
- * route could fail in production. The SVG remains the editable source; this
- * script uses @resvg/resvg-js and system DejaVu fonts when available.
+ * Uses @resvg/resvg-js with bundled Caveat (handwriting) and system DejaVu
+ * fonts so the notebook sheet renders in authentic natural handwriting.
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -16,8 +15,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const svgPath = join(root, "assets/social/og-image.svg");
 const outPath = join(root, "public/og-image.png");
 
-const fontDir = "/usr/share/fonts/truetype/dejavu";
-const fontNames = [
+const dejavuDir = "/usr/share/fonts/truetype/dejavu";
+const dejavuNames = [
   "DejaVuSans.ttf",
   "DejaVuSans-Bold.ttf",
   "DejaVuSerif.ttf",
@@ -25,9 +24,13 @@ const fontNames = [
   "DejaVuSansMono.ttf",
   "DejaVuSansMono-Bold.ttf",
 ];
-const fontFiles = existsSync(fontDir)
-  ? fontNames.map((name) => join(fontDir, name)).filter(existsSync)
-  : [];
+const fontFiles = [
+  ...(existsSync(dejavuDir)
+    ? dejavuNames.map((name) => join(dejavuDir, name)).filter(existsSync)
+    : []),
+  join(root, "assets/social/Caveat-Medium.ttf"),
+  join(root, "assets/social/Caveat-Bold.ttf"),
+].filter(existsSync);
 
 const resvg = new Resvg(readFileSync(svgPath, "utf8"), {
   fitTo: { mode: "width", value: 1200 },
@@ -35,7 +38,7 @@ const resvg = new Resvg(readFileSync(svgPath, "utf8"), {
     ...(fontFiles.length ? { fontFiles } : {}),
     defaultFontFamily: "DejaVu Sans",
   },
-  background: "#f6f3ec",
+  background: "#e4e8f2",
 });
 
 const png = resvg.render().asPng();

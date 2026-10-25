@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 import { getTotals } from "@/lib/catalog";
@@ -68,9 +69,9 @@ const codeAreas = [
   },
   {
     area: "Design system",
-    files: "globals.css, next.config.ts, SubjectMark.tsx, build-banners.mjs",
-    ai: "Tailwind 4 setup, CSP template, SVG generation idea",
-    human: "Paper #f6f3ec, ink #1c1b17, mark #b0392a, binding-cloth subject colors, hand-drawn 32-unit SVG marks, contrast checked at actual size",
+    files: "globals.css, next.config.ts, SubjectMark.tsx, StudySystemVisual.tsx, build-banners.mjs",
+    ai: "Tailwind 4 setup, CSP template, deterministic SVG & Resvg generation scripts",
+    human: "Hue-free frosted glass over classroom/corridor paintings, neutral #121212 dark mode, 45° 7-square logo, monochrome 32-unit SVG course glyphs, and Caveat handwriting locked to 32px blue college-ruled paper lines",
   },
   {
     area: "SEO & meta",
@@ -130,7 +131,8 @@ export default function AiDisclosurePage() {
     <>
       <JsonLd schema={breadcrumbSchema(trail)} />
 
-      <div className="wrap py-12 md:py-16">
+      <div className="wrap py-10 md:py-14">
+        <GlassCard padding="lg">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
           <p className="label mb-3">Checked {formatDate("2026-10-24")} · Content revision {site.contentRevision}</p>
@@ -382,6 +384,7 @@ export default function AiDisclosurePage() {
           <Link href="/privacy" className="link-underlined" style={{ color: "var(--ink)" }}>privacy</Link>,{" "}
           <Link href="/accessibility" className="link-underlined" style={{ color: "var(--ink)" }}>accessibility</Link>.
         </p>
+        </GlassCard>
       </div>
     </>
   );

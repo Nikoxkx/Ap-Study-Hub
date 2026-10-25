@@ -1,5 +1,11 @@
 "use client";
 
+import { DownloadButton } from "@/components/ui/DownloadButton";
+
 export function PrintButton() {
-  return <button type="button" className="btn btn-solid btn-sm no-print" onClick={() => window.print()}>Print / save as PDF</button>;
+  return (
+    <DownloadButton className="no-print" onClick={() => window.print()}>
+      Print / Save PDF
+    </DownloadButton>
+  );
 }

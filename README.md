@@ -1,298 +1,196 @@
 <div align="center">
-
   <a href="https://v0-project-roan-six-20.vercel.app">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/banner-dark.svg" />
-      <img src="./assets/readme/banner-light.svg" width="100%" alt="AP Study Hub — learn seven AP subjects deeply and make the work count" />
+      <source media="(prefers-color-scheme: light)" srcset="./assets/readme/banner-light.svg" />
+      <img src="./assets/readme/banner-light.svg" width="100%" alt="AP Study Hub — learn seven AP subjects deeply with zero noise" />
     </picture>
   </a>
 
+  <br />
+
   <p>
-    <a href="https://v0-project-roan-six-20.vercel.app"><img src="https://img.shields.io/badge/v0-project-roan-six-20.vercel.app-live-b0392a?style=flat-square&labelColor=1c1b17" alt="Live site" /></a>
-    <img src="https://img.shields.io/badge/courses-7-57534a?style=flat-square&labelColor=1c1b17" alt="Seven courses" />
-    <img src="https://img.shields.io/badge/deep%20lessons-51-b0392a?style=flat-square&labelColor=1c1b17" alt="51 deep lessons" />
-    <img src="https://img.shields.io/badge/account-not%20required-2f5f56?style=flat-square&labelColor=1c1b17" alt="No account required" />
-    <br />
-    <img src="https://img.shields.io/badge/Next.js-16-57534a?style=flat-square&labelColor=1c1b17&logo=nextdotjs&logoColor=f6f3ec" alt="Next.js 16" />
-    <img src="https://img.shields.io/badge/React-19-57534a?style=flat-square&labelColor=1c1b17&logo=react&logoColor=f6f3ec" alt="React 19" />
-    <img src="https://img.shields.io/badge/TypeScript-strict-57534a?style=flat-square&labelColor=1c1b17&logo=typescript&logoColor=f6f3ec" alt="TypeScript, strict" />
-    <a href="./AI_DISCLOSURE.md"><img src="https://img.shields.io/badge/AI%20use-disclosed-2f5f56?style=flat-square&labelColor=1c1b17" alt="AI use disclosed" /></a>
-    <img src="https://img.shields.io/badge/licence-MIT-57534a?style=flat-square&labelColor=1c1b17" alt="Licence: MIT" />
+    <strong>Seven AP courses in one calm, transparent glass study hub — with 51 cited lessons, recall cards, original practice, real unit-video previews, and college-ruled notebook scratch paper.</strong>
   </p>
 
+  <p>
+    <a href="https://v0-project-roan-six-20.vercel.app"><img alt="Live site" src="https://img.shields.io/badge/live_site-v0--project--roan--six--20.vercel.app-121212?style=flat-square&labelColor=262626" /></a>
+    <a href="#the-catalogue"><img alt="7 AP courses · 51 lessons · 510 paragraphs" src="https://img.shields.io/badge/7_courses-51_lessons_·_510_paragraphs-121212?style=flat-square&labelColor=262626" /></a>
+    <a href="#the-catalogue"><img alt="405 cards · 240 questions · 66 videos" src="https://img.shields.io/badge/practice-405_cards_·_240_questions_·_66_videos-121212?style=flat-square&labelColor=262626" /></a>
+    <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-404040?style=flat-square&labelColor=262626" /></a>
+    <a href="./AI_DISCLOSURE.md"><img alt="AI disclosure" src="https://img.shields.io/badge/AI_assistance-disclosed-404040?style=flat-square&labelColor=262626" /></a>
+  </p>
+
+  <p>
+    <a href="https://v0-project-roan-six-20.vercel.app"><strong>Open the hub</strong></a>
+    &nbsp;·&nbsp;
+    <a href="https://v0-project-roan-six-20.vercel.app/study">Study Desk</a>
+    &nbsp;·&nbsp;
+    <a href="https://v0-project-roan-six-20.vercel.app/videos">Unit Videos</a>
+    &nbsp;·&nbsp;
+    <a href="https://v0-project-roan-six-20.vercel.app/guides">Study Guides</a>
+    &nbsp;·&nbsp;
+    <a href="https://v0-project-roan-six-20.vercel.app/colophon">Colophon</a>
+    &nbsp;·&nbsp;
+    <a href="./AI_DISCLOSURE.md">AI Disclosure</a>
+  </p>
 </div>
-
-# Learn seven AP subjects deeply — and make the work count.
-
-AP Study Hub is a free, student-built study library for seven AP courses. Its expanded
-2026–27 edition combines complete lessons, recall cards, original practice, marked essays,
-real YouTube unit videos, and visible curriculum and scoring sources. Learn the why, retrieve
-the idea without looking, answer a question, then use the feedback to return to the exact
-section that needs another look. The goal is understanding that can earn college credit where
-your school accepts it — and the tuition savings that can come with it.
-
-**Live at <https://v0-project-roan-six-20.vercel.app>** — no account, paywall, analytics,
-or runtime AI.
-
-<p align="center">
-  <strong>51</strong> deep lessons &nbsp;·&nbsp; <strong>510</strong> substantive paragraphs &nbsp;·&nbsp;
-  <strong>32,803</strong> teaching words &nbsp;·&nbsp; <strong>405</strong> cards &nbsp;·&nbsp;
-  <strong>240</strong> original questions<br />
-  <strong>6</strong> marked essays &nbsp;·&nbsp; <strong>3</strong> original timed sets &nbsp;·&nbsp;
-  <strong>92</strong> resource links &nbsp;·&nbsp; <strong>1,196</strong> searchable documents
-</p>
-
-Not affiliated with the College Board. AP and Advanced Placement are registered
-trademarks of the College Board, which has not reviewed or endorsed this site.
 
 ---
 
-## 01 — The catalogue
+## Why this exists
 
-The application computes these counts from the same catalog that renders the site.
-“Lessons” are the expanded course units; legacy drills are retained where useful and
-joined to the new lesson system rather than counted as additional deep lessons.
+Studying for several AP classes at once usually turns into eleven browser tabs — a 240-page Course and Exam Description PDF, a summary sheet with half the units missing, an ad-heavy flashcard deck, and a video queue full of unrelated recommendations.
 
-| Spine | Course | Lessons | Paragraphs | Cards | Original questions | Essays | Sources / resources | Teaching read |
-| :---- | :----- | ------: | ---------: | ----: | -----------------: | -----: | ------------------: | ------------: |
-| `USH` | [AP United States History](https://v0-project-roan-six-20.vercel.app/course/apush) | 9 | 90 | 89 | 48 | 1 | 16 | ~30 min |
-| `LNG` | [AP English Language and Composition](https://v0-project-roan-six-20.vercel.app/course/ap-lang) | 9 | 90 | 81 | 48 | 3 | 13 | ~28 min |
-| `SEM` | [AP Seminar](https://v0-project-roan-six-20.vercel.app/course/ap-seminar) | 5 | 50 | 56 | 38 | 1 | 13 | ~15 min |
-| `GOV` | [AP United States Government and Politics](https://v0-project-roan-six-20.vercel.app/course/ap-gov) | 5 | 50 | 40 | 25 | — | 13 | ~15 min |
-| `BIO` | [AP Biology](https://v0-project-roan-six-20.vercel.app/course/ap-bio) | 8 | 80 | 52 | 31 | — | 11 | ~22 min |
-| `CAL` | [AP Calculus AB and BC](https://v0-project-roan-six-20.vercel.app/course/ap-calc) | 10 | 100 | 55 | 30 | — | 13 | ~25 min |
-| `RES` | [AP Research](https://v0-project-roan-six-20.vercel.app/course/ap-research) | 5 | 50 | 32 | 20 | 1 | 13 | ~14 min |
-| | **All seven** | **51** | **510** | **405** | **240** | **6** | **92** | **~149 min** |
+**AP Study Hub** puts the entire study loop for seven AP subjects inside one quiet, zero-account workspace:
 
-The lesson library also contains **102 lesson-linked original questions** within the
-240-question total and cites **41 registered curriculum, scoring, textbook, archive,
-and research sources**. Every registered source is used.
+1. **Read deeply** — 51 full-length lessons (`510` cited prose paragraphs, learning objectives, worked examples, primary sources, and common mistakes).
+2. **Recall cold** — 405 active-recall flashcards (course decks + unit glossary terms) with keyboard flip, Fisher–Yates shuffle, and local spaced-review buckets.
+3. **Respond under exam conditions** — 240 original multiple-choice questions that route wrong answers back to the exact lesson section, plus timed essay outlines and mock papers with lined scratch paper.
 
-### Course coverage
+There are **no accounts, no paywalls, no ad scripts, and no analytics trackers**. Progress, due cards, missed questions, and timed drafts live locally in `localStorage` on your own device and can be exported to JSON or Markdown at any time.
 
-- **APUSH:** nine chronological periods, with contextualization, evidence, causation,
-  comparison, continuity/change, and explicit DBQ/LEQ rubric connections.
-- **AP Lang:** nine units spanning rhetorical situation, claims and evidence,
-  reasoning, organization, and style, with separate synthesis, rhetorical-analysis,
-  and argument guidance tied to the six-point analytic rubrics.
-- **AP Seminar:** five QUEST-framework lessons for the current 2026–27 assessment:
-  Team Project and Presentation (20%), Individual Research-Based Essay and Presentation
-  (35%), and the end-of-course exam (45%). The 2027–28 redesign is not presented as
-  current policy.
-- **AP Gov:** five units with all fifteen required cases and thirteen foundational
-  documents, including the four 2026–27 additions and the official clarification as a
-  direct source.
-- **AP Biology:** eight units connecting molecular and cellular mechanisms to evolution
-  and ecology, with data analysis, experimental design, graphing, and FRQ practice.
-- **AP Calculus AB/BC:** the eight AB units plus the two additional BC units. Inline
-  notation, worked procedures, representation changes, calculator decisions, and
-  justification language are searchable and rendered as part of each lesson.
-- **AP Research:** five lessons for the 4,000–5,000-word academic paper (75%) and the
-  presentation/oral defense (25%), including question design, method alignment,
-  evidence, limitations, and reflection.
+---
 
-## 02 — What a deep lesson contains
+## Interface & Design System (2026–27 Overhaul)
 
-Every lesson is a structured TypeScript document, not a single markdown blob:
+The entire front-end was rebuilt around calm legibility, transparent glass surfaces, human-made monochrome iconography, and physical study materials:
 
-1. **A precise overview and current exam-weight label.** AB and BC weights are labeled
-   separately where the combined Calculus course requires it.
-2. **At least three learning objectives.** These describe what a student should be able
-   to explain, calculate, compare, design, or defend.
-3. **At least five named teaching sections and ten substantive paragraphs.** Paragraphs
-   develop mechanisms, historical context, reasoning, examples, misconceptions, and
-   exam applications rather than repeating definitions.
-4. **Section-level citations.** Official curriculum and scoring references are
-   distinguished from open textbooks, archives, and writing guidance.
-5. **A glossary of at least four terms.** These entries become lesson-linked cards.
-6. **An exam and rubric connection.** The criteria explain how the material becomes a
-   defensible answer instead of merely naming an exam task.
-7. **At least two original practice questions.** Each has four options, a skill label,
-   and a reasoned explanation.
+- **Per-route painted classroom & corridor wallpapers (`PageBackground`)** — Full-viewport illustrations (`public/bg-music-class.jpg`, `bg-corridor.jpg`, `bg-class.jpg`, `bg-class2.jpg`) anchor distinct route families (`/`, `/study`, `/course/[slug]`, and deep study sub-tabs) without ever repeating inside interior containers. Switching into `.dark` mode disables photographic backgrounds (`background-image: none`) in favor of a pure neutral charcoal canvas (`#121212`).
+- **Hue-free frosted glass surfaces (`.glass-box`)** — Every card, lesson reader, header bar, and modal uses colorless translucent glass (`backdrop-filter: blur(5px)`, crisp `1px` borders, zero color tints) paired with monochrome ink tokens and a soft classroom-light periwinkle text `::selection` highlight.
+- **Single-row leveled navigation (`SiteHeaderShell`, `TopClassBar`, `MobileNav`)** — `AP Study Hub`, `AP Courses`, `Jump to ⌘K`, and the compact `Menu` button sit leveled on one `38px` row:
+  - **Hover-reveal `AP Courses` bar** (with a touch-friendly bottom sheet on mobile) previews all 7 courses without cluttering the viewport and fades away when unhovered or on scroll.
+  - **Unified `Menu` popover** houses instant `SiteSearch`, `Study Desk`, hub links, and the interactive Sun / Moon / Clouds / Stars `ThemeSwitch`.
+  - **Directional scroll fade** smoothly hides the header while reading downward and restores it on upward scroll without breaking fixed modals (`CommandPalette`).
+- **Universal geometric & kinetic symbols** —
+  - **45°-rotated 7-square `Logo`** — The universal emblem across the masthead, footer, README banners, and social preview card.
+  - **Monochrome `SubjectMark` course glyphs** — Seven human-crafted 32-unit black-and-white SVG symbols (U.S. flag, quotation marks, speech bubbles, scales of justice, DNA helix, integral sign, magnifying glass) — zero AI-generated icons or colored badges.
+  - **3-circle + 3-shadow bouncing `LoadingSpinner`** — Displayed seamlessly whenever routes (`loading.tsx`) or async components (`SiteSearch`, `StudyDashboard`, `AdvancedDesk`, `UnitVideoPlayer`, `OfflinePackButton`) load.
+  - **9-box `BanterLoader`** — Tactile geometric accent accompanying the Study Desk workspace.
+- **Realistic college-ruled notebook paper (`StudySystemVisual`, `NotebookPaper`)** — Both the homepage **AP Study Hub Method (2026–27)** sheet and every scratchpad inside timed essays, mock exams, and Study Studio render authentic loose-leaf college-ruled paper (`#fbf9f3`, single pink vertical margin rule, horizontal `32px` blue lines, zero extra CSS dividers or dots). On the Method sheet, self-hosted `Caveat` handwriting sits directly on the blue baselines.
+- **60fps bidirectional scroll fade (`ScrollEffects`)** — Time-normalized `requestAnimationFrame` exponential interpolation (`smoothstep` viewport edge bands) gently fades sections in and out at both top and bottom viewport edges without abrupt mouse-wheel snapping, while honoring `prefers-reduced-motion: reduce`.
 
-`pnpm validate:content` enforces these minimums, the expected course sequence, unique
-teaching paragraphs, valid and used source IDs, and practice structure. It also requires
-at least 500 teaching words per lesson and 35 per paragraph as anti-stub baselines; those
-floors are safeguards, not claims that word count alone proves quality.
+---
 
-## 03 — Study modes
+## The Catalogue
 
-| Mode | What the expanded system does |
-| :--- | :---------------------------- |
-| **Notes** | Server-rendered deep lessons with stable section anchors, objectives, inline mathematical notation, glossaries, rubric connections, bibliographies, and practice links. |
-| **Cards** | The original deck plus lesson glossaries, with links back to the relevant lesson. Keyboard controls, Fisher–Yates shuffle, missed-only review, and versioned per-course storage remain available. |
-| **Practice** | Legacy drills and lesson-linked questions in one set. Filter by lesson, receive reasoned feedback, and follow a review link back to the exact teaching section. |
-| **Essays** | Six sample responses with point-by-point commentary. Constructed practice sources are identified rather than presented as genuine publications or quotations. |
-| **Timed practice** | Three original sets with autosaved answers and a running clock: APUSH (155 minutes), AP Lang (195 minutes), and AP Seminar (120 minutes). They are not full-length released exams and do not claim to provide official automatic essay scores. |
-| **Sources** | Ninety-two official, archival, textbook, writing, and supplemental links, including lesson bibliographies and checked dates where the source model provides them. |
+Every count in the UI and metadata is computed at build time from `src/content/` and verified by `pnpm check`.
 
-Search indexes **1,196 documents**, including individual teaching sections. Results can
-therefore deep-link into a long lesson, preserve inline mathematical notation, and send
-question hits to a filtered practice set.
+| Course | Mark | Units & Lessons | Cited Paragraphs | Recall Cards | Practice Qs | Essays & Mock Papers | Unit Videos |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **AP U.S. History** (`apush`) | U.S. flag | 9 | 90 | 89 | 48 | 1 essay · 1 mock | 13 |
+| **AP English Language** (`ap-lang`) | Quotation marks | 9 | 90 | 81 | 48 | 3 essays · 1 mock | 9 |
+| **AP Seminar** (`ap-seminar`) | Speech bubbles | 5 | 50 | 56 | 38 | 1 essay · 1 mock | 10 |
+| **AP U.S. Gov & Politics** (`ap-gov`) | Scales of justice | 5 | 50 | 40 | 25 | 0 · 0 | 6 |
+| **AP Biology** (`ap-bio`) | DNA | 8 | 80 | 52 | 31 | 0 · 0 | 8 |
+| **AP Calculus AB** (`ap-calc`) | Integral sign | 10 | 100 | 55 | 30 | 0 · 0 | 10 |
+| **AP Research** (`ap-research`) | Magnifying glass | 5 | 50 | 32 | 20 | 1 essay · 0 mocks | 10 |
+| **Total** | **7 glyphs** | **51** | **510** | **405** | **240** | **6 essays · 3 mocks** | **66** |
 
-## 04 — 2027 exam and deadline calendar
+---
 
-Dates below come from the official 2027 AP schedule. Reporting times and any local or
-late-testing arrangements must be confirmed with the school’s AP coordinator.
-
-| Course | Published date | Session / deadline |
-| :----- | :------------- | :----------------- |
-| AP Research | 30 April 2027 | Performance-task portfolio due at 11:59 p.m. ET |
-| AP Biology | 3 May 2027 | Afternoon |
-| AP U.S. Government and Politics | 4 May 2027 | Morning |
-| AP United States History | 7 May 2027 | Morning |
-| AP Calculus AB and BC | 10 May 2027 | Morning |
-| AP Seminar | 10 May 2027 | Afternoon |
-| AP English Language and Composition | 12 May 2027 | Morning |
-
-The current-format notes in the lesson library also account for the May 2027 Calculus
-MCQ timing/count changes, the 2026–27 AP Gov document additions, and the announced
-APUSH free-response design changes. Official course and exam pages remain the authority.
-
-## 05 — Accuracy and practice boundaries
-
-- **Original practice is labeled.** Secure or unreleased AP material is not intentionally
-  reproduced. Official released questions are linked rather than copied into the library.
-- **Constructed sources say so.** Invented AP Lang, Seminar, Research, and APUSH practice
-  documents are labeled as constructed; they are not attributed to real people or
-  publications as though they were authentic artifacts.
-- **Rubric connections are explicit.** Lessons distinguish thesis, evidence/commentary,
-  sophistication, historical reasoning, sourcing, complexity, science practices, and
-  mathematical justification as appropriate to the course.
-- **Validation is not a substitute for judgment.** Automated checks prove structure and
-  coverage constraints, not every nuanced historical or scientific claim. The named
-  author retains editorial responsibility, and corrections are welcome.
-- **Current versus future policy is separated.** In particular, the AP Seminar lessons
-  target 2026–27; the redesign beginning in 2027–28 is not silently applied early.
-
-## 06 — How it is built
-
-- **Next.js 16.2.6, React 19.2.6, and strict TypeScript.** Content pages are statically
-  generated; the search API is the dynamic exception.
-- **One integrated catalog.** `src/lib/catalog.ts` joins subject metadata, rich lessons,
-  legacy drills, cards, questions, resources, counts, and reading time.
-- **No CMS or content database.** Lessons and drills live in typed modules. There is no runtime
-  content fetch and no account system; an opt-in Supabase edge function can store Study Desk snapshots.
-- **No-JavaScript reading path.** Notes, essays, questions, and `/search` are rendered
-  on the server. The header search form has a GET fallback.
-- **Hand-built interface.** Native controls, recognisable SVG subject symbols (flag, quotes,
-  speech bubbles, scales, DNA, integral, magnifier), Tailwind CSS, and a paper-and-ink design
-  system; no component kit or icon package.
-- **Real video posters.** Unit players fetch the actual YouTube thumbnail automatically from
-  `i.ytimg.com`. The privacy-enhanced player still loads only after you press play.
-- **Local study state only.** Theme, versioned card marks (`aps.cards.v2.{course}`), and
-  timed-practice drafts stay in the browser. No student work is sent to an AI service.
-- **Self-hosted fonts.** Newsreader, Public Sans, and JetBrains Mono are bundled with
-  their licenses; no font CDN is required. Static YouTube thumbnails are the only remote images.
-- **Generated brand assets.** The favicon and Apple icon use the exact SiteMark sheet
-  geometry. The Open Graph card and README banners use deterministic SVG/Next ImageResponse
-  artwork rather than stock imagery or generated raster pictures.
-
-## 07 — Running it locally
-
-Requires Node 20.9+ and pnpm 10.x. The repository pins `pnpm@10.29.1`; `corepack pnpm`
-works in a clean Corepack environment.
-
-```bash
-corepack pnpm install
-corepack pnpm dev
-
-corepack pnpm validate:content  # depth, sequence, prose, sources, and practice
-corepack pnpm typecheck         # TypeScript
-corepack pnpm lint              # ESLint
-corepack pnpm build             # production build
-corepack pnpm check             # all four checks in that order
-
-node assets/readme/build-banners.mjs  # regenerate README artwork
-```
-
-There is no database, CMS, or required environment file. `NEXT_PUBLIC_SITE_URL` only
-changes canonical/sitemap origins; without it, the production origin is used.
-
-## 08 — Repository map
+## Architecture & Study Loop
 
 ```text
-assets/readme/
-  build-banners.mjs           deterministic light/dark banner source
-  banner-light.svg            generated repository artwork
-  banner-dark.svg
-scripts/
-  validate-lessons.ts         content-depth and citation validation
-src/
-  app/
-    course/[slug]/            overview, notes, cards, practice, essays, timed practice, sources
-    icon.tsx                  32px SiteMark-based browser icon
-    apple-icon.tsx            maskable 180px version
-    opengraph-image.tsx       generated social artwork
-    ai-disclosure/            live AI-use and verification disclosure
-  components/
-    LessonContent.tsx          structured lesson renderer
-    StudySystemVisual.tsx     read → recall → respond editorial illustration
-    CardDeck.tsx PracticeSet.tsx TimedPaper.tsx
-  content/lessons/
-    types.ts                  lesson/source contracts
-    sources.ts                cited source registry and checked dates
-    build.ts                  paragraph-aware section helper
-    text.ts                   shared teaching-word counter
-    index.ts                  seven-course registry
-    apush.ts apLang.ts apSeminar.ts apGov.ts apBio.ts apCalc.ts apResearch.ts
-  lib/
-    catalog.ts                integrated content/count/search join
-    data.ts                   legacy drills, essays, resources, and timed sets
-    subjects.ts               course metadata and 2027 dates
-    search.ts                 section-level scored index
-    markdown.tsx              prose and inline mathematical notation
+  Read deeply (/course/[slug]/notes)         Recall cold (/cards)              Respond (/practice · /essays · /exam)
+ ┌──────────────────────────────────┐      ┌──────────────────────────┐      ┌───────────────────────────────────────┐
+ │ 51 lessons · 510 cited paragraphs│ ───► │ 405 recall cards         │ ───► │ 240 MCQs + 6 essays + 3 mock papers   │
+ │ Objectives, worked examples,     │      │ Space/Enter flip,        │      │ Wrong answers link straight back to   │
+ │ primary sources, unit videos     │ ◄─── │ local SM-2 review queue  │ ◄─── │ the exact lesson section & scratchpad │
+ └──────────────────────────────────┘      └──────────────────────────┘      └───────────────────────────────────────┘
 ```
 
-## 09 — Adding content or correcting an error
+### Privacy-first unit videos (`UnitVideoPlayer`)
+- Every course unit includes vetted review videos (`Heimler's History`, `Coach Hall Writes`, `Garden of English`, `Bozeman Science`, `Amoeba Sisters`, `3Blue1Brown`, `Professor Leonard`, `Carey LaManna`, and official `Advanced Placement` playlists) verified via YouTube oEmbed (`scripts/validate-videos.ts`).
+- Pages render static `i.ytimg.com` thumbnails first — **no YouTube scripts or `<iframe>` embeds load until you explicitly opt in** (`youtube-nocookie.com`), or you can open the video directly on YouTube in a new tab.
 
-1. Add or edit the course module in `src/content/lessons/` for deep teaching content.
-   Use `src/lib/data.ts` for legacy drills and timed-practice material.
-2. Register every citation in `sources.ts`, with a useful title, publisher, HTTPS URL,
-   source kind, description, and checked date.
-3. Keep the lesson sequence aligned with the current official framework. Distinguish
-   official curriculum/scoring references from supplemental explanations.
-4. Run `corepack pnpm validate:content` and `corepack pnpm typecheck` while iterating;
-   run the complete `corepack pnpm check` before opening a pull request.
-5. Update the course’s `revised` date when its substance changes. For a material
-   library-wide revision, update `site.contentRevision` as well.
-6. Do not hard-code a new count in application copy when `getTotals()` or course
-   `counts` can compute it. This README’s static table should be refreshed after a
-   deliberate content release.
-
-The fastest correction is a [GitHub issue](https://github.com/Nikoxkx/Ap-Study-Hub/issues)
-with the page URL, the disputed claim, and a source. Correction PRs are especially welcome.
-
-### Planning artifacts
-
-- [Implementation plan](https://docs.google.com/document/d/1TxBh80EghP9Oh5qVcSEyZqdo3MhVg6a6pBPQpbnagrI/edit)
-- [Lesson coverage workbook](https://docs.google.com/spreadsheets/d/16PcbQl6vsF6UAmxSw6Y8JBYFwqe5zrclL71dT3AhAmY/edit)
-
-## 10 — AI disclosure
-
-AI tools were used for drafting, research workflow, scaffolding, and code. The 2026–27
-expansion used Arena.ai Agent Mode alongside the previously disclosed v0.dev, ChatGPT,
-Claude, and GitHub Copilot workflows. The expanded lessons are source-linked and checked
-with automated content and TypeScript validation; that is not represented as proof that
-every sentence received independent expert review.
-
-There is no chatbot, AI grader, AI API, or student-data transfer in production. Visual
-assets are deterministic SVG or Next ImageResponse compositions, not AI-generated raster
-images. See [AI_DISCLOSURE.md](./AI_DISCLOSURE.md) and `/ai-disclosure` for the detailed
-breakdown and correction policy.
-
-Last updated: **2026-10-24** · Content revision: **2026.10**
-
-## Licence
-
-Code is MIT. Course content is © the author. Bundled typefaces are under the SIL Open
-Font License 1.1; license texts are in `public/fonts/`.
+### Local-first persistence & optional integrations
+- Core study state uses clean `aps:*` `localStorage` keys (`use-stored-state.ts` + `study-store.ts`) — zero cookies, zero telemetry, instant JSON backup/restore, `.apkg`-ready Anki TSV/CSV export, `.ics` exam calendar export, and Markdown portfolio export.
+- Optional student-supplied connectors (`/integrations`) support **GitHub Gist** cross-device sync and **Google Drive / Notion / Quizlet / Obsidian** import-export formats using tokens you control locally.
 
 ---
 
-<div align="center">
-  <sub>
-    AP Study Hub · Built by a student · Free since 2025 · Not affiliated with or endorsed by the College Board<br />
-    AP and Advanced Placement are registered trademarks of the College Board.
-  </sub>
-</div>
+## Quick Start & Verification
+
+Requires **Node.js 20+** and **pnpm 9+** (`corepack enable`).
+
+```bash
+git clone https://github.com/Nikoxkx/Ap-Study-Hub.git
+cd Ap-Study-Hub
+corepack pnpm install
+corepack pnpm dev          # http://localhost:3000
+```
+
+Run the full validation and production build pipeline before opening a PR:
+
+```bash
+corepack pnpm validate:content        # 51 lessons, 510 paragraphs, citations, glossary & practice schema
+corepack pnpm validate:study          # 645 study items, KaTeX math, scheduling, backups, plans & calendar
+corepack pnpm validate:presentation   # dark-mode neutral hex tokens, monochrome marks, CSP, 1200×630 OG PNGs
+corepack pnpm validate:videos         # 66 verified 11-char YouTube IDs, course/unit mapping & thumbnails
+corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.svg
+corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png
+corepack pnpm check                   # runs all 4 validators + tsc --noEmit + eslint + next build
+```
+
+---
+
+## Repository Map
+
+```text
+assets/
+  readme/
+    build-banners.mjs           deterministic SVG generator (embeds SIL-OFL Caveat WOFF2)
+    banner-light.svg            light-mode frosted glass + college-ruled paper README banner
+    banner-dark.svg             dark-mode frosted glass + college-ruled paper README banner
+  social/
+    og-image.svg                1200×630 Open Graph / social card source SVG
+public/
+  bg-music-class.jpg            wallpaper: /, /about, /colophon
+  bg-corridor.jpg               wallpaper: /study, /search, /integrations, /ai-disclosure
+  bg-class.jpg                  wallpaper: /course/[slug], /cards, /videos, /guides
+  bg-class2.jpg                 wallpaper: /notes, /practice, /studio, /essays, /exam, /resources, /print
+  fonts/                        self-hosted WOFF2 subsets (Newsreader, Public Sans, JetBrains Mono, Caveat)
+  og-image.png                  compiled 1200×630 Open Graph card
+  social-preview.png            compiled 1200×630 GitHub / social preview card
+  sw.js                         same-origin offline service worker
+scripts/
+  validate-lessons.ts           verifies lesson depth, citations, cards, and practice integrity
+  validate-study.ts             verifies study catalog joins, KaTeX math, scheduling, backups, and exports
+  validate-videos.ts            verifies curated YouTube IDs and unit coverage
+  validate-presentation.mjs     enforces neutral dark tokens, SubjectMark labels, video privacy, and PNG headers
+  build-social-image.mjs        renders assets/social/og-image.svg to public/*.png via @resvg/resvg-js
+src/
+  app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
+  components/
+    SiteHeader.tsx              single-row leveled header bar (Logo, TopClassBar, Jump to ⌘K, MobileNav)
+    SiteHeaderShell.tsx         directional scroll-fade shell preserving fixed modal viewports
+    TopClassBar.tsx             hover-reveal AP Courses popover + mobile touch bottom sheet
+    MobileNav.tsx               unified Menu popover (SiteSearch, Study Desk, links, ThemeSwitch)
+    StudySystemVisual.tsx       Caveat handwritten Method sheet locked to 32px blue notebook rules
+    SubjectMark.tsx             7 monochrome hand-drawn 32-unit SVG course symbols
+    UnitVideoPlayer.tsx         click-to-load youtube-nocookie player + static thumbnail previews
+    CardDeck.tsx                keyboard-first active-recall flashcard deck
+    PracticeSet.tsx             accessible multiple-choice runner with section-level remediation
+    TimedPaper.tsx              essay & mock-exam workspace with autosave + NotebookPaper scratchpad
+    study/AdvancedDesk.tsx      spaced-review queue, missed-question drill, and study analytics
+    ui/
+      PageBackground.tsx        route-mapped full-viewport classroom/corridor wallpaper layer
+      Logo.tsx                  universal 45°-rotated 7-square geometric mark
+      BanterLoader.tsx          9-box kinetic geometric symbol
+      LoadingSpinner.tsx        universal 3-circle + 3-shadow bouncing loader
+      ThemeSwitch.tsx           compact Sun / Moon / Clouds / Stars theme switch
+      NotebookPaper.tsx         reusable college-ruled loose-leaf scratch paper sheet
+      ScrollEffects.tsx         60fps exponential-lerp bidirectional viewport-edge fade controller
+  content/                      typed curriculum, 51 deep lessons, sources, channels, and unit videos
+  lib/                          catalog aggregator, weighted search index, local store, and JSON-LD schema
+```
+
+---
+
+## Honesty, Trademarks & License
+
+- **Independent student project** — AP® and Advanced Placement® are registered trademarks of the College Board, which was not involved in the production of, and does not endorse, this site. All 240 practice questions, 405 recall cards, and 51 lessons are original study material written from public curriculum frameworks and open textbooks; no secure exam items are reproduced.
+- **Fonts & artwork** — Self-hosted `Newsreader`, `Public Sans`, `JetBrains Mono`, and `Caveat` are licensed under the SIL Open Font License 1.1 (`public/fonts/`). Background classroom and corridor paintings are original environment illustrations by Arseniy Chebynkin.
+- **AI transparency** — Every place where AI tools assisted with scaffolding, drafting, or validation is documented openly in [`AI_DISCLOSURE.md`](./AI_DISCLOSURE.md) and [`/ai-disclosure`](https://v0-project-roan-six-20.vercel.app/ai-disclosure).
+- **Code license** — Released under the [MIT License](./LICENSE).

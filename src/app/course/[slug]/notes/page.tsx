@@ -5,6 +5,7 @@ import { getCourse } from "@/lib/catalog";
 import { Markdown } from "@/lib/markdown";
 import { UnitNav } from "@/components/UnitNav";
 import { LessonContent } from "@/components/LessonContent";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { absoluteUrl, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
@@ -22,11 +23,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}/notes` },
-    openGraph: { images: socialImages, title: `${title} · AP Study Hub`, description, url: absoluteUrl(`/course/${subject.slug}/notes`) }, twitter: { card: "summary_large_image", images: socialImages },
+    openGraph: {
+      images: socialImages,
+      title: `${title} · AP Study Hub`,
+      description,
+      url: absoluteUrl(`/course/${subject.slug}/notes`),
+    },
+    twitter: { card: "summary_large_image", images: socialImages },
   };
 }
 
-/** Server-rendered, long-form course lessons with a contents rail. */
 export default async function NotesPage({ params }: { params: Params }) {
   const { slug } = await params;
   const course = getCourse(slug);
@@ -36,55 +42,72 @@ export default async function NotesPage({ params }: { params: Params }) {
   if (units.length === 0) notFound();
 
   return (
-    <div className="wrap py-12 md:py-16">
-      <div className="grid gap-12 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-16">
-        <UnitNav
-          units={units.map((unit) => ({
-            id: `unit-${unit.unitNumber}`,
-            number: unit.unitNumber,
-            title: unit.title,
-          }))}
-        />
+    <div className="wrap py-8 md:py-12">
+      <div className="grid gap-8 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-10">
+        <div className="lg:sticky lg:top-32 lg:self-start">
+          <GlassCard padding="sm">
+            <UnitNav
+              units={units.map((unit) => ({
+                id: `unit-${unit.unitNumber}`,
+                number: unit.unitNumber,
+                title: unit.title,
+              }))}
+            />
+          </GlassCard>
+        </div>
 
-        <div className="min-w-0">
-          <header className="mb-12 max-w-[68ch]">
+        <div className="min-w-0 space-y-10">
+          <GlassCard as="header" padding="lg">
             <p className="label mb-2">
-              {counts.units} deep lessons · {counts.paragraphs} teaching paragraphs · about {counts.readingMinutes} minutes
+              {counts.units} deep lessons · {counts.paragraphs} teaching paragraphs · about{" "}
+              {counts.readingMinutes} minutes
             </p>
-            <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
+            <h2
+              className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)] font-semibold"
+              style={{ letterSpacing: "-0.025em" }}
+            >
               {subject.familiar}, one real lesson at a time
             </h2>
-            <p className="lede mt-4">
-              Every lesson has at least ten full teaching paragraphs, learning objectives, a glossary,
-              curriculum and scoring connections, and cited sources. Follow the official course sequence,
-              or use the contents to repair a specific gap.
+            <p className="lede mt-3">
+              Every lesson has at least ten full teaching paragraphs, learning objectives, a
+              glossary, curriculum and scoring connections, and cited sources.
             </p>
-          </header>
+          </GlassCard>
 
           {units.map((unit) => (
-            <article
+            <GlassCard
               key={unit.unitNumber}
+              as="article"
               id={`unit-${unit.unitNumber}`}
-              className="mb-20 scroll-mt-32"
+              padding="lg"
+              className="scroll-mt-32"
             >
-              <div className="mb-7 rule-top pt-6">
+              <div className="mb-7 border-b border-white/60 pb-6">
                 <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                   <p
                     className="text-[0.75rem] tabular-nums"
-                    style={{ fontFamily: "var(--font-mono)", color: "var(--subject-ink)" }}
+                    style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
                   >
                     Lesson {String(unit.unitNumber).padStart(2, "0")}
                   </p>
-                  {unit.lesson?.audience ? <span className="tag tag-subject">{unit.lesson.audience}</span> : null}
+                  {unit.lesson?.audience ? (
+                    <span className="tag">{unit.lesson.audience}</span>
+                  ) : null}
                 </div>
-                <h3 className="text-[clamp(1.45rem,1.15rem+1vw,1.9rem)]" style={{ letterSpacing: "-0.02em" }}>
+                <h3
+                  className="text-[clamp(1.45rem,1.15rem+1vw,1.9rem)] font-semibold"
+                  style={{ letterSpacing: "-0.02em" }}
+                >
                   {unit.title}
                 </h3>
                 <p className="mt-3 max-w-[68ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
                   {unit.description}
                 </p>
                 {unit.lesson ? (
-                  <p className="mt-3 text-[0.75rem]" style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>
+                  <p
+                    className="mt-3 text-[0.75rem]"
+                    style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
+                  >
                     Curriculum weight · {unit.lesson.examWeight}
                   </p>
                 ) : null}
@@ -94,7 +117,7 @@ export default async function NotesPage({ params }: { params: Params }) {
                     <h4 className="label mb-2 mt-5">Define these without looking</h4>
                     <ul className="flex flex-wrap gap-1.5">
                       {unit.keyTerms.map((term) => (
-                        <li key={term} className="tag tag-subject">
+                        <li key={term} className="tag">
                           {term}
                         </li>
                       ))}
@@ -116,27 +139,27 @@ export default async function NotesPage({ params }: { params: Params }) {
                   ↑ Back to contents
                 </a>
               </p>
-            </article>
+            </GlassCard>
           ))}
 
-          <aside className="sunk mt-12 p-5">
+          <GlassCard as="aside" padding="md">
             <h3 className="label mb-2">Next</h3>
             <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
               Reading is the easy part. Go and get some of it wrong on the{" "}
-              <Link href={`/course/${subject.slug}/practice`} className="link-underlined" style={{ color: "var(--ink)" }}>
+              <Link href={`/course/${subject.slug}/practice`} className="link-underlined">
                 lesson-linked practice questions
               </Link>
               {course.essays.length > 0 ? (
                 <>
                   , then read a{" "}
-                  <Link href={`/course/${subject.slug}/essays`} className="link-underlined" style={{ color: "var(--ink)" }}>
+                  <Link href={`/course/${subject.slug}/essays`} className="link-underlined">
                     marked essay
                   </Link>
                 </>
               ) : null}
               .
             </p>
-          </aside>
+          </GlassCard>
         </div>
       </div>
     </div>

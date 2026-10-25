@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Breadcrumbs, ExternalLink, SectionHead } from "@/components/Furniture";
+import { Breadcrumbs, ExternalLink } from "@/components/Furniture";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { DownloadButton } from "@/components/ui/DownloadButton";
 import { getVideoCoverage } from "@/lib/video-lessons";
 import { integrations } from "@/lib/integrations";
 import { absoluteUrl, socialImages } from "@/lib/site";
@@ -10,12 +12,14 @@ import roadmap from "@/data/roadmap.json";
 
 export const metadata: Metadata = {
   title: "Built in the open · press kit",
-  description: "The public video registry, press kit, implementation brief, QA roadmap, and optional sync plan you can inspect before trusting this site.",
+  description:
+    "The public video registry, press kit, implementation brief, QA roadmap, and optional sync plan you can inspect before trusting this site.",
   alternates: { canonical: "/integrations" },
   openGraph: {
     images: socialImages,
     title: "Built in the open · AP Study Hub",
-    description: "Public artifacts and connector-backed work behind the October 2026 update — check the work yourself.",
+    description:
+      "Public artifacts and connector-backed work behind the October 2026 update — check the work yourself.",
     url: absoluteUrl("/integrations"),
   },
   twitter: { card: "summary_large_image", images: socialImages },
@@ -66,72 +70,106 @@ const cards = [
 
 export default function IntegrationsPage() {
   const coverage = getVideoCoverage();
-  const trail = [{ name: "Home", href: "/" }, { name: "Integrations", href: "/integrations" }];
+  const trail = [
+    { name: "Home", href: "/" },
+    { name: "Integrations", href: "/integrations" },
+  ];
 
   return (
-    <div className="wrap py-12 md:py-16">
-      <Breadcrumbs trail={trail} />
-      <header className="max-w-[72ch] py-8">
+    <div className="wrap space-y-10 py-10 md:py-14">
+      <GlassCard as="header" padding="lg">
+        <Breadcrumbs trail={trail} />
         <p className="label mb-2">Built in the open · 24 October 2026</p>
-        <h1 className="text-[clamp(2rem,1.6rem+2vw,3.25rem)]" style={{ letterSpacing: "-0.03em" }}>
+        <h1
+          className="text-[clamp(2rem,1.6rem+2vw,3.1rem)] font-semibold"
+          style={{ letterSpacing: "-0.03em" }}
+        >
           Built in the open, so you can check the work.
         </h1>
-        <p className="lede mt-4">
-          Five connected apps helped us make public artifacts you can inspect: a video registry, a press kit, an editorial
-          brief, a tracked QA roadmap, and a deployable sync function. Your study data still stays local unless you choose otherwise.
+        <p className="lede mt-3">
+          Five connected apps helped us make public artifacts you can inspect: a video registry, a
+          press kit, an editorial brief, a tracked QA roadmap, and a deployable sync function.
         </p>
-      </header>
+      </GlassCard>
 
       <section aria-labelledby="preview-heading" className="integration-preview">
         <div>
           <p className="label">A social preview you can trust</p>
-          <h2 id="preview-heading">A preview card that just works.</h2>
+          <h2 id="preview-heading" className="font-semibold">
+            A preview card that just works.
+          </h2>
           <p>
-            The old <code>/opengraph-image</code> route returned HTTP 500 in production. Every page now points at a real
-            file with explicit Open Graph and Twitter metadata, dimensions, type, alt text, cache headers, and redirects
-            from the old URLs.
+            Every page points at a verified static 1200×630 PNG with explicit Open Graph and Twitter
+            metadata, dimensions, cache headers, and offline caching.
           </p>
-          <div className="integration-preview-actions">
-            <a className="btn btn-solid btn-sm" href={integrations.local.socialImage} download>Download PNG</a>
-            <ExternalLink href={integrations.drive.files.socialImage} className="btn btn-outline btn-sm">Drive copy</ExternalLink>
-            <Link href="/videos" className="btn btn-quiet btn-sm">Video library</Link>
+          <div className="integration-preview-actions items-start">
+            <DownloadButton href={integrations.local.socialImage} download>
+              Download PNG
+            </DownloadButton>
+            <ExternalLink href={integrations.drive.files.socialImage} className="btn btn-outline btn-sm">
+              Drive copy
+            </ExternalLink>
+            <Link href="/videos" className="btn btn-quiet btn-sm">
+              Video library
+            </Link>
           </div>
         </div>
         <figure>
-          <Image src={integrations.local.socialImage} width={600} height={315} alt="AP Study Hub static social preview card" sizes="(max-width: 800px) 100vw, 600px" />
+          <Image
+            src={integrations.local.socialImage}
+            width={600}
+            height={315}
+            alt="AP Study Hub static social preview card"
+            sizes="(max-width: 800px) 100vw, 600px"
+          />
           <figcaption>Static card · 1200 × 630 · PNG · also cached by the offline worker.</figcaption>
         </figure>
       </section>
 
-      <section className="mt-16" aria-labelledby="connectors-heading">
-        <SectionHead folio="01" title="The tools behind the scenes" id="connectors-heading">
-          Each connector produced a real artifact or capability; none of them placed a private credential in the browser bundle.
-        </SectionHead>
-        <div className="integration-grid">
+      <section aria-labelledby="connectors-heading">
+        <div className="mb-6">
+          <p className="label mb-1">01 · Public Artifacts</p>
+          <h2 id="connectors-heading" className="canvas-heading text-[1.75rem] font-semibold">
+            The tools behind the scenes
+          </h2>
+        </div>
+        <div className="integration-grid !mt-0">
           {cards.map((card) => (
-            <article key={card.key} className="integration-card">
-              <p className="connector-tag">{card.key}</p>
-              <h3>{card.title}</h3>
+            <article key={card.key} className="integration-card glass-box-interactive">
+              <p className="tag self-start">{card.key}</p>
+              <h3 className="mt-3 font-semibold">{card.title}</h3>
               <p>{card.body}</p>
               <div className="integration-card-actions">
-                <ExternalLink href={card.href} className="link-underlined">{card.action} →</ExternalLink>
-                <a href={card.local} className="link-underlined">Local export</a>
+                <ExternalLink href={card.href} className="link-underlined">
+                  {card.action} →
+                </ExternalLink>
+                <a href={card.local} className="link-underlined">
+                  Local export
+                </a>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="mt-16" aria-labelledby="registry-heading" id="video-registry">
-        <SectionHead folio="02" title="Every unit, accounted for" id="registry-heading">
-          {coverage.videos} verified videos cover all {coverage.units} units. The Sheet is the canonical registry; typed
-          data is committed to the site so a YouTube or Sheets outage cannot break a lesson page.
-        </SectionHead>
-        <div className="table-scroll">
+      <GlassCard as="section" padding="lg" aria-labelledby="registry-heading" id="video-registry">
+        <p className="label mb-1">02 · Video Coverage</p>
+        <h2 id="registry-heading" className="text-[1.6rem] font-semibold">
+          Every unit, accounted for
+        </h2>
+        <p className="mt-2 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+          {coverage.videos} verified videos cover all {coverage.units} units.
+        </p>
+        <div className="table-scroll mt-5">
           <table className="data-table">
             <caption className="sr-only">Video coverage by AP course</caption>
             <thead>
-              <tr><th scope="col">Course</th><th scope="col">Units</th><th scope="col">Videos</th><th scope="col">Player route</th></tr>
+              <tr>
+                <th scope="col">Course</th>
+                <th scope="col">Units</th>
+                <th scope="col">Videos</th>
+                <th scope="col">Player route</th>
+              </tr>
             </thead>
             <tbody>
               {subjects.map((subject) => {
@@ -141,81 +179,89 @@ export default function IntegrationsPage() {
                     <th scope="row">{subject.familiar}</th>
                     <td>{row?.units ?? 0}</td>
                     <td>{row?.videos ?? 0}</td>
-                    <td><Link href={`/course/${subject.slug}/videos`} className="link-underlined">Open course videos</Link></td>
+                    <td>
+                      <Link href={`/course/${subject.slug}/videos`} className="link-underlined">
+                        Open course videos
+                      </Link>
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
         </div>
-        <div className="integration-downloads">
-          <a className="btn btn-outline btn-sm" href={integrations.local.registryCsv} download>Download CSV registry</a>
-          <a className="btn btn-outline btn-sm" href={integrations.local.registryJson} download>Download JSON registry</a>
-          <ExternalLink href={integrations.sheet.url} className="btn btn-quiet btn-sm">Open Google Sheet</ExternalLink>
+        <div className="integration-downloads items-start">
+          <DownloadButton href={integrations.local.registryCsv} download>
+            CSV registry
+          </DownloadButton>
+          <DownloadButton href={integrations.local.registryJson} download>
+            JSON registry
+          </DownloadButton>
+          <ExternalLink href={integrations.sheet.url} className="btn btn-quiet btn-sm">
+            Open Google Sheet
+          </ExternalLink>
         </div>
-      </section>
+      </GlassCard>
 
-      <section className="mt-16" aria-labelledby="roadmap-heading">
-        <SectionHead folio="03" title="What shipped, what is still open" id="roadmap-heading">
-          Generated from the Linear project “{roadmap.project}”. The Advanced Study Desk renders the same tracked work.
-        </SectionHead>
+      <GlassCard as="section" padding="lg" aria-labelledby="roadmap-heading">
+        <p className="label mb-1">03 · QA Tracker</p>
+        <h2 id="roadmap-heading" className="text-[1.6rem] font-semibold">
+          What shipped, what is still open
+        </h2>
         <ol className="roadmap-list">
           {roadmap.issues.map((issue) => (
             <li key={issue.id} data-status={issue.status}>
               <div>
-                <span className="label">{issue.id} · {issue.status}</span>
-                <h3>{issue.title}</h3>
-                <p>Due {issue.dueDate} · {issue.priority} priority · {issue.label}</p>
+                <span className="label">
+                  {issue.id} · {issue.status}
+                </span>
+                <h3 className="font-semibold">{issue.title}</h3>
+                <p>
+                  Due {issue.dueDate} · {issue.priority} priority · {issue.label}
+                </p>
               </div>
-              <ExternalLink href={issue.url} className="link-underlined">Open issue →</ExternalLink>
+              <ExternalLink href={issue.url} className="link-underlined">
+                Open issue →
+              </ExternalLink>
             </li>
           ))}
         </ol>
-      </section>
+      </GlassCard>
 
-      <section className="mt-16" aria-labelledby="sync-heading">
-        <SectionHead folio="04" title="Sync stays off until you choose it" id="sync-heading">
-          Ready to deploy, intentionally off by default.
-        </SectionHead>
+      <GlassCard as="section" padding="lg" aria-labelledby="sync-heading">
+        <p className="label mb-1">04 · Optional Sync</p>
+        <h2 id="sync-heading" className="mb-4 text-[1.6rem] font-semibold">
+          Sync stays off until you choose it
+        </h2>
         <div className="integration-sync">
           <div>
             <p className="label">Project {integrations.supabase.projectRef}</p>
-            <h3>Local-first remains the default.</h3>
+            <h3 className="font-semibold">Local-first remains the default.</h3>
             <p>
-              The existing Supabase project is currently <strong>{integrations.supabase.status}</strong>, so the live
-              endpoint is not deployed. The sync pepper and allowed-origin secrets are already stored in Supabase; the SQL
-              migration and <code>study-desk-sync</code> edge function are committed under <code>supabase/</code>.
-            </p>
-            <p>
-              To activate: restore the project, run the migration, deploy the function, and set{' '}
-              <code>NEXT_PUBLIC_STUDY_SYNC_URL</code> in Vercel. The website never receives the service-role key or pepper.
+              The existing Supabase project is currently{" "}
+              <strong>{integrations.supabase.status}</strong>. The SQL migration and{" "}
+              <code>study-desk-sync</code> edge function are committed under <code>supabase/</code>.
             </p>
             <div className="integration-preview-actions">
-              <Link href="/study?tab=advanced" className="btn btn-solid btn-sm">Open Advanced Desk</Link>
-              <ExternalLink href={integrations.linear.syncIssue} className="btn btn-outline btn-sm">Track activation</ExternalLink>
+              <Link href="/study?tab=advanced" className="btn btn-solid btn-sm">
+                Open Advanced Desk
+              </Link>
+              <ExternalLink href={integrations.linear.syncIssue} className="btn btn-outline btn-sm">
+                Track activation
+              </ExternalLink>
             </div>
           </div>
-          <pre className="code-block" aria-label="Supabase deployment commands"><code>{`# after restoring the project
+          <pre className="code-block" aria-label="Supabase deployment commands">
+            <code>{`# after restoring the project
 supabase db push
 supabase functions deploy study-desk-sync --no-verify-jwt
 
 # Vercel environment variable
 NEXT_PUBLIC_STUDY_SYNC_URL=
-  https://${integrations.supabase.projectRef}.functions.supabase.co/${integrations.supabase.functionSlug}`}</code></pre>
+  https://${integrations.supabase.projectRef}.functions.supabase.co/${integrations.supabase.functionSlug}`}</code>
+          </pre>
         </div>
-      </section>
-
-      <aside className="sunk mt-16 max-w-[68ch] p-5">
-        <h2 className="label mb-2">Found a broken video? Tell me.</h2>
-        <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-          Every video has a scoped replacement search and a report link. For a site-wide correction, open a GitHub issue
-          or use the copyable report in the Advanced Study Desk. The public editorial brief records exactly how this
-          update was put together.
-        </p>
-        <p className="mt-3 text-[0.8125rem]">
-          <ExternalLink href="https://github.com/Nikoxkx/Ap-Study-Hub/issues" className="link-underlined">Open a GitHub issue →</ExternalLink>
-        </p>
-      </aside>
+      </GlassCard>
     </div>
   );
 }

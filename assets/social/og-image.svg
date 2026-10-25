@@ -1,80 +1,93 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">AP Study Hub — learn seven AP subjects deeply and make the work count</title>
-  <desc id="desc">A paper-and-ink social card for seven AP courses with 51 deep lessons, 405 recall cards, 240 original questions, 66 real unit-video thumbnails, and credit where colleges accept it.</desc>
+  <title id="title">AP Study Hub — learn seven AP subjects deeply on a quieter kind of study hub</title>
+  <desc id="desc">Frosted glass card and college-ruled notebook paper for seven AP courses with 51 deep lessons, 405 recall cards, 240 original questions, and 66 real unit-video thumbnails.</desc>
   <defs>
-    <pattern id="paper-grain" width="120" height="120" patternUnits="userSpaceOnUse">
-      <rect width="120" height="120" fill="#f6f3ec"/>
-      <circle cx="12" cy="18" r="0.8" fill="#1c1b17" opacity="0.045"/>
-      <circle cx="74" cy="41" r="0.6" fill="#1c1b17" opacity="0.04"/>
-      <circle cx="33" cy="92" r="0.7" fill="#1c1b17" opacity="0.035"/>
-      <circle cx="101" cy="78" r="0.5" fill="#1c1b17" opacity="0.04"/>
-    </pattern>
-    <pattern id="rules" width="8" height="32" patternUnits="userSpaceOnUse">
-      <path d="M0 31.5H8" stroke="#ddd6c6" stroke-width="1" opacity="0.42"/>
-    </pattern>
+    <linearGradient id="canvas" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dde3f2"/>
+      <stop offset="100%" stop-color="#ece7df"/>
+    </linearGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="url(#paper-grain)"/>
-  <rect width="1200" height="630" fill="url(#rules)" opacity="0.25"/>
-  <rect x="0.5" y="0.5" width="1199" height="629" fill="none" stroke="#c3baa5" stroke-width="1"/>
-  <rect width="12" height="630" fill="#b0392a"/>
+  <rect width="1200" height="630" fill="url(#canvas)"/>
 
-  <!-- Site mark -->
-  <g transform="translate(58 46)" fill="none" stroke="#1c1b17" stroke-width="2" stroke-linejoin="miter">
-    <path d="M8 36V12l8-6h19v30z" fill="#fffdf7"/>
-    <path d="M16 6v6H8z" fill="#ece7db"/>
-    <path d="M15 20h13M15 27h13" stroke="#b0392a" stroke-width="1.7"/>
+  <!-- Left Frosted Glass Showcase Card -->
+  <rect x="44" y="48" width="634" height="534" rx="17" fill="#f3f4f7" fill-opacity="0.78" stroke="#ffffff" stroke-width="2"/>
+
+  <!-- Universal 45-degree rotated 7-square logo -->
+  <g transform="translate(88 102) scale(0.42) rotate(45)">
+    <g transform="translate(-48 -48)" fill="#121212">
+      <rect x="2" y="2" width="28" height="28"/>
+      <rect x="34" y="2" width="28" height="28"/>
+      <rect x="66" y="2" width="28" height="28"/>
+      <rect x="66" y="34" width="28" height="28"/>
+      <rect x="34" y="34" width="28" height="28"/>
+      <rect x="34" y="66" width="28" height="28"/>
+      <rect x="2" y="66" width="28" height="28"/>
+    </g>
   </g>
-  <text x="116" y="81" font-family="DejaVu Serif, Georgia, serif" font-size="34" font-weight="600" fill="#1c1b17">AP Study Hub</text>
-  <text x="58" y="132" font-family="DejaVu Sans Mono, monospace" font-size="15" letter-spacing="2.2" fill="#7e786c">FREE  ·  SEVEN AP COURSES  ·  BUILT BY A STUDENT</text>
+  <text x="128" y="113" font-family="DejaVu Serif, Georgia, serif" font-size="34" font-weight="600" fill="#111111">AP Study Hub</text>
+  <text x="74" y="164" font-family="DejaVu Sans Mono, monospace" font-size="13.5" letter-spacing="1.6" fill="#4a4a4a">FREE  ·  SEVEN AP COURSES  ·  BUILT BY A STUDENT</text>
 
-  <text x="58" y="222" font-family="DejaVu Serif, Georgia, serif" font-size="62" font-weight="600" letter-spacing="-2" fill="#1c1b17">Learn deeply.</text>
-  <text x="58" y="292" font-family="DejaVu Serif, Georgia, serif" font-size="62" font-weight="600" letter-spacing="-2" fill="#1c1b17">Remember longer.</text>
-  <text x="58" y="362" font-family="DejaVu Serif, Georgia, serif" font-size="62" font-weight="600" letter-spacing="-2" fill="#1c1b17">Make it count.</text>
+  <text x="74" y="246" font-family="DejaVu Serif, Georgia, serif" font-size="54" font-weight="600" letter-spacing="-1.5" fill="#0f0f0f">Learn deeply.</text>
+  <text x="74" y="312" font-family="DejaVu Serif, Georgia, serif" font-size="54" font-weight="600" letter-spacing="-1.5" fill="#0f0f0f">Remember longer.</text>
+  <text x="74" y="378" font-family="DejaVu Serif, Georgia, serif" font-size="54" font-weight="600" letter-spacing="-1.5" fill="#0f0f0f">Zero noise.</text>
 
-  <text x="58" y="410" font-family="DejaVu Sans, Arial, sans-serif" font-size="22" fill="#57534a">Real lessons, visible sources, original practice, and</text>
-  <text x="58" y="440" font-family="DejaVu Sans, Arial, sans-serif" font-size="22" fill="#57534a">real YouTube thumbnails inside every unit.</text>
+  <text x="74" y="424" font-family="DejaVu Sans, Arial, sans-serif" font-size="19.5" fill="#2e2e2e">Transparent glass study hub with cited lessons, recall cards,</text>
+  <text x="74" y="452" font-family="DejaVu Sans, Arial, sans-serif" font-size="19.5" fill="#2e2e2e">original practice, and real YouTube thumbnails per unit.</text>
 
-  <path d="M58 480H712" stroke="#1c1b17" stroke-width="2"/>
   <g font-family="DejaVu Serif, Georgia, serif">
-    <text x="58" y="527" font-size="38" font-weight="600" fill="#b0392a">51</text>
-    <text x="58" y="552" font-size="15" fill="#57534a">deep lessons</text>
-    <text x="178" y="527" font-size="38" font-weight="600" fill="#b0392a">405</text>
-    <text x="178" y="552" font-size="15" fill="#57534a">cards</text>
-    <text x="298" y="527" font-size="38" font-weight="600" fill="#b0392a">240</text>
-    <text x="298" y="552" font-size="15" fill="#57534a">questions</text>
-    <text x="438" y="527" font-size="38" font-weight="600" fill="#b0392a">66</text>
-    <text x="438" y="552" font-size="15" fill="#57534a">unit videos</text>
+    <text x="74" y="514" font-size="34" font-weight="600" fill="#111111">51</text>
+    <text x="74" y="538" font-size="14" fill="#4a4a4a">deep lessons</text>
+    <text x="194" y="514" font-size="34" font-weight="600" fill="#111111">405</text>
+    <text x="194" y="538" font-size="14" fill="#4a4a4a">cards</text>
+    <text x="308" y="514" font-size="34" font-weight="600" fill="#111111">240</text>
+    <text x="308" y="538" font-size="14" fill="#4a4a4a">questions</text>
+    <text x="440" y="514" font-size="34" font-weight="600" fill="#111111">66</text>
+    <text x="440" y="538" font-size="14" fill="#4a4a4a">unit videos</text>
   </g>
-  <text x="58" y="596" font-family="DejaVu Sans Mono, monospace" font-size="14" letter-spacing="1.5" fill="#7e786c">FREE  ·  NO ACCOUNT  ·  CREDIT WHERE ACCEPTED  ·  NO PAYWALL</text>
 
-  <!-- Study sheet -->
-  <g transform="translate(756 62)">
-    <rect x="26" y="34" width="360" height="470" fill="#ece7db" stroke="#c3baa5" stroke-width="2" transform="rotate(3 206 269)"/>
-    <rect x="12" y="16" width="360" height="470" fill="#fffdf7" stroke="#1c1b17" stroke-width="2"/>
-    <path d="M326 16h46v46" fill="#ece7db" stroke="#1c1b17" stroke-width="2"/>
-    <path d="M326 16v46h46" fill="none" stroke="#1c1b17" stroke-width="2"/>
-    <rect x="38" y="4" width="30" height="12" fill="#9c3b2e"/>
-    <rect x="76" y="4" width="30" height="12" fill="#31456b"/>
-    <rect x="114" y="4" width="30" height="12" fill="#6b3f6e"/>
-    <rect x="152" y="4" width="30" height="12" fill="#2f5f56"/>
-    <rect x="190" y="4" width="30" height="12" fill="#4f6b32"/>
-    <rect x="228" y="4" width="30" height="12" fill="#9a6520"/>
-    <rect x="266" y="4" width="30" height="12" fill="#57534a"/>
-    <text x="38" y="70" font-family="DejaVu Sans Mono, monospace" font-size="12" letter-spacing="1.4" fill="#b0392a">LEARN  →  RECALL  →  APPLY</text>
-    <text x="38" y="112" font-family="DejaVu Serif, Georgia, serif" font-size="27" fill="#1c1b17">One loop that makes it stick</text>
-    <path d="M38 140H330" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
-    <path d="M38 164H300" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
-    <path d="M38 188H330" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
-    <path d="M38 212H285" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
-    <path d="M38 236H330" stroke="#7e786c" stroke-width="3" opacity="0.45"/>
-    <path d="M38 278H330" stroke="#c3baa5" stroke-width="2"/>
-    <rect x="38" y="300" width="128" height="42" fill="#e0ebe8" stroke="#2f5f56" stroke-width="1.5"/>
-    <text x="52" y="326" font-family="DejaVu Sans Mono, monospace" font-size="11" fill="#2f5f56">RECALL CARD</text>
-    <rect x="184" y="300" width="146" height="42" fill="#f3e6e2" stroke="#b0392a" stroke-width="1.5"/>
-    <text x="198" y="326" font-family="DejaVu Sans Mono, monospace" font-size="11" fill="#b0392a">REAL THUMBNAIL →</text>
-    <path d="M198 362H38v38h160" fill="none" stroke="#b0392a" stroke-width="1.6" stroke-dasharray="5 5"/>
-    <text x="118" y="420" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="11" letter-spacing="0.6" fill="#7e786c">FEEDBACK SENDS YOU BACK TO THE LESSON</text>
-    <text x="38" y="456" font-family="DejaVu Sans Mono, monospace" font-size="12" letter-spacing="1" fill="#57534a">YOUR WORK STAYS YOURS</text>
+  <!-- Right Realistic College-Ruled Loose-Leaf Notebook Sheet (zero extra lines or dots) -->
+  <g transform="translate(706 58)">
+    <rect x="5" y="7" width="450" height="514" rx="4" fill="#000000" fill-opacity="0.14"/>
+    <rect width="450" height="514" rx="4" fill="#fbf9f3" stroke="#c8c1b2" stroke-width="1.5"/>
+
+    <!-- Single pink vertical margin rule -->
+    <line x1="50" y1="0" x2="50" y2="514" stroke="#e2727c" stroke-opacity="0.58" stroke-width="1.5"/>
+
+    <!-- Horizontal light-blue college-ruled lines every 36px -->
+    <g stroke="#7ea8d6" stroke-opacity="0.55" stroke-width="1">
+      <line x1="0" y1="62" x2="450" y2="62"/>
+      <line x1="0" y1="98" x2="450" y2="98"/>
+      <line x1="0" y1="134" x2="450" y2="134"/>
+      <line x1="0" y1="170" x2="450" y2="170"/>
+      <line x1="0" y1="206" x2="450" y2="206"/>
+      <line x1="0" y1="242" x2="450" y2="242"/>
+      <line x1="0" y1="278" x2="450" y2="278"/>
+      <line x1="0" y1="314" x2="450" y2="314"/>
+      <line x1="0" y1="350" x2="450" y2="350"/>
+      <line x1="0" y1="386" x2="450" y2="386"/>
+      <line x1="0" y1="422" x2="450" y2="422"/>
+      <line x1="0" y1="458" x2="450" y2="458"/>
+      <line x1="0" y1="494" x2="450" y2="494"/>
+    </g>
+
+    <!-- Authentic Caveat handwriting aligned directly on the blue ruled lines -->
+    <g font-family="Caveat, cursive" fill="#1d283a">
+      <text x="62" y="60" font-size="27" font-weight="700" fill="#141d2b">The AP Study Hub Method (2026–27)</text>
+
+      <text x="22" y="132" font-size="25" font-weight="700" fill="#26354d">1.</text>
+      <text x="62" y="132" font-size="25" font-weight="700">Read deeply — A complete lesson</text>
+      <text x="62" y="168" font-size="23.5" font-weight="500" fill="#2e3f59">10+ paragraphs, cited at section level</text>
+
+      <text x="22" y="240" font-size="25" font-weight="700" fill="#26354d">2.</text>
+      <text x="62" y="240" font-size="25" font-weight="700">Recall — Produce the idea cold</text>
+      <text x="62" y="276" font-size="23.5" font-weight="500" fill="#2e3f59">Term on front, your explanation on back</text>
+
+      <text x="22" y="348" font-size="25" font-weight="700" fill="#26354d">3.</text>
+      <text x="62" y="348" font-size="25" font-weight="700">Respond — Original practice</text>
+      <text x="62" y="384" font-size="23.5" font-weight="500" fill="#2e3f59">Wrong answers route back to the lesson</text>
+
+      <text x="62" y="456" font-size="22" font-weight="700" fill="#182232">Mistakes route straight back to understanding.</text>
+    </g>
   </g>
 </svg>

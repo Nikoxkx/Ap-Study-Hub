@@ -1,406 +1,169 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
-import { subjects } from "@/lib/subjects";
-import { indexSize } from "@/lib/search";
-import { site, absoluteUrl, socialImages } from "@/lib/site";
+import { Breadcrumbs, SectionHead } from "@/components/Furniture";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
+import { getTotals } from "@/lib/catalog";
+import { unitVideos } from "@/lib/video-lessons";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Design notes · why the site looks this way",
+  title: "Colophon · how the hub is built and checked",
   description:
-    "The type, palette, build, and design decisions behind AP Study Hub, written down so you can argue with them.",
+    "How AP Study Hub is built: Next.js 16 static pages, self-hosted variable typefaces including Caveat handwriting, hue-free frosted glass surfaces, college-ruled notebook sheets, security headers, and zero tracking.",
   alternates: { canonical: "/colophon" },
-  openGraph: { images: socialImages,
-    title: "Why this site looks this way · AP Study Hub",
-    description: "Typefaces, neutral night mode, subject symbols, and the reasoning behind each choice.",
+  openGraph: {
+    images: socialImages,
+    title: "Colophon · AP Study Hub",
+    description:
+      "Stack, typography, glass & paper surface architecture, local-first storage, and security headers.",
     url: absoluteUrl("/colophon"),
   },
   twitter: { card: "summary_large_image", images: socialImages },
 };
 
-/**
- * Colophon.
- *
- * A print convention: the page at the back that records how the book was set.
- * It is here because a design decision you cannot explain is usually a default
- * you did not notice making, and writing them down is the cheapest way to keep
- * yourself honest.
- */
-
-const typefaces = [
-  {
-    name: "Newsreader",
-    designer: "Production Type, for Google Fonts",
-    role: "Headings, long-form notes, essay text",
-    why: "A text serif drawn for screens, with low stroke contrast and a large x-height, so it holds together at 17px where a display serif would fall apart. Notes are read for twenty minutes at a stretch; that ruled out setting body copy in a sans.",
-    licence: "SIL Open Font License 1.1",
-  },
-  {
-    name: "Public Sans",
-    designer: "US Web Design System",
-    role: "Interface: navigation, buttons, controls, tables",
-    why: "Drawn for the US federal government's design system. On a site about American history and government that is a small joke that also happens to be the right typeface: it is neutral without being characterless, and it was engineered for exactly this — dense, functional, legible interface text.",
-    licence: "SIL Open Font License 1.1",
-  },
-  {
-    name: "JetBrains Mono",
-    designer: "JetBrains",
-    role: "Labels, timers, scores, section numbers, dates",
-    why: "Anywhere digits need to line up in a column. Tabular figures by default, and a tall x-height that keeps small uppercase labels readable at 11px.",
-    licence: "SIL Open Font License 1.1",
-  },
-];
-
-const decisions = [
-  {
-    heading: "Paper, not glare",
-    body: "The background is #f6f3ec, sampled off uncoated book stock, and the text is #1c1b17 rather than pure black. Pure black on pure white is 21:1 contrast, which sounds ideal and is uncomfortable to read for twenty minutes on a backlit screen. The warm pair still clears 16:1.",
-  },
-  {
-    heading: "One accent, like a teacher’s pen",
-    body: "Section numbers, the active state, and anything that needs to be noticed use #b0392a. It is the colour a teacher marks in, which is a reason, and it is used sparingly enough to still mean something. There is no second accent.",
-  },
-  {
-    heading: "Course colours from old book cloth",
-    body: "Each course has one colour drawn from library binding swatches — brick, ink navy, aubergine, bottle, moss, ochre, graphite. Muted on purpose: seven saturated colours competing on one page is a toy, not an index. Each has a hand-checked light variant for the dark theme.",
-  },
-  {
-    heading: "Lines instead of boxes",
-    body: "Structure comes from hairline rules and whitespace rather than from putting everything in a rounded box with a shadow. Radii top out at 4px. Where a surface does need to lift off the page, it gets a 3px coloured top edge, like a tabbed file card.",
-  },
-  {
-    heading: "One small movement, used everywhere",
-    body: "Interactive things either draw a line in from one edge or move 1–3px. Two easing curves, both custom, and a documented reason for each. Everything is disabled under prefers-reduced-motion.",
-  },
-  {
-    heading: "Real symbols, drawn once",
-    body: "Each course uses a recognisable symbol for what you actually study: a U.S. flag, quotation marks, speech bubbles, scales of justice, DNA, an integral, and a magnifier. They are hand-drawn SVG on a 32-unit grid, with a short topic label and an accessible name. No icon package and no platform-dependent emoji.",
-  },
-];
-
-const stack = [
-  ["Framework", "Next.js 16, App Router, React 19"],
-  ["Rendering", "Static generation for every content page; one dynamic route for the search API"],
-  ["Styling", "Tailwind CSS 4 for layout, hand-written CSS custom properties for the design tokens"],
-  ["Type", "Self-hosted WOFF2 variable fonts, latin subset, 192 KB total"],
-  ["Search", "Hand-rolled scored index over the content, no search dependency"],
-  ["Content", "TypeScript modules — no CMS, no content database, no runtime content fetching"],
-  ["Hosting", "Vercel, static output"],
-  ["Analytics", "None"],
-  ["AI disclosure", "See /ai-disclosure — v0.dev, Copilot, ChatGPT, Claude, and Arena.ai workflows; sources and validation"],
-];
-
-const aiTools = [
-  {
-    tool: "v0.dev by Vercel",
-    role: "Scaffold",
-    detail:
-      "Generated first versions of App Router structure, course shells, tab strip, and component shells. Explains the original deployment URL v0-project-roan-six-20.vercel.app. Rewritten for a11y, static output, and no UI library.",
-  },
-  {
-    tool: "GitHub Copilot",
-    role: "Code completion",
-    detail:
-      "Inline completion for CardDeck (Fisher–Yates, keyboard), PracticeSet (aria-live), TimedPaper (autosave), SiteSearch, search scoring, catalog types. All checked manually.",
-  },
-  {
-    tool: "Arena.ai Agent Mode",
-    role: "Deep-library expansion",
-    detail:
-      "Researched and drafted the 2026–27 lesson expansion, integrated it into catalog/search/cards/practice, added structured rendering and validation, and produced deterministic visual assets. Official claims carry dated source IDs; automated checks and public corrections remain visible.",
-  },
-  {
-    tool: "ChatGPT / Claude",
-    role: "Drafting & docs",
-    detail:
-      "Drafted README sections, colophon copy, privacy/accessibility statements, study guides, flashcard wording, question distractors, essay outlines, banner script. Human rewrote in personal voice and verified every claim.",
-  },
+const spec: [string, string][] = [
+  ["Framework", "Next.js 16 (App Router) on React 19, TypeScript 5 (`strict: true`)"],
+  ["Rendering", "Static generation (`generateStaticParams`) for all 7 courses and sub-routes; one tiny edge-free search handler at `/api/search`"],
+  ["Styling", "Tailwind CSS 4 + hand-authored design tokens in `src/app/globals.css` — hue-free `.glass-box` surfaces, neutral `.dark` charcoal palette, and `.realistic-paper` loose-leaf sheets"],
+  ["Typefaces", "Newsreader (editorial display & lesson prose), Public Sans (UI & controls), JetBrains Mono (citations, timers, shortcuts), and Caveat (natural handwriting on 32px college-ruled paper) — all self-hosted WOFF2 under SIL OFL 1.1"],
+  ["Iconography", "Universal 45°-rotated 7-square geometric `Logo`, 9-box `BanterLoader`, 3-circle bouncing `LoadingSpinner`, and 7 human-crafted monochrome 32-unit SVG `SubjectMark` course glyphs"],
+  ["Motion", "60fps time-normalized exponential lerp viewport-edge scroll fade (`ScrollEffects`) + directional header hysteresis (`SiteHeaderShell`), automatically disabled under `prefers-reduced-motion: reduce`"],
+  ["Persistence", "Browser `localStorage` only (`aps:*` keys) via `useSyncExternalStore` — zero accounts, zero cookies, zero third-party analytics"],
+  ["Verification", "`pnpm check` runs `validate:content`, `validate:study`, `validate:presentation`, `validate:videos`, `tsc --noEmit`, `eslint .`, and `next build`"],
 ];
 
 export default function ColophonPage() {
-  const trail = [
-    { name: "Home", href: "/" },
-    { name: "Colophon", href: "/colophon" },
-  ];
+  const totals = getTotals();
 
   return (
-    <>
-      <JsonLd schema={breadcrumbSchema(trail)} />
+    <div className="container-page py-10 sm:py-14">
+      <JsonLd
+        schema={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "Colophon", href: "/colophon" },
+        ])}
+      />
+      <Breadcrumbs
+        trail={[
+          { name: "Home", href: "/" },
+          { name: "Colophon", href: "/colophon" },
+        ]}
+      />
 
-      <div className="wrap py-12 md:py-16">
-        <div className="max-w-[68ch]">
-          <Breadcrumbs trail={trail} />
-          <p className="label mb-3">Design notes</p>
-          <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
-            Why this site looks the way it does.
-          </h1>
-          <p className="lede mt-5">
-            Books used to print this at the back: the type, the paper, the choices. It is a good
-            habit — a design decision you cannot explain is usually a default you did not notice making.
-          </p>
-        </div>
-
-        <section className="mt-16" aria-labelledby="type-heading">
-          <SectionHead folio="01" title="Typefaces chosen for long reading" id="type-heading">
-            Three faces, one job each. All three are self-hosted from{" "}
-            <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>/fonts</code> as
-            latin-subset variable WOFF2, so the site makes no request to Google or anyone else.
-          </SectionHead>
-
-          <div className="space-y-10">
-            {typefaces.map((face) => (
-              <article key={face.name} className="rule-top pt-5">
-                <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-                  <div>
-                    <p
-                      className="mb-2 text-[2.25rem] leading-none"
-                      style={{
-                        fontFamily:
-                          face.name === "Newsreader"
-                            ? "var(--font-display)"
-                            : face.name === "Public Sans"
-                              ? "var(--font-ui)"
-                              : "var(--font-mono)",
-                        fontWeight: 500,
-                      }}
-                    >
-                      Aa Gg 0123
-                    </p>
-                    <h3 className="text-[1.125rem] font-semibold">{face.name}</h3>
-                    <p className="mt-1 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
-                      {face.designer}
-                    </p>
-                    <p
-                      className="mt-1 text-[0.6875rem]"
-                      style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
-                    >
-                      {face.licence}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="label mb-1.5">{face.role}</p>
-                    <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-                      {face.why}
-                    </p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-16" aria-labelledby="palette-heading">
-          <SectionHead folio="02" title="A paper-and-ink palette you can actually read" id="palette-heading">
-            Light mode uses seven subject colours over warm paper. Night mode is a strict,
-            equal-channel grayscale — no blue or green cast — with colour left only for small functional
-            accents. Every text pairing was checked against WCAG AA at its actual size.
-          </SectionHead>
-
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
-            {subjects.map((subject) => (
-              <li key={subject.slug}>
-                <div
-                  className="mb-2 h-16 w-full"
-                  style={{ background: subject.ink, borderRadius: "var(--radius-edge)" }}
-                  aria-hidden="true"
-                />
-                <p className="text-[0.8125rem] font-semibold">{subject.familiar}</p>
-                <p
-                  className="text-[0.6875rem] uppercase"
-                  style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
-                >
-                  {subject.ink}
-                </p>
-              </li>
-            ))}
-          </ul>
-
-          <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
-              ["Paper", "#f6f3ec", "background"],
-              ["Ink", "#1c1b17", "body text"],
-              ["Mark", "#b0392a", "the one accent"],
-              ["Rule", "#ddd6c6", "hairlines"],
-            ].map(([name, hex, role]) => (
-              <li key={name}>
-                <div
-                  className="mb-2 h-16 w-full"
-                  style={{ background: hex, border: "1px solid var(--rule)", borderRadius: "var(--radius-edge)" }}
-                  aria-hidden="true"
-                />
-                <p className="text-[0.8125rem] font-semibold">{name}</p>
-                <p
-                  className="text-[0.6875rem] uppercase"
-                  style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
-                >
-                  {hex} · {role}
-                </p>
-              </li>
-            ))}
-          </ul>
-
-          <h3 className="label mb-3 mt-8">Night mode · neutral only</h3>
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
-              ["Paper", "#101010", "background"],
-              ["Raised", "#171717", "cards"],
-              ["Ink", "#ededed", "body text"],
-              ["Rule", "#383838", "hairlines"],
-            ].map(([name, hex, role]) => (
-              <li key={name}>
-                <div
-                  className="mb-2 h-16 w-full"
-                  style={{ background: hex, border: "1px solid var(--rule)", borderRadius: "var(--radius-edge)" }}
-                  aria-hidden="true"
-                />
-                <p className="text-[0.8125rem] font-semibold">{name}</p>
-                <p
-                  className="text-[0.6875rem] uppercase"
-                  style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
-                >
-                  {hex} · {role}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="mt-16" aria-labelledby="decisions-heading">
-          <SectionHead folio="03" title="Why the site looks and works this way" id="decisions-heading" />
-          <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
-            {decisions.map((item) => (
-              <article key={item.heading} className="rule-top pt-4">
-                <h3 className="text-[1.0625rem] font-semibold">{item.heading}</h3>
-                <p className="mt-2 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-                  {item.body}
-                </p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-16" aria-labelledby="stack-heading">
-          <SectionHead folio="04" title="What it is built with" id="stack-heading" />
-          <div className="table-scroll">
-            <table className="data-table">
-              <caption className="sr-only">The technical stack behind AP Study Hub</caption>
-              <tbody>
-                {stack.map(([label, value]) => (
-                  <tr key={label}>
-                    <th scope="row" style={{ width: "10rem" }}>
-                      {label}
-                    </th>
-                    <td style={{ color: "var(--ink-soft)" }}>{value}</td>
-                  </tr>
-                ))}
-                <tr>
-                  <th scope="row">Search index</th>
-                  <td style={{ color: "var(--ink-soft)" }}>
-                    {indexSize().toLocaleString("en-US")} documents, built at module scope
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <p className="mt-5 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            The whole thing is public.{" "}
-            <ExternalLink href={site.repo} className="link-underlined">
-              Read the source
-            </ExternalLink>
-            , or take it apart for your own subject.
-          </p>
-        </section>
-
-        <section className="mt-16" aria-labelledby="ai-heading">
-          <SectionHead folio="05" title="Where tools helped, and where I stepped in" id="ai-heading">
-            AI was a collaborator, not an autopilot. Drafts and boilerplate were often AI-assisted,
-            but structure, fact-checking, and final decisions were human. Full breakdown lives at{" "}
-            <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>
-              /ai-disclosure
-            </Link>{" "}
-            and in{" "}
-            <ExternalLink href={`${site.repo}/blob/main/AI_DISCLOSURE.md`} className="link-underlined">
-              AI_DISCLOSURE.md
-            </ExternalLink>
-            .
-          </SectionHead>
-
-          <div className="table-scroll">
-            <table className="data-table">
-              <caption className="sr-only">AI tools and their role in building the site</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Tool</th>
-                  <th scope="col">Role</th>
-                  <th scope="col">What it did & how it was checked</th>
-                </tr>
-              </thead>
-              <tbody>
-                {aiTools.map((row) => (
-                  <tr key={row.tool}>
-                    <th scope="row" style={{ whiteSpace: "nowrap" }}>
-                      {row.tool}
-                    </th>
-                    <td>{row.role}</td>
-                    <td style={{ color: "var(--ink-soft)" }}>{row.detail}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mt-8 grid gap-x-12 gap-y-5 md:grid-cols-2">
-            {[
-              {
-                h: "Content: AI-drafted, source-linked",
-                p: "Deep lessons, cards, original questions, essays, and timed sets had AI-assisted drafts. The expanded library cites dated sources and passes automated depth, citation, sequence, and practice validation; the author retains correction responsibility.",
-              },
-              {
-                h: "Code: AI-assisted, human-reviewed",
-                p: "CardDeck Fisher–Yates, PracticeSet aria-live, TimedPaper autosave, search scoring — AI suggested patterns, human implemented focus scoping, JS-off fallbacks, WCAG 2.2 AA, and static generation.",
-              },
-              {
-                h: "Design: human decisions",
-                p: "Warm light paper, a teacher’s red pen, book-cloth course colours, recognisable 32-unit SVG symbols, and lines instead of boxes. Night mode is neutral grayscale. Contrast checked at actual size.",
-              },
-              {
-                h: "No runtime AI or grading",
-                p: "No chatbot, no AI grading, no AI API calls in production. Search is hand-rolled scored index, not LLM. Timed papers use rubric checklists for self-marking, not word counters.",
-              },
-            ].map((item) => (
-              <article key={item.h} className="rule-top pt-4">
-                <h3 className="text-[1.0625rem] font-semibold">{item.h}</h3>
-                <p className="mt-1.5 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-                  {item.p}
-                </p>
-              </article>
-            ))}
-          </div>
-
-          <p className="mt-8 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            Why disclose? Students should know when they are reading a person who recently struggled
-            with the same material vs. a model predicting likely text. Full file:{" "}
-            <ExternalLink href={`${site.repo}/blob/main/AI_DISCLOSURE.md`} className="link-underlined">
-              AI_DISCLOSURE.md
-            </ExternalLink>{" "}
-            — commit history public.
-          </p>
-        </section>
-
-        <p className="mt-14 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-          Accessibility choices are documented separately, on the{" "}
-          <Link href="/accessibility" className="link-underlined" style={{ color: "var(--ink)" }}>
-            accessibility page
-          </Link>{" "}
-          and AI use on the{" "}
-          <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>
-            AI disclosure page
-          </Link>
-          .
+      <div className="measure-wide">
+        <p className="eyebrow">Colophon · revised {formatDate("2026-10-25")}</p>
+        <h1
+          className="mt-2 font-semibold"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(2rem, 4vw, 3rem)",
+            lineHeight: 1.08,
+            letterSpacing: "-0.025em",
+          }}
+        >
+          How this site is put together.
+        </h1>
+        <p className="mt-4 text-base sm:text-lg" style={{ color: "var(--ink-soft)" }}>
+          Every design and engineering choice here optimizes for quiet reading, fast static loads,
+          honest citations, and zero tracking. The full source lives at{" "}
+          <a href={site.repo} className="prose-link">
+            {site.repo.replace("https://", "")}
+          </a>{" "}
+          under the MIT license.
         </p>
       </div>
-    </>
+
+      <section className="mt-12" aria-labelledby="spec-heading">
+        <SectionHead
+          folio="Technical sheet"
+          title="The stack in eight lines"
+          id="spec-heading"
+        />
+        <GlassCard className="mt-6 p-0 overflow-hidden">
+          <dl>
+            {spec.map(([k, v], i) => (
+              <div
+                key={k}
+                className="grid gap-1 px-5 py-4 sm:grid-cols-12 sm:gap-6"
+                style={{
+                  borderTop: i === 0 ? "none" : "1px solid var(--rule)",
+                }}
+              >
+                <dt
+                  className="sm:col-span-3 text-sm font-semibold"
+                  style={{ color: "var(--ink)" }}
+                >
+                  {k}
+                </dt>
+                <dd
+                  className="sm:col-span-9 text-sm leading-relaxed"
+                  style={{ color: "var(--ink-soft)" }}
+                >
+                  {v}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </GlassCard>
+      </section>
+
+      <section className="mt-14 grid gap-6 lg:grid-cols-2" aria-labelledby="design-heading">
+        <GlassCard className="p-6 sm:p-7">
+          <p className="eyebrow">Surfaces &amp; paper</p>
+          <h2
+            id="design-heading"
+            className="mt-1 text-xl font-semibold"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Colorless glass over calm rooms, plus real ruled paper
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--ink-soft)" }}>
+            Each route group rests over a dedicated classroom or corridor painting
+            (<code style={{ fontFamily: "var(--font-mono)" }}>PageBackground.tsx</code>) while dark
+            mode switches cleanly to a flat neutral charcoal canvas (
+            <code style={{ fontFamily: "var(--font-mono)" }}>#121212</code>) with zero background
+            imagery. Content containers use hue-free translucent glass so text contrast stays crisp.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--ink-soft)" }}>
+            Whenever you work through the <strong>Read → Recall → Respond</strong> method or write
+            scratch notes during timed essays and mock exams, the workspace switches to realistic
+            college-ruled loose-leaf paper (<code style={{ fontFamily: "var(--font-mono)" }}>.realistic-paper</code>)
+            with a single pink margin line and 32px horizontal blue rules — with{" "}
+            <code style={{ fontFamily: "var(--font-mono)" }}>Caveat</code> baselines locked directly
+            onto the blue lines.
+          </p>
+        </GlassCard>
+
+        <GlassCard className="p-6 sm:p-7">
+          <p className="eyebrow">Content &amp; privacy</p>
+          <h2
+            className="mt-1 text-xl font-semibold"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {totals.units} lessons · {totals.flashcards} cards · {totals.questions} questions · {unitVideos.length} videos
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--ink-soft)" }}>
+            Every count across the site is derived directly from{" "}
+            <code style={{ fontFamily: "var(--font-mono)" }}>src/content/</code> at build time and
+            checked by four automated validation scripts before any build passes.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--ink-soft)" }}>
+            Unit video players render static thumbnails first and never load{" "}
+            <code style={{ fontFamily: "var(--font-mono)" }}>youtube-nocookie.com</code> scripts or frames until you explicitly click to load
+            an inline player. Strict <code style={{ fontFamily: "var(--font-mono)" }}>Content-Security-Policy</code> headers keep fonts (
+            <code style={{ fontFamily: "var(--font-mono)" }}>font-src &apos;self&apos;</code>) and scripts same-origin. See{" "}
+            <Link href="/ai-disclosure" className="prose-link">
+              AI Disclosure
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="prose-link">
+              Privacy
+            </Link>{" "}
+            for full details.
+          </p>
+        </GlassCard>
+      </section>
+    </div>
   );
 }

@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCourse } from "@/lib/catalog";
 import { formatExamDate } from "@/lib/subjects";
-import { SectionHead, EmptyNote, ExternalLink } from "@/components/Furniture";
+import { EmptyNote, ExternalLink } from "@/components/Furniture";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { DownloadButton } from "@/components/ui/DownloadButton";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
 import { getCourseVideos } from "@/lib/video-lessons";
 import { absoluteUrl, describe, socialImages } from "@/lib/site";
@@ -28,7 +30,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description,
     alternates: { canonical: `/course/${subject.slug}` },
-    openGraph: { images: socialImages,
+    openGraph: {
+      images: socialImages,
       type: "article",
       title: `${subject.official} · AP Study Hub`,
       description,
@@ -107,40 +110,47 @@ export default async function CourseOverviewPage({ params }: { params: Params })
   ].filter((mode) => mode.show);
 
   return (
-    <div className="wrap py-12 md:py-16">
-      {/* Study modes */}
+    <div className="wrap space-y-12 py-8 md:py-12">
+      {/* Study modes grid + Quick Quad */}
       <section aria-labelledby="modes-heading">
-        <SectionHead folio="01" title="Start where you are" id="modes-heading">
-          Pick the way you learn best. If you have a week, read the notes then practise; if you
-          have a night, watch the unit video and drill the cards.
-        </SectionHead>
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
+          <div className="max-w-2xl">
+            <p className="label mb-1.5">01 · Study Modes</p>
+            <h2
+              id="modes-heading"
+              className="canvas-heading text-[clamp(1.55rem,1.25rem+1.1vw,2.15rem)] font-semibold"
+            >
+              Start where you are
+            </h2>
+            <p className="canvas-subtext mt-2 text-[0.95rem]">
+              Pick the way you learn best. Read the notes then practise, or watch the unit video
+              and drill the recall cards.
+            </p>
+          </div>
+          <DownloadButton href={`${base}/print`} internal>
+            Printable packet
+          </DownloadButton>
+        </div>
 
-        <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {modes.map((mode) => (
-            <li key={mode.href}>
+            <li key={mode.href} className="flex">
               <Link
                 href={mode.href}
-                className="group flex h-full flex-col rule-top pt-4 no-underline"
+                className="glass-box glass-box-interactive flex w-full flex-col justify-between p-5 no-underline"
               >
-                <span className="flex items-baseline justify-between gap-3">
-                  <span className="text-[1.0625rem] font-semibold">{mode.label}</span>
-                  <span
-                    className="text-[0.75rem] tabular-nums"
-                    style={{ fontFamily: "var(--font-mono)", color: "var(--subject-ink)" }}
-                  >
-                    {mode.count} {mode.unit}
-                  </span>
-                </span>
-                <span
-                  className="mt-1.5 flex-1 text-[0.875rem]"
-                  style={{ color: "var(--ink-soft)" }}
-                >
-                  {mode.body}
-                </span>
-                <span
-                  className="mt-3 inline-block text-[0.8125rem] font-semibold transition-transform duration-200 group-hover:translate-x-1"
-                  style={{ color: "var(--subject-ink)" }}
-                >
+                <div>
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-[1.0625rem] font-semibold">{mode.label}</span>
+                    <span className="tag tabular-nums">
+                      {mode.count} {mode.unit}
+                    </span>
+                  </div>
+                  <p className="mt-2.5 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
+                    {mode.body}
+                  </p>
+                </div>
+                <span className="mt-4 inline-block text-[0.8125rem] font-semibold">
                   Open →
                 </span>
               </Link>
@@ -151,19 +161,23 @@ export default async function CourseOverviewPage({ params }: { params: Params })
 
       {/* Unit index */}
       {units.length > 0 ? (
-        <section className="mt-16" aria-labelledby="units-heading">
-          <SectionHead folio="02" title="Your route through the units" id="units-heading">
+        <GlassCard as="section" padding="lg" aria-labelledby="units-heading">
+          <p className="label mb-1.5">02 · Official Sequence</p>
+          <h2 id="units-heading" className="text-[1.6rem] font-semibold">
+            Your route through the units
+          </h2>
+          <p className="mt-2 max-w-[60ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
             The official framework in order, with unit weights and the terms you should be able to
             explain without peeking.
-          </SectionHead>
+          </p>
 
-          <ol>
+          <ol className="mt-6 divide-y divide-white/60">
             {units.map((unit) => (
-              <li key={unit.unitNumber} className="rule-top py-4">
+              <li key={unit.unitNumber} className="py-4">
                 <div className="flex gap-4">
                   <span
                     className="mt-0.5 shrink-0 text-[0.75rem] tabular-nums"
-                    style={{ fontFamily: "var(--font-mono)", color: "var(--subject-ink)" }}
+                    style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
                     aria-hidden="true"
                   >
                     {String(unit.unitNumber).padStart(2, "0")}
@@ -180,7 +194,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
                     {unit.keyTerms.length > 0 ? (
                       <ul className="mt-2.5 flex flex-wrap gap-1.5">
                         {unit.keyTerms.map((term) => (
-                          <li key={term} className="tag tag-subject">
+                          <li key={term} className="tag">
                             {term}
                           </li>
                         ))}
@@ -191,30 +205,38 @@ export default async function CourseOverviewPage({ params }: { params: Params })
               </li>
             ))}
           </ol>
-        </section>
+        </GlassCard>
       ) : (
-        <section className="mt-16">
-          <SectionHead folio="02" title="Your route through the units" />
+        <GlassCard as="section" padding="lg">
+          <h2 className="mb-3 text-[1.5rem] font-semibold">Your route through the units</h2>
           <EmptyNote>
             Unit notes for {subject.familiar} are not written yet. The cards and practice questions
             below are, and the sources page links to material that covers the full framework.
           </EmptyNote>
-        </section>
+        </GlassCard>
       )}
 
       {/* Course-specific advice */}
       {tips.length > 0 ? (
-        <section className="mt-16" aria-labelledby="tips-heading">
-          <SectionHead folio="03" title={`What I wish I knew before ${subject.familiar}`} id="tips-heading" />
-          <div className="grid gap-x-10 gap-y-7 md:grid-cols-2">
+        <section aria-labelledby="tips-heading">
+          <div className="mb-6">
+            <p className="label mb-1.5">03 · Practical Advice</p>
+            <h2
+              id="tips-heading"
+              className="canvas-heading text-[1.6rem] font-semibold"
+            >
+              What I wish I knew before {subject.familiar}
+            </h2>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2">
             {tips.map((tip) => (
-              <article key={tip.title} className="rule-top pt-4">
+              <GlassCard key={tip.title} as="article" padding="md">
                 <p className="label mb-1.5">{tip.category}</p>
                 <h3 className="text-[1.0625rem] font-semibold">{tip.title}</h3>
                 <p className="mt-1.5 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
                   {tip.content}
                 </p>
-              </article>
+              </GlassCard>
             ))}
           </div>
         </section>
@@ -222,23 +244,25 @@ export default async function CourseOverviewPage({ params }: { params: Params })
 
       {/* Lectures */}
       {channels.length > 0 ? (
-        <section className="mt-16" aria-labelledby="lectures-heading">
-          <SectionHead folio={tips.length > 0 ? "04" : "03"} title="People who explain it well" id="lectures-heading">
-            Every unit now has a checked video with its real thumbnail, a direct YouTube link, and
-            a replacement search. The channels below are still here for going deeper when a creator reorganises a
-            playlist or removes an individual upload.
-          </SectionHead>
-
-          <p className="mb-8 max-w-[68ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            <Link href={`${base}/videos`} className="link-underlined" style={{ color: "var(--ink)" }}>
+        <GlassCard as="section" padding="lg" aria-labelledby="lectures-heading">
+          <p className="label mb-1.5">{tips.length > 0 ? "04" : "03"} · Teachers & Channels</p>
+          <h2 id="lectures-heading" className="text-[1.6rem] font-semibold">
+            People who explain it well
+          </h2>
+          <p className="mt-2 max-w-[68ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+            <Link href={`${base}/videos`} className="link-underlined">
               Open the {subject.familiar} video library
             </Link>{" "}
-            to play the {getCourseVideos(subject.slug).length} curated videos for this course, or find them embedded inside the notes for each unit.
+            to play the {getCourseVideos(subject.slug).length} curated videos for this course, or
+            explore these channels for deeper playlists.
           </p>
 
-          <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+          <ul className="mt-6 grid gap-5 sm:grid-cols-2">
             {channels.map((channel) => (
-              <li key={channel.handle} className="rule-top pt-4">
+              <li
+                key={channel.handle}
+                className="rounded-2xl border border-white/75 bg-white/30 p-4 dark:bg-white/5"
+              >
                 <h3 className="text-[1.0625rem] font-semibold">
                   <ExternalLink href={channelUrl(channel)} className="link-draw">
                     {channel.name}
@@ -255,13 +279,16 @@ export default async function CourseOverviewPage({ params }: { params: Params })
                     Search this channel for {subject.familiar}
                   </ExternalLink>
                 </p>
-                <p className="mt-2 text-[0.6875rem]" style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>
+                <p
+                  className="mt-2 text-[0.6875rem]"
+                  style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
+                >
                   Link checked {channel.checked}
                 </p>
               </li>
             ))}
           </ul>
-        </section>
+        </GlassCard>
       ) : null}
     </div>
   );

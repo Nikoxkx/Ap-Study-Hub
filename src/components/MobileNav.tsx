@@ -4,136 +4,201 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { subjects } from "@/lib/subjects";
+import { SubjectMark } from "./SubjectMark";
 import { SiteSearch } from "./SiteSearch";
 import { ThemeControl } from "./ThemeControl";
+import { HamburgerButton } from "./ui/HamburgerButton";
 
 /**
- * Mobile navigation.
+ * Unified Menu & Settings Popover.
  *
- * A disclosure, not a modal: it pushes the page down rather than trapping focus
- * over it, which is the lighter and less breakable of the two patterns at this
- * size. Escape closes it, focus returns to the trigger, and the panel closes on
- * navigation — the three things this kind of menu usually forgets.
+ * Houses Search, Study Desk, the compact Sun/Moon ThemeSwitch, Study & Pages,
+ * and AP Classes. Smoothly reveals on hover (desktop mouse) or tap (mobile)
+ * and fades away cleanly when the pointer leaves.
  */
-
 export function MobileNav() {
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLLabelElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
 
-  // Rather than holding a boolean and closing it from an effect that watches
-  // the route, hold the route the menu was opened on and derive "open" from
-  // whether that is still where we are. Following a link changes the pathname,
-  // which closes the menu during the same render — no effect, no flash of the
-  // panel still being open over the new page.
-  const [openedAt, setOpenedAt] = useState<string | null>(null);
-  const open = openedAt !== null && openedAt === pathname;
+  const [open, setOpen] = useState(false);
 
-  const setOpen = (next: boolean) => setOpenedAt(next ? pathname : null);
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  // Close menu whenever route changes
+  const [prevPath, setPrevPath] = useState(pathname);
+  if (prevPath !== pathname) {
+    setPrevPath(pathname);
+    if (open) setOpen(false);
+  }
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
+  // Support pressing "/" anywhere on the page to open the menu and focus search
+  useEffect(() => {
+    function onSlash(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      const typing =
+        target?.tagName === "INPUT" ||
+        target?.tagName === "TEXTAREA" ||
+        target?.isContentEditable;
+      if (event.key === "/" && !typing && !event.metaKey && !event.ctrlKey) {
+        event.preventDefault();
+        setOpen(true);
+        requestAnimationFrame(() => {
+          const input = panelRef.current?.querySelector<HTMLInputElement>('input[type="search"]');
+          input?.focus();
+        });
+      }
+    }
+    window.addEventListener("keydown", onSlash);
+    return () => window.removeEventListener("keydown", onSlash);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
     function onKeyDown(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
-      // setOpenedAt rather than the setOpen wrapper: the wrapper closes over
-      // `pathname` and would make this effect re-subscribe on every navigation
-      // for no reason. Closing is unconditional, so it needs neither.
-      setOpenedAt(null);
-      triggerRef.current?.focus();
+      setOpen(false);
+      triggerRef.current?.querySelector("input")?.focus();
+    }
+    function onPointerDown(event: PointerEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
     }
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
   }, [open]);
 
-  // Move focus into the panel when it opens so keyboard users are not left
-  // behind the trigger.
-  useEffect(() => {
-    if (open) panelRef.current?.querySelector<HTMLElement>("input, a")?.focus();
-  }, [open]);
+  function handlePointerEnter(event: React.PointerEvent<HTMLDivElement>) {
+    clearCloseTimer();
+    if (event.pointerType === "mouse") {
+      setOpen(true);
+    }
+  }
+
+  function handlePointerLeave(event: React.PointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse") return;
+    clearCloseTimer();
+    closeTimerRef.current = setTimeout(() => {
+      const active = document.activeElement;
+      const searchFocused =
+        active instanceof HTMLInputElement &&
+        active.type === "search" &&
+        panelRef.current?.contains(active) &&
+        active.value.trim().length > 0;
+      if (!searchFocused) {
+        setOpen(false);
+      }
+    }, 220);
+  }
 
   return (
-    <div className="md:hidden">
-      <button
-        ref={triggerRef}
-        type="button"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        aria-controls="mobile-nav-panel"
-        className="btn btn-outline btn-sm"
+    <div
+      ref={rootRef}
+      className="relative flex items-center"
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+    >
+      <HamburgerButton
+        buttonRef={triggerRef}
+        open={open}
+        onToggle={(next) => {
+          clearCloseTimer();
+          setOpen(next);
+        }}
+        ariaControls="site-settings-menu"
+        label={open ? "Close menu and settings" : "Open menu and settings"}
+      />
+
+      <div
+        id="site-settings-menu"
+        ref={panelRef}
+        aria-hidden={!open}
+        data-open={open ? "true" : "false"}
+        className="menu-popover glass-box absolute right-0 top-[calc(100%+0.6rem)] z-50 w-[min(23.5rem,calc(100vw-1.5rem))] p-4"
       >
-        <svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14">
-          <g stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-            {open ? (
-              <>
-                <path d="M3.5 3.5l9 9" />
-                <path d="M12.5 3.5l-9 9" />
-              </>
-            ) : (
-              <>
-                <path d="M2 4.5h12" />
-                <path d="M2 8h12" />
-                <path d="M2 11.5h12" />
-              </>
-            )}
-          </g>
-        </svg>
-        {open ? "Close" : "Menu"}
-      </button>
-
-      {open ? (
-        <div
-          id="mobile-nav-panel"
-          ref={panelRef}
-          className="absolute left-0 right-0 top-full rule-bottom enter-fade"
-          style={{ background: "var(--paper-raised)", borderTop: "1px solid var(--rule)" }}
-        >
-          <div className="wrap py-4">
-            <div className="mb-4">
-              <SiteSearch />
-            </div>
-
-            <p className="label mb-2">Courses</p>
-            <ul className="mb-4 grid grid-cols-2 gap-x-4">
-              {subjects.map((subject) => (
-                <li key={subject.slug} style={{ borderBottom: "1px solid var(--rule)" }}>
-                  <Link
-                    href={`/course/${subject.slug}`}
-                    className="flex items-center gap-2 py-2.5 text-[0.875rem] font-medium no-underline"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="h-[7px] w-[7px] shrink-0"
-                      style={{ background: subject.ink, borderRadius: 1 }}
-                    />
-                    {subject.familiar}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            <p className="label mb-2">Elsewhere</p>
-            <ul className="mb-4 grid grid-cols-2 gap-x-4">
-              {[
-                { href: "/study", label: "Your study desk" },
-                { href: "/videos", label: "Unit videos" },
-                { href: "/guides", label: "Study guides" },
-                { href: "/integrations", label: "Integrations" },
-                { href: "/about", label: "About" },
-                { href: "/search", label: "Search" },
-                { href: "/colophon", label: "Colophon" },
-              ].map((item) => (
-                <li key={item.href} style={{ borderBottom: "1px solid var(--rule)" }}>
-                  <Link href={item.href} className="block py-2.5 text-[0.875rem] font-medium no-underline">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            <ThemeControl />
-          </div>
+        {/* Search inside the menu on all viewports */}
+        <div className="mb-3.5">
+          <SiteSearch label="Search notes & cards" />
         </div>
-      ) : null}
+
+        {/* Study Desk action + compact Sun/Moon Theme Switch */}
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-white/65 bg-white/25 px-3.5 py-2.5 dark:border-white/20 dark:bg-white/5">
+          <Link
+            href="/study"
+            tabIndex={open ? 0 : -1}
+            onClick={() => setOpen(false)}
+            className="btn btn-sm"
+          >
+            Study Desk
+          </Link>
+          <ThemeControl />
+        </div>
+
+        <p className="label mb-1.5">Study & Pages</p>
+        <ul className="mb-3.5 grid grid-cols-2 gap-1">
+          {[
+            { href: "/study", label: "Study Desk" },
+            { href: "/videos", label: "Unit Videos" },
+            { href: "/guides", label: "Study Guides" },
+            { href: "/integrations", label: "Integrations" },
+            { href: "/search", label: "Full Search" },
+            { href: "/about", label: "About" },
+            { href: "/ai-disclosure", label: "AI Disclosure" },
+            { href: "/colophon", label: "Colophon" },
+          ].map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                tabIndex={open ? 0 : -1}
+                onClick={() => setOpen(false)}
+                className="block rounded-xl px-2.5 py-1.5 text-[0.84rem] font-medium no-underline transition-colors hover:bg-white/45 dark:hover:bg-white/10"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <p className="label mb-1.5">AP Classes</p>
+        <ul className="grid grid-cols-2 gap-1">
+          {subjects.map((subject) => (
+            <li key={subject.slug}>
+              <Link
+                href={`/course/${subject.slug}`}
+                tabIndex={open ? 0 : -1}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-[0.84rem] font-medium no-underline transition-colors hover:bg-white/45 dark:hover:bg-white/10"
+              >
+                <SubjectMark
+                  subject={subject.mark}
+                  size={15}
+                  label={subject.symbolLabel}
+                  className="shrink-0 opacity-85"
+                />
+                <span className="truncate">{subject.familiar}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

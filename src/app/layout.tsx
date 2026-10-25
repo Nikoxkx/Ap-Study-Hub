@@ -6,6 +6,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ThemeScript } from "@/components/ThemeControl";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { PageBackground } from "@/components/ui/PageBackground";
+import { ScrollEffects } from "@/components/ui/ScrollEffects";
 import { site, socialImages } from "@/lib/site";
 import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
 
@@ -72,7 +74,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f3ec" },
+    { media: "(prefers-color-scheme: light)", color: "#e8e8e8" },
     { media: "(prefers-color-scheme: dark)", color: "#101010" },
   ],
 };
@@ -96,16 +98,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        <link
+          rel="preload"
+          href="/fonts/caveat-latin-var.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
       </head>
-      <body className="flex min-h-screen flex-col">
+      <body suppressHydrationWarning className="relative flex min-h-screen flex-col bg-transparent">
+        <PageBackground />
         <a className="skip-link" href="#main">
           Skip to content
         </a>
         <SiteHeader />
-        <main id="main" tabIndex={-1} className="flex-1 outline-none">
+        <main id="main" tabIndex={-1} className="flex-1 bg-transparent outline-none">
           {children}
         </main>
         <SiteFooter />
+        <ScrollEffects />
         <ServiceWorkerRegister />
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
       </body>

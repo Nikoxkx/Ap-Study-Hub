@@ -12,6 +12,7 @@ import { useStudyState } from "@/lib/use-study-state";
 import { useVideoProgress } from "@/lib/video-progress";
 import { site } from "@/lib/site";
 import { VideoThumbnail } from "./VideoThumbnail";
+import { LoadingSpinner } from "./ui/LoadingSpinner";
 
 /**
  * Click-to-load unit video player with a real YouTube poster.
@@ -37,6 +38,7 @@ export function UnitVideoPlayer({
 }) {
   const [activeId, setActiveId] = useState(videos[0]?.id ?? "");
   const [loaded, setLoaded] = useState(false);
+  const [iframeReady, setIframeReady] = useState(false);
   const [message, setMessage] = useState("");
   const [study, setStudy] = useStudyState();
   const [progress, setProgress] = useVideoProgress();
@@ -62,6 +64,7 @@ export function UnitVideoPlayer({
 
   function play(video: UnitVideo) {
     setActiveId(video.id);
+    setIframeReady(false);
     setLoaded(true);
     setMessage(`Loading ${video.creator} in the privacy-enhanced player. The real thumbnail was already loaded; YouTube's captions and settings are inside the frame.`);
   }
@@ -111,7 +114,7 @@ export function UnitVideoPlayer({
               type="button"
               className="unit-video-choice"
               aria-pressed={v.id === active.id}
-              onClick={() => { setActiveId(v.id); setLoaded(false); }}
+              onClick={() => { setActiveId(v.id); setLoaded(false); setIframeReady(false); }}
             >
               <VideoThumbnail video={v} className="unit-video-choice-thumb" loading="lazy" />
               <span className="unit-video-choice-text">
@@ -127,15 +130,23 @@ export function UnitVideoPlayer({
       <div className="unit-video-card">
         <div className="unit-video-frame" ref={frameRef} data-video-id={active.id}>
           {loaded ? (
-            <iframe
-              key={active.id}
-              src={videoEmbedUrl(active)}
-              title={`${active.title} — ${active.creator}`}
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
+            <>
+              {!iframeReady ? (
+                <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-black/35">
+                  <LoadingSpinner scale={0.7} label={`Loading ${active.title}…`} />
+                </div>
+              ) : null}
+              <iframe
+                key={active.id}
+                src={videoEmbedUrl(active)}
+                title={`${active.title} — ${active.creator}`}
+                loading="lazy"
+                onLoad={() => setIframeReady(true)}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </>
           ) : (
             <button type="button" className="unit-video-poster" onClick={() => play(active)} aria-label={`Play ${active.title} by ${active.creator}`}>
               <VideoThumbnail video={active} className="unit-video-thumb" />

@@ -1,72 +1,55 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { subjects } from "@/lib/subjects";
+import { SiteMark } from "@/components/SubjectMark";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { SearchInput } from "@/components/ui/SearchInput";
 
 export const metadata: Metadata = {
   title: "That link went nowhere",
   robots: { index: false, follow: false },
 };
 
-/**
- * 404.
- *
- * A dead end is a fine place to be helpful. This one says what happened, offers
- * the search box, and lists every course, because "Page not found. Go home." is
- * a shrug.
- */
 export default function NotFound() {
   return (
-    <div className="wrap py-20 md:py-28">
-      <div className="max-w-2xl">
-        <p className="folio mb-4">Error 404</p>
-        <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.75rem)]" style={{ letterSpacing: "-0.028em" }}>
+    <div className="wrap py-16 md:py-24">
+      <GlassCard padding="lg" className="mx-auto max-w-2xl">
+        <div className="mb-4 flex items-center gap-3">
+          <SiteMark size={32} />
+          <p className="folio">Error 404</p>
+        </div>
+        <h1
+          className="text-[clamp(1.9rem,1.5rem+1.8vw,2.75rem)] font-semibold"
+          style={{ letterSpacing: "-0.028em" }}
+        >
           That link led nowhere. Let&rsquo;s get you back.
         </h1>
-        <p className="lede mt-5">
-          Either the link was wrong, or something moved and I did not leave a redirect. The second
-          one is my fault.
+        <p className="lede mt-4">
+          Either the link was wrong, or something moved and I did not leave a redirect.
         </p>
 
-        <form action="/search" method="get" role="search" className="mt-9">
-          <label htmlFor="notfound-q" className="label mb-2 block">
-            Search instead
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <input
-              id="notfound-q"
-              name="q"
-              type="search"
-              placeholder="What were you looking for?"
-              className="field"
-              style={{ flex: "1 1 16rem", minWidth: 0 }}
-            />
-            <button type="submit" className="btn btn-solid">
-              Find it
-            </button>
+        <form action="/search" method="get" role="search" className="mt-7 flex flex-wrap items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <SearchInput id="notfound-q" name="q" type="search" label="What were you looking for?" />
           </div>
+          <button type="submit" className="btn btn-sm">
+            Find it
+          </button>
         </form>
 
-        <nav aria-label="All courses" className="mt-12">
+        <nav aria-label="All courses" className="mt-9 border-t border-white/60 pt-6">
           <h2 className="label mb-3">Or jump into a course</h2>
-          <ul className="rule-top">
+          <ul className="flex flex-wrap gap-2">
             {subjects.map((subject) => (
-              <li key={subject.slug} className="rule-bottom">
-                <Link
-                  href={`/course/${subject.slug}`}
-                  className="flex items-center gap-3 py-2.5 text-[0.9375rem] no-underline"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="h-[7px] w-[7px] shrink-0"
-                    style={{ background: subject.ink, borderRadius: 1 }}
-                  />
-                  <span className="font-medium">{subject.official}</span>
+              <li key={subject.slug}>
+                <Link href={`/course/${subject.slug}`} className="tag no-underline hover:bg-white/65">
+                  {subject.official}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-      </div>
+      </GlassCard>
     </div>
   );
 }
