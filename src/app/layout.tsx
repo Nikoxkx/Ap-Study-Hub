@@ -4,12 +4,13 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { ThemeScript } from "@/components/ThemeControl";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { PageBackground } from "@/components/ui/PageBackground";
 import { ScrollEffects } from "@/components/ui/ScrollEffects";
 import { site, socialImages } from "@/lib/site";
 import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
+
+const bootstrapScript = `(function(){try{var c=localStorage.getItem("aps.theme");var m=window.matchMedia("(prefers-color-scheme: dark)").matches;if(c==="dark"||((c==="system"||!c)&&m)){document.documentElement.classList.add("dark")}document.documentElement.dataset.theme=c||"system";if("serviceWorker"in navigator&&localStorage.getItem("aps:sw-ver")!=="v5"){localStorage.setItem("aps:sw-ver","v5");navigator.serviceWorker.getRegistrations().then(function(rs){if(!rs.length)return;Promise.all([Promise.all(rs.map(function(r){return r.unregister()})),window.caches?caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}):Promise.resolve()]).then(function(){location.reload()})})}}catch(e){}})();`;
 
 /**
  * Typography and preload.
@@ -83,7 +84,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en-US" suppressHydrationWarning>
       <head>
-        <ThemeScript />
+        <script dangerouslySetInnerHTML={{ __html: bootstrapScript }} />
         <link
           rel="preload"
           href="/fonts/newsreader-latin-var.woff2"

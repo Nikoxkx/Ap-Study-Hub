@@ -94,7 +94,12 @@ export function TopClassBar() {
           className="top-classes-pill"
         >
           {activeSubject ? (
-            <SubjectMark subject={activeSubject.mark} size={15} label={activeSubject.symbolLabel} />
+            <SubjectMark
+              subject={activeSubject.mark}
+              size={15}
+              label={activeSubject.symbolLabel}
+              tone="light"
+            />
           ) : null}
           <span>{activeSubject ? activeSubject.familiar : "AP Courses"}</span>
           <span aria-hidden="true" className="text-[0.65rem] opacity-70">
@@ -111,7 +116,7 @@ export function TopClassBar() {
               value: subject.slug,
               label: (
                 <span className="inline-flex items-center gap-1.5">
-                  <SubjectMark subject={subject.mark} size={14} label={subject.symbolLabel} />
+                  <SubjectMark subject={subject.mark} size={15} label={subject.symbolLabel} />
                   <span>{subject.familiar}</span>
                 </span>
               ),
@@ -132,7 +137,12 @@ export function TopClassBar() {
           className="top-classes-pill top-classes-pill-mobile"
         >
           {activeSubject ? (
-            <SubjectMark subject={activeSubject.mark} size={14} label={activeSubject.symbolLabel} />
+            <SubjectMark
+              subject={activeSubject.mark}
+              size={14}
+              label={activeSubject.symbolLabel}
+              tone="light"
+            />
           ) : null}
           <span>{activeSubject ? activeSubject.familiar : "Courses"}</span>
           <span

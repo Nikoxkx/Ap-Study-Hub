@@ -1,6 +1,6 @@
 /* AP Study Hub offline worker. Same-origin pages and assets only; YouTube thumbnails, opt-in player frames, and sync requests bypass this worker. */
-const PAGES = "aps-study-pages-v4";
-const ASSETS = "aps-study-assets-v4";
+const PAGES = "aps-study-pages-v5";
+const ASSETS = "aps-study-assets-v5";
 const CORE = ["/", "/study", "/videos", "/integrations", "/manifest.webmanifest", "/pwa-icon/192", "/pwa-icon/512", "/og-image.png", "/social-preview.png"];
 
 self.addEventListener("install", (event) => {

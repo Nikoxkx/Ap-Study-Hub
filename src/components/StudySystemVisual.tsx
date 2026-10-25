@@ -8,9 +8,9 @@ import { SubjectMark } from "./SubjectMark";
 /**
  * Interactive 7-course cold-recall preview inside the homepage Library card.
  *
- * Lets visitors switch across all seven AP courses (showing each course's white
- * symbol) and test one real active-recall prompt immediately without leaving
- * the homepage.
+ * Displays each AP course's symbol (crisp dark in day mode, pure white in night
+ * mode) with generous spacing and tactile hover animations, letting visitors
+ * flip a real recall card right on the homepage.
  */
 
 interface SamplePrompt {
@@ -73,22 +73,24 @@ export function StudySystemVisual() {
 
   return (
     <div
-      className="rounded-2xl border border-white/80 bg-white/28 p-5 dark:border-white/20 dark:bg-white/5"
+      className="space-y-6 rounded-2xl border border-white/80 bg-white/30 p-6 sm:p-7 dark:border-white/20 dark:bg-white/[0.04]"
       role="region"
       aria-label="Interactive recall preview across all seven AP courses"
     >
-      <div className="flex flex-wrap items-center justify-between gap-2">
+      {/* Header row with generous breathing room */}
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-4 dark:border-white/15">
         <span className="label">Try a live recall card</span>
         <span
-          className="text-[0.72rem]"
-          style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
+          className="rounded-full border border-white/75 bg-white/45 px-3 py-1 text-[0.74rem] font-medium dark:border-white/20 dark:bg-white/10"
+          style={{ fontFamily: "var(--font-mono)", color: "var(--ink-soft)" }}
         >
           {sample.unit}
         </span>
       </div>
 
+      {/* Spaced AP Course Pills with actual AP class symbols & hover lift */}
       <div
-        className="mt-3.5 flex flex-wrap gap-2"
+        className="flex flex-wrap items-center gap-2.5 sm:gap-3"
         role="tablist"
         aria-label="Choose an AP course sample"
       >
@@ -100,42 +102,44 @@ export function StudySystemVisual() {
               type="button"
               role="tab"
               aria-selected={active}
+              data-active={active ? "true" : "false"}
               onClick={() => {
                 setSelected(item.slug);
                 setFlipped(false);
               }}
-              className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.76rem] font-medium transition-all"
-              style={{
-                background: active ? "rgba(18, 18, 18, 0.72)" : "rgba(24, 24, 24, 0.28)",
-                borderColor: active ? "#ffffff" : "rgba(255, 255, 255, 0.55)",
-                color: "#ffffff",
-              }}
+              className="recall-course-pill"
             >
-              <SubjectMark subject={item.mark} size={14} label={item.symbolLabel} />
+              <SubjectMark
+                subject={item.mark}
+                size={18}
+                label={item.symbolLabel}
+                className="recall-course-pill-icon"
+              />
               <span>{item.familiar}</span>
             </button>
           );
         })}
       </div>
 
+      {/* Interactive Flip Card */}
       <button
         type="button"
         onClick={() => setFlipped((v) => !v)}
         aria-pressed={flipped}
-        className="mt-4 flex min-h-[8.5rem] w-full flex-col justify-between rounded-xl border border-white/75 bg-white/38 p-4 text-left transition-colors hover:bg-white/52 dark:border-white/20 dark:bg-white/5 dark:hover:bg-white/10"
+        className="recall-flip-card flex min-h-[11.5rem] w-full flex-col justify-between gap-5 rounded-2xl border border-white/85 bg-white/45 p-6 text-left sm:p-7 dark:border-white/20 dark:bg-white/[0.06]"
       >
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <span className="label">{flipped ? "Exam-ready recall" : "Prompt · tap to flip"}</span>
           <span className="tag">{flipped ? "Answer" : "Term"}</span>
         </div>
 
         {flipped ? (
-          <p className="mt-2.5 text-[0.92rem] leading-relaxed" style={{ color: "var(--ink)" }}>
+          <p className="text-[0.96rem] leading-relaxed" style={{ color: "var(--ink)" }}>
             {sample.answer}
           </p>
         ) : (
           <p
-            className="mt-2.5 text-[1.35rem] font-semibold leading-snug"
+            className="text-[1.5rem] font-semibold leading-snug sm:text-[1.65rem]"
             style={{ fontFamily: "var(--font-display)", color: "var(--ink)" }}
           >
             {sample.term}
@@ -143,19 +147,26 @@ export function StudySystemVisual() {
         )}
 
         <span
-          className="mt-3 text-[0.72rem]"
+          className="text-[0.75rem]"
           style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
         >
           {flipped ? "Tap to return to prompt" : "Explain it in your own words, then tap to check"}
         </span>
       </button>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-[0.8125rem]">
-        <Link href={`/course/${subject.slug}/notes`} className="link-underlined font-semibold">
-          Read {subject.familiar} lessons →
+      {/* Spaced Action Pills with hover arrow transitions */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
+        <Link href={`/course/${subject.slug}/notes`} className="recall-action-pill">
+          <span>Read {subject.familiar} lessons</span>
+          <span aria-hidden="true" className="recall-action-arrow">
+            →
+          </span>
         </Link>
-        <Link href={`/course/${subject.slug}/cards`} className="link-underlined">
-          Open full card deck →
+        <Link href={`/course/${subject.slug}/cards`} className="recall-action-pill">
+          <span>Open full card deck</span>
+          <span aria-hidden="true" className="recall-action-arrow">
+            →
+          </span>
         </Link>
       </div>
     </div>

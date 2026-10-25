@@ -4,6 +4,7 @@ import { getTotals } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { SiteMark, SubjectMark } from "./SubjectMark";
 import { GlassCard } from "./ui/GlassCard";
+import { InstagramTooltip } from "./ui/InstagramTooltip";
 
 const columns = [
   {
@@ -78,7 +79,7 @@ export function SiteFooter() {
                       className="inline-flex items-center gap-2 link-draw text-[0.875rem]"
                       style={{ color: "var(--ink-soft)" }}
                     >
-                      <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-white/50 bg-black/28 dark:border-white/20 dark:bg-white/10">
+                      <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 dark:border-white/20 dark:bg-white/10">
                         <SubjectMark subject={subject.mark} size={13} label={subject.symbolLabel} />
                       </span>
                       <span>{subject.familiar}</span>
@@ -153,6 +154,10 @@ export function SiteFooter() {
             </p>
           </div>
         </GlassCard>
+
+        <div className="mt-10 flex flex-col items-center">
+          <InstagramTooltip />
+        </div>
       </div>
     </footer>
   );

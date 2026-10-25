@@ -225,10 +225,10 @@ export default function HomePage() {
                   <div>
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <span
-                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/65 bg-black/28 dark:border-white/25 dark:bg-white/10"
+                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/80 bg-white/45 transition-transform duration-200 group-hover:scale-105 dark:border-white/25 dark:bg-white/10"
                         title={subject.symbolLabel}
                       >
-                        <SubjectMark subject={subject.mark} size={24} label={subject.symbolLabel} />
+                        <SubjectMark subject={subject.mark} size={25} label={subject.symbolLabel} />
                       </span>
                       <span className="tag">{subject.familiar}</span>
                     </div>
@@ -389,7 +389,7 @@ export default function HomePage() {
                           href={`/course/${subject.slug}`}
                           className="inline-flex items-center gap-2.5 link-underlined"
                         >
-                          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/55 bg-black/28 dark:border-white/20 dark:bg-white/10">
+                          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 dark:border-white/20 dark:bg-white/10">
                             <SubjectMark subject={subject.mark} size={15} label={subject.symbolLabel} />
                           </span>
                           <span>{subject.official}</span>

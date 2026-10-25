@@ -2,11 +2,10 @@ import type { SubjectSlug } from "@/lib/subjects";
 import { Logo } from "@/components/ui/Logo";
 
 /**
- * Monochrome, human-crafted AP course symbols on transparent RGBA canvases
- * Renders the authentic white RGBA AP subject icon for each course
- * (`/icons/courses/{slug}.png`) across both frosted-glass light mode and neutral night mode.
+ * Monochrome, human-crafted AP course symbols on transparent RGBA canvases:
+ * - Light / day mode: crisp dark strokes (`/icons/courses/{slug}-dark.png`)
+ * - Night mode (`.dark`): pure white strokes (`/icons/courses/{slug}-white.png`)
  */
-
 export const subjectSymbolLabels: Record<SubjectSlug, string> = {
   apush: "U.S. flag — American history",
   "ap-lang": "Open book — rhetoric and composition",
@@ -23,23 +22,70 @@ interface SubjectMarkProps {
   className?: string;
   /** Overrides the default, human-readable symbol description. */
   label?: string;
+  /** Use `"light"` inside permanently dark badges so the white symbol renders in both modes. */
+  tone?: "auto" | "light";
 }
 
-export function SubjectMark({ subject, size = 32, className, label }: SubjectMarkProps) {
+export function SubjectMark({
+  subject,
+  size = 32,
+  className,
+  label,
+  tone = "auto",
+}: SubjectMarkProps) {
+  const resolvedLabel = label ?? subjectSymbolLabels[subject];
+  const sharedClass = ["subject-mark subject-mark-img select-none object-contain", className]
+    .filter(Boolean)
+    .join(" ");
+
+  if (tone === "light") {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={`/icons/courses/${subject}-white.png`}
+        width={size}
+        height={size}
+        alt={resolvedLabel}
+        decoding="async"
+        draggable={false}
+        style={{ width: size, height: size }}
+        className={sharedClass}
+      />
+    );
+  }
+
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={`/icons/courses/${subject}.png`}
-      width={size}
-      height={size}
-      alt={label ?? subjectSymbolLabels[subject]}
-      decoding="async"
-      draggable={false}
+    <span
+      className="subject-mark-pair inline-flex shrink-0 items-center justify-center"
       style={{ width: size, height: size }}
-      className={["subject-mark subject-mark-img select-none object-contain", className]
-        .filter(Boolean)
-        .join(" ")}
-    />
+      role="img"
+      aria-label={resolvedLabel}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`/icons/courses/${subject}-dark.png`}
+        width={size}
+        height={size}
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+        draggable={false}
+        style={{ width: size, height: size }}
+        className={`${sharedClass} subject-mark-day`}
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`/icons/courses/${subject}-white.png`}
+        width={size}
+        height={size}
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+        draggable={false}
+        style={{ width: size, height: size }}
+        className={`${sharedClass} subject-mark-night`}
+      />
+    </span>
   );
 }
 

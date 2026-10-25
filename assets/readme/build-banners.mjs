@@ -29,7 +29,8 @@ const courses = [
   { slug: "ap-research", label: "AP Research", w: 154 },
 ].map((c) => ({
   ...c,
-  iconB64: readFileSync(join(rootDir, `public/icons/courses/${c.slug}.png`)).toString("base64"),
+  darkIconB64: readFileSync(join(rootDir, `public/icons/courses/${c.slug}-dark.png`)).toString("base64"),
+  whiteIconB64: readFileSync(join(rootDir, `public/icons/courses/${c.slug}-white.png`)).toString("base64"),
 }));
 
 const dejavuDir = "/usr/share/fonts/truetype/dejavu";
@@ -86,18 +87,22 @@ function buildBannerSvg(mode) {
   const faint = isDark ? "#a8a8a8" : "#454545";
   const logoFill = isDark ? "#ffffff" : "#111111";
 
-  // Course pills layout inside main hero card
+  // Course pills layout inside main hero card (dark icons on light glass in light mode; white icons in night mode)
   let pillX = 96;
   const pillY = 442;
+  const coursePillFill = isDark ? "rgba(18, 19, 24, 0.78)" : "rgba(255, 255, 255, 0.68)";
+  const coursePillStroke = isDark ? "rgba(255, 255, 255, 0.68)" : "rgba(255, 255, 255, 0.96)";
+  const coursePillText = isDark ? "#ffffff" : "#111111";
   const coursePills = courses
     .map((c) => {
       const x = pillX;
       pillX += c.w + 9;
+      const icon = isDark ? c.whiteIconB64 : c.darkIconB64;
       return `
         <g transform="translate(${x} ${pillY})">
-          <rect width="${c.w}" height="42" rx="21" fill="${darkPillFill}" stroke="rgba(255,255,255,0.84)" stroke-width="1.2" />
-          <image href="data:image/png;base64,${c.iconB64}" x="12" y="9" width="24" height="24" />
-          <text x="42" y="26" font-family="${SANS}" font-size="13.5" font-weight="600" fill="#ffffff">${c.label}</text>
+          <rect width="${c.w}" height="42" rx="21" fill="${coursePillFill}" stroke="${coursePillStroke}" stroke-width="1.2" />
+          <image href="data:image/png;base64,${icon}" x="12" y="9" width="24" height="24" />
+          <text x="42" y="26" font-family="${SANS}" font-size="13.5" font-weight="600" fill="${coursePillText}">${c.label}</text>
         </g>`;
     })
     .join("");

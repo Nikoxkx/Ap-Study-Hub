@@ -139,7 +139,7 @@ export function StudyDashboard({
       <GlassCard as="header" padding="lg" className="study-hero-card !mb-0 p-7 sm:p-9">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
           <div
-            className="study-hero-mark flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/65 bg-black/28 p-2.5 dark:border-white/25 dark:bg-white/10"
+            className="study-hero-mark flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/80 bg-white/45 p-2.5 dark:border-white/25 dark:bg-white/10"
             title={selectedSubject?.symbolLabel ?? "All seven courses"}
           >
             {selectedSubject ? (
@@ -178,15 +178,9 @@ export function StudyDashboard({
             <button
               type="button"
               aria-pressed={selectedCourse === "all"}
+              data-active={selectedCourse === "all" ? "true" : "false"}
               onClick={() => selectCourse("all")}
-              className="inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[0.84rem] font-medium transition-all"
-              style={{
-                background:
-                  selectedCourse === "all" ? "rgba(18, 18, 18, 0.78)" : "rgba(24, 24, 24, 0.34)",
-                borderColor:
-                  selectedCourse === "all" ? "#ffffff" : "rgba(255, 255, 255, 0.6)",
-                color: "#ffffff",
-              }}
+              className="recall-course-pill"
             >
               <span>All seven courses</span>
             </button>
@@ -198,16 +192,17 @@ export function StudyDashboard({
                   key={course.slug}
                   type="button"
                   aria-pressed={active}
+                  data-active={active ? "true" : "false"}
                   onClick={() => selectCourse(course.slug)}
-                  className="inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[0.84rem] font-medium transition-all"
-                  style={{
-                    background: active ? "rgba(18, 18, 18, 0.78)" : "rgba(24, 24, 24, 0.34)",
-                    borderColor: active ? "#ffffff" : "rgba(255, 255, 255, 0.6)",
-                    color: "#ffffff",
-                  }}
+                  className="recall-course-pill"
                 >
                   {subj ? (
-                    <SubjectMark subject={subj.mark} size={15} label={subj.symbolLabel} />
+                    <SubjectMark
+                      subject={subj.mark}
+                      size={17}
+                      label={subj.symbolLabel}
+                      className="recall-course-pill-icon"
+                    />
                   ) : null}
                   <span>{course.label}</span>
                 </button>

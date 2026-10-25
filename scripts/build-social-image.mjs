@@ -27,7 +27,7 @@ const courses = [
   { slug: "ap-research", label: "AP Research", w: 150 },
 ].map((c) => ({
   ...c,
-  iconB64: readFileSync(join(root, `public/icons/courses/${c.slug}.png`)).toString("base64"),
+  iconB64: readFileSync(join(root, `public/icons/courses/${c.slug}-dark.png`)).toString("base64"),
 }));
 
 const dejavuDir = "/usr/share/fonts/truetype/dejavu";
@@ -79,9 +79,9 @@ const coursePills = courses
     pillX += c.w + 8;
     return `
       <g transform="translate(${x} ${pillY})">
-        <rect width="${c.w}" height="40" rx="20" fill="rgba(20, 20, 22, 0.64)" stroke="rgba(255,255,255,0.84)" stroke-width="1.2" />
+        <rect width="${c.w}" height="40" rx="20" fill="rgba(255, 255, 255, 0.70)" stroke="rgba(255,255,255,0.96)" stroke-width="1.2" />
         <image href="data:image/png;base64,${c.iconB64}" x="11" y="9" width="22" height="22" />
-        <text x="39" y="25" font-family="${SANS}" font-size="13" font-weight="600" fill="#ffffff">${c.label}</text>
+        <text x="39" y="25" font-family="${SANS}" font-size="13" font-weight="600" fill="#111111">${c.label}</text>
       </g>`;
   })
   .join("");
