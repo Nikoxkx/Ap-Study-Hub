@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* ==========================================================================
    Typefaces — self-hosted, latin subset only, variable weight.
@@ -2988,7 +2989,7 @@ main :has(:fullscreen) {
   pointer-events: auto;
 }
 
-/* Day/night AP class symbols: dark RGBA in day mode, pure white RGBA in night mode */
+/* Single-element AP class symbols: dark RGBA in day mode, pure white RGBA in night mode */
 .subject-mark-img {
   display: inline-block;
   flex-shrink: 0;
@@ -2996,20 +2997,8 @@ main :has(:fullscreen) {
   transition: transform 200ms var(--ease-snap);
 }
 
-.subject-mark-day {
-  display: inline-block;
-}
-
-.subject-mark-night {
-  display: none;
-}
-
-.dark .subject-mark-day {
-  display: none;
-}
-
-.dark .subject-mark-night {
-  display: inline-block;
+.dark .subject-mark-auto {
+  filter: brightness(0) invert(1);
 }
 
 /* Interactive course pills, flip card & action links (StudySystemVisual & StudyDashboard) */
@@ -3143,199 +3132,6 @@ main :has(:fullscreen) {
   background: rgba(255, 255, 255, 0.16);
   border-color: #ffffff;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.38);
-}
-
-/* Isometric 5-Layer Instagram Profile Tooltip (@yei.leyrd) */
-.ig-tooltip-wrap .tooltip-container {
-  position: relative;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 17px;
-  border-radius: 10px;
-}
-
-.ig-tooltip-wrap .tooltip {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: max-content;
-  transform: translateX(-50%);
-  padding: 10px;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: all 0.3s;
-  border-radius: 15px;
-  z-index: 30;
-  box-shadow:
-    inset 5px 5px 5px rgba(0, 0, 0, 0.2),
-    inset -5px -5px 15px rgba(255, 255, 255, 0.1),
-    5px 5px 15px rgba(0, 0, 0, 0.3),
-    -5px -5px 15px rgba(255, 255, 255, 0.1);
-}
-
-.ig-tooltip-wrap .profile {
-  background: #2a2b2f;
-  border-radius: 10px 15px;
-  padding: 10px 14px;
-  border: 1px solid #52382f;
-}
-
-.ig-tooltip-wrap .tooltip-container:hover .tooltip,
-.ig-tooltip-wrap .tooltip-container:focus-within .tooltip {
-  top: -138px;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.ig-tooltip-wrap .icon {
-  text-decoration: none;
-  color: #fff;
-  display: block;
-  position: relative;
-}
-
-.ig-tooltip-wrap .layer {
-  width: 55px;
-  height: 55px;
-  position: relative;
-  transition: transform 0.3s;
-}
-
-.ig-tooltip-wrap .icon:hover .layer,
-.ig-tooltip-wrap .icon:focus-visible .layer {
-  transform: rotate(-35deg) skew(20deg);
-}
-
-.ig-tooltip-wrap .layer span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  border: 1px solid #e6683c;
-  border-radius: 15px;
-  transition: all 0.3s;
-}
-
-.ig-tooltip-wrap .layer span,
-.ig-tooltip-wrap .text {
-  color: #e6683c;
-  border-color: #e6683c;
-}
-
-.ig-tooltip-wrap .icon:hover .layer span,
-.ig-tooltip-wrap .icon:focus-visible .layer span {
-  box-shadow: -1px 1px 3px #e6683c;
-}
-
-.ig-tooltip-wrap .icon .text {
-  position: absolute;
-  left: 50%;
-  bottom: -5px;
-  opacity: 0;
-  font-weight: 500;
-  white-space: nowrap;
-  transform: translateX(-50%);
-  transition: bottom 0.3s ease, opacity 0.3s ease;
-}
-
-.ig-tooltip-wrap .icon:hover .text,
-.ig-tooltip-wrap .icon:focus-visible .text {
-  bottom: -35px;
-  opacity: 1;
-}
-
-.ig-tooltip-wrap .icon:hover .layer span:nth-child(1),
-.ig-tooltip-wrap .icon:focus-visible .layer span:nth-child(1) {
-  opacity: 0.2;
-}
-
-.ig-tooltip-wrap .icon:hover .layer span:nth-child(2),
-.ig-tooltip-wrap .icon:focus-visible .layer span:nth-child(2) {
-  opacity: 0.4;
-  transform: translate(5px, -5px);
-}
-
-.ig-tooltip-wrap .icon:hover .layer span:nth-child(3),
-.ig-tooltip-wrap .icon:focus-visible .layer span:nth-child(3) {
-  opacity: 0.6;
-  transform: translate(10px, -10px);
-}
-
-.ig-tooltip-wrap .icon:hover .layer span:nth-child(4),
-.ig-tooltip-wrap .icon:focus-visible .layer span:nth-child(4) {
-  opacity: 0.8;
-  transform: translate(15px, -15px);
-}
-
-.ig-tooltip-wrap .icon:hover .layer span:nth-child(5),
-.ig-tooltip-wrap .icon:focus-visible .layer span:nth-child(5) {
-  opacity: 1;
-  transform: translate(20px, -20px);
-}
-
-.ig-tooltip-wrap .instagramSVG {
-  font-size: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(
-    45deg,
-    #f09433 0%,
-    #e6683c 25%,
-    #dc2743 50%,
-    #cc2366 75%,
-    #bc1888 100%
-  );
-}
-
-.ig-tooltip-wrap .user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.ig-tooltip-wrap .img {
-  width: 48px;
-  height: 48px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #e6683c;
-  border: 1px solid #e6683c;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-}
-
-.ig-tooltip-wrap .name {
-  font-size: 16px;
-  font-weight: 700;
-  color: #e6683c;
-  line-height: 1.2;
-}
-
-.ig-tooltip-wrap .username {
-  font-size: 14px;
-  color: #ffffff;
-}
-
-.ig-tooltip-wrap .details {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  color: #fff;
-  text-align: left;
-}
-
-.ig-tooltip-wrap .about {
-  color: #ccc;
-  font-size: 12.5px;
-  padding-top: 6px;
-  text-align: left;
 }
 
 /* 12. Realistic Loose-Leaf Paper (realistichandwriting.com spec) ------------ */

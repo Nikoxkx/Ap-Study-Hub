@@ -4,7 +4,6 @@ import { getTotals } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { SiteMark, SubjectMark } from "./SubjectMark";
 import { GlassCard } from "./ui/GlassCard";
-import { InstagramTooltip } from "./ui/InstagramTooltip";
 
 const columns = [
   {
@@ -154,10 +153,6 @@ export function SiteFooter() {
             </p>
           </div>
         </GlassCard>
-
-        <div className="mt-10 flex flex-col items-center">
-          <InstagramTooltip />
-        </div>
       </div>
     </footer>
   );
