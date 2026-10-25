@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, ExternalLink } from "@/components/Furniture";
+import { SubjectMark } from "@/components/SubjectMark";
 import { VideoThumbnail } from "@/components/VideoThumbnail";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { SearchInput } from "@/components/ui/SearchInput";
@@ -133,7 +134,12 @@ export default async function VideosPage({ searchParams }: { searchParams: Searc
                     <VideoThumbnail video={video} loading="lazy" />
                   </span>
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="tag">{subject?.familiar ?? video.courseSlug}</span>
+                    <span className="tag inline-flex items-center gap-1.5">
+                      {subject ? (
+                        <SubjectMark subject={subject.mark} size={13} label={subject.symbolLabel} />
+                      ) : null}
+                      <span>{subject?.familiar ?? video.courseSlug}</span>
+                    </span>
                     <span className="label">Unit {video.unit}</span>
                   </div>
                 </div>

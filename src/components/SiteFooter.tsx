@@ -2,7 +2,7 @@ import Link from "next/link";
 import { subjects, formatExamDate } from "@/lib/subjects";
 import { getTotals } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { SiteMark } from "./SubjectMark";
+import { SiteMark, SubjectMark } from "./SubjectMark";
 import { GlassCard } from "./ui/GlassCard";
 
 const columns = [
@@ -70,15 +70,18 @@ export function SiteFooter() {
 
             <nav aria-label="Courses">
               <h2 className="label mb-3">Courses</h2>
-              <ul className="space-y-1.5">
+              <ul className="space-y-2">
                 {subjects.map((subject) => (
                   <li key={subject.slug}>
                     <Link
                       href={`/course/${subject.slug}`}
-                      className="link-draw text-[0.875rem]"
+                      className="inline-flex items-center gap-2 link-draw text-[0.875rem]"
                       style={{ color: "var(--ink-soft)" }}
                     >
-                      {subject.familiar}
+                      <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-white/50 bg-black/28 dark:border-white/20 dark:bg-white/10">
+                        <SubjectMark subject={subject.mark} size={13} label={subject.symbolLabel} />
+                      </span>
+                      <span>{subject.familiar}</span>
                     </Link>
                   </li>
                 ))}

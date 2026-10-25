@@ -158,13 +158,6 @@ export default function HomePage() {
 
               <div className="mt-6">
                 <StudySystemVisual />
-                <p
-                  className="mt-3 text-[0.75rem]"
-                  style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
-                >
-                  Read the teaching → retrieve cold on a card → test with original practice → jump
-                  straight back to the exact section when an answer misses.
-                </p>
               </div>
             </div>
 
@@ -232,7 +225,7 @@ export default function HomePage() {
                   <div>
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <span
-                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-black/15 bg-transparent dark:border-white/25"
+                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/65 bg-black/28 dark:border-white/25 dark:bg-white/10"
                         title={subject.symbolLabel}
                       >
                         <SubjectMark subject={subject.mark} size={24} label={subject.symbolLabel} />
@@ -392,8 +385,14 @@ export default function HomePage() {
                   .map((subject) => (
                     <tr key={subject.slug}>
                       <th scope="row">
-                        <Link href={`/course/${subject.slug}`} className="link-underlined">
-                          {subject.official}
+                        <Link
+                          href={`/course/${subject.slug}`}
+                          className="inline-flex items-center gap-2.5 link-underlined"
+                        >
+                          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/55 bg-black/28 dark:border-white/20 dark:bg-white/10">
+                            <SubjectMark subject={subject.mark} size={15} label={subject.symbolLabel} />
+                          </span>
+                          <span>{subject.official}</span>
                         </Link>
                       </th>
                       <td>

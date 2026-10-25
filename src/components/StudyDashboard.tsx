@@ -133,46 +133,91 @@ export function StudyDashboard({
 
   return (
     <div
-      className={`study-dashboard space-y-6 ${selectedSubject ? "subject-scope" : ""}`}
+      className={`study-dashboard space-y-10 ${selectedSubject ? "subject-scope" : ""}`}
       style={selectedSubject ? subjectVars(selectedSubject) : undefined}
     >
-      <GlassCard as="header" padding="lg" className="study-hero !mb-0">
-        <div
-          className="study-hero-mark flex items-center justify-center rounded-2xl border border-black/15 bg-transparent p-2.5 dark:border-white/25"
-          title={selectedSubject?.symbolLabel ?? "All seven courses"}
-        >
-          {selectedSubject ? (
-            <SubjectMark subject={selectedSubject.mark} size={36} label={selectedSubject.symbolLabel} />
-          ) : (
-            <BanterLoader size={36} label="Connected Study Desk" />
-          )}
-        </div>
-        <div>
-          <p className="label">Your private study desk</p>
-          <h1>{tabHeadings[activeTab]}</h1>
-          <p>
-            One connected queue for lessons, videos, recall, mistakes, writing, and focused work.
-            No account; your progress stays here unless you choose to sync it.
-          </p>
-        </div>
-        <label className="study-course-select">
-          <span className="label">Course filter</span>
-          <select
-            className="field mt-2"
-            value={selectedCourse}
-            onChange={(event) => selectCourse(event.target.value as SubjectSlug | "all")}
+      <GlassCard as="header" padding="lg" className="study-hero-card !mb-0 p-7 sm:p-9">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
+          <div
+            className="study-hero-mark flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/65 bg-black/28 p-2.5 dark:border-white/25 dark:bg-white/10"
+            title={selectedSubject?.symbolLabel ?? "All seven courses"}
           >
-            <option value="all">All seven courses</option>
-            {courses.map((course) => (
-              <option key={course.slug} value={course.slug}>
-                {course.label}
-              </option>
-            ))}
-          </select>
-        </label>
+            {selectedSubject ? (
+              <SubjectMark subject={selectedSubject.mark} size={36} label={selectedSubject.symbolLabel} />
+            ) : (
+              <BanterLoader size={36} label="Connected Study Desk" />
+            )}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="label mb-3">Your private study desk</p>
+            <h1
+              className="text-[clamp(2rem,1.5rem+1.8vw,3rem)] font-semibold leading-[1.08]"
+              style={{ letterSpacing: "-0.03em" }}
+            >
+              {tabHeadings[activeTab]}
+            </h1>
+            <p
+              className="mt-4 max-w-[62ch] text-[0.95rem] leading-relaxed"
+              style={{ color: "var(--ink-soft)" }}
+            >
+              One connected queue for lessons, videos, recall, mistakes, writing, and focused work.
+              No account; your progress stays here unless you choose to sync it.
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="mt-8 border-t border-white/60 pt-6 dark:border-white/15"
+          role="group"
+          aria-labelledby="study-course-filter-label"
+        >
+          <p id="study-course-filter-label" className="label mb-3.5">
+            Course filter
+          </p>
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            <button
+              type="button"
+              aria-pressed={selectedCourse === "all"}
+              onClick={() => selectCourse("all")}
+              className="inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[0.84rem] font-medium transition-all"
+              style={{
+                background:
+                  selectedCourse === "all" ? "rgba(18, 18, 18, 0.78)" : "rgba(24, 24, 24, 0.34)",
+                borderColor:
+                  selectedCourse === "all" ? "#ffffff" : "rgba(255, 255, 255, 0.6)",
+                color: "#ffffff",
+              }}
+            >
+              <span>All seven courses</span>
+            </button>
+            {courses.map((course) => {
+              const subj = subjects.find((s) => s.slug === course.slug);
+              const active = selectedCourse === course.slug;
+              return (
+                <button
+                  key={course.slug}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => selectCourse(course.slug)}
+                  className="inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[0.84rem] font-medium transition-all"
+                  style={{
+                    background: active ? "rgba(18, 18, 18, 0.78)" : "rgba(24, 24, 24, 0.34)",
+                    borderColor: active ? "#ffffff" : "rgba(255, 255, 255, 0.6)",
+                    color: "#ffffff",
+                  }}
+                >
+                  {subj ? (
+                    <SubjectMark subject={subj.mark} size={15} label={subj.symbolLabel} />
+                  ) : null}
+                  <span>{course.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </GlassCard>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center py-1">
         <ClassTabs
           name="study-desk-tabs"
           ariaLabel="Study dashboard sections"
@@ -183,7 +228,7 @@ export function StudyDashboard({
             label:
               tab.id === "mistakes" && unresolved ? `${tab.label} (${unresolved})` : tab.label,
           }))}
-          className="max-w-full"
+          className="study-desk-tabs max-w-full"
         />
       </div>
 

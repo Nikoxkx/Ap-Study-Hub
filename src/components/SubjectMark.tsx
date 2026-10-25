@@ -3,7 +3,8 @@ import { Logo } from "@/components/ui/Logo";
 
 /**
  * Monochrome, human-crafted AP course symbols on transparent RGBA canvases
- * (`/icons/courses/{slug}.png`), inverting cleanly in neutral night mode.
+ * Renders the authentic white RGBA AP subject icon for each course
+ * (`/icons/courses/{slug}.png`) across both frosted-glass light mode and neutral night mode.
  */
 
 export const subjectSymbolLabels: Record<SubjectSlug, string> = {

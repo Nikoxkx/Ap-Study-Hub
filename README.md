@@ -1,16 +1,16 @@
 <div align="center">
   <a href="https://v0-project-roan-six-20.vercel.app">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/banner-dark.svg" />
-      <source media="(prefers-color-scheme: light)" srcset="./assets/readme/banner-light.svg" />
-      <img src="./assets/readme/banner-light.svg" width="100%" alt="AP Study Hub — learn seven AP subjects deeply with zero noise" />
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/banner-dark.png" />
+      <source media="(prefers-color-scheme: light)" srcset="./assets/readme/banner-light.png" />
+      <img src="./assets/readme/banner-light.png" width="100%" alt="AP Study Hub — seven AP courses on a transparent frosted-glass study workspace" />
     </picture>
   </a>
 
   <br />
 
   <p>
-    <strong>Seven AP courses in one calm, transparent glass study hub — with 51 cited lessons, recall cards, original practice, real unit-video previews, and college-ruled notebook scratch paper.</strong>
+    <strong>Seven AP courses in one calm, transparent glass study hub — with 51 cited lessons, 405 recall cards, 240 original practice questions, 66 full-screen unit videos, and loose-leaf scratch paper.</strong>
   </p>
 
   <p>
@@ -44,32 +44,33 @@ Studying for several AP classes at once usually turns into eleven browser tabs �
 
 **AP Study Hub** puts the entire study loop for seven AP subjects inside one quiet, zero-account workspace:
 
-1. **Read deeply** — 51 full-length lessons (`510` cited prose paragraphs, learning objectives, worked examples, primary sources, and common mistakes).
-2. **Recall cold** — 405 active-recall flashcards (course decks + unit glossary terms) with keyboard flip, Fisher–Yates shuffle, and local spaced-review buckets.
-3. **Respond under exam conditions** — 240 original multiple-choice questions that route wrong answers back to the exact lesson section, plus timed essay outlines and mock papers with lined scratch paper.
+- **Complete cited lessons** — 51 full-length unit lessons (`510` cited prose paragraphs, learning objectives, worked examples, primary sources, and common mistakes).
+- **Cold-recall decks** — 405 active-recall flashcards (course decks + unit glossary terms) with keyboard flip, Fisher–Yates shuffle, and local spaced-review scheduling.
+- **Exam-register practice & timed writing** — 240 original multiple-choice questions that link wrong answers back to the exact lesson section, plus timed essay outlines and mock papers with college-ruled scratch paper.
 
 There are **no accounts, no paywalls, no ad scripts, and no analytics trackers**. Progress, due cards, missed questions, and timed drafts live locally in `localStorage` on your own device and can be exported to JSON or Markdown at any time.
 
 ---
 
-## Interface & Design System (2026–27 Overhaul)
+## Interface & Design System (2026–27 Edition)
 
-The entire front-end was rebuilt around calm legibility, transparent glass surfaces, human-made monochrome iconography, and physical study materials:
+The front-end is built around calm legibility, colorless frosted glass over painted classroom scenes, crisp white AP course symbols, and tactile physical study tools:
 
-- **Per-route painted classroom & corridor wallpapers (`PageBackground`)** — Full-viewport illustrations (`public/bg-music-class.jpg`, `bg-corridor.jpg`, `bg-class.jpg`, `bg-class2.jpg`) anchor distinct route families (`/`, `/study`, `/course/[slug]`, and deep study sub-tabs) without ever repeating inside interior containers. Switching into `.dark` mode disables photographic backgrounds (`background-image: none`) in favor of a pure neutral charcoal canvas (`#121212`).
+- **Per-route painted classroom & corridor wallpapers (`PageBackground`)** — Full-viewport illustrations (`public/bg-music-class.jpg`, `bg-corridor.jpg`, `bg-class.jpg`, `bg-class2.jpg`) anchor distinct route families (`/`, `/study`, `/course/[slug]`, and deep study sub-tabs) without repeating inside interior containers. Switching into `.dark` mode disables photographic backgrounds (`background-image: none`) in favor of a pure neutral charcoal canvas (`#121212`).
 - **Hue-free frosted glass surfaces (`.glass-box`)** — Every card, lesson reader, header bar, and modal uses colorless translucent glass (`backdrop-filter: blur(5px)`, crisp `1px` borders, zero color tints) paired with monochrome ink tokens and a soft classroom-light periwinkle text `::selection` highlight.
 - **Single-row leveled navigation (`SiteHeaderShell`, `TopClassBar`, `MobileNav`)** — `AP Study Hub`, `AP Courses`, `Jump to ⌘K`, and the compact `Menu` button sit leveled on one `38px` row:
-  - **Hover-reveal `AP Courses` bar** (with a touch-friendly bottom sheet on mobile) previews all 7 courses without cluttering the viewport and fades away when unhovered or on scroll.
+  - **Hover-reveal `AP Courses` bar** (plus a touch-friendly popover on mobile) displays all 7 courses with their white AP symbols and fades away cleanly when unhovered or on scroll.
   - **Unified `Menu` popover** houses instant `SiteSearch`, `Study Desk`, hub links, and the interactive Sun / Moon / Clouds / Stars `ThemeSwitch`.
-  - **Directional scroll fade** smoothly hides the header while reading downward and restores it on upward scroll without breaking fixed modals (`CommandPalette`).
-- **Universal geometric & kinetic symbols** —
-  - **45°-rotated 7-square `Logo`** — The universal emblem across the masthead, footer, README banners, and social preview card.
-  - **Monochrome `SubjectMark` course icons** — Seven transparent RGBA black-and-white subject illustrations (`public/icons/courses/*.png`: waving U.S. flag, open book, source documents, classical capitol, DNA double helix, right triangle trigonometry, magnifying glass) that invert cleanly in `.dark` mode.
-  - **3-circle + 3-shadow bouncing `LoadingSpinner`** — Displayed seamlessly whenever routes (`loading.tsx`) or async components (`SiteSearch`, `StudyDashboard`, `AdvancedDesk`, `UnitVideoPlayer`, `OfflinePackButton`) load.
-  - **9-box `BanterLoader`** — Tactile geometric accent accompanying the Study Desk workspace.
-- **Realistic loose-leaf notebook paper (`StudySystemVisual`, `NotebookPaper`, `.scratch-paper`)** — Styled directly after `realistichandwriting.com` loose-leaf sheets (`#ffffff` stock, full-height `#de7c7b` vertical margin rule, `#b8cee5` horizontal `32px` blue lines inset from the outer edges, clean white top & bottom margins, zero synthetic borders or dots) with self-hosted `Kalam` 300 ballpoint ink (`#30455a`) aligned directly onto every blue rule across both the homepage Method breakdown and every scratchpad / studio draft.
+  - **Directional scroll fade** hides the header while reading downward and restores it on upward scroll without breaking fixed modals (`CommandPalette`).
+- **Universal geometric & white AP course symbols** —
+  - **45°-rotated 7-square `Logo`** — Universal geometric emblem across the masthead, footer, README banners, and social preview card.
+  - **White RGBA `SubjectMark` course symbols** — Seven pure-white (`#FFFFFF`) transparent RGBA subject icons (`public/icons/courses/*.png`: waving U.S. flag, open book, source documents, classical capitol, DNA double helix, right triangle `cos θ`, magnifying glass) rendered consistently across the header bar, course cards, Study Desk filters, video registry, command palette, exam schedule, and footer.
+  - **3-circle + 3-shadow bouncing `LoadingSpinner`** — Displayed seamlessly across route `loading.tsx` boundaries and async panels (`SiteSearch`, `StudyDashboard`, `AdvancedDesk`, `UnitVideoPlayer`, `OfflinePackButton`).
+  - **9-box `BanterLoader`** — Tactile geometric symbol accompanying the connected Study Desk workspace.
+- **Interactive cold-recall preview & spacious Study Desk (`StudySystemVisual`, `StudyDashboard`)** — Visitors can sample live active-recall prompts across all seven AP courses right inside the homepage library window, then open a spacious local-first Study Desk (`/study`) with course symbol filters, spaced review, mistake notebooks, study plans, focus timers, and portable data backups.
+- **Realistic loose-leaf scratch paper (`NotebookPaper`, `.scratch-paper`)** — Modeled on `realistichandwriting.com` loose-leaf sheets (`#ffffff` paper stock, full-height `#de7c7b` vertical margin rule, `#b8cee5` horizontal `32px` blue lines inset from the outer edges, clean white top & bottom margins, zero synthetic dots) with self-hosted `Kalam` 300 ballpoint ink (`#30455a`) across studio notes, essay outlines, and mock exam scratchpads.
 - **Conflict-free full-screen unit videos (`UnitVideoPlayer`)** — Supports both native browser fullscreen (`fullscreen` Permissions-Policy + `allowFullScreen`) and a zero-reload edge-to-edge full-screen expansion (`Esc` to exit) that strips ancestor glass/scroll-fade stacking contexts so videos never clip or collide with the header.
-- **60fps bidirectional scroll fade (`ScrollEffects`)** — Time-normalized `requestAnimationFrame` exponential interpolation (`smoothstep` viewport edge bands) gently fades sections in and out at both top and bottom viewport edges without abrupt mouse-wheel snapping, while honoring `prefers-reduced-motion: reduce`.
+- **60fps bidirectional scroll fade (`ScrollEffects`)** — Time-normalized `requestAnimationFrame` exponential interpolation (`smoothstep` viewport edge bands) gently fades sections in and out at both top and bottom viewport edges while honoring `prefers-reduced-motion: reduce`.
 
 ---
 
@@ -77,26 +78,26 @@ The entire front-end was rebuilt around calm legibility, transparent glass surfa
 
 Every count in the UI and metadata is computed at build time from `src/content/` and verified by `pnpm check`.
 
-| Course | Mark | Units & Lessons | Cited Paragraphs | Recall Cards | Practice Qs | Essays & Mock Papers | Unit Videos |
+| Course | White Symbol | Units & Lessons | Cited Paragraphs | Recall Cards | Practice Qs | Essays & Mock Papers | Unit Videos |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **AP U.S. History** (`apush`) | U.S. flag | 9 | 90 | 89 | 48 | 1 essay · 1 mock | 13 |
+| **AP U.S. History** (`apush`) | Waving U.S. flag | 9 | 90 | 89 | 48 | 1 essay · 1 mock | 13 |
 | **AP English Language** (`ap-lang`) | Open book | 9 | 90 | 81 | 48 | 3 essays · 1 mock | 9 |
 | **AP Seminar** (`ap-seminar`) | Source documents | 5 | 50 | 56 | 38 | 1 essay · 1 mock | 10 |
 | **AP U.S. Gov & Politics** (`ap-gov`) | Classical capitol | 5 | 50 | 40 | 25 | 0 · 0 | 6 |
 | **AP Biology** (`ap-bio`) | DNA double helix | 8 | 80 | 52 | 31 | 0 · 0 | 8 |
 | **AP Calculus AB** (`ap-calc`) | Right triangle (`cos θ`) | 10 | 100 | 55 | 30 | 0 · 0 | 10 |
 | **AP Research** (`ap-research`) | Magnifying glass | 5 | 50 | 32 | 20 | 1 essay · 0 mocks | 10 |
-| **Total** | **7 icons** | **51** | **510** | **405** | **240** | **6 essays · 3 mocks** | **66** |
+| **Total** | **7 white RGBA icons** | **51** | **510** | **405** | **240** | **6 essays · 3 mocks** | **66** |
 
 ---
 
-## Architecture & Study Loop
+## Architecture & Study Flow
 
 ```text
-  Read deeply (/course/[slug]/notes)         Recall cold (/cards)              Respond (/practice · /essays · /exam)
+  Lessons (/course/[slug]/notes)            Recall Decks (/cards)             Practice & Studio (/practice · /exam)
  ┌──────────────────────────────────┐      ┌──────────────────────────┐      ┌───────────────────────────────────────┐
  │ 51 lessons · 510 cited paragraphs│ ───► │ 405 recall cards         │ ───► │ 240 MCQs + 6 essays + 3 mock papers   │
- │ Objectives, worked examples,     │      │ Space/Enter flip,        │      │ Wrong answers link straight back to   │
+ │ Objectives, worked examples,     │      │ Space/Enter flip,        │      │ Wrong answers jump straight back to   │
  │ primary sources, unit videos     │ ◄─── │ local SM-2 review queue  │ ◄─── │ the exact lesson section & scratchpad │
  └──────────────────────────────────┘      └──────────────────────────┘      └───────────────────────────────────────┘
 ```
@@ -127,9 +128,9 @@ Run the full validation and production build pipeline before opening a PR:
 ```bash
 corepack pnpm validate:content        # 51 lessons, 510 paragraphs, citations, glossary & practice schema
 corepack pnpm validate:study          # 645 study items, KaTeX math, scheduling, backups, plans & calendar
-corepack pnpm validate:presentation   # dark-mode neutral hex tokens, monochrome marks, CSP, 1200×630 OG PNGs
+corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 66 verified 11-char YouTube IDs, course/unit mapping & thumbnails
-corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.svg
+corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
 corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png
 corepack pnpm check                   # runs all 4 validators + tsc --noEmit + eslint + next build
 ```
@@ -141,9 +142,9 @@ corepack pnpm check                   # runs all 4 validators + tsc --noEmit + e
 ```text
 assets/
   readme/
-    build-banners.mjs           deterministic SVG generator (embeds SIL-OFL Kalam WOFF2)
-    banner-light.svg            light-mode frosted glass + loose-leaf paper README banner
-    banner-dark.svg             dark-mode frosted glass + loose-leaf paper README banner
+    build-banners.mjs           renders README banners over bg-music-class.jpg with frosted glass UI & Logo
+    banner-light.png            1600×580 light-mode classroom wallpaper + frosted glass UI banner
+    banner-dark.png             1600×580 dark-mode twilight classroom + smoked glass UI banner
   social/
     og-image.svg                1200×630 Open Graph / social card source SVG
 public/
@@ -152,7 +153,7 @@ public/
   bg-class.jpg                  wallpaper: /course/[slug], /cards, /videos, /guides
   bg-class2.jpg                 wallpaper: /notes, /practice, /studio, /essays, /exam, /resources, /print
   fonts/                        self-hosted WOFF2 subsets (Newsreader, Public Sans, JetBrains Mono, Kalam)
-  icons/courses/                7 transparent RGBA monochrome AP course symbols
+  icons/courses/                7 pure-white (#FFFFFF) transparent RGBA AP course symbols
   og-image.png                  compiled 1200×630 Open Graph card
   social-preview.png            compiled 1200×630 GitHub / social preview card
   sw.js                         same-origin offline service worker
@@ -161,16 +162,17 @@ scripts/
   validate-study.ts             verifies study catalog joins, KaTeX math, scheduling, backups, and exports
   validate-videos.ts            verifies curated YouTube IDs and unit coverage
   validate-presentation.mjs     enforces neutral dark tokens, SubjectMark icons, video privacy, and PNG headers
-  build-social-image.mjs        renders assets/social/og-image.svg to public/*.png via @resvg/resvg-js
+  build-social-image.mjs        renders 1200×630 social cards over bg-music-class.jpg via @resvg/resvg-js
 src/
   app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
   components/
     SiteHeader.tsx              single-row leveled header bar (Logo, TopClassBar, Jump to ⌘K, MobileNav)
     SiteHeaderShell.tsx         directional scroll-fade shell preserving fixed modal viewports
-    TopClassBar.tsx             hover-reveal AP Courses popover + mobile touch bottom sheet
+    TopClassBar.tsx             hover-reveal AP Courses bar + mobile touch sheet with white AP symbols
     MobileNav.tsx               unified Menu popover (SiteSearch, Study Desk, links, ThemeSwitch)
-    StudySystemVisual.tsx       Kalam 300 handwritten Method sheet locked to 32px blue notebook rules
-    SubjectMark.tsx             7 transparent monochrome course symbols with dark-mode inversion
+    StudySystemVisual.tsx       interactive 7-course cold-recall card preview inside the homepage hero
+    StudyDashboard.tsx          spacious local-first Study Desk with white AP course filter pills & 8 tabs
+    SubjectMark.tsx             7 pure-white RGBA AP course symbols across light glass & neutral night mode
     UnitVideoPlayer.tsx         click-to-load youtube-nocookie player + conflict-free full-screen view
     CardDeck.tsx                keyboard-first active-recall flashcard deck
     PracticeSet.tsx             accessible multiple-choice runner with section-level remediation

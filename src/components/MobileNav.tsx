@@ -187,12 +187,14 @@ export function MobileNav() {
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-[0.84rem] font-medium no-underline transition-colors hover:bg-white/45 dark:hover:bg-white/10"
               >
-                <SubjectMark
-                  subject={subject.mark}
-                  size={15}
-                  label={subject.symbolLabel}
-                  className="shrink-0 opacity-85"
-                />
+                <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/55 bg-black/28 dark:border-white/20 dark:bg-white/10">
+                  <SubjectMark
+                    subject={subject.mark}
+                    size={14}
+                    label={subject.symbolLabel}
+                    className="shrink-0"
+                  />
+                </span>
                 <span className="truncate">{subject.familiar}</span>
               </Link>
             </li>
