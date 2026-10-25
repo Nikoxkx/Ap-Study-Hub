@@ -109,7 +109,10 @@ corepack pnpm validate:videos         # 66 verified 11-char YouTube IDs, course/
 corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
 corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png
 corepack pnpm check                   # runs all 4 validators + tsc --noEmit + eslint + next build
+corepack pnpm audit --audit-level low # checks direct and transitive dependencies for known advisories
 ```
+
+The dependency audit also runs on dependency-changing pull requests, on merges to `main`, and weekly via GitHub Actions. Keep `pnpm-lock.yaml` in sync with `package.json` so the audit checks the versions actually installed.
 
 ---
 
