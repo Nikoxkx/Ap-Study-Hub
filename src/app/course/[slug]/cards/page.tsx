@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!course) return {};
 
   const { subject, counts } = course;
-  const title = `${subject.familiar} flashcards`;
+  const title = `${subject.familiar} recall cards`;
   const description = `${counts.flashcards} ${subject.familiar} cards covering the terms the exam expects you to define. Keyboard-driven, marks what you miss, no account.`;
 
   return {
@@ -44,9 +44,9 @@ export default async function CardsPage({ params }: { params: Params }) {
     <div className="wrap py-12 md:py-16">
       <div className="mx-auto max-w-3xl">
         <header className="mb-9">
-          <p className="label mb-2">{counts.flashcards} cards</p>
+          <p className="label mb-2">{counts.flashcards} cards to recall</p>
           <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
-            {subject.familiar} cards
+            {subject.familiar} recall cards
           </h2>
           <p className="lede mt-4">
             Lesson glossaries now feed this deck automatically, alongside the original course cards.

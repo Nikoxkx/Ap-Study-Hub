@@ -5,13 +5,13 @@ import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Privacy",
+  title: "Privacy · your study stays yours",
   description:
-    "AP Study Hub sets no cookies, runs no analytics, and loads no third-party trackers. Local study data, opt-in video frames, and optional sync are explained plainly.",
+    "No cookies, analytics, or trackers. Real YouTube thumbnails are static images; video frames and optional Study Desk sync are opt-in.",
   alternates: { canonical: "/privacy" },
   openGraph: { images: socialImages,
-    title: "Privacy · AP Study Hub",
-    description: "No cookies, no analytics, no trackers. Local by default, with opt-in video frames and sync explained plainly.",
+    title: "Your study stays yours · AP Study Hub",
+    description: "No cookies, no analytics, no trackers. Static YouTube thumbnails appear on video pages; players and sync are opt-in.",
     url: absoluteUrl("/privacy"),
   },
   twitter: { card: "summary_large_image", images: socialImages },
@@ -101,19 +101,20 @@ export default function PrivacyPage() {
       <div className="wrap py-12 md:py-16">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">Last updated {formatDate(site.policyUpdated)}</p>
+          <p className="label mb-3">Last checked {formatDate(site.policyUpdated)}</p>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
-            Local by default. You choose what leaves.
+            Your work stays yours. You choose what leaves.
           </h1>
           <p className="lede mt-5">
             No account, no cookies, no analytics, no advertising, no trackers, and no fonts loaded
-            from someone else&rsquo;s server. Unit videos and Study Desk sync are both opt-in; the
-            rest of this page explains exactly when a request can leave the site.
+            from someone else&rsquo;s server. Video players and Study Desk sync are opt-in; real
+            YouTube thumbnails are the one automatic third-party image. This page explains exactly
+            when a request can leave the site.
           </p>
         </div>
 
         <section className="mt-14" aria-labelledby="collect-heading">
-          <SectionHead folio="01" title="What is collected" id="collect-heading" />
+          <SectionHead folio="01" title="What this site knows about you" id="collect-heading" />
           <div className="prose">
             <p>
               Nothing by default. There is no account system, no contact form, no newsletter, no
@@ -127,16 +128,18 @@ export default function PrivacyPage() {
               preview is a static image, not a tracking pixel.
             </p>
             <p>
-              Two features can make an outbound request, and both require an explicit action. Pressing
-              play on a unit video loads a privacy-enhanced <code>youtube-nocookie.com</code> frame.
-              Enabling sync in Advanced sends your version-1 study state to the Supabase endpoint you
-              configured, keyed by a peppered hash of a code you hold. Neither happens on page load.
+              A video page automatically fetches the creator&rsquo;s real thumbnail image from
+              <code>i.ytimg.com</code> when the player appears. That is a static image, not a player
+              or script. Two further requests still require an explicit action: pressing play loads a
+              privacy-enhanced <code>youtube-nocookie.com</code> frame, and enabling sync in Advanced
+              sends your version-1 study state to the Supabase endpoint you configured, keyed by a
+              peppered hash of a code you hold. Neither the player nor sync is requested on page load.
             </p>
           </div>
         </section>
 
         <section className="mt-14" aria-labelledby="storage-heading">
-          <SectionHead folio="02" title="What is stored on your device" id="storage-heading">
+          <SectionHead folio="02" title="What your browser keeps for you" id="storage-heading">
             The localStorage keys below hold your own study state. They stay on your machine unless
             you explicitly save a snapshot through Advanced → opt-in sync. Course and paper
             placeholders are replaced by the relevant subject or activity ID.
@@ -175,14 +178,15 @@ export default function PrivacyPage() {
         </section>
 
         <section className="mt-14" aria-labelledby="third-heading">
-          <SectionHead folio="03" title="Third parties" id="third-heading" />
+          <SectionHead folio="03" title="Who else might hear from your browser" id="third-heading" />
           <div className="prose">
             <p>
               The site loads no third-party scripts, fonts, analytics, tag managers, or social
-              widgets. Video players are the one embedded third-party frame: until you press play,
-              the poster is local HTML/CSS. After you press play, YouTube receives the request for the
-              video and its own policy applies. Use “Open on YouTube” if you prefer that boundary to
-              be explicit.
+              widgets. Video pages do load the creator&rsquo;s real thumbnail from YouTube&rsquo;s
+              static image host automatically; it is an image, not a player or script. The embedded
+              video frame is still opt-in: until you press play, no YouTube player is requested.
+              After you press play, YouTube receives the request for the video and its own policy
+              applies. Use “Open on YouTube” if you prefer that boundary to be explicit.
             </p>
             <p>
               Optional sync uses the Supabase edge function you configure in Advanced. The browser
@@ -206,7 +210,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="mt-14" aria-labelledby="rights-heading">
-          <SectionHead folio="04" title="Your rights, and children" id="rights-heading" />
+          <SectionHead folio="04" title="Your choices, and younger students" id="rights-heading" />
           <div className="prose">
             <p>
             Regimes like the GDPR and the CCPA give you rights of access, correction and erasure
@@ -225,7 +229,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="mt-14" aria-labelledby="changes-heading">
-          <SectionHead folio="05" title="If this changes" id="changes-heading" />
+          <SectionHead folio="05" title="If this ever changes" id="changes-heading" />
           <div className="prose">
             <p>
               If the site ever starts collecting anything — it will not, but if it did — this page

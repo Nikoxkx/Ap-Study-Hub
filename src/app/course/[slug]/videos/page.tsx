@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const course = getCourse(slug);
   if (!course) return {};
   const coverage = getVideoCoverage().byCourse[course.subject.slug];
-  const title = `${course.subject.familiar} unit videos`;
-  const description = `${coverage?.videos ?? 0} curated videos across ${coverage?.units ?? course.units.length} ${course.subject.familiar} units, playable directly on the page.`;
+  const title = `${course.subject.familiar} videos for every unit`;
+  const description = `${coverage?.videos ?? 0} curated videos across ${coverage?.units ?? course.units.length} ${course.subject.familiar} units, with real YouTube thumbnails and a player on the page.`;
   return {
     title,
     description,
@@ -48,10 +48,10 @@ export default async function CourseVideosPage({ params }: { params: Params }) {
       <header className="max-w-[68ch] py-8">
         <p className="label mb-2">{coverage?.videos ?? videos.length} videos · {coverage?.units ?? course.units.length} units</p>
         <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
-          {course.subject.familiar}, unit by unit on video
+          See {course.subject.familiar} come together, unit by unit
         </h2>
         <p className="lede mt-4">
-          Each verified video sits beside the lesson it supports. Players load only after you press play, and every entry keeps a direct YouTube link and a replacement search.
+          Each verified video sits beside the lesson it supports. The real YouTube thumbnail appears automatically; the privacy-enhanced player loads only after you press play. Every entry keeps a direct YouTube link and a replacement search.
         </p>
         <p className="mt-4 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
           Prefer to read first? The same videos are embedded inside each <Link href={`/course/${course.subject.slug}/notes`} className="link-underlined">deep lesson</Link>.
@@ -70,7 +70,7 @@ export default async function CourseVideosPage({ params }: { params: Params }) {
                 videos={unitVideos}
                 courseSlug={course.subject.slug}
                 unit={unit.unitNumber}
-                heading={`Watch unit ${unit.unitNumber}`}
+                heading={`Learn unit ${unit.unitNumber} with a teacher`}
                 compact
               />
             </article>

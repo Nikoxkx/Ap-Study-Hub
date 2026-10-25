@@ -38,7 +38,7 @@ export function StudyPlanner({ courses, items, selectedCourse, now }: {
 
   return (
     <section aria-labelledby="study-plan-heading">
-      <div className="panel-heading"><div><p className="label">Personal study plan</p><h2 id="study-plan-heading">{days.length} active {days.length === 1 ? "day" : "days"}, built around your time</h2><p>Lessons, review, and practice come from the selected course. Change any input and the plan and calendar regenerate.</p></div><button type="button" className="btn btn-solid btn-sm" onClick={download} disabled={days.length === 0}>Export calendar (.ics)</button></div>
+      <div className="panel-heading"><div><p className="label">A plan for your real week</p><h2 id="study-plan-heading">{days.length} {days.length === 1 ? "day that fits" : "days that fit"} your real life</h2><p>Lessons, review, and practice come from the selected course. Change any input and the plan and calendar regenerate.</p></div><button type="button" className="btn btn-solid btn-sm" onClick={download} disabled={days.length === 0}>Export calendar (.ics)</button></div>
 
       <div className="planner-settings">
         <label><span className="label">Course & deadline</span><select className="field mt-2" value={course.slug} onChange={(event) => update({ courseSlug: event.target.value as SubjectSlug })}>{courses.map((item) => <option key={item.slug} value={item.slug}>{item.label} · {item.examDate}</option>)}</select></label>
@@ -48,7 +48,7 @@ export function StudyPlanner({ courses, items, selectedCourse, now }: {
       </div>
 
       <div className="plan-days">
-        {days.length === 0 ? <div className="study-empty"><h3>No active days before this deadline</h3><p>Choose a course with an upcoming date, or move the available weekdays to include a day before the deadline.</p></div> : null}
+        {days.length === 0 ? <div className="study-empty"><h3>No study days before this deadline</h3><p>Choose a course with an upcoming date, or move the available weekdays to include a day before the deadline.</p></div> : null}
         {days.map((day, dayIndex) => {
           const complete = day.tasks.filter((task) => study.completedPlanItems[task.id]).length;
           return <details key={day.date} open={dayIndex < 2} className="plan-day">

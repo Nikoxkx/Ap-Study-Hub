@@ -4,8 +4,8 @@ import { getStudyCourses, getStudyItems } from "@/lib/study-data";
 import { isSubjectSlug } from "@/lib/subjects";
 
 export const metadata: Metadata = {
-  title: "Your study desk",
-  description: "Due Today spaced review, a mistake notebook, objective confidence, personal plans, Focus Sessions, video watchlists, goals, reports, weekly diagnostics, and optional sync across every AP course.",
+  title: "What should I work on today?",
+  description: "A private study desk for spaced review, mistakes, realistic plans, focus sessions, video notes, goals, reports, and optional sync across seven AP courses.",
   robots: { index: false, follow: true },
 };
 

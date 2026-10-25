@@ -31,9 +31,9 @@ export default function Error({
   return (
     <div className="wrap py-20 md:py-28">
       <div className="max-w-2xl">
-        <p className="folio mb-4">Something broke</p>
+        <p className="folio mb-4">Our mistake</p>
         <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.75rem)]" style={{ letterSpacing: "-0.028em" }}>
-          This page failed to render.
+          That one is on us. Try again?
         </h1>
         <p className="lede mt-5">
           That is a bug on my side, not something you did. Trying again usually works — if it does

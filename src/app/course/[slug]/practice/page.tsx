@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!course) return {};
 
   const { subject, counts } = course;
-  const title = `${subject.familiar} practice questions`;
+  const title = `${subject.familiar} questions worth getting wrong`;
   const description = `${counts.questions} original ${subject.familiar} practice questions with reasoned explanations and lesson-linked sets for every unit.`;
 
   return {
@@ -43,9 +43,9 @@ export default async function PracticePage({ params, searchParams }: { params: P
     <div className="wrap py-12 md:py-16">
       <div className="mx-auto max-w-3xl">
         <header className="mb-9">
-          <p className="label mb-2">{counts.questions} questions</p>
+          <p className="label mb-2">{counts.questions} questions worth trying</p>
           <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
-            {subject.familiar} practice
+            {subject.familiar} practice that explains your mistakes
           </h2>
           <p className="lede mt-4">
             Original questions with reasoned feedback. Filter to one lesson for focused retrieval,

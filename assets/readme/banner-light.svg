@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-labelledby="title desc">
-  <title id="title">AP Study Hub — deep lessons, active recall, original practice</title>
-  <desc id="desc">Paper-and-ink artwork showing a cited lesson connected to glossary cards and original practice for seven AP courses.</desc>
+  <title id="title">AP Study Hub — learn seven AP subjects deeply and make the work count</title>
+  <desc id="desc">Paper-and-ink artwork showing seven AP courses, real recall cards, original practice, and real unit-video thumbnails.</desc>
   <defs>
     <pattern id="rules" width="10" height="24" patternUnits="userSpaceOnUse">
       <path d="M0 23.5H10" stroke="#ddd6c6" opacity="0.6" />
@@ -19,11 +19,11 @@
   </g>
   <text x="119" y="80" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="31" fill="#1c1b17">AP Study Hub</text>
   <text x="64" y="137" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" letter-spacing="1.8" fill="#7e786c">2026–27 EDITION · SEVEN AP COURSES</text>
-  <text x="64" y="202" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="48" letter-spacing="-1" fill="#1c1b17">Read deeply. Recall actively.</text>
-  <text x="64" y="252" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="48" letter-spacing="-1" fill="#1c1b17">Practise deliberately.</text>
+  <text x="64" y="202" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="48" letter-spacing="-1" fill="#1c1b17">Learn it deeply.</text>
+  <text x="64" y="252" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="48" letter-spacing="-1" fill="#1c1b17">Make it pay off.</text>
   <path d="M64 277H650" stroke="#1c1b17" stroke-width="2" />
   <text x="64" y="315" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="15" fill="#b0392a">51 LESSONS · 510 PARAGRAPHS · 405 CARDS · 240 QUESTIONS</text>
-  <text x="64" y="357" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" letter-spacing="1.3" fill="#7e786c">FREE · NO ACCOUNT · NO PAYWALL · NO TRACKING</text>
+  <text x="64" y="357" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" letter-spacing="1.3" fill="#7e786c">FREE · NO ACCOUNT · REAL THUMBNAILS · CREDIT WHERE ACCEPTED</text>
   
     <g transform="translate(735 48)">
       <rect x="22" y="24" width="370" height="292" fill="#ece7db" stroke="#c3baa5" transform="rotate(3 207 170)" />
@@ -31,15 +31,15 @@
       <path d="M326 0h44v44" fill="#ece7db" stroke="#1c1b17" stroke-width="1.5" />
       <path d="M326 0v44h44" fill="none" stroke="#1c1b17" stroke-width="1.5" />
       <rect x="25" y="-12" width="28" height="12" fill="#9c3b2e" /><rect x="66" y="-12" width="28" height="12" fill="#31456b" /><rect x="107" y="-12" width="28" height="12" fill="#6b3f6e" /><rect x="148" y="-12" width="28" height="12" fill="#2f5f56" /><rect x="189" y="-12" width="28" height="12" fill="#4f6b32" /><rect x="230" y="-12" width="28" height="12" fill="#9a6520" /><rect x="271" y="-12" width="28" height="12" fill="#57534a" />
-      <text x="28" y="61" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" letter-spacing="1.6" fill="#b0392a">READ → RECALL → RESPOND</text>
-      <text x="28" y="102" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="29" fill="#1c1b17">One connected study loop</text>
+      <text x="28" y="61" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" letter-spacing="1.6" fill="#b0392a">LEARN → RECALL → APPLY</text>
+      <text x="28" y="102" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif" font-size="29" fill="#1c1b17">One loop that makes it stick</text>
       <path d="M28 133H330" stroke="#7e786c" stroke-width="3" opacity="0.48" /><path d="M28 155H302" stroke="#7e786c" stroke-width="3" opacity="0.48" /><path d="M28 177H330" stroke="#7e786c" stroke-width="3" opacity="0.48" /><path d="M28 199H302" stroke="#7e786c" stroke-width="3" opacity="0.48" />
       <path d="M28 226H330" stroke="#c3baa5" />
       <rect x="28" y="244" width="128" height="30" fill="#ece7db" stroke="#c3baa5" />
-      <text x="43" y="264" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" fill="#57534a">GLOSSARY CARD</text>
+      <text x="43" y="264" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" fill="#57534a">RECALL CARD</text>
       <rect x="174" y="244" width="156" height="30" fill="#ece7db" stroke="#b0392a" />
-      <text x="190" y="264" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" fill="#b0392a">ORIGINAL PRACTICE</text>
+      <text x="190" y="264" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" fill="#b0392a">REAL PRACTICE</text>
       <path d="M185 303v25H25v-25" fill="none" stroke="#b0392a" stroke-width="1.5" stroke-dasharray="4 4" />
-      <text x="185" y="352" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" letter-spacing="1" fill="#7e786c">FEEDBACK RETURNS TO THE EXACT SECTION</text>
+      <text x="185" y="352" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11" letter-spacing="1" fill="#7e786c">FEEDBACK SENDS YOU BACK TO THE LESSON</text>
     </g>
 </svg>

@@ -5,9 +5,10 @@ import { getSubject, isSubjectSlug, type SubjectSlug } from "./subjects";
  *
  * This file is generated from the reviewed rows of the companion Google Sheet
  * "AP Study Hub — Unit Video Registry (Oct 2026)". It is committed as typed
- * data on purpose: a social or YouTube outage cannot break lesson pages, and a
- * missing video ID is caught by `pnpm validate:videos` instead of surfacing as
- * a blank iframe in production.
+ * data on purpose: a missing video ID is caught by `pnpm validate:videos`
+ * instead of surfacing as a blank iframe in production. Thumbnails are static
+ * images from YouTube's image host and fall back to smaller sizes, so an
+ * unavailable thumbnail never breaks the lesson page or loads an embed.
  *
  * Selection rules, in order: curriculum alignment to the unit; a creator with
  * a sustained AP teaching record; a public YouTube watch page; a useful length;
@@ -144,8 +145,18 @@ export function videoEmbedUrl(v: UnitVideo): string {
   return `https://www.youtube-nocookie.com/embed/${v.id}?rel=0&modestbranding=1&playsinline=1`;
 }
 
-export function videoThumbnailUrl(v: UnitVideo): string {
-  return `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`;
+/**
+ * Actual YouTube thumbnail, requested directly from YouTube's static image
+ * host. `hqdefault.jpg` is available for every public video; the smaller
+ * variants are tried in order if it cannot be fetched. These are images, not
+ * the embedded player, and are allowlisted in the content security policy.
+ */
+export type VideoThumbnailSize = "hq" | "mq" | "default";
+export const VIDEO_THUMBNAIL_SIZES: readonly VideoThumbnailSize[] = ["hq", "mq", "default"];
+
+export function videoThumbnailUrl(v: UnitVideo, size: VideoThumbnailSize = "hq"): string {
+  const file = size === "hq" ? "hqdefault.jpg" : size === "mq" ? "mqdefault.jpg" : "default.jpg";
+  return `https://i.ytimg.com/vi/${v.id}/${file}`;
 }
 
 export function videoSearchUrl(v: UnitVideo): string {

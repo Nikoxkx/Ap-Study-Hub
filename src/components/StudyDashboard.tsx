@@ -20,9 +20,21 @@ const tabs = [
   { id: "today", label: "Today" }, { id: "review", label: "Review" },
   { id: "mistakes", label: "Mistakes" }, { id: "plan", label: "Plan" },
   { id: "focus", label: "Focus" }, { id: "progress", label: "Progress" },
-  { id: "data", label: "Data & offline" }, { id: "advanced", label: "Advanced" },
+  { id: "data", label: "Your data" }, { id: "advanced", label: "Go deeper" },
 ] as const;
 type Tab = typeof tabs[number]["id"];
+
+/** Hero titles are written for a student deciding what to do, not a settings menu. */
+const tabHeadings: Record<Tab, string> = {
+  today: "What should I do next?",
+  review: "Let’s clear the queue",
+  mistakes: "Learn from what tripped you up",
+  plan: "Make a plan you can actually keep",
+  focus: "One lesson, three ways to study",
+  progress: "See what your work added up to",
+  data: "Your work stays yours",
+  advanced: "Set a goal, see the pattern, keep going",
+};
 
 export function StudyDashboard({ items, courses, initialTab = "today", initialCourse = "all" }: {
   items: StudyItem[];
@@ -70,8 +82,8 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
   return (
     <div className={`study-dashboard ${selectedSubject ? "subject-scope" : ""}`} style={selectedSubject ? subjectVars(selectedSubject) : undefined}>
       <header className="study-hero">
-        <div className="study-hero-mark">{selectedSubject ? <SubjectMark subject={selectedSubject.mark} size={48} /> : <span className="study-all-mark" aria-hidden="true">A+</span>}</div>
-        <div><p className="label">Your study desk</p><h1>{activeTab === "today" ? "What should I do next?" : tabs.find((tab) => tab.id === activeTab)?.label}</h1><p>One connected queue for lessons, videos, retrieval, mistakes, writing, and focused work. No account; local by default, with opt-in sync in Advanced.</p></div>
+        <div className="study-hero-mark" title={selectedSubject?.symbolLabel ?? "All seven courses"}>{selectedSubject ? <SubjectMark subject={selectedSubject.mark} size={48} label={selectedSubject.symbolLabel} /> : <span className="study-all-mark" aria-hidden="true">A+</span>}</div>
+        <div><p className="label">Your private study desk</p><h1>{tabHeadings[activeTab]}</h1><p>One connected queue for lessons, videos, recall, mistakes, writing, and focused work. No account; your progress stays here unless you choose to sync it.</p></div>
         <label className="study-course-select"><span className="label">Course filter</span><select className="field mt-2" value={selectedCourse} onChange={(event) => selectCourse(event.target.value as SubjectSlug | "all")}><option value="all">All seven courses</option>{courses.map((course) => <option key={course.slug} value={course.slug}>{course.label}</option>)}</select></label>
       </header>
 
@@ -79,20 +91,20 @@ export function StudyDashboard({ items, courses, initialTab = "today", initialCo
         {tabs.map((tab) => <button key={tab.id} type="button" aria-pressed={activeTab === tab.id} onClick={() => selectTab(tab.id)}>{tab.label}{tab.id === "mistakes" && unresolved ? <span>{unresolved}</span> : null}</button>)}
       </nav>
 
-      {!now ? <div className="study-loading" role="status">Opening your local study record…</div> : <>
+      {!now ? <div className="study-loading" role="status">Opening your private study record…</div> : <>
         {activeTab === "today" ? <div className="today-layout">
           <section className="today-main" aria-labelledby="due-today-heading">
-            <div className="panel-heading"><div><p className="label">Due Today</p><h2 id="due-today-heading">Start with {Math.min(8, reviewItems.length)} retrievals</h2><p>{scheduledDue} scheduled or overdue · {unresolved} unresolved mistakes · up to {DAILY_NEW_ITEMS_PER_COURSE} new items per course rotate in deterministically each day.</p></div><button type="button" className="btn btn-quiet btn-sm" onClick={() => selectTab("review")}>Open full queue →</button></div>
+            <div className="panel-heading"><div><p className="label">Due today</p><h2 id="due-today-heading">Warm up with {Math.min(8, reviewItems.length)} things worth remembering</h2><p>{scheduledDue} scheduled or overdue · {unresolved} unresolved mistakes · up to {DAILY_NEW_ITEMS_PER_COURSE} new items per course rotate in deterministically each day.</p></div><button type="button" className="btn btn-quiet btn-sm" onClick={() => selectTab("review")}>Open full queue →</button></div>
             <ReviewSession key={`today-${selectedCourse}`} items={reviewItems} limit={8} />
           </section>
           <aside className="today-sidebar">
             <section className="deadline-card"><p className="label">Next deadline</p><h3>{nextCourse.label}</h3><p>{nextCourse.examDate} · {nextCourse.examLabel}</p><strong>{Math.max(0, Math.ceil((Date.parse(`${nextCourse.examDate}T23:59:59`) - now) / 86_400_000))} days</strong><Link href={`/course/${nextCourse.slug}/studio`}>Open course studio →</Link></section>
-            <section className="today-plan"><p className="label">Today’s plan</p>{todayPlan ? <ol>{todayPlan.tasks.map((task) => <li key={task.id} data-complete={Boolean(study.completedPlanItems[task.id])}><Link href={task.href}><span>{task.kind} · {task.minutes} min</span><strong>{task.title}</strong></Link></li>)}</ol> : <><p>No study plan is saved yet. Choose your deadline, available days, and minutes.</p><button type="button" className="btn btn-outline btn-sm" onClick={() => selectTab("plan")}>Build my plan</button></>}</section>
-            <section className="today-week"><p className="label">This week</p><div><strong>{weekly.attempts}</strong><span>attempts</span><strong>{weekly.minutes}</strong><span>minutes</span></div><button type="button" className="link-underlined" onClick={() => selectTab("progress")}>See weekly summary →</button></section>
+            <section className="today-plan"><p className="label">Your plan for today</p>{todayPlan ? <ol>{todayPlan.tasks.map((task) => <li key={task.id} data-complete={Boolean(study.completedPlanItems[task.id])}><Link href={task.href}><span>{task.kind} · {task.minutes} min</span><strong>{task.title}</strong></Link></li>)}</ol> : <><p>No study plan is saved yet. Choose your deadline, available days, and minutes.</p><button type="button" className="btn btn-outline btn-sm" onClick={() => selectTab("plan")}>Make my plan</button></>}</section>
+            <section className="today-week"><p className="label">This week’s effort</p><div><strong>{weekly.attempts}</strong><span>attempts</span><strong>{weekly.minutes}</strong><span>minutes</span></div><button type="button" className="link-underlined" onClick={() => selectTab("progress")}>See what added up →</button></section>
           </aside>
         </div> : null}
 
-        {activeTab === "review" ? <section aria-labelledby="full-review-heading"><div className="panel-heading"><div><p className="label">Spaced review</p><h2 id="full-review-heading">Cards and missed questions, one queue</h2><p>Overdue and unresolved work comes first. Ratings determine the next interval; no fixed daily quota is invented.</p></div><span className="tag">{reviewItems.length} available now</span></div><ReviewSession key={`review-${selectedCourse}`} items={reviewItems} limit={20} /></section> : null}
+        {activeTab === "review" ? <section aria-labelledby="full-review-heading"><div className="panel-heading"><div><p className="label">Spaced, not crammed</p><h2 id="full-review-heading">Bring the hard stuff back, one card at a time</h2><p>Overdue and unresolved work comes first. Ratings determine the next interval; no fixed daily quota is invented.</p></div><span className="tag">{reviewItems.length} available now</span></div><ReviewSession key={`review-${selectedCourse}`} items={reviewItems} limit={20} /></section> : null}
         {activeTab === "mistakes" ? <MistakeNotebook items={allItems} courseSlug={selectedCourse} onReview={() => selectTab("review")} /> : null}
         {activeTab === "plan" ? <StudyPlanner courses={courses} items={allItems} selectedCourse={selectedCourse} now={now} /> : null}
         {activeTab === "focus" ? <FocusSession courses={courses} items={allItems} reviewItems={getReviewQueue(allItems, study, now)} selectedCourse={selectedCourse} now={now} /> : null}

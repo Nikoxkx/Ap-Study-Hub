@@ -1,7 +1,7 @@
-/* AP Study Hub offline worker. Same-origin pages and assets only; opt-in video and sync requests bypass this worker. */
-const PAGES = "aps-study-pages-v2";
-const ASSETS = "aps-study-assets-v2";
-const CORE = ["/", "/study", "/manifest.webmanifest", "/pwa-icon/192", "/pwa-icon/512", "/og-image.png", "/social-preview.png"];
+/* AP Study Hub offline worker. Same-origin pages and assets only; YouTube thumbnails, opt-in player frames, and sync requests bypass this worker. */
+const PAGES = "aps-study-pages-v3";
+const ASSETS = "aps-study-assets-v3";
+const CORE = ["/", "/study", "/videos", "/integrations", "/manifest.webmanifest", "/pwa-icon/192", "/pwa-icon/512", "/og-image.png", "/social-preview.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(PAGES).then((cache) => cache.addAll(CORE)).then(() => self.skipWaiting()));

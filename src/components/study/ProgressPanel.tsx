@@ -38,7 +38,7 @@ export function ProgressPanel({ items, courses, selectedCourse, now }: {
   return (
     <div>
       <section aria-labelledby="weekly-summary-heading">
-        <div className="panel-heading"><div><p className="label">Last seven days</p><h2 id="weekly-summary-heading">A useful weekly summary</h2><p>Counts describe activity on this site only. Accuracy is not an AP score prediction.</p></div></div>
+        <div className="panel-heading"><div><p className="label">Your last seven days</p><h2 id="weekly-summary-heading">What your week actually looked like</h2><p>Counts describe activity on this site only. Accuracy is not an AP score prediction.</p></div></div>
         <div className="summary-stats">
           <div><strong>{summary.attempts}</strong><span>retrieval attempts</span></div>
           <div><strong>{summary.attempts ? Math.round((summary.correct / summary.attempts) * 100) : 0}%</strong><span>{summary.correct}/{summary.attempts} correct</span></div>
@@ -55,7 +55,7 @@ export function ProgressPanel({ items, courses, selectedCourse, now }: {
 
       <div className="progress-two-col">
         <section aria-labelledby="objective-progress-heading">
-          <p className="label">Explain → apply → teach</p><h3 id="objective-progress-heading">Objective confidence</h3>
+          <p className="label">Explain it · use it · teach it</p><h3 id="objective-progress-heading">What you can actually explain</h3>
           <div className="objective-course-list">{visibleCourses.map((course) => {
             const objectives = course.units.flatMap((unit) => unit.objectives.map((_, index) => objectiveStudyId(course.slug, unit.unitNumber, index)));
             const rated = objectives.map((id) => study.objectives[id] ?? 0);
@@ -66,14 +66,14 @@ export function ProgressPanel({ items, courses, selectedCourse, now }: {
         </section>
 
         <section aria-labelledby="review-forecast-heading">
-          <p className="label">Next seven days</p><h3 id="review-forecast-heading">Review forecast</h3>
+          <p className="label">Your next seven days</p><h3 id="review-forecast-heading">What comes due next</h3>
           <ol className="forecast-list">{forecast.map((day) => <li key={day.key}><span>{day.label}<small>{day.key.slice(5)}</small></span><strong>{day.count}</strong></li>)}</ol>
           <p className="progress-footnote">Only scheduled future reviews appear here; new cards and questions join through the deterministic daily introduction.</p>
         </section>
       </div>
 
       <section className="skill-summary" aria-labelledby="skill-summary-heading">
-        <p className="label">Last thirty days</p><h3 id="skill-summary-heading">Skills that need another pass</h3>
+        <p className="label">The last thirty days</p><h3 id="skill-summary-heading">Skills worth another pass</h3>
         {skillRows.length ? <ol>{skillRows.slice(0, 8).map((row) => <li key={`${row.course}:${row.skill}`}><div><strong>{row.skill}</strong><span>{row.course} · {row.correct}/{row.attempts} correct</span></div><span className="skill-meter"><span style={{ width: `${(row.correct / row.attempts) * 100}%` }} /></span>{row.href ? <Link href={row.href}>Review lesson →</Link> : null}</li>)}</ol> : <div className="study-empty"><p>Complete practice or Due Today items to build a skill-level summary. One attempt is shown as one attempt, not as a broad claim about mastery.</p></div>}
       </section>
     </div>

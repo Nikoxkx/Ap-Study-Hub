@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!course) return {};
 
   const { subject, counts } = course;
-  const title = `${subject.familiar} deep lessons`;
+  const title = `${subject.familiar}, explained properly`;
   const description = `${counts.units} curriculum-aligned ${subject.official} lessons with ${counts.paragraphs} substantive teaching paragraphs, glossaries, exam and rubric connections, and visible sources.`;
 
   return {
@@ -52,7 +52,7 @@ export default async function NotesPage({ params }: { params: Params }) {
               {counts.units} deep lessons · {counts.paragraphs} teaching paragraphs · about {counts.readingMinutes} minutes
             </p>
             <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
-              {subject.familiar}, lesson by lesson
+              {subject.familiar}, one real lesson at a time
             </h2>
             <p className="lede mt-4">
               Every lesson has at least ten full teaching paragraphs, learning objectives, a glossary,

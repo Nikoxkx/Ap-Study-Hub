@@ -5,7 +5,7 @@ import { subjects, isSubjectSlug } from "@/lib/subjects";
 import { Breadcrumbs } from "@/components/Furniture";
 
 export const metadata: Metadata = {
-  title: "Search",
+  title: "Find exactly what you need",
   description: "Search every unit note, key term, card and practice question on AP Study Hub.",
   // A results page is thin and infinitely variable. Keeping it out of the index
   // stops it generating near-duplicate pages for every query string.
@@ -35,7 +35,7 @@ export default async function SearchPage({
         <Breadcrumbs trail={[{ name: "Home", href: "/" }, { name: "Search", href: "/search" }]} />
 
         <h1 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
-          Search
+          Find the exact thing you need.
         </h1>
         <p className="lede mt-3">
           {indexSize().toLocaleString("en-US")} indexed items across every course — notes, key
@@ -72,7 +72,7 @@ export default async function SearchPage({
               ))}
             </select>
             <button type="submit" className="btn btn-solid">
-              Search
+              Find it
             </button>
           </div>
         </form>
@@ -124,7 +124,7 @@ export default async function SearchPage({
           </section>
         ) : (
           <section className="mt-12">
-            <h2 className="label mb-4">Try one of these</h2>
+            <h2 className="label mb-4">Start with one of these</h2>
             <ul className="flex flex-wrap gap-2">
               {[
                 "Columbian Exchange",

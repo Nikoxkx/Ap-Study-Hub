@@ -3,10 +3,11 @@ import type { NextConfig } from "next";
 /**
  * Security headers.
  *
- * Fonts are self-hosted and there is no analytics. The site now has two opt-in
- * third-party boundaries: privacy-enhanced YouTube frames for unit videos and
- * an optional Supabase sync endpoint for Study Desk. Both are allowlisted
- * explicitly; nothing is contacted until the visitor chooses to use them.
+ * Fonts are self-hosted and there is no analytics. Static YouTube thumbnails
+ * load automatically on video pages, but they are images only. The two opt-in
+ * third-party boundaries remain the privacy-enhanced YouTube player and the
+ * optional Supabase sync endpoint; both are allowlisted explicitly and no
+ * player or sync request is made until the visitor chooses it.
  *
  * `unsafe-inline` is present for style-src because Tailwind and the inline
  * `style` props used for CSS custom properties require it, and for script-src

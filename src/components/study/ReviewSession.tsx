@@ -34,10 +34,10 @@ export function ReviewSession({ items, limit = 12, onComplete }: { items: StudyI
   };
 
   if (finished || (!item && completed > 0)) {
-    return <div className="study-empty"><p className="label">Review complete</p><h3>{completed} {completed === 1 ? "item" : "items"} retrieved</h3><p>Your ratings have set the next intervals. Missed items remain in the notebook with their explanations and lesson links.</p>{onComplete ? <button type="button" className="btn btn-solid btn-sm" onClick={onComplete}>Continue focus session</button> : null}</div>;
+    return <div className="study-empty"><p className="label">Nice work</p><h3>{completed} {completed === 1 ? "item" : "items"} retrieved</h3><p>Your ratings have set the next intervals. Missed items remain in the notebook with their explanations and lesson links.</p>{onComplete ? <button type="button" className="btn btn-solid btn-sm" onClick={onComplete}>Continue focus session</button> : null}</div>;
   }
   if (!item) {
-    return <div className="study-empty"><p className="label">Queue clear</p><h3>Nothing is available in this filter</h3><p>Choose another course or add work from cards, practice, variants, or an interactive lab.</p></div>;
+    return <div className="study-empty"><p className="label">All clear</p><h3>Your queue is clear for now</h3><p>Choose another course or add work from cards, practice, variants, or an interactive lab.</p></div>;
   }
 
   return (

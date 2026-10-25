@@ -9,13 +9,13 @@ import { subjects } from "@/lib/subjects";
 import roadmap from "@/data/roadmap.json";
 
 export const metadata: Metadata = {
-  title: "Integrations & press kit",
-  description: "The public Google Sheets video registry, Google Drive press kit, Google Docs implementation brief, Linear roadmap, and Supabase sync plan behind AP Study Hub.",
+  title: "Built in the open · press kit",
+  description: "The public video registry, press kit, implementation brief, QA roadmap, and optional sync plan you can inspect before trusting this site.",
   alternates: { canonical: "/integrations" },
   openGraph: {
     images: socialImages,
-    title: "Integrations & press kit · AP Study Hub",
-    description: "Public artifacts and connector-backed capabilities behind the October 2026 update.",
+    title: "Built in the open · AP Study Hub",
+    description: "Public artifacts and connector-backed work behind the October 2026 update — check the work yourself.",
     url: absoluteUrl("/integrations"),
   },
   twitter: { card: "summary_large_image", images: socialImages },
@@ -74,18 +74,18 @@ export default function IntegrationsPage() {
       <header className="max-w-[72ch] py-8">
         <p className="label mb-2">Built in the open · 24 October 2026</p>
         <h1 className="text-[clamp(2rem,1.6rem+2vw,3.25rem)]" style={{ letterSpacing: "-0.03em" }}>
-          The connectors behind this update.
+          Built in the open, so you can check the work.
         </h1>
         <p className="lede mt-4">
-          Five connected apps produced durable, inspectable artifacts: a public video registry, a press kit, an editorial
-          brief, a tracked QA roadmap, and a deployable sync function. The website itself remains local-first by default.
+          Five connected apps helped us make public artifacts you can inspect: a video registry, a press kit, an editorial
+          brief, a tracked QA roadmap, and a deployable sync function. Your study data still stays local unless you choose otherwise.
         </p>
       </header>
 
       <section aria-labelledby="preview-heading" className="integration-preview">
         <div>
-          <p className="label">Reliable social preview</p>
-          <h2 id="preview-heading">A static 1200×630 PNG, not a fragile runtime route.</h2>
+          <p className="label">A social preview you can trust</p>
+          <h2 id="preview-heading">A preview card that just works.</h2>
           <p>
             The old <code>/opengraph-image</code> route returned HTTP 500 in production. Every page now points at a real
             file with explicit Open Graph and Twitter metadata, dimensions, type, alt text, cache headers, and redirects
@@ -104,7 +104,7 @@ export default function IntegrationsPage() {
       </section>
 
       <section className="mt-16" aria-labelledby="connectors-heading">
-        <SectionHead folio="01" title="Connector stack" id="connectors-heading">
+        <SectionHead folio="01" title="The tools behind the scenes" id="connectors-heading">
           Each connector produced a real artifact or capability; none of them placed a private credential in the browser bundle.
         </SectionHead>
         <div className="integration-grid">
@@ -123,7 +123,7 @@ export default function IntegrationsPage() {
       </section>
 
       <section className="mt-16" aria-labelledby="registry-heading" id="video-registry">
-        <SectionHead folio="02" title="Video coverage" id="registry-heading">
+        <SectionHead folio="02" title="Every unit, accounted for" id="registry-heading">
           {coverage.videos} verified videos cover all {coverage.units} units. The Sheet is the canonical registry; typed
           data is committed to the site so a YouTube or Sheets outage cannot break a lesson page.
         </SectionHead>
@@ -156,7 +156,7 @@ export default function IntegrationsPage() {
       </section>
 
       <section className="mt-16" aria-labelledby="roadmap-heading">
-        <SectionHead folio="03" title="Roadmap snapshot" id="roadmap-heading">
+        <SectionHead folio="03" title="What shipped, what is still open" id="roadmap-heading">
           Generated from the Linear project “{roadmap.project}”. The Advanced Study Desk renders the same tracked work.
         </SectionHead>
         <ol className="roadmap-list">
@@ -174,7 +174,7 @@ export default function IntegrationsPage() {
       </section>
 
       <section className="mt-16" aria-labelledby="sync-heading">
-        <SectionHead folio="04" title="Supabase sync status" id="sync-heading">
+        <SectionHead folio="04" title="Sync stays off until you choose it" id="sync-heading">
           Ready to deploy, intentionally off by default.
         </SectionHead>
         <div className="integration-sync">
@@ -206,7 +206,7 @@ NEXT_PUBLIC_STUDY_SYNC_URL=
       </section>
 
       <aside className="sunk mt-16 max-w-[68ch] p-5">
-        <h2 className="label mb-2">Found something broken?</h2>
+        <h2 className="label mb-2">Found a broken video? Tell me.</h2>
         <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
           Every video has a scoped replacement search and a report link. For a site-wide correction, open a GitHub issue
           or use the copyable report in the Advanced Study Desk. The public editorial brief records exactly how this

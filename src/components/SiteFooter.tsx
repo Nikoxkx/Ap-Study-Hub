@@ -14,24 +14,24 @@ import { SiteMark } from "./SubjectMark";
 
 const columns = [
   {
-    heading: "The site",
+    heading: "Look around",
     links: [
-      { href: "/about", label: "About & method" },
+      { href: "/about", label: "Meet the student" },
       { href: "/ai-disclosure", label: "AI disclosure" },
-      { href: "/guides", label: "Study guides" },
-      { href: "/videos", label: "Unit video library" },
-      { href: "/integrations", label: "Integrations & press kit" },
-      { href: "/search", label: "Search everything" },
-      { href: "/colophon", label: "Colophon" },
+      { href: "/guides", label: "Study smarter" },
+      { href: "/videos", label: "Watch by unit" },
+      { href: "/integrations", label: "How it is built" },
+      { href: "/search", label: "Find anything" },
+      { href: "/colophon", label: "Design notes" },
     ],
   },
   {
-    heading: "Housekeeping",
+    heading: "The fine print",
     links: [
-      { href: "/accessibility", label: "Accessibility" },
-      { href: "/privacy", label: "Privacy" },
-      { href: "/sitemap.xml", label: "Sitemap" },
-      { href: site.repo, label: "Source on GitHub", external: true },
+      { href: "/accessibility", label: "Works for everyone" },
+      { href: "/privacy", label: "Your privacy" },
+      { href: "/sitemap.xml", label: "All pages" },
+      { href: site.repo, label: "See the code", external: true },
       { href: `${site.repo}/blob/main/AI_DISCLOSURE.md`, label: "AI_DISCLOSURE.md", external: true },
     ],
   },
@@ -56,8 +56,8 @@ export function SiteFooter() {
               </span>
             </div>
             <p className="max-w-[34ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
-              {totals.units} deep lessons, {totals.flashcards} cards and {totals.questions}{" "}
-              practice questions across {totals.courses} courses. AI-assisted drafts with dated sources and public corrections —
+              {totals.units} lessons that explain, {totals.flashcards} recall cards and {totals.questions}{" "}
+              original questions across {totals.courses} courses. AI-assisted drafts, dated sources, and public corrections —
               see <Link href="/ai-disclosure" className="link-underlined" style={{ color: "var(--ink)" }}>AI disclosure</Link>.
             </p>
             <p className="mt-4 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
@@ -69,8 +69,8 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <nav aria-label="Courses">
-            <h2 className="label mb-3">Courses</h2>
+          <nav aria-label="Pick a course">
+            <h2 className="label mb-3">Pick a course</h2>
             <ul className="space-y-1.5">
               {subjects.map((subject) => (
                 <li key={subject.slug}>
@@ -122,7 +122,7 @@ export function SiteFooter() {
         {/* Exam calendar strip — useful, and the kind of thing only someone who
             sat these exams would put in a footer. */}
         <div className="mt-10 rule-top pt-5">
-          <h2 className="label mb-3">2027 exams & deadlines</h2>
+          <h2 className="label mb-3">Dates worth circling</h2>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {[...subjects]
               .sort((a, b) => a.exam.date.localeCompare(b.exam.date))

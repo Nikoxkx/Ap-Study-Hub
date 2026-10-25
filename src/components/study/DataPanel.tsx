@@ -61,7 +61,7 @@ export function DataPanel({ courses, selectedCourse }: { courses: StudyCourse[];
   return (
     <div>
       <section aria-labelledby="backup-heading">
-        <div className="panel-heading"><div><p className="label">Portable & local-only</p><h2 id="backup-heading">Your progress belongs to you</h2><p>Export a JSON backup for another browser or restore it later. The file includes study state, drafts, timed work, card marks, annotations, and synthesis notes.</p></div></div>
+        <div className="panel-heading"><div><p className="label">Yours to keep</p><h2 id="backup-heading">Your progress belongs to you</h2><p>Export a JSON backup for another browser or restore it later. The file includes study state, drafts, timed work, card marks, annotations, and synthesis notes.</p></div></div>
         <div className="backup-actions">
           <button type="button" className="btn btn-solid" onClick={exportBackup}>Download JSON backup</button>
           <label className="btn btn-outline">Restore JSON backup<input ref={fileRef} type="file" accept="application/json,.json" className="sr-only" onChange={(event) => importBackup(event.target.files?.[0])} /></label>
@@ -76,7 +76,7 @@ export function DataPanel({ courses, selectedCourse }: { courses: StudyCourse[];
       </section>
 
       <section className="offline-library" aria-labelledby="offline-library-heading">
-        <p className="label">Offline study</p><h3 id="offline-library-heading">Save course packs on this device</h3><p>Each pack downloads its current notes, cards, practice, studio, and printable packet. Previously visited pages are also cached by the offline worker.</p>
+        <p className="label">For offline days</p><h3 id="offline-library-heading">Keep a course pack for offline days</h3><p>Each pack downloads its current notes, cards, practice, studio, and printable packet. Previously visited pages are also cached by the offline worker.</p>
         <div className="offline-course-grid">{visibleCourses.map((course) => {
           const base = `/course/${course.slug}`;
           const studioRoutes = ["lab", "writing", "connections", ...(course.slug === "ap-calc" || course.slug === "ap-bio" ? ["variants"] : [])].map((tab) => `${base}/studio?tab=${tab}`);

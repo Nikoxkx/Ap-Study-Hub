@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const { subject, essays } = course;
   const types = [...new Set(essays.map((e) => e.type))].join(", ");
-  const title = `${subject.familiar} sample essays with rubric`;
+  const title = `${subject.familiar} essays, marked and explained`;
   const description = `${essays.length} full ${subject.familiar} responses (${types}) with every rubric point broken out and explained.`;
 
   return {
@@ -50,7 +50,7 @@ export default async function EssaysPage({ params }: { params: Params }) {
           {essays.length} {essays.length === 1 ? "response" : "responses"}
         </p>
         <h2 className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)]" style={{ letterSpacing: "-0.025em" }}>
-          {subject.familiar} essays, marked
+          {subject.familiar} essays, marked so you can see why
         </h2>
         <p className="lede mt-4">
           A high-scoring response is not a magic text — it is a set of decisions, each of which

@@ -48,7 +48,7 @@ export function organizationSchema(): Schema {
     sameAs: [site.repo],
     // Stated plainly because the footer states it plainly.
     disambiguatingDescription:
-      "An independent, student-run study site. Not affiliated with the College Board.",
+      "A free, student-built AP study library that explains the why and helps you work toward credit your college may accept. Not affiliated with the College Board.",
   };
 }
 

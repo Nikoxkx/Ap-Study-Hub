@@ -48,7 +48,7 @@ export function LessonContent({ lesson, courseSlug }: { lesson: Lesson; courseSl
         videos={getUnitVideos(courseSlug, lesson.unitNumber)}
         courseSlug={courseSlug}
         unit={lesson.unitNumber}
-        heading={`Video for lesson ${lesson.unitNumber}`}
+        heading={`See lesson ${lesson.unitNumber} explained`}
       />
 
       <div className="prose">

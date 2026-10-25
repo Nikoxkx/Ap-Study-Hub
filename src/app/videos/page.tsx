@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
+import { VideoThumbnail } from "@/components/VideoThumbnail";
 import { getCourse } from "@/lib/catalog";
 import { getVideoCoverage, unitVideos, videoWatchUrl, type UnitVideo } from "@/lib/video-lessons";
 import { isSubjectSlug, subjects } from "@/lib/subjects";
 import { absoluteUrl, socialImages } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Unit video library",
-  description: "Sixty-six curated AP teaching videos covering all 51 units across seven courses, with a privacy-enhanced player inside every unit.",
+  title: "Watch every unit, with real YouTube thumbnails",
+  description: "Sixty-six curated AP teaching videos covering all 51 units across seven courses, with actual YouTube thumbnails and privacy-enhanced players inside every unit.",
   alternates: { canonical: "/videos" },
   openGraph: {
     images: socialImages,
-    title: "AP unit video library · AP Study Hub",
-    description: "Curated videos for every unit of seven AP courses, playable directly inside each lesson.",
+    title: "A real video for every unit · AP Study Hub",
+    description: "Curated videos for every unit of seven AP courses, with real thumbnails and a player inside each lesson.",
     url: absoluteUrl("/videos"),
   },
   twitter: { card: "summary_large_image", images: socialImages },
@@ -57,15 +58,15 @@ export default async function VideosPage({ searchParams }: { searchParams: Searc
       <header className="max-w-[72ch] py-8">
         <p className="label mb-2">{coverage.videos} videos · {coverage.units} units · 7 courses</p>
         <h1 className="text-[clamp(2rem,1.6rem+2vw,3.25rem)]" style={{ letterSpacing: "-0.03em" }}>
-          A verified video for every unit.
+          See the idea, then try it yourself.
         </h1>
         <p className="lede mt-4">
-          These are teaching videos, not a replacement for the written lessons. Open a course to play each video in place, or jump straight to the lesson where it is embedded.
+          These are teaching videos, not a replacement for the written lessons. Real YouTube thumbnails load automatically; open a course to play each video in place, or jump straight to the lesson where it is embedded.
         </p>
       </header>
 
       <section aria-labelledby="video-filter-heading" className="sunk mb-12 p-5">
-        <h2 id="video-filter-heading" className="label mb-3">Filter the registry</h2>
+        <h2 id="video-filter-heading" className="label mb-3">Find your video faster</h2>
         <form method="get" className="video-filter-form">
           <label>
             <span className="label">Course</span>
@@ -84,7 +85,7 @@ export default async function VideosPage({ searchParams }: { searchParams: Searc
       </section>
 
       <section aria-labelledby="video-results-heading">
-        <SectionHead folio="01" title="Registry" id="video-results-heading">
+        <SectionHead folio="01" title="Find the right video for your unit" id="video-results-heading">
           {visible.length} {visible.length === 1 ? "video" : "videos"} shown. The canonical registry also lives in a public Google Sheet linked from the integrations page.
         </SectionHead>
 
@@ -94,6 +95,7 @@ export default async function VideosPage({ searchParams }: { searchParams: Searc
             return (
               <article key={video.id} className="video-registry-row">
                 <div className="video-registry-key">
+                  <span className="video-registry-thumb" aria-hidden="true"><VideoThumbnail video={video} loading="lazy" /></span>
                   <span className="tag tag-subject">{subject?.familiar ?? video.courseSlug}</span>
                   <span className="label">Unit {video.unit}</span>
                 </div>
@@ -117,9 +119,9 @@ export default async function VideosPage({ searchParams }: { searchParams: Searc
       </section>
 
       <aside className="sunk mt-14 max-w-[68ch] p-5">
-        <h2 className="label mb-2">How the videos were chosen</h2>
+        <h2 className="label mb-2">Why these videos made the cut</h2>
         <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-          Unit alignment came first, then a sustained AP teaching record, public availability, useful length, and a working privacy-enhanced embed. Creators and links were checked on {unitVideos[0]?.checked}. These are independent resources; AP Study Hub is not reviewed or endorsed by the College Board.
+          Unit alignment came first, then a sustained AP teaching record, public availability, useful length, and a working privacy-enhanced embed. Every player shows the creator’s real YouTube thumbnail automatically. Creators and links were checked on {unitVideos[0]?.checked}. These are independent resources; AP Study Hub is not reviewed or endorsed by the College Board.
         </p>
         <p className="mt-3 text-[0.8125rem]">
           <Link href="/integrations" className="link-underlined">See the public registry, editorial brief, and QA tracker →</Link>

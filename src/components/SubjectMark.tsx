@@ -1,105 +1,93 @@
+import type { ReactNode } from "react";
 import type { SubjectSlug } from "@/lib/subjects";
 
 /**
- * Subject marks.
+ * Subject symbols.
  *
- * A small set of editorial spot illustrations, drawn directly as SVG rather
- * than generated artwork or an off-the-shelf icon font. Each one names a real
- * part of the discipline: historical evidence, rhetoric, discussion, civic
- * institutions, cells, change/accumulation, and evidence under review.
- *
- * Every glyph uses the same 32×32 grid and rounded chalk stroke. A deterministic
- * roughening filter adds a little edge wobble and dry-chalk dust without changing
- * on every render. Solid accents give the marks some weight at catalogue size
- * without turning them into badges. They are decorative — the course name is
- * always next to them — so every mark is aria-hidden.
+ * Each course now uses a single, recognisable symbol for the work students
+ * actually do in it: a U.S. flag, quotation marks, speech bubbles, scales of
+ * justice, DNA, an integral, and a research lens. They are drawn on one 32×32
+ * grid with the same stroke so they read as a set at 26px in the catalogue and
+ * 48px on a course masthead. The accessible name says what each symbol means;
+ * the official course name still sits next to it.
  */
 
-const chalkSeeds: Record<SubjectSlug, number> = {
-  apush: 7,
-  "ap-lang": 13,
-  "ap-seminar": 19,
-  "ap-gov": 23,
-  "ap-bio": 29,
-  "ap-calc": 31,
-  "ap-research": 37,
+export const subjectSymbolLabels: Record<SubjectSlug, string> = {
+  apush: "U.S. flag — American history",
+  "ap-lang": "Quotation marks — rhetoric and composition",
+  "ap-seminar": "Speech bubbles — discussion and inquiry",
+  "ap-gov": "Scales of justice — constitutional government",
+  "ap-bio": "DNA double helix — living systems",
+  "ap-calc": "Integral sign — change and accumulation",
+  "ap-research": "Magnifying glass — original research",
 };
 
-const glyphs: Record<SubjectSlug, React.ReactNode> = {
-  // An open primary-source book: a national star beside a timeline of evidence.
+const glyphs: Record<SubjectSlug, ReactNode> = {
+  // U.S. flag: stripes, a canton, and one clear star for American history.
   apush: (
     <>
-      <path d="M3.5 7.5c4.8-1.5 8.8-.8 12.5 2 3.7-2.8 7.7-3.5 12.5-2v18c-4.8-1.4-8.8-.7-12.5 2-3.7-2.7-7.7-3.4-12.5-2z" />
-      <path d="M16 9.5v18" className="mk-detail" />
-      <path d="m9.5 11 1.1 2.2 2.4.3-1.8 1.7.5 2.4-2.2-1.1-2.1 1.1.4-2.4-1.7-1.7 2.4-.3z" className="mk-fill" />
-      <path d="M19.5 12v10M21.5 13H25M21.5 17H25M21.5 21H24" className="mk-detail" />
-      <circle cx="19.5" cy="13" r="0.85" className="mk-fill" />
-      <circle cx="19.5" cy="17" r="0.85" className="mk-fill" />
-      <circle cx="19.5" cy="21" r="0.85" className="mk-fill" />
+      <path d="M4 6h24M4 11h24M4 16h24M4 21h24M4 26h24" className="mk-detail" />
+      <rect x="3" y="4" width="11" height="9" rx="1" className="mk-wash" />
+      <path d="m9.8 5.4 1.35 2.75 3.05.45-2.2 2.15.5 3-2.7-1.4-2.7 1.4.5-3-2.2-2.15 3.05-.45z" className="mk-fill" />
     </>
   ),
-  // Quotation and audience: rhetoric rather than a generic writing implement.
+  // Two solid quotation marks: reading rhetoric and writing an argument.
   "ap-lang": (
     <>
-      <path d="M7 4h18c1.7 0 3 1.3 3 3v11c0 1.7-1.3 3-3 3H15l-7 5v-5H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3z" />
-      <path d="M9 9h4v4c0 2.5-1 4-3 4.8V16c1-.5 1.5-1.2 1.5-2H9zm8 0h4v4c0 2.5-1 4-3 4.8V16c1-.5 1.5-1.2 1.5-2H17z" className="mk-fill" />
+      <path d="M6 8h8v8c0 4.3-1.7 7-5 8v-3.5c1.7-.9 2.5-2.2 2.5-4H6z" className="mk-fill" />
+      <path d="M18 8h8v8c0 4.3-1.7 7-5 8v-3.5c1.7-.9 2.5-2.2 2.5-4H18z" className="mk-fill" />
     </>
   ),
-  // A shared question on a roundtable, with three distinct seats and voices.
+  // Overlapping speech bubbles with three voices around a shared question.
   "ap-seminar": (
     <>
-      <ellipse cx="16" cy="18" rx="8.5" ry="5.5" />
-      <circle cx="16" cy="5.5" r="2.5" />
-      <circle cx="5.5" cy="17" r="2.5" />
-      <circle cx="26.5" cy="17" r="2.5" />
-      <path d="M16 8v4.5M8 17h1.5M22.5 17H24M11 10.5c1.2-1.7 3-2.5 5-2.5s3.8.8 5 2.5M4 22c.4-2 1.5-3 3-3M28 22c-.4-2-1.5-3-3-3" className="mk-detail" />
-      <circle cx="16" cy="18" r="1.6" className="mk-fill" />
+      <path d="M4 6h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-6l-5 4v-4H4a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" />
+      <path d="M23 11h4a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-1v3l-3-3h-1" className="mk-detail" />
+      <circle cx="8.5" cy="13" r="1" className="mk-fill" />
+      <circle cx="13" cy="13" r="1" className="mk-fill" />
+      <circle cx="17.5" cy="13" r="1" className="mk-fill" />
     </>
   ),
-  // The Capitol dome and columns: institutions, not a generic classical bank.
+  // Scales of justice: required cases, founding documents, and constitutional balance.
   "ap-gov": (
     <>
-      <path d="M16 2.5v4M16 3c2-1 3 1 5 0v3c-2 1-3-1-5 0" />
-      <path d="M9.5 14c.2-4.2 2.6-7 6.5-7s6.3 2.8 6.5 7M8 14h16M6.5 17h19" />
-      <path d="M16 7v7M12 9.5l1 4.5M20 9.5l-1 4.5" className="mk-detail" />
-      <path d="M9 17v8M13 17v8M19 17v8M23 17v8M6 25h20M4 28h24" />
+      <path d="M16 4v24M8 28h16M5 10h22M16 7 5 10M16 7l11 3" />
+      <path d="M6 10v2M26 10v2" className="mk-detail" />
+      <path d="M2 12h8l-1.4 6.5a2.6 2.6 0 0 1-5.2 0z" className="mk-fill" />
+      <path d="M22 12h8l-1.4 6.5a2.6 2.6 0 0 1-5.2 0z" className="mk-fill" />
+      <circle cx="16" cy="5" r="1.4" className="mk-fill" />
     </>
   ),
-  // A cell with a nucleus, mitochondrion, and ribosomes across its cytoplasm.
+  // A DNA double helix with paired rungs, not a generic leaf.
   "ap-bio": (
     <>
-      <path d="M16 3c7-.5 13 5 13 12 0 8-5 14-13 14S3 24 3 16 9 3.5 16 3z" />
-      <circle cx="12.5" cy="13.5" r="4.3" />
-      <circle cx="12.5" cy="13.5" r="1.2" className="mk-fill" />
-      <path d="M18 21c.5-3 4.5-4 6.5-2.5s.5 5-2.5 5.5-4.5-.5-4-3z" />
-      <path d="M20 21c1-1 2 1 3 0" className="mk-detail" />
-      <circle cx="22" cy="9" r="0.9" className="mk-fill" />
-      <circle cx="8" cy="22" r="0.8" className="mk-fill" />
-      <circle cx="25" cy="14" r="0.7" className="mk-fill" />
-      <circle cx="17" cy="7" r="0.65" className="mk-fill" />
+      <path d="M9 3C9 11 23 11 23 16S9 21 9 29" />
+      <path d="M23 3C23 11 9 11 9 16S23 21 23 29" />
+      <path d="M11 7h10M9.5 11h13M9 16h14M9.5 21h13M11 25h10" className="mk-detail" />
     </>
   ),
-  // A tangent at a point above accumulated area: differential and integral calculus.
+  // An integral over shaded area: change, accumulation, and the Fundamental Theorem.
   "ap-calc": (
     <>
-      <path d="M7 24c5 0 7-15 20-16v19H7z" className="mk-wash" />
-      <path d="M5 27V5M5 27h23" />
-      <path d="M7 24c5 0 7-15 20-16" />
-      <path d="M9 23.5 20 8" className="mk-detail" />
-      <circle cx="14" cy="16.4" r="1.35" className="mk-fill" />
+      <path d="M5 27V5M5 27h23" className="mk-detail" />
+      <path d="M7 23c6 0 8-12 18-13v13z" className="mk-wash" />
+      <path d="M20 4c-3 2-5 5-5 9v6c0 4-2 7-5 9" />
+      <path d="M20 4c2 1 3 2 3 3M10 28c2-1 3-2 3-3" />
+      <circle cx="15" cy="16" r="1.2" className="mk-fill" />
     </>
   ),
-  // An academic source with a folded citation corner and data under a lens.
+  // A source document under a magnifier with a data line: original research.
   "ap-research": (
     <>
-      <path d="M6 3h12l5 5v13H6z" />
-      <path d="M18 3v5h5M10 11h7M10 15h4" className="mk-detail" />
-      <circle cx="18.5" cy="19.5" r="6" />
-      <path d="m23 24 5.5 5.5" />
-      <path d="m15 21 3-4 3 2" className="mk-detail" />
-      <circle cx="15" cy="21" r="0.7" className="mk-fill" />
-      <circle cx="18" cy="17" r="0.7" className="mk-fill" />
-      <circle cx="21" cy="19" r="0.7" className="mk-fill" />
+      <path d="M5 4h12l5 5v8" />
+      <path d="M17 4v5h5M8 12h5M8 16h4" className="mk-detail" />
+      <circle cx="20" cy="20" r="7" />
+      <path d="M25 25l5 5" />
+      <path d="M17 21l2-3 2 2 2-4" className="mk-detail" />
+      <circle cx="17" cy="21" r="0.7" className="mk-fill" />
+      <circle cx="19" cy="18" r="0.7" className="mk-fill" />
+      <circle cx="21" cy="20" r="0.7" className="mk-fill" />
+      <circle cx="23" cy="16" r="0.7" className="mk-fill" />
     </>
   ),
 };
@@ -108,72 +96,30 @@ interface SubjectMarkProps {
   subject: SubjectSlug;
   size?: number;
   className?: string;
+  /** Overrides the default, human-readable symbol description. */
+  label?: string;
 }
 
-export function SubjectMark({ subject, size = 32, className }: SubjectMarkProps) {
-  const filterId = `chalk-${subject}-${size}`;
-  const small = size < 32;
-
+export function SubjectMark({ subject, size = 32, className, label }: SubjectMarkProps) {
   return (
     <svg
       viewBox="0 0 32 32"
       width={size}
       height={size}
-      role="presentation"
-      aria-hidden="true"
+      role="img"
+      aria-label={label ?? subjectSymbolLabels[subject]}
       focusable="false"
-      className={className}
-      style={{ overflow: "visible" }}
+      className={["subject-mark", className].filter(Boolean).join(" ")}
     >
-      <defs>
-        <filter
-          id={filterId}
-          x="-8%"
-          y="-8%"
-          width="116%"
-          height="116%"
-          colorInterpolationFilters="sRGB"
-        >
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.82"
-            numOctaves={2}
-            seed={chalkSeeds[subject]}
-            result="chalk-noise"
-          />
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="chalk-noise"
-            scale={small ? 0.34 : 0.48}
-            xChannelSelector="R"
-            yChannelSelector="G"
-            result="rough-chalk"
-          />
-          <feGaussianBlur in="rough-chalk" stdDeviation={small ? 0.1 : 0.16} result="chalk-dust" />
-          <feComponentTransfer in="chalk-dust" result="faint-chalk-dust">
-            <feFuncA type="linear" slope={0.42} />
-          </feComponentTransfer>
-          <feMerge>
-            <feMergeNode in="faint-chalk-dust" />
-            <feMergeNode in="rough-chalk" />
-          </feMerge>
-        </filter>
-      </defs>
       <g
         fill="none"
         stroke="currentColor"
-        strokeWidth={1.65}
+        strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
-        filter={`url(#${filterId})`}
       >
         {glyphs[subject]}
       </g>
-      <style>{`
-        .mk-fill { fill: currentColor; stroke: none; }
-        .mk-detail { opacity: 0.62; stroke-width: 1.1; }
-        .mk-wash { fill: currentColor; stroke: none; opacity: 0.12; }
-      `}</style>
     </svg>
   );
 }

@@ -11,20 +11,22 @@ import { addStudyEvent } from "@/lib/study-model";
 import { useStudyState } from "@/lib/use-study-state";
 import { useVideoProgress } from "@/lib/video-progress";
 import { site } from "@/lib/site";
+import { VideoThumbnail } from "./VideoThumbnail";
 
 /**
- * Click-to-load unit video player.
+ * Click-to-load unit video player with a real YouTube poster.
  *
- * The privacy-enhanced YouTube frame is not requested until the visitor presses
- * play. Before that, the poster is pure HTML/CSS from our origin, so browsing
- * notes does not contact YouTube. Every video also has a canonical watch link
+ * The creator's actual thumbnail is fetched from YouTube's static image host as
+ * soon as the player renders. The privacy-enhanced YouTube frame is still not
+ * requested until the visitor presses play, so browsing notes never loads a
+ * video script or embedded player. Every video also has a canonical watch link
  * and a scoped search link in case the creator removes or renames the video.
  */
 export function UnitVideoPlayer({
   videos,
   courseSlug,
   unit,
-  heading = "Watch this unit",
+  heading = "Learn this unit with a real teacher",
   compact = false,
 }: {
   videos: UnitVideo[];
@@ -61,7 +63,7 @@ export function UnitVideoPlayer({
   function play(video: UnitVideo) {
     setActiveId(video.id);
     setLoaded(true);
-    setMessage(`Loading ${video.creator} in the privacy-enhanced player. YouTube's own captions and settings are inside the frame.`);
+    setMessage(`Loading ${video.creator} in the privacy-enhanced player. The real thumbnail was already loaded; YouTube's captions and settings are inside the frame.`);
   }
 
   function toggleWatched() {
@@ -89,15 +91,16 @@ export function UnitVideoPlayer({
     <section className="unit-video" aria-labelledby={`unit-video-${courseSlug}-${unit}`}>
       <div className="unit-video-head">
         <div>
-          <p className="label">Curated unit video{compact ? "" : "s"}</p>
+          <p className="label">Chosen for this unit{compact ? "" : " · switch videos below"}</p>
           <h4 id={`unit-video-${courseSlug}-${unit}`}>{heading}</h4>
         </div>
         <span className="tag">{videos.length} {videos.length === 1 ? "video" : "videos"}</span>
       </div>
 
       <p className="unit-video-intro">
-        Independent teaching videos, checked against this unit&rsquo;s topic sequence. Press play to load the
-        privacy-enhanced YouTube player here; nothing is requested from YouTube until you do.
+        Independent teaching videos, checked against this unit&rsquo;s topic sequence. The real YouTube
+        thumbnail loads here automatically; pressing play loads only the privacy-enhanced player. No
+        YouTube scripts or embedded frames are requested before you choose to play.
       </p>
 
       {videos.length > 1 ? (
@@ -110,9 +113,12 @@ export function UnitVideoPlayer({
               aria-pressed={v.id === active.id}
               onClick={() => { setActiveId(v.id); setLoaded(false); }}
             >
-              <span className="label">{index === 0 ? "Primary" : v.role}</span>
-              <strong>{v.title}</strong>
-              <small>{v.creator}</small>
+              <VideoThumbnail video={v} className="unit-video-choice-thumb" loading="lazy" />
+              <span className="unit-video-choice-text">
+                <span className="label">{index === 0 ? "Primary" : v.role}</span>
+                <strong>{v.title}</strong>
+                <small>{v.creator}</small>
+              </span>
             </button>
           ))}
         </div>
@@ -132,10 +138,12 @@ export function UnitVideoPlayer({
             />
           ) : (
             <button type="button" className="unit-video-poster" onClick={() => play(active)} aria-label={`Play ${active.title} by ${active.creator}`}>
+              <VideoThumbnail video={active} className="unit-video-thumb" />
+              <span className="unit-video-poster-badge" aria-hidden="true">Actual YouTube thumbnail</span>
               <span className="unit-video-play" aria-hidden="true">▶</span>
               <span className="unit-video-poster-title">{active.title}</span>
               <span className="unit-video-poster-meta">{active.creator} · {active.role}</span>
-              <span className="unit-video-poster-hint">Click to load the video player</span>
+              <span className="unit-video-poster-hint">Press play to load the privacy-enhanced player</span>
             </button>
           )}
         </div>
@@ -152,8 +160,10 @@ export function UnitVideoPlayer({
             <button type="button" className="btn btn-quiet btn-sm" aria-pressed={watched} onClick={toggleWatched}>{watched ? "✓ Watched" : "Mark watched"}</button>
           </div>
           <p className="unit-video-fineprint">
-            Captions, transcript, and playback settings are controlled by YouTube inside the frame. These videos are independent creator work, not official College Board material.
-            {" "}<a href={reportHref} target="_blank" rel="noopener noreferrer">Report a broken video</a>.
+            The poster is a static image from <code>i.ytimg.com</code>, not a video embed. Captions,
+            transcript, and playback settings arrive from YouTube only after you press play. These
+            videos are independent creator work, not official College Board material.{" "}
+            <a href={reportHref} target="_blank" rel="noopener noreferrer">Report a broken video</a>.
           </p>
           <p className="unit-video-status" role="status">{message}</p>
         </div>

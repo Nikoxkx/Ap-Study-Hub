@@ -17,6 +17,7 @@ import { unitVideos, videoWatchUrl, type UnitVideo } from "@/lib/video-lessons";
 import { getSubject, type SubjectSlug } from "@/lib/subjects";
 import { integrations } from "@/lib/integrations";
 import { ExternalLink } from "@/components/Furniture";
+import { VideoThumbnail } from "@/components/VideoThumbnail";
 import roadmap from "@/data/roadmap.json";
 
 interface Goals {
@@ -305,8 +306,8 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
       <section aria-labelledby="advanced-overview-heading">
         <div className="panel-heading">
           <div>
-            <p className="label">Advanced desk</p>
-            <h2 id="advanced-overview-heading">Goals, diagnostics, watchlist, reports, and opt-in sync</h2>
+            <p className="label">Go deeper</p>
+            <h2 id="advanced-overview-heading">Set a target. See the pattern. Keep the work.</h2>
             <p>Everything here is derived from your local study record. No account is required and no state leaves the browser unless you explicitly enable sync.</p>
           </div>
           <span className="tag">{streak}-day streak</span>
@@ -321,8 +322,8 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
 
       <div className="advanced-grid">
         <section className="advanced-card" aria-labelledby="goals-heading">
-          <p className="label">Weekly goals</p>
-          <h3 id="goals-heading">Set a target you can actually hit</h3>
+          <p className="label">This week’s target</p>
+          <h3 id="goals-heading">Pick a goal that fits your week</h3>
           <div className="goal-grid">
             {goalRows.map((row) => (
               <div key={row.key} className="goal-row">
@@ -340,8 +341,8 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
         </section>
 
         <section className="advanced-card" aria-labelledby="mastery-heading">
-          <p className="label">Mastery map</p>
-          <h3 id="mastery-heading">Confidence is not competence</h3>
+          <p className="label">What you actually know</p>
+          <h3 id="mastery-heading">What feels easy is not always what you know</h3>
           <div className="mastery-grid">
             {mastery.map((row) => (
               <div key={row.slug} className="mastery-row">
@@ -355,8 +356,8 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
         </section>
 
         <section className="advanced-card" aria-labelledby="reports-heading">
-          <p className="label">Portable reports</p>
-          <h3 id="reports-heading">Take your week with you</h3>
+          <p className="label">Your week, to go</p>
+          <h3 id="reports-heading">Your week, in a file you own</h3>
           <p>Generate a plain-text report from local data. Paste it into the Google Docs template, or download an HTML file that Docs can import.</p>
           <div className="report-actions">
             <button type="button" className="btn btn-solid btn-sm" onClick={copyReport}>Copy report</button>
@@ -368,8 +369,8 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
         </section>
 
         <section className="advanced-card" aria-labelledby="roadmap-heading">
-          <p className="label">Linear roadmap</p>
-          <h3 id="roadmap-heading">What is being tracked</h3>
+          <p className="label">What we are fixing</p>
+          <h3 id="roadmap-heading">What we are still improving</h3>
           <ul className="roadmap-mini">
             {roadmap.issues.map((issue) => (
               <li key={issue.id}>
@@ -386,8 +387,8 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
       </div>
 
       <section className="advanced-card advanced-wide" aria-labelledby="watchlist-heading">
-        <p className="label">Video watchlist</p>
-        <h3 id="watchlist-heading">Mark, note, and retrieve</h3>
+        <p className="label">Watch, then remember</p>
+        <h3 id="watchlist-heading">Watch it, then explain it without looking</h3>
         <p>Watching is only useful if you can reproduce the idea later. Keep a one-sentence retrieval note for each video.</p>
         <div className="video-watchlist">
           {visibleVideos.slice(0, videoLimit).map((video) => {
@@ -395,6 +396,7 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
             return (
               <article key={video.id} className="video-watch-row" data-watched={Boolean(entry?.watched)}>
                 <div className="video-watch-head">
+                  <span className="video-watch-thumb" aria-hidden="true"><VideoThumbnail video={video} loading="lazy" /></span>
                   <div>
                     <span className="label">{getSubject(video.courseSlug)?.familiar ?? video.courseSlug} · Unit {video.unit}</span>
                     <h4>{video.title}</h4>
@@ -429,8 +431,8 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
       </section>
 
       <section className="advanced-card advanced-wide" aria-labelledby="sync-heading">
-        <p className="label">Supabase · opt-in</p>
-        <h3 id="sync-heading">Sync a snapshot with a code you hold</h3>
+        <p className="label">Sync · your choice</p>
+        <h3 id="sync-heading">Take your work with you — only if you want to</h3>
         <p>
           The edge function stores a peppered hash of your sync code, not the code itself. No service-role key or pepper is
           in this browser. The existing Supabase project is currently inactive, so this panel is ready but the live endpoint

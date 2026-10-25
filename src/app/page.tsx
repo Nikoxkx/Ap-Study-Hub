@@ -62,34 +62,36 @@ export default function HomePage() {
         <div className="ruled absolute inset-0 opacity-40" aria-hidden="true" />
         <div className="wrap relative grid gap-12 py-14 md:py-20 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:gap-16">
           <div>
-            <p className="label mb-5">Independent · Est. 2025 · {totals.courses} courses</p>
+            <p className="label mb-5">Built by a student · Free since 2025 · {totals.courses} AP courses</p>
             <h1
               className="text-[clamp(2.1rem,1.4rem+3.1vw,3.9rem)]"
               style={{ letterSpacing: "-0.028em", lineHeight: 1.04 }}
             >
-              Seven AP courses, rebuilt around deep lessons—not quick definitions.
+              Learn seven AP subjects deeply — and turn what sticks into college credit.
             </h1>
 
             <p className="lede mt-6">
-              {totals.units} lessons with {totals.paragraphs} substantive teaching paragraphs, plus
-              glossary cards, original practice, marked essays, and the official frameworks and scoring
-              guidance behind the work. Read deeply, then retrieve actively.
+              {totals.units} lessons and {totals.paragraphs} teaching paragraphs explain the why
+              behind every unit. Glossary cards, original practice, marked essays, unit videos, and
+              official scoring guidance help you remember it, use it, and earn a score your college
+              may accept for credit — which can mean fewer required courses and a smaller tuition
+              bill. Read deeply. Retrieve actively. Study like a person, not a test-prep machine.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link href="#catalogue" className="btn btn-solid">
-                Browse the seven courses
+                Find your course
               </Link>
               <Link href="/about" className="btn btn-outline">
-                How this is put together
+                Meet the student behind it
               </Link>
             </div>
 
             <dl className="mt-11 grid max-w-xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
-              <Stat value={totals.units} label="deep lessons" tone="mark" />
-              <Stat value={totals.flashcards} label="index cards" />
-              <Stat value={totals.questions} label="practice questions" />
-              <Stat value={totals.paragraphs} label="teaching paragraphs" />
+              <Stat value={totals.units} label="lessons that explain" tone="mark" />
+              <Stat value={totals.flashcards} label="recall cards" />
+              <Stat value={totals.questions} label="original questions" />
+              <Stat value={totals.paragraphs} label="paragraphs that teach" />
             </dl>
           </div>
 
@@ -137,10 +139,10 @@ export default function HomePage() {
 
       {/* ── Catalogue ───────────────────────────────────────────────────── */}
       <section id="catalogue" className="wrap py-16 md:py-20" aria-labelledby="catalogue-heading">
-        <SectionHead folio="01" title="The catalogue" id="catalogue-heading">
-          Every course connects the same material through notes, cards, practice, essays where useful,
-          timed practice, and visible sources. Counts below are what is actually written, not what
-          is planned.
+        <SectionHead folio="01" title="Pick your course. Start with what matters." id="catalogue-heading">
+          Each course gives you more than a definition: notes that explain, cards that make you recall,
+          original practice, marked essays where they help, timed work, and sources you can check. The
+          counts below are what is actually written, not a promise.
         </SectionHead>
 
         <ol className="rule-top">
@@ -162,13 +164,14 @@ export default function HomePage() {
                   <span
                     className="flex flex-col items-center gap-1.5 pt-0.5"
                     style={{ color: "var(--subject-ink)" }}
+                    title={subject.symbolLabel}
                   >
-                    <SubjectMark subject={subject.mark} size={26} />
+                    <SubjectMark subject={subject.mark} size={26} label={subject.symbolLabel} />
                     <span
-                      className="text-[0.625rem] tracking-[0.1em]"
+                      className="max-w-[4.75rem] text-center text-[0.625rem] leading-tight tracking-[0.02em]"
                       style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}
                     >
-                      {subject.code}
+                      {subject.topic}
                     </span>
                   </span>
 
@@ -230,9 +233,9 @@ export default function HomePage() {
         aria-labelledby="anatomy-heading"
       >
         <div className="wrap">
-          <SectionHead folio="02" title="What is on a course page" id="anatomy-heading">
-            Six things, in the order you are likely to want them. Each one is its own URL, so you
-            can bookmark the bit you are working through instead of scrolling past the rest.
+          <SectionHead folio="02" title="Everything you need, without the digging" id="anatomy-heading">
+            Six ways in, in the order you will actually use them. Each has its own URL, so you can
+            bookmark the bit you need instead of scrolling past the rest.
           </SectionHead>
 
           <figure className="mb-12 mt-2">
@@ -301,7 +304,7 @@ export default function HomePage() {
 
       {/* ── Exam calendar ───────────────────────────────────────────────── */}
       <section className="wrap py-16 md:py-20" aria-labelledby="calendar-heading">
-        <SectionHead folio="03" title="2027 exam and deadline calendar" id="calendar-heading">
+        <SectionHead folio="03" title="Your 2027 deadlines, in plain sight" id="calendar-heading">
           Dates and the AP Research portfolio deadline as published for 2027. Confirm your own reporting
           time with your AP coordinator — school schedules and late-testing windows can differ.
         </SectionHead>
@@ -349,7 +352,7 @@ export default function HomePage() {
       >
         <div className="wrap grid gap-12 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
           <div>
-            <SectionHead folio="04" title="Why this exists" id="note-heading" />
+            <SectionHead folio="04" title="Why a student built this for you" id="note-heading" />
             <div className="prose">
               <p className="dropcap">
                 Halfway through junior year I had eleven tabs open and none of them were useful. One
@@ -387,14 +390,14 @@ export default function HomePage() {
           {/* Marginalia: the disclosure block. */}
           <aside className="self-start sunk p-6" aria-labelledby="limits-heading">
             <h3 id="limits-heading" className="label mb-4">
-              What this site is not
+              What this site will not do
             </h3>
             <ul className="space-y-3 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
               {[
                 "Not affiliated with the College Board, and not reviewed by them.",
                 "Not a source of real, unreleased exam questions. Everything here is written from scratch.",
                 "Not a replacement for your teacher, your textbook, or AP Classroom.",
-                "Not tracking you. No analytics, no cookies, no third-party scripts. Video and sync are opt-in.",
+                "Not tracking you. No analytics, no cookies, no third-party scripts. Real video thumbnails are images; players and sync are opt-in.",
                 "Not finished. Coverage is uneven — the counts on each course tell you exactly how uneven.",
                 "Not hiding AI use — see /ai-disclosure for where AI helped draft and how it was checked.",
               ].map((line) => (
@@ -412,7 +415,7 @@ export default function HomePage() {
 
       {/* ── Questions ───────────────────────────────────────────────────── */}
       <section className="wrap py-16 md:py-20" aria-labelledby="faq-heading">
-        <SectionHead folio="05" title="Questions people actually ask" id="faq-heading" />
+        <SectionHead folio="05" title="Questions you might be asking" id="faq-heading" />
         <dl className="grid gap-x-12 gap-y-7 md:grid-cols-2">
           {faqs.map((faq) => (
             <div key={faq.question} className="rule-top pt-4">

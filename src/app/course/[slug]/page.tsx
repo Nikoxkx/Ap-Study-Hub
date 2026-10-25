@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!course) return {};
 
   const { subject, counts } = course;
-  const title = `${subject.familiar} — notes, cards and practice`;
+  const title = `${subject.familiar} — learn it properly`;
   const description = describe(
     `${counts.units} deep lessons, ${counts.flashcards} cards and ${counts.questions} practice questions for ${subject.official}.`,
     subject.summary,
@@ -50,58 +50,58 @@ export default async function CourseOverviewPage({ params }: { params: Params })
   const modes = [
     {
       href: `${base}/notes`,
-      label: "Notes",
+      label: "Read the why",
       count: counts.units,
       unit: counts.units === 1 ? "lesson" : "lessons",
-      body: "Ten-plus teaching paragraphs per lesson, with sources and rubric links.",
+      body: "Real explanations, not a glossary. Every lesson shows its sources.",
       show: counts.units > 0,
     },
     {
       href: `${base}/videos`,
-      label: "Videos",
+      label: "Watch a teacher",
       count: getCourseVideos(subject.slug).length,
       unit: "videos",
-      body: "Curated unit-by-unit teaching videos, playable directly on the page.",
+      body: "Real YouTube thumbnails and a player beside every unit.",
       show: getCourseVideos(subject.slug).length > 0,
     },
     {
       href: `${base}/cards`,
-      label: "Cards",
+      label: "Make it stick",
       count: counts.flashcards,
       unit: "cards",
-      body: "Keyboard-driven. Mark the ones you miss and drill those again.",
+      body: "Find the holes in your memory, then drill just those.",
       show: counts.flashcards > 0,
     },
     {
       href: `${base}/practice`,
-      label: "Practice",
+      label: "Try it yourself",
       count: counts.questions,
       unit: "questions",
-      body: "One at a time, with an explanation after each answer.",
+      body: "Get it wrong here, with an explanation, rather than on exam day.",
       show: counts.questions > 0,
     },
     {
       href: `${base}/essays`,
-      label: "Essays",
+      label: "See it marked",
       count: counts.essays,
       unit: counts.essays === 1 ? "sample" : "samples",
-      body: "Full responses with the rubric marked point by point.",
+      body: "See exactly which sentence earned which point.",
       show: counts.essays > 0,
     },
     {
       href: `${base}/exam`,
-      label: "Timed paper",
+      label: "Beat the clock",
       count: course.mockExams.length,
       unit: course.mockExams.length === 1 ? "paper" : "papers",
-      body: "Original timed practice, a running clock, and source packets.",
+      body: "Practise the pacing before the real clock starts.",
       show: course.mockExams.length > 0,
     },
     {
       href: `${base}/resources`,
-      label: "Sources",
+      label: "Check the source",
       count: counts.resources,
       unit: "links",
-      body: "College Board material, archives and the teachers worth watching.",
+      body: "Official material, archives, and teachers worth learning from.",
       show: counts.resources > 0,
     },
   ].filter((mode) => mode.show);
@@ -110,9 +110,9 @@ export default async function CourseOverviewPage({ params }: { params: Params })
     <div className="wrap py-12 md:py-16">
       {/* Study modes */}
       <section aria-labelledby="modes-heading">
-        <SectionHead folio="01" title="Where to start" id="modes-heading">
-          Seven ways into the same material. If you have a week, do the notes then the practice; if
-          you have a night, watch the unit video and do the cards.
+        <SectionHead folio="01" title="Start where you are" id="modes-heading">
+          Pick the way you learn best. If you have a week, read the notes then practise; if you
+          have a night, watch the unit video and drill the cards.
         </SectionHead>
 
         <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -152,9 +152,9 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       {/* Unit index */}
       {units.length > 0 ? (
         <section className="mt-16" aria-labelledby="units-heading">
-          <SectionHead folio="02" title="Lessons at a glance" id="units-heading">
-            The official framework in order, with curriculum weighting and the terms each lesson expects
-            you to be able to define without looking them up.
+          <SectionHead folio="02" title="Your route through the units" id="units-heading">
+            The official framework in order, with unit weights and the terms you should be able to
+            explain without peeking.
           </SectionHead>
 
           <ol>
@@ -194,7 +194,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
         </section>
       ) : (
         <section className="mt-16">
-          <SectionHead folio="02" title="Lessons at a glance" />
+          <SectionHead folio="02" title="Your route through the units" />
           <EmptyNote>
             Unit notes for {subject.familiar} are not written yet. The cards and practice questions
             below are, and the sources page links to material that covers the full framework.
@@ -205,7 +205,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       {/* Course-specific advice */}
       {tips.length > 0 ? (
         <section className="mt-16" aria-labelledby="tips-heading">
-          <SectionHead folio="03" title={`Things I wish I had known about ${subject.familiar}`} id="tips-heading" />
+          <SectionHead folio="03" title={`What I wish I knew before ${subject.familiar}`} id="tips-heading" />
           <div className="grid gap-x-10 gap-y-7 md:grid-cols-2">
             {tips.map((tip) => (
               <article key={tip.title} className="rule-top pt-4">
@@ -223,9 +223,9 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       {/* Lectures */}
       {channels.length > 0 ? (
         <section className="mt-16" aria-labelledby="lectures-heading">
-          <SectionHead folio={tips.length > 0 ? "04" : "03"} title="Who to watch" id="lectures-heading">
-            Every unit now has a checked, playable video with a direct YouTube link and a replacement
-            search. The channels below are still here for going deeper when a creator reorganises a
+          <SectionHead folio={tips.length > 0 ? "04" : "03"} title="People who explain it well" id="lectures-heading">
+            Every unit now has a checked video with its real thumbnail, a direct YouTube link, and
+            a replacement search. The channels below are still here for going deeper when a creator reorganises a
             playlist or removes an individual upload.
           </SectionHead>
 

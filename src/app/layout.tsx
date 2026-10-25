@@ -41,6 +41,7 @@ export const metadata: Metadata = {
     "AP Calculus AB BC",
     "AP Research academic paper",
     "free AP study guide",
+    "AP college credit",
   ],
   alternates: { canonical: "/" },
   openGraph: { images: socialImages,
@@ -72,7 +73,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#f6f3ec" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f1114" },
+    { media: "(prefers-color-scheme: dark)", color: "#101010" },
   ],
 };
 

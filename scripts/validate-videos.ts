@@ -1,6 +1,6 @@
 import { getCourse } from "../src/lib/catalog";
 import { subjects } from "../src/lib/subjects";
-import { getVideoCoverage, unitVideos, YOUTUBE_ID } from "../src/lib/video-lessons";
+import { getVideoCoverage, unitVideos, videoThumbnailUrl, VIDEO_THUMBNAIL_SIZES, YOUTUBE_ID } from "../src/lib/video-lessons";
 
 const errors: string[] = [];
 function fail(message: string) {
@@ -18,6 +18,12 @@ for (const video of unitVideos) {
     fail(`${video.id}: incomplete title, creator, role, or rationale`);
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(video.checked)) fail(`${video.id}: invalid checked date`);
+  for (const size of VIDEO_THUMBNAIL_SIZES) {
+    const thumbnail = videoThumbnailUrl(video, size);
+    if (!thumbnail.startsWith(`https://i.ytimg.com/vi/${video.id}/`)) {
+      fail(`${video.id}: ${size} thumbnail is not a direct YouTube image`);
+    }
+  }
   const course = getCourse(video.courseSlug);
   if (!course) fail(`${video.id}: unknown course ${video.courseSlug}`);
   else if (!course.units.some((unit) => unit.unitNumber === video.unit)) {
