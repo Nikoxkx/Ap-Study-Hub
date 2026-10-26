@@ -65,7 +65,7 @@ function checkUnit(label: string, courseSlug: string, unitNumber: number) {
   }
 }
 
-if (courses.length !== 7) fail(`Expected seven study courses; found ${courses.length}`);
+if (courses.length !== 9) fail(`Expected nine study courses; found ${courses.length}`);
 unique("study item", items.map((item) => item.id));
 
 for (const item of items) {

@@ -22,6 +22,44 @@ export interface StudioTask {
 /** Original tasks for courses not already covered by a timed-paper prompt. */
 export const studioTasks: StudioTask[] = [
   {
+    id: "env-investigation-design", courseSlug: "ap-env", title: "Design an investigation studio",
+    type: "FRQ 1 practice · design an investigation", minutes: 25,
+    prompt: "Students claim that fertilizer runoff from a school lawn is lowering dissolved oxygen in the pond behind the school. Design a laboratory or field investigation to test this claim. Identify the independent and dependent variables, name two controlled variables, describe the data you would collect, and state a result that would support the claim.",
+    criteria: [
+      "State a testable hypothesis linking fertilizer concentration to dissolved oxygen.",
+      "Identify the manipulated variable (fertilizer or nutrient concentration) and the measured variable (dissolved oxygen).",
+      "Hold at least two conditions constant, such as water volume, temperature, light, algae amount, and trial duration.",
+      "Include replication or multiple concentration levels and a no-fertilizer control.",
+      "Describe a supporting result in terms of the measured data, not a restated opinion.",
+    ],
+    exemplar: `Hypothesis: If pond water receives higher concentrations of fertilizer, then its dissolved oxygen will fall further over seven days, because nutrient enrichment feeds algal growth whose decomposition consumes oxygen.
+
+I would set up twelve identical clear containers with the same volume of pond water and the same initial amount of algae. Four fertilizer concentrations (0, 1, 5, and 10 mg/L of nitrogen fertilizer) would each be assigned to three containers, giving replication at every level. All containers would sit under the same light cycle and at the same room temperature for seven days. The independent variable is the fertilizer concentration; the dependent variable is the dissolved oxygen concentration, measured with a dissolved oxygen probe at the same time each day. Controlled variables include water volume and source, algae quantity, container size, light, temperature, and measurement time.
+
+The claim would be supported if the higher-fertilizer containers show a consistently larger drop in dissolved oxygen than the 0 mg/L control by day seven, with the decline increasing across concentration levels. A result in which all containers lose oxygen equally, or the control falls furthest, would not support the claim.`,
+    exemplarNote: "One possible practice response, not an official scoring sample. Compare the variable identification, controls, replication, and the data-based support statement.",
+  },
+  {
+    id: "macro-recession-frq", courseSlug: "ap-macro", title: "Recessionary-gap FRQ studio",
+    type: "Long FRQ practice", minutes: 25,
+    prompt: "The economy of Alderia is in short-run equilibrium with real GDP below potential output. The MPC is 0.75. (a) Draw a correctly labeled AD-AS graph showing the recessionary gap. (b) Calculate the minimum increase in government purchases needed to close a $120 billion gap. (c) Draw a money market graph showing what happens to the nominal interest rate as the economy expands, with no central-bank action. (d) Explain one reason the real-world effect could be smaller than your part (b) calculation.",
+    criteria: [
+      "Label the price level and real GDP axes, draw AD and SRAS, and place a vertical LRAS at potential output.",
+      "Show current equilibrium output to the left of potential and identify the gap.",
+      "Compute the multiplier as 1/(1 - 0.75) = 4 and divide the gap by it: $30 billion.",
+      "Shift money demand right in the money market and show the nominal interest rate rising.",
+      "Name a valid offset: crowding out through higher interest rates, implementation lags, or imports leaking demand abroad.",
+    ],
+    exemplar: `Part (a): The correctly labeled graph has the price level on the vertical axis and real GDP on the horizontal axis. AD and SRAS intersect at equilibrium output Ye, which lies to the left of the vertical LRAS at potential output Yp. The distance between Ye and Yp is the recessionary gap, and the equilibrium price level PLe sits at the height of the intersection.
+
+Part (b): The spending multiplier is 1/(1 - 0.75) = 4. The minimum increase in government purchases is the gap divided by the multiplier: $120 billion / 4 = $30 billion.
+
+Part (c): In the money market, the nominal interest rate is on the vertical axis and the quantity of money on the horizontal axis. The money supply is vertical and unchanged. Higher income raises the transactions demand for money, shifting money demand to the right, so the nominal interest rate rises.
+
+Part (d): The calculated $30 billion assumes the simple multiplier works fully. In practice the rising nominal interest rate from part (c) raises borrowing costs and reduces interest-sensitive investment, crowding out part of the expansion, so the actual increase in real GDP would likely be smaller than $120 billion unless purchases rise by more.`,
+    exemplarNote: "One possible practice response, not an official scoring sample. Compare the graph labels, the multiplier arithmetic, and the direction of each shift.",
+  },
+  {
     id: "gov-federalism-argument", courseSlug: "ap-gov", title: "Federalism argument studio",
     type: "Argument essay practice", minutes: 25,
     prompt: "Develop an argument about whether state governments or the national government should have primary responsibility for setting election-administration rules. Use at least one constitutional principle or foundational document, explain your reasoning, and respond to an opposing perspective.",

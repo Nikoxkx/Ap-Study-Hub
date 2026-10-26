@@ -3,20 +3,20 @@
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/banner-dark.png" />
       <source media="(prefers-color-scheme: light)" srcset="./assets/readme/banner-light.png" />
-      <img src="./assets/readme/banner-light.png" width="100%" alt="AP Study Hub — seven AP courses with lessons, flashcards, and practice" />
+      <img src="./assets/readme/banner-light.png" width="100%" alt="AP Study Hub — nine AP courses with lessons, flashcards, and practice" />
     </picture>
   </a>
 
   <br />
 
   <p>
-    <strong>Seven AP courses in one study hub — with 51 cited lessons, 405 recall cards, 240 original practice questions, 66 full-screen unit videos, and loose-leaf scratch paper.</strong>
+    <strong>Nine AP courses in one study hub — with 66 cited lessons, 525 recall cards, 429 original practice questions, 82 full-screen unit videos, and loose-leaf scratch paper.</strong>
   </p>
 
   <p>
     <a href="https://ap-study-hub-five.vercel.app"><img alt="Live site" src="https://img.shields.io/badge/live_site-v0--project--roan--six--20.vercel.app-121212?style=flat-square&labelColor=262626" /></a>
-    <a href="#the-catalogue"><img alt="7 AP courses · 51 lessons · 510 paragraphs" src="https://img.shields.io/badge/7_courses-51_lessons_·_510_paragraphs-121212?style=flat-square&labelColor=262626" /></a>
-    <a href="#the-catalogue"><img alt="405 cards · 240 questions · 66 videos" src="https://img.shields.io/badge/practice-405_cards_·_240_questions_·_66_videos-121212?style=flat-square&labelColor=262626" /></a>
+    <a href="#the-catalogue"><img alt="9 AP courses · 66 lessons · 660 paragraphs" src="https://img.shields.io/badge/9_courses-66_lessons_·_660_paragraphs-121212?style=flat-square&labelColor=262626" /></a>
+    <a href="#the-catalogue"><img alt="525 cards · 429 questions · 82 videos" src="https://img.shields.io/badge/practice-525_cards_·_429_questions_·_82_videos-121212?style=flat-square&labelColor=262626" /></a>
     <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-404040?style=flat-square&labelColor=262626" /></a>
     <a href="./AI_DISCLOSURE.md"><img alt="AI disclosure" src="https://img.shields.io/badge/AI_assistance-disclosed-404040?style=flat-square&labelColor=262626" /></a>
   </p>
@@ -40,11 +40,11 @@
 
 Studying for several AP classes at once usually turns into eleven browser tabs — a 240-page Course and Exam Description PDF, a summary sheet with half the units missing, an ad-heavy flashcard deck, and a video queue full of unrelated recommendations.
 
-**AP Study Hub** puts the entire study loop for seven AP subjects inside one quiet, zero-account workspace:
+**AP Study Hub** puts the entire study loop for nine AP subjects inside one quiet, zero-account workspace:
 
-- **Complete cited lessons** — 51 full-length unit lessons (`510` cited prose paragraphs, learning objectives, worked examples, primary sources, and common mistakes).
-- **Cold-recall decks** — 405 active-recall flashcards (course decks + unit glossary terms) with keyboard flip, Fisher–Yates shuffle, and local spaced-review scheduling.
-- **Exam-register practice & timed writing** — 240 original multiple-choice questions that link wrong answers back to the exact lesson section, plus timed essay outlines and mock papers with college-ruled scratch paper.
+- **Complete cited lessons** — 66 full-length unit lessons (`660` cited prose paragraphs, learning objectives, worked examples, primary sources, and common mistakes).
+- **Cold-recall decks** — 525 active-recall flashcards (course decks + unit glossary terms) with keyboard flip, Fisher–Yates shuffle, and local spaced-review scheduling.
+- **Exam-register practice & timed writing** — 429 original multiple-choice questions that link wrong answers back to the exact lesson section, plus timed essay outlines and mock papers with college-ruled scratch paper.
 
 There are **no accounts, no paywalls, no ad scripts, and no analytics trackers**. Progress, due cards, missed questions, and timed drafts live locally in `localStorage` on your own device and can be exported to JSON or Markdown at any time.
 
@@ -56,14 +56,16 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 
 | Course | White Symbol | Units & Lessons | Cited Paragraphs | Recall Cards | Practice Qs | Essays & Mock Papers | Unit Videos |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **AP U.S. History** (`apush`) | Waving U.S. flag | 9 | 90 | 89 | 48 | 1 essay · 1 mock | 13 |
-| **AP English Language** (`ap-lang`) | Open book | 9 | 90 | 81 | 48 | 3 essays · 1 mock | 9 |
-| **AP Seminar** (`ap-seminar`) | Source documents | 5 | 50 | 56 | 38 | 1 essay · 1 mock | 10 |
-| **AP U.S. Gov & Politics** (`ap-gov`) | Classical capitol | 5 | 50 | 40 | 25 | 0 · 0 | 6 |
-| **AP Biology** (`ap-bio`) | DNA double helix | 8 | 80 | 52 | 31 | 0 · 0 | 8 |
-| **AP Calculus AB** (`ap-calc`) | Right triangle (`cos θ`) | 10 | 100 | 55 | 30 | 0 · 0 | 10 |
-| **AP Research** (`ap-research`) | Magnifying glass | 5 | 50 | 32 | 20 | 1 essay · 0 mocks | 10 |
-| **Total** | **7 white RGBA icons** | **51** | **510** | **405** | **240** | **6 essays · 3 mocks** | **66** |
+| **AP U.S. History** (`apush`) | Waving U.S. flag | 9 | 90 | 89 | 66 | 1 essay · 1 mock | 13 |
+| **AP English Language** (`ap-lang`) | Open book | 9 | 90 | 81 | 66 | 3 essays · 1 mock | 9 |
+| **AP Seminar** (`ap-seminar`) | Source documents | 5 | 50 | 56 | 48 | 1 essay · 1 mock | 10 |
+| **AP U.S. Gov & Politics** (`ap-gov`) | Classical capitol | 5 | 50 | 40 | 35 | 4 essays · 0 mocks | 6 |
+| **AP Biology** (`ap-bio`) | DNA double helix | 8 | 80 | 52 | 47 | 0 · 0 | 8 |
+| **AP Calculus AB** (`ap-calc`) | Right triangle (`cos θ`) | 10 | 100 | 55 | 50 | 0 · 0 | 10 |
+| **AP Research** (`ap-research`) | Magnifying glass | 5 | 50 | 32 | 30 | 1 essay · 0 mocks | 10 |
+| **AP Macroeconomics** (`ap-macro`) | Rising market graph | 6 | 60 | 54 | 39 | 1 essay · 0 mocks | 6 |
+| **AP Environmental Science** (`ap-env`) | Leaf | 9 | 90 | 66 | 48 | 1 essay · 0 mocks | 10 |
+| **Total** | **9 white RGBA icons** | **66** | **660** | **525** | **429** | **12 essays · 3 mocks** | **82** |
 
 ---
 
@@ -72,7 +74,7 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 ```text
   Lessons (/course/[slug]/notes)            Recall Decks (/cards)             Practice & Studio (/practice · /exam)
  ┌──────────────────────────────────┐      ┌──────────────────────────┐      ┌───────────────────────────────────────┐
- │ 51 lessons · 510 cited paragraphs│ ───► │ 405 recall cards         │ ───► │ 240 MCQs + 6 essays + 3 mock papers   │
+ │ 66 lessons · 660 cited paragraphs│ ───► │ 525 recall cards         │ ───► │ 429 MCQs + 12 essays + 3 mock papers   │
  │ Objectives, worked examples,     │      │ Space/Enter flip,        │      │ Wrong answers jump straight back to   │
  │ primary sources, unit videos     │ ◄─── │ local SM-2 review queue  │ ◄─── │ the exact lesson section & scratchpad │
  └──────────────────────────────────┘      └──────────────────────────┘      └───────────────────────────────────────┘
@@ -102,10 +104,10 @@ corepack pnpm dev          # http://localhost:3000
 Run the full validation and production build pipeline before opening a PR:
 
 ```bash
-corepack pnpm validate:content        # 51 lessons, 510 paragraphs, citations, glossary & practice schema
+corepack pnpm validate:content        # 66 lessons, 660 paragraphs, citations, glossary & practice schema
 corepack pnpm validate:study          # 645 study items, KaTeX math, scheduling, backups, plans & calendar
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
-corepack pnpm validate:videos         # 66 verified 11-char YouTube IDs, course/unit mapping & thumbnails
+corepack pnpm validate:videos         # 82 verified 11-char YouTube IDs, course/unit mapping & thumbnails
 corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
 corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png
 corepack pnpm check                   # runs all 4 validators + tsc --noEmit + eslint + next build
@@ -132,7 +134,7 @@ public/
   bg-class.jpg                  wallpaper: /course/[slug], /cards, /videos, /guides
   bg-class2.jpg                 wallpaper: /notes, /practice, /studio, /essays, /exam, /resources, /print
   fonts/                        self-hosted WOFF2 subsets (Newsreader, Public Sans, JetBrains Mono, Kalam)
-  icons/courses/                7 pure-white (#FFFFFF) transparent RGBA AP course symbols
+  icons/courses/                9 pure-white (#FFFFFF) transparent RGBA AP course symbols
   og-image.png                  compiled 1200×630 Open Graph card
   social-preview.png            compiled 1200×630 GitHub / social preview card
   sw.js                         same-origin offline service worker
@@ -165,7 +167,7 @@ src/
       ThemeSwitch.tsx           compact Sun / Moon / Clouds / Stars theme switch
       NotebookPaper.tsx         reusable college-ruled loose-leaf scratch paper sheet
       ScrollEffects.tsx         60fps exponential-lerp bidirectional viewport-edge fade controller
-  content/                      typed curriculum, 51 deep lessons, sources, channels, and unit videos
+  content/                      typed curriculum, 66 deep lessons, sources, channels, and unit videos
   lib/                          catalog aggregator, weighted search index, local store, and JSON-LD schema
 ```
 
@@ -173,7 +175,7 @@ src/
 
 ## Honesty, Trademarks & License
 
-- **Independent student project** — AP® and Advanced Placement® are registered trademarks of the College Board, which was not involved in the production of, and does not endorse, this site. All 240 practice questions, 405 recall cards, and 51 lessons are original study material written from public curriculum frameworks and open textbooks; no secure exam items are reproduced.
+- **Independent student project** — AP® and Advanced Placement® are registered trademarks of the College Board, which was not involved in the production of, and does not endorse, this site. All 429 practice questions, 525 recall cards, and 66 lessons are original study material written from public curriculum frameworks and open textbooks; no secure exam items are reproduced.
 - **Fonts & artwork** — Self-hosted `Newsreader`, `Public Sans`, `JetBrains Mono`, and `Kalam` are licensed under the SIL Open Font License 1.1 (`public/fonts/`). Background classroom and corridor paintings are original environment illustrations by Arseniy Chebynkin.
 - **AI transparency** — Every place where AI tools assisted with scaffolding, drafting, or validation is documented openly in [`AI_DISCLOSURE.md`](./AI_DISCLOSURE.md) and [`/ai-disclosure`](https://ap-study-hub-five.vercel.app/ai-disclosure).
 - **Code license** — Released under the [MIT License](./LICENSE).

@@ -43,7 +43,7 @@ export default async function CourseVideosPage({ params }: { params: Params }) {
   const coverage = getVideoCoverage().byCourse[course.subject.slug];
 
   return (
-    <div className="wrap space-y-8 py-8 md:py-12" style={subjectVars(course.subject)}>
+    <div className="wrap subject-scope space-y-8 py-8 md:py-12" style={subjectVars(course.subject)}>
       <GlassCard as="header" padding="lg">
         <p className="label mb-2">
           {coverage?.videos ?? videos.length} videos · {coverage?.units ?? course.units.length} units

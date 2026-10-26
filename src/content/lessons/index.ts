@@ -5,6 +5,8 @@ import { apGovLessons } from "./apGov";
 import { apBioLessons } from "./apBio";
 import { apCalcLessons } from "./apCalc";
 import { apResearchLessons } from "./apResearch";
+import { apMacroLessons } from "./apMacro";
+import { apEnvLessons } from "./apEnv";
 import type { Lesson } from "./types";
 
 export const lessonLibrary = {
@@ -15,6 +17,8 @@ export const lessonLibrary = {
   "ap-bio": apBioLessons,
   "ap-calc": apCalcLessons,
   "ap-research": apResearchLessons,
+  "ap-macro": apMacroLessons,
+  "ap-env": apEnvLessons,
 } as const satisfies Record<string, Lesson[]>;
 
 export type LessonCourseSlug = keyof typeof lessonLibrary;

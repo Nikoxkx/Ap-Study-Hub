@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCatalog, getTotals, nextExam } from "@/lib/catalog";
-import { subjects, formatExamDate, examInstant, examTimeLabel } from "@/lib/subjects";
+import { subjects, formatExamDate, examInstant, examTimeLabel, subjectVars } from "@/lib/subjects";
 import { daysUntil } from "@/lib/clock";
 import { SubjectMark, SiteMark } from "@/components/SubjectMark";
 import { Countdown } from "@/components/Countdown";
@@ -37,7 +37,7 @@ const faqs = [
   {
     question: "Which AP courses are covered?",
     answer:
-      "Seven: AP United States History, AP English Language and Composition, AP Seminar, AP United States Government and Politics, AP Biology, AP Calculus AB/BC, and AP Research.",
+      "Nine: AP United States History, AP English Language and Composition, AP Seminar, AP United States Government and Politics, AP Biology, AP Calculus AB/BC, AP Research, AP Macroeconomics, and AP Environmental Science.",
   },
 ];
 
@@ -70,7 +70,7 @@ const studySurfaces = [
   {
     name: "Verified Unit Videos",
     badge: "Privacy-first",
-    body: "Real YouTube thumbnails for every unit across all seven courses, with opt-in privacy-enhanced players.",
+    body: "Real YouTube thumbnails for every unit across all nine courses, with opt-in privacy-enhanced players.",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function HomePage() {
             className="canvas-heading text-[clamp(2.25rem,1.5rem+3.4vw,4.25rem)] font-semibold"
             style={{ letterSpacing: "-0.032em", lineHeight: 1.04 }}
           >
-            Learn seven AP subjects deeply — on a quieter kind of study hub.
+            Learn nine AP subjects deeply — on a quieter kind of study hub.
           </h1>
 
           <p className="canvas-subtext mt-6 max-w-2xl text-[clamp(1.05rem,0.96rem+0.45vw,1.25rem)] leading-relaxed">
@@ -200,7 +200,7 @@ export default function HomePage() {
       {/* ── 01 · Centered Section Heading + 3-Column Glass Course Cards ─── */}
       <section id="catalogue" className="wrap py-14 md:py-20" aria-labelledby="catalogue-heading">
         <div className="mx-auto mb-12 max-w-2xl text-center">
-          <p className="label mb-2">01 · Seven AP Courses</p>
+          <p className="label mb-2">01 · Nine AP Courses</p>
           <h2
             id="catalogue-heading"
             className="canvas-heading text-[clamp(1.85rem,1.4rem+1.8vw,2.75rem)] font-semibold"
@@ -220,12 +220,13 @@ export default function HomePage() {
               <li key={subject.slug} className="flex">
                 <Link
                   href={`/course/${subject.slug}`}
-                  className="glass-box glass-box-interactive group flex w-full flex-col justify-between p-6 no-underline"
+                  className="glass-box glass-box-interactive subject-accent subject-accent-card group flex w-full flex-col justify-between p-6 no-underline"
+                  style={subjectVars(subject)}
                 >
                   <div>
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <span
-                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/80 bg-white/45 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:bg-white/75 group-hover:shadow-md dark:border-white/25 dark:bg-white/10 dark:group-hover:bg-white/20"
+                        className="subject-accent-chip flex h-11 w-11 items-center justify-center rounded-2xl border border-white/80 bg-white/45 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:bg-white/75 group-hover:shadow-md dark:border-white/25 dark:bg-white/10 dark:group-hover:bg-white/20"
                         title={subject.symbolLabel}
                       >
                         <SubjectMark
@@ -235,7 +236,7 @@ export default function HomePage() {
                           className="transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-3"
                         />
                       </span>
-                      <span className="tag transition-transform duration-200 group-hover:-translate-y-0.5">
+                      <span className="tag subject-accent-tag transition-transform duration-200 group-hover:-translate-y-0.5">
                         {subject.familiar}
                       </span>
                     </div>
@@ -263,7 +264,7 @@ export default function HomePage() {
                       <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>
                         {formatExamDate(subject, "short")}
                       </span>
-                      <span className="inline-flex items-center gap-1 font-semibold">
+                      <span className="subject-accent-open inline-flex items-center gap-1 font-semibold">
                         <span>Open course</span>
                         <span
                           aria-hidden="true"
@@ -384,7 +385,7 @@ export default function HomePage() {
           <div className="table-scroll">
             <table className="data-table">
               <caption className="sr-only">
-                AP exam dates for the seven courses covered on this site
+                AP exam dates for the nine courses covered on this site
               </caption>
               <thead>
                 <tr>
@@ -404,7 +405,10 @@ export default function HomePage() {
                           href={`/course/${subject.slug}`}
                           className="inline-flex items-center gap-2.5 link-underlined"
                         >
-                          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 dark:border-white/20 dark:bg-white/10">
+                          <span
+                            className="subject-accent subject-accent-chip inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 dark:border-white/20 dark:bg-white/10"
+                            style={subjectVars(subject)}
+                          >
                             <SubjectMark subject={subject.mark} size={15} label={subject.symbolLabel} />
                           </span>
                           <span>{subject.official}</span>
@@ -445,8 +449,8 @@ export default function HomePage() {
               <p>
                 So I started keeping my own notes properly, and at some point it was obvious they
                 would be more useful in public than in a private doc. Nothing goes up unless I would
-                have used it myself the week before an exam. That is why there are seven courses and
-                not thirty — I have only sat seven.
+                have used it myself the week before an exam. That is why there are nine courses and
+                not thirty — I have only sat nine.
               </p>
               <p>
                 If something here is wrong,{" "}

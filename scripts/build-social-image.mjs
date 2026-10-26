@@ -25,6 +25,8 @@ const courses = [
   { slug: "ap-bio", label: "AP Bio", w: 112 },
   { slug: "ap-calc", label: "AP Calc", w: 118 },
   { slug: "ap-research", label: "AP Research", w: 150 },
+  { slug: "ap-macro", label: "AP Macro", w: 122 },
+  { slug: "ap-env", label: "APES", w: 92 },
 ].map((c) => ({
   ...c,
   iconB64: readFileSync(join(root, `public/icons/courses/${c.slug}-dark.png`)).toString("base64"),
@@ -134,10 +136,10 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 
   <text x="88" y="162" font-family="${MONO}" font-size="12" font-weight="700" letter-spacing="1.6" fill="#454545">SEVEN AP COURSES  ·  FREE  ·  NO ACCOUNT  ·  LOCAL-FIRST</text>
 
-  <text x="88" y="238" font-family="${SERIF}" font-size="62" font-weight="700" letter-spacing="-1.2" fill="#0f0f0f">Learn seven AP subjects</text>
+  <text x="88" y="238" font-family="${SERIF}" font-size="62" font-weight="700" letter-spacing="-1.2" fill="#0f0f0f">Learn nine AP subjects</text>
   <text x="88" y="308" font-family="${SERIF}" font-size="62" font-weight="700" letter-spacing="-1.2" fill="#0f0f0f">deeply — with zero noise.</text>
 
-  <text x="88" y="366" font-family="${SANS}" font-size="19" fill="#262626">51 cited lessons · 510 paragraphs · 405 recall cards · 240 practice questions · 66 unit videos</text>
+  <text x="88" y="366" font-family="${SANS}" font-size="19" fill="#262626">66 cited lessons · 660 paragraphs · 525 recall cards · 429 practice questions · 82 unit videos</text>
   <text x="88" y="396" font-family="${SANS}" font-size="18" fill="#3a3a3a">Transparent workspace, white course symbols, full-screen video player, and loose-leaf scratchpads.</text>
 
   <line x1="88" y1="448" x2="1112" y2="448" stroke="rgba(255,255,255,0.82)" stroke-width="1" />

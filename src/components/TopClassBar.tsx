@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { subjects } from "@/lib/subjects";
+import { subjects, subjectVars } from "@/lib/subjects";
 import { SubjectMark } from "@/components/SubjectMark";
 import { ClassTabs } from "@/components/ui/ClassTabs";
 
@@ -12,8 +12,10 @@ import { ClassTabs } from "@/components/ui/ClassTabs";
  *
  * Sits on the exact same horizontal level as the AP Study Hub logo pill,
  * `Jump to ⌘K`, and the Hamburger Menu button. On desktop mouse hover it
- * smoothly reveals the full 7-course segmented bar and fades back to a quiet
- * pill when the pointer leaves. On mobile/tablet tap it opens a clean glass
+ * smoothly reveals the nine-course segmented bar on the same row. The
+ * tabs are icon-first so all nine fit where seven once did; hovering (or
+ * tabbing to) a symbol expands its course name, and the current course
+ * keeps its name shown. On mobile/tablet tap it opens a clean glass
  * course sheet.
  */
 export function TopClassBar() {
@@ -91,7 +93,8 @@ export function TopClassBar() {
           tabIndex={0}
           aria-expanded={desktopHovered}
           onClick={() => setDesktopHovered((v) => !v)}
-          className="top-classes-pill"
+          className={`top-classes-pill${activeSubject ? " subject-accent" : ""}`}
+          style={activeSubject ? subjectVars(activeSubject) : undefined}
         >
           {activeSubject ? (
             <SubjectMark
@@ -117,11 +120,13 @@ export function TopClassBar() {
               label: (
                 <span className="inline-flex items-center gap-1.5">
                   <SubjectMark subject={subject.mark} size={15} label={subject.symbolLabel} />
-                  <span>{subject.familiar}</span>
+                  <span className="top-class-tab-label">{subject.familiar}</span>
                 </span>
               ),
               href: `/course/${subject.slug}`,
               title: subject.official,
+              className: "subject-accent subject-accent-tab",
+              style: subjectVars(subject),
             }))}
           />
         </div>
@@ -134,7 +139,8 @@ export function TopClassBar() {
           aria-expanded={mobileOpen}
           aria-controls="mobile-courses-sheet"
           onClick={() => setMobileOpen((prev) => !prev)}
-          className="top-classes-pill top-classes-pill-mobile"
+          className={`top-classes-pill top-classes-pill-mobile${activeSubject ? " subject-accent" : ""}`}
+          style={activeSubject ? subjectVars(activeSubject) : undefined}
         >
           {activeSubject ? (
             <SubjectMark
@@ -171,8 +177,10 @@ export function TopClassBar() {
                     tabIndex={mobileOpen ? 0 : -1}
                     onClick={() => setMobileOpen(false)}
                     aria-current={isCurrent ? "page" : undefined}
-                    className="flex items-center gap-2 rounded-xl px-2.5 py-2 text-[0.84rem] font-medium no-underline transition-colors hover:bg-white/50 dark:hover:bg-white/10"
+                    data-current={isCurrent ? "true" : undefined}
+                    className="subject-accent subject-accent-link flex items-center gap-2 rounded-xl px-2.5 py-2 text-[0.84rem] font-medium no-underline transition-colors hover:bg-white/50 dark:hover:bg-white/10"
                     style={{
+                      ...subjectVars(subject),
                       background: isCurrent ? "rgba(255, 255, 255, 0.55)" : undefined,
                       fontWeight: isCurrent ? 600 : 500,
                     }}

@@ -135,6 +135,29 @@ export const unitVideos: UnitVideo[] = [
   video("ap-research", 4, "GzC-3kwb9pI", "Research Chapters 4 & 5: Data, Analysis, and Conclusion", "DyeyzzonTeaches", "Skill focus", "Linking results, discussion, limitations, and recommendations"),
   video("ap-research", 5, "zciazWHOwKQ", "AP Research Final Presentation and Oral Defense", "Tyler Brandt", "Worked example", "A complete presentation-and-defense example to critique"),
   video("ap-research", 5, "aKVB-Rxlpoc", "AP Research Oral Defense", "sheefra", "Worked example", "A second defense example for comparison and rehearsal"),
+
+  // AP Macroeconomics — Jacob Clifford's updated unit summaries for units 1–3
+  // and ReviewEcon's complete CED summaries for units 4–6.
+  video("ap-macro", 1, "bgqTkGKTsWE", "NEW- Macro Unit 1 Summary- Basic Economic Concepts", "Jacob Clifford", "Full unit review", "Scarcity, PPC, comparative advantage, and supply and demand in one pass"),
+  video("ap-macro", 2, "q7CaCE58Jug", "NEW- Macro Unit 2 Summary- Economic Indicators", "Jacob Clifford", "Full unit review", "Circular flow, GDP, unemployment, CPI, and the business cycle"),
+  video("ap-macro", 3, "UnLmGYLw0c0", "Macro Unit 3 Summary- Aggregate Demand/Supply and Fiscal Policy", "Jacob Clifford", "Full unit review", "AD–AS equilibrium, output gaps, multipliers, and fiscal policy"),
+  video("ap-macro", 4, "NaDX9VKWGkA", "Macroeconomics Unit 4 COMPLETE Summary - Financial Markets - 2025 Update", "ReviewEcon", "Full unit review", "Financial assets, bank balance sheets, money market, and monetary policy"),
+  video("ap-macro", 5, "dFDuG0jyJ6Q", "Macroeconomics Unit 5 COMPLETE Summary - Policy Consequences - 2025 Update", "ReviewEcon", "Full unit review", "Phillips curve, deficits, crowding out, and long-run growth"),
+  video("ap-macro", 6, "ZUq395NK3Gs", "Macroeconomics Unit 6 COMPLETE Summary - Foreign Exchange and Trade", "ReviewEcon", "Full unit review", "Balance of payments, exchange rates, and net-export feedback"),
+
+  // AP Environmental Science — Jordan Dischinger-Smedes' unit reviews for
+  // units 1–5 and 9, Science Panda's full reviews for units 6–8, and Smedes'
+  // unit 3 math review for the exam's calculation family.
+  video("ap-env", 1, "tmSmdUCw0sk", "AP Environmental Science Unit 1 Review (Everything you Need to Know!)", "Jordan Dischinger-Smedes", "Full unit review", "Ecosystems, biomes, biogeochemical cycles, and energy flow"),
+  video("ap-env", 2, "V0_LQ3RSuCo", "AP Environmental Science Unit 2 Review (Everything you Need to Know!)", "Jordan Dischinger-Smedes", "Full unit review", "Biodiversity levels, ecosystem services, and island biogeography"),
+  video("ap-env", 3, "7ITb2BWS8HM", "AP Environmental Science Unit 3 Review (Everything you Need to Know!)", "Jordan Dischinger-Smedes", "Full unit review", "Population growth, survivorship, and human demography"),
+  video("ap-env", 3, "9LsNIzb8ihw", "AP Environmental Science Unit 3 MATH Review Video (All The Equations You Need to Know!)", "Jordan Dischinger-Smedes", "Skill focus", "Percent change, growth rate, and rule-of-70 practice"),
+  video("ap-env", 4, "z-rAgbQ2AoA", "AP Environmental Science Unit 4 Review (Everything You Need to Know!)", "Jordan Dischinger-Smedes", "Full unit review", "Plate tectonics, soil texture, atmosphere, and El Niño"),
+  video("ap-env", 5, "i79vSrnpV9c", "AP Environmental Science Unit 5 Review (Everything you Need to Know!)", "Jordan Dischinger-Smedes", "Full unit review", "Tragedy of the commons, agriculture, irrigation, and land use"),
+  video("ap-env", 6, "mJjvWL_dw68", "Unit 6 APES Energy Use Review- AP Environmental Science", "Science Panda", "Full unit review", "Fossil fuels, nuclear power, renewables, and energy trends"),
+  video("ap-env", 7, "5l3NJi_aROM", "Unit 7 APES Air Pollution Review- AP Environmental Science", "Science Panda", "Full unit review", "Criteria pollutants, photochemical smog, inversions, and acid deposition"),
+  video("ap-env", 8, "6oAt6e-cTl4", "Unit 8 APES Aquatic and Terrestrial Pollution Review - AP Environmental Science", "Science Panda", "Full unit review", "Eutrophication, oxygen sag, sewage treatment, and waste"),
+  video("ap-env", 9, "JSYNMjVQwoU", "AP Environmental Science Unit 9 Review (Everything You Need to Know!)", "Jordan Dischinger-Smedes", "Full unit review", "Ozone depletion, climate change, and biodiversity loss"),
 ];
 
 export function videoWatchUrl(v: UnitVideo): string {
