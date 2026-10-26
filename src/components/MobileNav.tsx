@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { subjects } from "@/lib/subjects";
+import { subjects, subjectVars } from "@/lib/subjects";
 import { SubjectMark } from "./SubjectMark";
 import { SiteSearch } from "./SiteSearch";
 import { ThemeControl } from "./ThemeControl";
@@ -184,9 +184,10 @@ export function MobileNav() {
                 href={`/course/${subject.slug}`}
                 tabIndex={open ? 0 : -1}
                 onClick={() => setOpen(false)}
-                className="group flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-[0.84rem] font-medium no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/55 dark:hover:bg-white/12"
+                className="group subject-accent subject-accent-link flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-[0.84rem] font-medium no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/55 dark:hover:bg-white/12"
+                style={subjectVars(subject)}
               >
-                <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 transition-transform duration-200 group-hover:scale-110 dark:border-white/20 dark:bg-white/10">
+                <span className="subject-accent-chip inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 transition-transform duration-200 group-hover:scale-110 dark:border-white/20 dark:bg-white/10">
                   <SubjectMark
                     subject={subject.mark}
                     size={15}

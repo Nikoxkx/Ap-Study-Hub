@@ -18,7 +18,9 @@ export type SubjectSlug =
   | "ap-gov"
   | "ap-bio"
   | "ap-calc"
-  | "ap-research";
+  | "ap-research"
+  | "ap-macro"
+  | "ap-env";
 
 export interface Subject {
   slug: SubjectSlug;
@@ -186,6 +188,44 @@ export const subjects: Subject[] = [
     topic: "RESEARCH",
     symbolLabel: "Magnifying glass — original research",
     mark: "ap-research",
+  },
+  {
+    slug: "ap-macro",
+    code: "MAC",
+    familiar: "AP Macro",
+    official: "AP Macroeconomics",
+    summary:
+      "Six units, four core graphs, and sixty multiple-choice questions — the whole economy as one connected system.",
+    intro:
+      "AP Macro is a small course with a dense graph language. AD–AS, the money market, loanable funds, the Phillips curve, and foreign exchange all describe the same economy, so the notes below teach them as one connected system. Sixty multiple-choice questions carry two-thirds of the score; the three free-response questions reward correctly labeled graphs and clean multiplier arithmetic.",
+    exam: { date: "2027-05-07", window: "afternoon" },
+    ink: "#8a2f4b",
+    lit: "#e59db4",
+    wash: "#f4e3ea",
+    washDark: "#1c1c1c",
+    revised: "2026-10-25",
+    topic: "ECONOMICS",
+    symbolLabel: "Rising market graph — growth and economic activity",
+    mark: "ap-macro",
+  },
+  {
+    slug: "ap-env",
+    code: "ENV",
+    familiar: "APES",
+    official: "AP Environmental Science",
+    summary:
+      "Nine units from ecosystems to global change, with eighty multiple-choice questions and three free-response tasks that reward data, design, and calculation.",
+    intro:
+      "AP Environmental Science is an applied course: every concept ends in a decision about land, water, energy, or pollution. The exam's eighty multiple-choice questions lean on graphs and data, and the three free-response questions ask you to design an investigation, analyze an environmental problem and propose a solution, and show quantitative work. The notes below follow that order: mechanism first, evidence second, remedy third.",
+    exam: { date: "2027-05-13", window: "afternoon" },
+    ink: "#21647a",
+    lit: "#93cbdd",
+    wash: "#e1edf1",
+    washDark: "#1b1b1b",
+    revised: "2026-10-26",
+    topic: "ENVIRONMENT",
+    symbolLabel: "Leaf — ecosystems and the natural world",
+    mark: "ap-env",
   },
 ];
 

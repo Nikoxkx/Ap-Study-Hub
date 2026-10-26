@@ -9,6 +9,8 @@ const expectedUnits: Record<string, number> = {
   "ap-bio": 8,
   "ap-calc": 10,
   "ap-research": 5,
+  "ap-macro": 6,
+  "ap-env": 9,
 };
 
 const errors: string[] = [];

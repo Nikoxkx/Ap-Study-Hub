@@ -14,6 +14,8 @@ export const subjectSymbolLabels: Record<SubjectSlug, string> = {
   "ap-bio": "DNA double helix — living systems",
   "ap-calc": "Right triangle trigonometry — calculus and analysis",
   "ap-research": "Magnifying glass — original research",
+  "ap-macro": "Rising market graph — growth and economic activity",
+  "ap-env": "Leaf — ecosystems and the natural world",
 };
 
 interface SubjectMarkProps {

@@ -153,7 +153,7 @@ export default function GuidesPage() {
         <GlassCard padding="lg">
         <div className="max-w-[68ch]">
           <Breadcrumbs trail={trail} />
-          <p className="label mb-3">A method that works for all seven courses</p>
+          <p className="label mb-3">A method that works for all nine courses</p>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
             Study smarter for an AP exam — and make it count.
           </h1>

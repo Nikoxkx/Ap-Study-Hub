@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { subjects } from "@/lib/subjects";
+import { subjects, subjectVars } from "@/lib/subjects";
 import { SiteMark } from "@/components/SubjectMark";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { SearchInput } from "@/components/ui/SearchInput";
@@ -42,7 +42,11 @@ export default function NotFound() {
           <ul className="flex flex-wrap gap-2">
             {subjects.map((subject) => (
               <li key={subject.slug}>
-                <Link href={`/course/${subject.slug}`} className="tag no-underline hover:bg-white/65">
+                <Link
+                  href={`/course/${subject.slug}`}
+                  className="tag subject-accent subject-accent-tag no-underline hover:bg-white/65"
+                  style={subjectVars(subject)}
+                >
                   {subject.official}
                 </Link>
               </li>

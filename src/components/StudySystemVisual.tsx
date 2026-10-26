@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { subjects, type SubjectSlug } from "@/lib/subjects";
+import { subjects, subjectVars, type SubjectSlug } from "@/lib/subjects";
 import { SubjectMark } from "./SubjectMark";
 
 /**
@@ -62,6 +62,18 @@ const sampleByCourse: Record<SubjectSlug, SamplePrompt> = {
     answer:
       "The specific unresolved question, population, context, or methodological limitation in prior scholarship that justifies your original 4,000–5,000 word inquiry.",
   },
+  "ap-macro": {
+    unit: "Unit 3 · AD–AS Model",
+    term: "Spending Multiplier",
+    answer:
+      "1/(1 − MPC): an initial change in spending ripples through successive rounds of income and consumption, so total GDP changes by a multiple of the first injection.",
+  },
+  "ap-env": {
+    unit: "Unit 8 · Aquatic Pollution",
+    term: "Eutrophication",
+    answer:
+      "Nutrient runoff triggers an algal bloom; when the algae die, bacterial decomposition consumes dissolved oxygen and the water turns hypoxic, suffocating fish.",
+  },
 };
 
 export function StudySystemVisual() {
@@ -75,7 +87,7 @@ export function StudySystemVisual() {
     <div
       className="space-y-6 rounded-2xl border border-white/80 bg-white/30 p-6 sm:p-7 dark:border-white/20 dark:bg-white/[0.04]"
       role="region"
-      aria-label="Interactive recall preview across all seven AP courses"
+      aria-label="Interactive recall preview across all nine AP courses"
     >
       {/* Header row with generous breathing room */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-4 dark:border-white/15">
@@ -107,7 +119,8 @@ export function StudySystemVisual() {
                 setSelected(item.slug);
                 setFlipped(false);
               }}
-              className="recall-course-pill"
+              className="recall-course-pill subject-accent"
+              style={subjectVars(item)}
             >
               <SubjectMark
                 subject={item.mark}
@@ -126,7 +139,8 @@ export function StudySystemVisual() {
         type="button"
         onClick={() => setFlipped((v) => !v)}
         aria-pressed={flipped}
-        className="recall-flip-card flex min-h-[11.5rem] w-full flex-col justify-between gap-5 rounded-2xl border border-white/85 bg-white/45 p-6 text-left sm:p-7 dark:border-white/20 dark:bg-white/[0.06]"
+        className="recall-flip-card subject-accent subject-accent-flip flex min-h-[11.5rem] w-full flex-col justify-between gap-5 rounded-2xl border border-white/85 bg-white/45 p-6 text-left sm:p-7 dark:border-white/20 dark:bg-white/[0.06]"
+        style={subjectVars(subject)}
       >
         <div className="flex flex-wrap items-center justify-between gap-4">
           <span className="label">{flipped ? "Exam-ready recall" : "Prompt · tap to flip"}</span>
@@ -156,13 +170,21 @@ export function StudySystemVisual() {
 
       {/* Spaced Action Pills with hover arrow transitions */}
       <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
-        <Link href={`/course/${subject.slug}/notes`} className="recall-action-pill">
+        <Link
+          href={`/course/${subject.slug}/notes`}
+          className="recall-action-pill subject-accent"
+          style={subjectVars(subject)}
+        >
           <span>Read {subject.familiar} lessons</span>
           <span aria-hidden="true" className="recall-action-arrow">
             →
           </span>
         </Link>
-        <Link href={`/course/${subject.slug}/cards`} className="recall-action-pill">
+        <Link
+          href={`/course/${subject.slug}/cards`}
+          className="recall-action-pill subject-accent"
+          style={subjectVars(subject)}
+        >
           <span>Open full card deck</span>
           <span aria-hidden="true" className="recall-action-arrow">
             →

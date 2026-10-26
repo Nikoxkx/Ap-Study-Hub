@@ -16,6 +16,25 @@
 // Static data - comprehensive AP exam content
 
 export const unitsData: Record<string, { unitNumber: number; title: string; description: string; content: string; keyTerms: string[] }[]> = {
+  "ap-env": [
+    { unitNumber: 1, title: "The Living World: Ecosystems", description: "Species interactions, biomes, cycles, and energy flow", content: `## Species Interactions\n- Competition, predation, mutualism, parasitism, commensalism\n- **Resource partitioning** reduces competition\n\n## Biomes\n- Classified by temperature and precipitation\n- Rainforest most productive; open ocean least per area\n\n## Cycles\n- Carbon: photosynthesis, respiration, combustion\n- Nitrogen: fixation makes it usable; phosphorus has no gas phase\n\n## Energy\n- **NPP** = GPP - respiration; **10% rule** between trophic levels`, keyTerms: ["Net Primary Productivity", "Resource Partitioning", "10% Rule", "Nitrogen Fixation", "Biome"] },
+    { unitNumber: 2, title: "The Living World: Biodiversity", description: "Levels of diversity, ecosystem services, and island biogeography", content: `## Three Levels\n- Genetic, species (richness + evenness), ecosystem\n\n## Ecosystem Services\n- Provisioning, regulating, cultural, supporting\n\n## Island Biogeography\n- Large and near islands hold most species\n- Immigration vs extinction balance\n\n## Species Types\n- Specialists vs generalists; invasives are usually generalists`, keyTerms: ["Biodiversity", "Ecosystem Services", "Island Biogeography", "Specialist", "Generalist"] },
+    { unitNumber: 3, title: "Populations", description: "Growth models, survivorship, and human demography", content: `## Growth Models\n- Exponential (J) vs logistic (S) toward **carrying capacity K**\n\n## Life Histories\n- r-selected: many offspring, little care; K-selected: few, heavy care\n- Survivorship Types I, II, III\n\n## Human Demography\n- **TFR** and replacement level ~2.1\n- Age-structure diagrams predict growth or decline\n- **Rule of 70**: doubling time = 70 / % growth`, keyTerms: ["Carrying Capacity", "Rule of 70", "Total Fertility Rate", "Age-Structure Diagram", "Demographic Transition"] },
+    { unitNumber: 4, title: "Earth Systems and Resources", description: "Plate tectonics, soil, atmosphere, and watersheds", content: `## Plate Tectonics\n- Divergent, convergent (subduction), transform boundaries\n\n## Soil\n- Horizons O, A, E, B, C, R; loam is the balanced texture\n- Soil texture triangle: sand, silt, clay\n\n## Atmosphere and Water\n- Troposphere weather; stratosphere ozone\n- **Watershed**: land draining to one outlet\n- El Niño: weak trade winds, warm eastern Pacific`, keyTerms: ["Plate Tectonics", "Soil Texture", "Watershed", "El Niño", "Stratosphere"] },
+    { unitNumber: 5, title: "Land and Water Use", description: "Commons, agriculture, irrigation, mining, fishing, cities", content: `## Tragedy of the Commons\n- Shared unowned resources get overused; fix the incentives\n\n## Agriculture\n- Green Revolution yields vs runoff, resistance, salinization\n- Sustainable: rotation, intercropping, IPM, contour plowing\n\n## Water\n- Drip irrigation most efficient; Ogallala Aquifer depletion\n\n## Other Uses\n- Mining impacts, bycatch and fisheries collapse, urban runoff`, keyTerms: ["Tragedy of the Commons", "Green Revolution", "Drip Irrigation", "Bycatch", "Aquifer"] },
+    { unitNumber: 6, title: "Energy Resources and Consumption", description: "Fossil fuels, nuclear, renewables, and energy math", content: `## Fossil Fuels\n- Coal, oil, natural gas; steam-turbine plants ~35-40% efficient\n- Gas emits roughly half coal's CO2 per kWh\n\n## Nuclear\n- Fission heat, control rods; waste storage unresolved\n\n## Renewables\n- Solar, wind (intermittent), hydro, geothermal, biomass, hydrogen carrier\n\n## Energy Math\n- Energy = power x time; cost = kWh x price; convert W to kW first`, keyTerms: ["Fossil Fuels", "Nuclear Fission", "Intermittent", "Kilowatt-Hour", "Cogeneration"] },
+    { unitNumber: 7, title: "Atmospheric Pollution", description: "Criteria pollutants, smog, acid deposition, and controls", content: `## Pollutants\n- Primary emitted directly; secondary form in air (ozone)\n- Criteria: PM, O3, CO, SO2, NO2, Pb\n\n## Smog and Inversions\n- Photochemical smog: NOx + VOCs + sunlight\n- Thermal inversion traps pollution\n\n## Acid Deposition and Indoor Air\n- SO2/NOx become sulfuric/nitric acids; radon indoors\n\n## Controls\n- Catalytic converters, scrubbers, Clean Air Act, SO2 cap-and-trade`, keyTerms: ["Photochemical Smog", "Thermal Inversion", "Acid Deposition", "Catalytic Converter", "Clean Air Act"] },
+    { unitNumber: 8, title: "Aquatic and Terrestrial Pollution", description: "Eutrophication, sewage, toxins, and waste", content: `## Eutrophication\n- Nutrients, algal bloom, decomposition, hypoxic dead zone\n- **Oxygen sag curve** and BOD\n\n## Sewage Treatment\n- Primary settles, secondary decomposes, tertiary removes nutrients\n- Fecal coliform as indicator organism\n\n## Toxins and Waste\n- Bioaccumulation and biomagnification; endocrine disruptors\n- Landfills, incineration, bioremediation, phytoremediation`, keyTerms: ["Eutrophication", "Oxygen Sag Curve", "Biomagnification", "Sewage Treatment", "Endocrine Disruptor"] },
+    { unitNumber: 9, title: "Global Change", description: "Ozone depletion, climate change, and biodiversity loss", content: `## Ozone Depletion\n- CFC chlorine destroys stratospheric ozone; Montreal Protocol\n\n## Climate Change\n- Greenhouse gases absorb infrared; evidence and feedbacks\n- Ocean warming, sea level, acidification\n\n## Biodiversity Loss\n- **HIPPCO**: habitat, invasives, population, pollution, climate, overuse\n- Endangered Species Act, CITES; mitigation vs adaptation`, keyTerms: ["Ozone Depletion", "Greenhouse Gas", "Ocean Acidification", "HIPPCO", "Endangered Species Act"] },
+  ],
+  "ap-macro": [
+    { unitNumber: 1, title: "Basic Economic Concepts", description: "Scarcity, PPC, comparative advantage, and markets", content: `## Scarcity and Opportunity Cost\n- **Scarcity**: Wants exceed resources, so choices are unavoidable\n- **Opportunity Cost**: Value of the next-best alternative forgone\n\n## Production Possibilities Curve\n- On curve = efficient; inside = inefficient; outside = unattainable\n- Bowed out = increasing opportunity cost\n- Shifts out with resources, technology, productivity\n\n## Comparative Advantage\n- Specialize where **opportunity cost is lower**\n- Terms of trade must fall between both opportunity costs\n\n## Supply and Demand\n- Demand shifters: income, tastes, expectations, related goods, buyers\n- Supply shifters: input prices, technology, taxes/subsidies, sellers`, keyTerms: ["Opportunity Cost", "Comparative Advantage", "Production Possibilities Curve", "Supply", "Demand"] },
+    { unitNumber: 2, title: "Economic Indicators and the Business Cycle", description: "GDP, unemployment, inflation, and the business cycle", content: `## GDP\n- **Expenditures approach**: C + I + G + (X - M)\n- Final goods only; excludes used goods, transfers, financial trades\n\n## Nominal vs Real\n- **GDP Deflator** = Nominal GDP / Real GDP x 100\n- Real GDP uses base-year prices\n\n## Unemployment\n- Rate = Unemployed / Labor Force x 100\n- Frictional + Structural + Cyclical; natural rate excludes cyclical\n\n## Inflation and CPI\n- **CPI** = Basket cost now / base-year cost x 100\n- Inflation = % change in the index\n\n## Business Cycle\nExpansion, peak, contraction (recession), trough`, keyTerms: ["GDP", "GDP Deflator", "Unemployment Rate", "CPI", "Business Cycle"] },
+    { unitNumber: 3, title: "National Income and Price Determination", description: "AD-AS, gaps, multipliers, and fiscal policy", content: `## AD-AS Model\n- **AD slopes down**: wealth, interest-rate, exchange-rate effects\n- **SRAS slopes up**: sticky wages and prices\n- **LRAS vertical** at potential output\n\n## Gaps and Self-Correction\n- Below potential = **recessionary gap**; above = **inflationary gap**\n- Long run: wage/input-price adjustment shifts SRAS back\n\n## Multipliers\n- Spending multiplier = 1 / (1 - MPC)\n- Tax multiplier = -MPC / (1 - MPC)\n- Policy size = gap / multiplier\n\n## Fiscal Policy\n- Expansionary: more purchases or lower taxes\n- Contractionary: fewer purchases or higher taxes`, keyTerms: ["Aggregate Demand", "Aggregate Supply", "Recessionary Gap", "Multiplier", "Fiscal Policy", "MPC"] },
+    { unitNumber: 4, title: "Financial Sector", description: "Money, banking, interest rates, and monetary policy", content: `## Money and Banks\n- Functions: medium of exchange, unit of account, store of value\n- **Balance sheet**: assets = liabilities; reserves are required + excess\n- Money multiplier = 1 / reserve ratio\n\n## Money Market\n- Nominal interest rate on vertical axis\n- Money demand slopes down; money supply set by central bank\n\n## Loanable Funds\n- **Real** interest rate from saving supply and investment demand\n- Deficits raise demand, raise real rates (crowding out)\n\n## Monetary Policy\n- Limited reserves: open-market operations move quantity\n- Ample reserves: administered rates (interest on reserve balances)`, keyTerms: ["Money Multiplier", "Money Market", "Loanable Funds", "Monetary Policy", "Fisher Effect"] },
+    { unitNumber: 5, title: "Long-Run Consequences of Stabilization Policies", description: "Phillips curve, debt, crowding out, and growth", content: `## Phillips Curve\n- **SRPC**: inverse inflation-unemployment relationship\n- **LRPC**: vertical at the natural rate\n- Expectations and supply shocks shift SRPC\n\n## Deficits, Debt, Crowding Out\n- Deficit = one year's shortfall; debt = accumulated stock\n- Borrowing raises real rates and reduces investment\n\n## Quantity Theory\n- **M x V = P x Y**; with stable V and Y, money growth drives inflation\n- Long-run money neutrality\n\n## Economic Growth\n- Capital, human capital, technology, institutions shift LRAS right`, keyTerms: ["Phillips Curve", "Crowding Out", "Quantity Theory of Money", "National Debt", "Economic Growth"] },
+    { unitNumber: 6, title: "Open Economy - International Trade and Finance", description: "Balance of payments, exchange rates, and trade feedback", content: `## Balance of Payments\n- **Current account**: goods, services, income, transfers\n- **Capital/financial account**: asset purchases and sales\n- The two accounts balance in total\n\n## Foreign Exchange Market\n- Exchange rate = price of one currency in another\n- **Appreciation**: currency buys more foreign currency\n- Higher real interest rates attract capital and appreciate currency\n\n## Feedback to AD\n- Depreciation raises net exports and shifts AD right\n- Appreciation lowers net exports and shifts AD left`, keyTerms: ["Balance of Payments", "Current Account", "Exchange Rate", "Appreciation", "Net Exports"] },
+  ],
   apush: [
     { unitNumber: 1, title: "Period 1: 1491–1607", description: "European contact and early exploration", content: `## Native American Societies Before European Contact\n\nBefore Europeans arrived, diverse and complex Native American societies existed across North America.\n\n### Major Societies\n- **Pueblo peoples** (Southwest): Irrigation agriculture, adobe architecture\n- **Mississippian culture**: Cahokia — largest pre-Columbian settlement north of Mexico\n- **Iroquois Confederacy**: Political alliance of Haudenosaunee nations\n- **Great Plains peoples**: Nomadic buffalo-hunting cultures\n\n## European Exploration & Colonization\n\n### Motivations — "God, Gold, and Glory"\n- **Economic**: New trade routes, gold, natural resources\n- **Religious**: Spreading Christianity\n- **Political**: National prestige, competition\n\n### The Columbian Exchange\nThe transfer of plants, animals, diseases, and ideas between hemispheres.\n- **To Europe**: Potatoes, corn, tomatoes, tobacco\n- **To Americas**: Horses, cattle, wheat, smallpox, measles\n- **Demographic catastrophe**: 50–90% of indigenous populations decimated by disease\n\n### Spanish Colonial System\n- **Encomienda**: Granted colonists control over indigenous labor\n- **Casta system**: Racial hierarchy\n- **Mission system**: Forced conversion`, keyTerms: ["Columbian Exchange", "Encomienda", "Cahokia", "Iroquois Confederacy"] },
     { unitNumber: 2, title: "Period 2: 1607–1754", description: "Colonial America development", content: `## Chesapeake Colonies\n\n### Virginia\n- **Jamestown (1607)**: First permanent English settlement\n- **Tobacco**: Cash crop that defined Virginia's economy\n- **House of Burgesses (1619)**: First representative assembly\n\n### Bacon's Rebellion (1676)\n- Frontier settlers vs. coastal elites\n- Accelerated shift to African slavery\n\n## New England Colonies\n- **Plymouth (1620)**: Pilgrims; Mayflower Compact\n- **Massachusetts Bay (1630)**: Puritans; "city upon a hill"\n- **Town meetings**: Direct democratic participation\n\n## Colonial Society\n- **Mercantilism**: Colonies exist for mother country's benefit\n- **Navigation Acts**: Trade must pass through England\n- **Salutary neglect**: Lax enforcement → self-governance\n- **Great Awakening (1730s-1740s)**: Religious revival`, keyTerms: ["Jamestown", "Bacon's Rebellion", "Mayflower Compact", "Great Awakening", "Salutary Neglect"] },
@@ -78,6 +97,70 @@ export const unitsData: Record<string, { unitNumber: number; title: string; desc
 
 // Expanded flashcards with 50+ per course
 export const flashcardsData: Record<string, { front: string; back: string }[]> = {
+  "ap-env": [
+    { front: "What is net primary productivity (NPP)?", back: "Gross primary productivity minus the energy producers use in respiration. NPP is the energy available to consumers and decomposers." },
+    { front: "What is the 10% rule?", back: "Only about 10% of energy at one trophic level becomes biomass at the next; the rest is lost to respiration, waste, and uneaten material." },
+    { front: "What is resource partitioning?", back: "Species dividing a shared resource by time, space, or form so competition is reduced and coexistence is possible." },
+    { front: "How do the nitrogen and phosphorus cycles differ?", back: "Nitrogen has a huge atmospheric reservoir but must be fixed before use. Phosphorus has no significant gas phase and cycles through rock, soil, and water." },
+    { front: "What are the three levels of biodiversity?", back: "Genetic diversity within populations, species diversity (richness and evenness) in communities, and ecosystem diversity across landscapes." },
+    { front: "What are the four categories of ecosystem services?", back: "Provisioning (food, water, timber), regulating (pollination, flood control), cultural (recreation), and supporting (soil formation, nutrient cycling)." },
+    { front: "What does island biogeography predict?", back: "Large islands near a mainland hold the most species; small, distant islands hold the fewest, because richness balances immigration against extinction." },
+    { front: "What is carrying capacity?", back: "The maximum population an environment can sustain over time. Logistic growth slows as a population approaches it." },
+    { front: "What is the rule of 70?", back: "Doubling time in years = 70 divided by the percent annual growth rate. At 2% growth, a population doubles in about 35 years." },
+    { front: "What is total fertility rate and replacement level?", back: "TFR is the average children per woman in her lifetime. Replacement level is about 2.1 where infant mortality is low." },
+    { front: "What does a narrow-based age-structure diagram predict?", back: "Future population decline and an aging population, because smaller young cohorts will replace larger older ones." },
+    { front: "What happens at a convergent plate boundary?", back: "Plates collide; the denser oceanic plate subducts, creating trenches, volcanic arcs, and major earthquakes. Continental collisions raise mountain ranges." },
+    { front: "What is loam?", back: "The ideal agricultural soil texture: roughly balanced sand, silt, and clay with good drainage, water holding, and nutrient retention." },
+    { front: "What is a watershed?", back: "All the land that drains precipitation and runoff to a common outlet like a river, lake, or bay. Pollution anywhere in it can reach that water." },
+    { front: "What causes El Niño?", back: "Weakened Pacific trade winds let warm surface water move east, suppressing upwelling off South America and shifting rainfall patterns worldwide." },
+    { front: "What is the tragedy of the commons?", back: "Shared, unowned resources are overused because each user gains the full benefit of taking more while depletion costs are spread across everyone." },
+    { front: "What was the Green Revolution?", back: "The spread of high-yield crop varieties with synthetic fertilizer, pesticides, and irrigation that multiplied harvests, at the cost of runoff, resistance, and aquifer depletion." },
+    { front: "Which irrigation method is most efficient?", back: "Drip irrigation, which delivers water directly to roots and can exceed 90% efficiency, versus roughly 50-60% for flood/furrow systems." },
+    { front: "How does a thermal power plant make electricity?", back: "Burning fuel (or fission heat) boils water into steam, which spins a turbine connected to a generator. Only about 35-40% of fuel energy becomes electricity." },
+    { front: "What is the difference between a primary and a secondary pollutant?", back: "Primary pollutants are emitted directly (CO, SO2). Secondary pollutants form in the atmosphere from reactions, like ground-level ozone and acid rain." },
+    { front: "How does photochemical smog form?", back: "Sunlight breaks down nitrogen dioxide from engines; with VOCs present the reactions keep producing ground-level ozone, worst on hot, still days." },
+    { front: "What is a thermal inversion?", back: "A warm layer of air above cooler surface air that acts like a lid, trapping pollutants near the ground. Valleys and basins suffer the worst episodes." },
+    { front: "What causes acid deposition?", back: "Sulfur dioxide and nitrogen oxides oxidize in the atmosphere into sulfuric and nitric acids, falling as acid rain, snow, fog, or dry particles." },
+    { front: "What is eutrophication?", back: "Nutrient enrichment (N and P) causing algal blooms whose decomposition consumes dissolved oxygen, creating hypoxic dead zones." },
+    { front: "What does each sewage treatment level remove?", back: "Primary: settles solids. Secondary: bacteria decompose dissolved organics (lowers BOD). Tertiary: removes nitrogen and phosphorus and disinfects." },
+    { front: "What is biomagnification?", back: "Persistent, fat-soluble toxins like mercury and DDT become more concentrated at each higher trophic level, hitting top predators hardest." },
+    { front: "What is the difference between ozone depletion and global warming?", back: "CFCs destroy protective stratospheric ozone (Montreal Protocol). Greenhouse gases like CO2 and methane warm the planet by absorbing infrared radiation." },
+    { front: "What is ocean acidification?", back: "The ocean absorbs about a third of human CO2, forming carbonic acid. Lower pH and less carbonate make shells and coral skeletons harder to build." },
+    { front: "What does HIPPCO stand for?", back: "The main biodiversity threats: Habitat loss, Invasive species, Population growth (human), Pollution, Climate change, and Overexploitation." },
+    { front: "What is the Endangered Species Act?", back: "U.S. law protecting listed threatened and endangered species and their critical habitat; trade in listed species is also restricted under CITES." },
+  ],
+  "ap-macro": [
+    { front: "What is opportunity cost?", back: "The value of the next-best alternative given up when a choice is made. It is the true cost of any decision under scarcity." },
+    { front: "What does a point inside the PPC mean?", back: "The economy is producing inefficiently: some resources are unemployed or underused, so more of both goods could be produced." },
+    { front: "What is comparative advantage?", back: "The ability to produce a good at a lower opportunity cost than another producer. It, not absolute advantage, determines who should specialize." },
+    { front: "What are mutually beneficial terms of trade?", back: "A trading price between the two producers' opportunity costs, so both sides gain compared with producing for themselves." },
+    { front: "What shifts demand?", back: "Income, tastes, expectations, prices of substitutes or complements, and the number of buyers. A change in the good's own price only moves along the curve." },
+    { front: "What is GDP?", back: "The market value of all final goods and services produced within a country during a specific period, measured by BEA." },
+    { front: "What is the expenditures approach to GDP?", back: "GDP = C + I + G + (X - M): consumption plus gross private investment plus government purchases plus net exports." },
+    { front: "What is the GDP deflator?", back: "Nominal GDP divided by real GDP, times 100. A broad price index covering all domestically produced final goods." },
+    { front: "How is the unemployment rate calculated?", back: "Unemployed divided by the labor force, times 100. The labor force is employed plus unemployed people actively seeking work." },
+    { front: "What is the natural rate of unemployment?", back: "Frictional plus structural unemployment when cyclical unemployment is zero. Full employment does not mean 0% unemployment." },
+    { front: "What is CPI?", back: "The Consumer Price Index: the cost of a fixed market basket in a given year divided by its base-year cost, times 100." },
+    { front: "Who is hurt by unexpected inflation?", back: "Lenders and savers holding cash or fixed-rate assets, because repayments are worth less in purchasing power. Fixed-rate borrowers gain." },
+    { front: "What is aggregate demand?", back: "The total quantity of real GDP demanded at each price level: C + I + G + net exports planned at that price level." },
+    { front: "Why does SRAS slope upward?", back: "Sticky wages and input prices mean a higher price level raises firms' profit per unit in the short run, so they expand output." },
+    { front: "What is a recessionary gap?", back: "Short-run equilibrium output below potential output, with unemployment above the natural rate." },
+    { front: "What is the spending multiplier formula?", back: "1 / (1 - MPC). With MPC = 0.8, the multiplier is 5, so $1 of new spending can raise GDP by up to $5 in the simple model." },
+    { front: "What is fiscal policy?", back: "Government use of purchases and taxes to shift aggregate demand: expansionary against recessionary gaps, contractionary against inflationary gaps." },
+    { front: "What is the money multiplier?", back: "1 divided by the reserve ratio: the maximum factor by which new reserves can expand the money supply through bank lending." },
+    { front: "What determines the nominal interest rate in the money market?", back: "The intersection of downward-sloping money demand with the central-bank-set money supply." },
+    { front: "What is the Fisher effect?", back: "Nominal interest rates adjust with expected inflation so that real rates tend to stay stable: nominal = real + expected inflation." },
+    { front: "What is monetary policy in an ample-reserve system?", back: "Policy conducted mainly through administered rates, especially interest on reserve balances, because reserves are already abundant." },
+    { front: "What does the loanable funds market determine?", back: "The real interest rate, from the supply of saving and the demand for investment borrowing." },
+    { front: "What is the Phillips curve?", back: "Short run: an inverse relationship between inflation and unemployment. Long run: vertical at the natural rate of unemployment." },
+    { front: "What is crowding out?", back: "The fall in private investment when government deficit borrowing raises real interest rates in the loanable funds market." },
+    { front: "What is the quantity theory of money?", back: "From M x V = P x Y with stable velocity and real output in the long run, sustained money growth produces proportional inflation." },
+    { front: "What is the difference between a deficit and the national debt?", back: "A deficit is one year's spending minus revenue; the national debt is the accumulated stock of past deficits minus surpluses." },
+    { front: "What is the current account?", back: "The balance-of-payments account for trade in goods and services, investment income, and unilateral transfers." },
+    { front: "What does currency appreciation mean?", back: "The currency exchanges for more foreign currency, making imports cheaper at home and exports dearer abroad." },
+    { front: "How do higher domestic real interest rates affect the exchange rate?", back: "They attract foreign capital, raising demand for the domestic currency and causing appreciation." },
+    { front: "How does depreciation affect net exports and AD?", back: "Exports become cheaper abroad and imports dearer at home, so net exports rise and aggregate demand shifts right." },
+  ],
   apush: [
     // Period 1
     { front: "What was the Columbian Exchange?", back: "The transfer of plants, animals, diseases, and ideas between the Americas and the Old World after 1492. Caused 50-90% indigenous population decline from disease." },
@@ -320,6 +403,37 @@ export const flashcardsData: Record<string, { front: string; back: string }[]> =
 
 // Expanded quiz data with 30+ questions per course
 export const quizData: Record<string, { question: string; options: string[]; correctIndex: number; explanation: string; skill?: string }[]> = {
+  "ap-env": [
+    { question: "Which is the best example of a regulating ecosystem service?", options: ["Timber harvested from a forest", "Wetlands filtering pollutants and reducing flood peaks", "A scenic hiking trail", "Soil formation over centuries"], correctIndex: 1, explanation: "Regulating services control processes like water purification and flood moderation. Timber is provisioning, scenery is cultural, soil formation is supporting.", skill: "Ecosystem Services" },
+    { question: "A population grows from 2,000 to 2,200 in one year. Its percent growth rate and approximate doubling time are:", options: ["10%; 7 years", "10%; 70 years", "0.1%; 700 years", "20%; 3.5 years"], correctIndex: 0, explanation: "Growth = 200/2,000 = 10%. Doubling time = 70/10 = 7 years.", skill: "Population Math" },
+    { question: "Which soil would be best for farming in a dry region?", options: ["Pure sand, for maximum drainage", "Loam, balancing drainage with water and nutrient retention", "Pure clay, because it never drains", "Gravel with no fines"], correctIndex: 1, explanation: "Loam holds water and nutrients while still draining; sand loses both quickly and clay waterlogs and compacts.", skill: "Soils" },
+    { question: "Which policy directly targets the tragedy of the commons in a groundwater basin?", options: ["Subsidizing more powerful pumps", "Metering and capping total withdrawals from the aquifer", "Encouraging farmers to plant thirstier crops", "Removing well permits"], correctIndex: 1, explanation: "A capped, monitored withdrawal total changes the incentive that drives overpumping of a shared aquifer.", skill: "Commons" },
+    { question: "A 60 W bulb used 5 hours a day uses how much energy in 30 days?", options: ["9 kWh", "0.3 kWh", "300 kWh", "90 kWh"], correctIndex: 0, explanation: "0.06 kW x 5 h x 30 = 9 kWh.", skill: "Energy Math" },
+    { question: "Which source produces electricity with no combustion and no carbon emissions during operation but leaves long-lived radioactive waste?", options: ["Natural gas", "Biomass", "Nuclear fission", "Coal with scrubbers"], correctIndex: 2, explanation: "Nuclear plants emit no CO2 while operating; spent fuel storage is the unresolved cost.", skill: "Energy Sources" },
+    { question: "A catalytic converter primarily reduces which vehicle emissions?", options: ["Carbon dioxide and water vapor", "Carbon monoxide, nitrogen oxides, and hydrocarbons", "Sulfur dioxide and lead", "Particulate matter from tires"], correctIndex: 1, explanation: "Catalytic converters oxidize CO and hydrocarbons and reduce NOx to nitrogen gas. They do not remove CO2.", skill: "Air Pollution Control" },
+    { question: "Tertiary sewage treatment is specifically needed to prevent:", options: ["Grit clogging the intake screens", "Eutrophication from nitrogen and phosphorus in the effluent", "Odor at the treatment plant", "Flooding during storms"], correctIndex: 1, explanation: "Only tertiary treatment removes the nutrients that drive eutrophication downstream.", skill: "Water Treatment" },
+    { question: "Mercury from coal plants is most dangerous to humans because it:", options: ["Causes acid rain directly", "Bioaccumulates and biomagnifies, concentrating in large predatory fish people eat", "Depletes stratospheric ozone", "Raises BOD in rivers"], correctIndex: 1, explanation: "Methylmercury concentrates up food chains, which is why advisories target top predator fish.", skill: "Toxins" },
+    { question: "Which action is climate mitigation rather than adaptation?", options: ["Building a seawall against higher seas", "Replacing coal generation with wind power", "Moving farms away from floodplains", "Breeding heat-tolerant cattle"], correctIndex: 1, explanation: "Mitigation reduces greenhouse gas sources; the others help systems cope with impacts already occurring.", skill: "Climate Responses" },
+    { question: "Two communities each have 4 species. Community X counts are 25, 25, 25, 25 and Community Y counts are 97, 1, 1, 1. Which has higher species diversity?", options: ["Y, because it has more total organisms", "X, because equal richness with far greater evenness", "They are identical because richness is equal", "Y, because dominance increases diversity"], correctIndex: 1, explanation: "Diversity combines richness and evenness; Y is dominated by a single species.", skill: "Biodiversity" },
+    { question: "During El Niño, Peruvian fisheries typically decline because:", options: ["Trade winds strengthen and overcool the water", "Warm surface water suppresses nutrient-rich upwelling that feeds the food web", "Ocean acidification dissolves fish shells", "The ozone hole widens over the Pacific"], correctIndex: 1, explanation: "El Niño's warm surface layer blocks the cold, nutrient-rich upwelling that supports anchoveta and the fishery.", skill: "Earth Systems" },
+  ],
+  "ap-macro": [
+    { question: "Scarcity exists because:", options: ["Resources are unlimited but wants are not", "Wants exceed the resources available to satisfy them", "Governments print too little money", "Prices are too high"], correctIndex: 1, explanation: "Scarcity is the fundamental condition that resources are finite while human wants are effectively unlimited, forcing choice and opportunity cost.", skill: "Basic Concepts" },
+    { question: "If the MPC is 0.9, the simple spending multiplier is:", options: ["0.9", "5", "9", "10"], correctIndex: 3, explanation: "Multiplier = 1/(1 - 0.9) = 1/0.1 = 10.", skill: "Multipliers" },
+    { question: "Which transaction is counted in U.S. GDP?", options: ["A used car sold by a dealer (the car itself)", "A newly built house sold this year", "A purchase of corporate stock", "A Social Security payment"], correctIndex: 1, explanation: "New residential construction is investment in GDP. Used goods, financial asset trades, and transfer payments are excluded.", skill: "GDP" },
+    { question: "Discouraged workers are counted as:", options: ["Unemployed", "Employed", "Not in the labor force", "Frictionally unemployed"], correctIndex: 2, explanation: "People who stopped actively searching are outside the labor force, which can lower the measured unemployment rate.", skill: "Unemployment" },
+    { question: "If nominal GDP is $500 and real GDP is $400, the GDP deflator is:", options: ["80", "100", "125", "200"], correctIndex: 2, explanation: "Deflator = 500/400 x 100 = 125.", skill: "Price Indexes" },
+    { question: "A leftward shift of SRAS with AD unchanged causes:", options: ["Lower price level and higher output", "Higher price level and lower output (stagflation pressure)", "Higher output at a lower price level", "No change in either"], correctIndex: 1, explanation: "A negative supply shock raises the price level while reducing real output.", skill: "AD-AS" },
+    { question: "To close a $300 billion recessionary gap with a multiplier of 3, government purchases should initially rise by:", options: ["$100 billion", "$300 billion", "$900 billion", "$3 billion"], correctIndex: 0, explanation: "Required change = gap / multiplier = 300/3 = $100 billion.", skill: "Fiscal Policy" },
+    { question: "A bank has $2,000 in deposits and a 25% reserve requirement. Its required reserves are:", options: ["$250", "$500", "$1,500", "$2,000"], correctIndex: 1, explanation: "Required reserves = 0.25 x 2,000 = $500; the rest may be lent, subject to the bank holding the deposit's reserves first.", skill: "Banking" },
+    { question: "An open-market purchase by the central bank will, in the money market:", options: ["Shift money supply left and raise the nominal rate", "Shift money supply right and lower the nominal rate", "Shift money demand right and raise the nominal rate", "Leave interest rates unchanged"], correctIndex: 1, explanation: "Buying securities adds reserves and increases the money supply, moving the nominal interest rate down.", skill: "Monetary Policy" },
+    { question: "The long-run Phillips curve is:", options: ["Downward sloping", "Upward sloping", "Vertical at the natural rate of unemployment", "Horizontal at zero inflation"], correctIndex: 2, explanation: "In the long run expectations adjust, so unemployment returns to the natural rate at any sustained inflation rate.", skill: "Phillips Curve" },
+    { question: "Government borrowing to finance a deficit tends to:", options: ["Lower real interest rates", "Raise real interest rates and crowd out some private investment", "Increase private saving one-for-one immediately", "Reduce the money supply"], correctIndex: 1, explanation: "Added demand in the loanable funds market raises the real interest rate, reducing interest-sensitive private investment.", skill: "Crowding Out" },
+    { question: "With velocity constant, money growth of 6% and real growth of 2% imply long-run inflation near:", options: ["2%", "3%", "4%", "8%"], correctIndex: 2, explanation: "%M = %P + %Y, so %P = 6 - 2 = 4%.", skill: "Quantity Theory" },
+    { question: "A U.S. trade deficit in goods and services must be matched by:", options: ["A budget surplus", "A capital and financial account surplus (net capital inflows)", "A fall in GDP", "An increase in official reserves of the same size"], correctIndex: 1, explanation: "The balance of payments balances overall: a current account deficit is financed by net capital inflows.", skill: "Balance of Payments" },
+    { question: "If the dollar appreciates against the euro, U.S. net exports will most likely:", options: ["Rise, because imports become more expensive", "Fall, because U.S. goods become more expensive in Europe", "Stay unchanged", "Rise, because exports become cheaper"], correctIndex: 1, explanation: "Appreciation makes U.S. exports dearer abroad and imports cheaper at home, reducing net exports.", skill: "Exchange Rates" },
+    { question: "Which policy most directly shifts LRAS to the right?", options: ["A temporary tax rebate", "An increase in transfer payments", "Public investment in research and infrastructure", "An open-market purchase"], correctIndex: 2, explanation: "Supply-side investment in technology, capital, and infrastructure raises potential output; the other choices mainly shift AD.", skill: "Economic Growth" },
+  ],
   apush: [
     { question: "Which most directly contributed to the demographic catastrophe among indigenous peoples after European contact?", options: ["Warfare with European armies", "Introduction of Old World diseases", "Forced labor in silver mines", "Loss of hunting grounds"], correctIndex: 1, explanation: "European diseases like smallpox devastated indigenous populations who had no immunity. Estimates suggest 50-90% died from disease.", skill: "Causation" },
     { question: "Bacon's Rebellion (1676) most directly resulted in:", options: ["Expansion of religious tolerance", "Increased reliance on African slave labor", "Greater autonomy from England", "Establishment of representative government"], correctIndex: 1, explanation: "After the rebellion exposed dangers of discontented servants, Virginia elites shifted to African slavery as more controllable.", skill: "Causation" },
@@ -490,6 +604,53 @@ export const essaysData: Record<string, {
   }[];
   sources?: { id: string; title: string; content: string }[];
 }[]> = {
+  "ap-env": [
+    {
+      id: "env-frq2-1",
+      title: "The Clearbrook Dead Zone",
+      type: "FRQ Exemplar",
+      prompt: "Lake Clearbrook, a freshwater lake used for fishing and drinking water, has experienced recurring summer fish kills. Monitoring shows dissolved oxygen falling below 2 mg/L in deep water each August. Farms upstream apply nitrogen fertilizer, and a municipal wastewater plant discharges treated effluent into the lake's main tributary. (a) Identify the ecological process driving the fish kills and describe the sequence of events that lowers dissolved oxygen. (b) Explain TWO distinct environmental or economic consequences of the low-oxygen events besides the fish kills themselves. (c) Propose a specific solution at the farm level AND a specific solution at the wastewater plant that would each reduce the problem, and justify each by the mechanism it interrupts. (d) A farmer applies 1,200 kg of nitrogen fertilizer per year and currently loses 25% of it to runoff. A buffer strip program is expected to cut the runoff fraction to 10%. Calculate the reduction in nitrogen reaching the lake, in kilograms per year.",
+      sampleEssay: `Part (a): The process is eutrophication. Excess nitrogen (and phosphorus) from fertilizer runoff and wastewater effluent enriches the lake, triggering rapid growth of algae and phytoplankton, an algal bloom. When the algae die, they sink and are decomposed by aerobic bacteria. Bacterial respiration during decomposition consumes dissolved oxygen faster than it can be replaced from the atmosphere or photosynthesis in the deep, shaded water. The deep layer becomes hypoxic, below 2 mg/L, and fish that cannot escape to oxygenated water suffocate, producing the summer fish kills.
+
+Part (b): First, the collapse of the fishery imposes direct economic losses: commercial and recreational fishing revenue falls, and lakeside property and tourism values decline as kills and algal scums make the lake unattractive. Second, the algal blooms degrade drinking-water quality: decomposing algae clog treatment filters and can impart taste and odor, and some cyanobacteria release toxins, raising the cost of treating the municipal water supply and creating a public-health risk.
+
+Part (c): At the farm level, planting and maintaining a vegetated riparian buffer strip along the tributary and drainage lines would intercept surface runoff before it reaches the water. The buffer slows runoff so sediment settles, plant roots take up dissolved nitrogen, and soil microbes denitrify part of the load, so less fertilizer nitrogen ever enters the lake. This interrupts the chain at its first link, nutrient delivery. At the wastewater plant, adding tertiary treatment, biological nutrient removal, would strip nitrogen (and phosphorus) from the effluent before discharge. Because the plant is a point source, upgrading its treatment directly lowers the nutrient concentration of every liter discharged, reducing the enrichment that fuels the blooms.
+
+Part (d): Currently the farmer loses 25% of 1,200 kg, which is 0.25 × 1,200 = 300 kg of nitrogen reaching the lake per year. With buffer strips the runoff fraction falls to 10%, so losses become 0.10 × 1,200 = 120 kg per year. The reduction is 300 − 120 = 180 kg of nitrogen per year kept out of the lake.`,
+      score: 10,
+      rubricBreakdown: [
+        { category: "Part A — Process and oxygen sequence", points: 3, maxPoints: 3, explanation: "One point for identifying eutrophication; one for the nutrient-driven algal bloom; one for bacterial decomposition consuming dissolved oxygen and causing hypoxia and the fish kills." },
+        { category: "Part B — Two consequences explained", points: 2, maxPoints: 2, explanation: "One point each for two distinct consequences beyond the fish kills, with the harm explained: fishery/tourism economic loss and drinking-water treatment cost and toxin risk." },
+        { category: "Part C — Two justified solutions", points: 3, maxPoints: 3, explanation: "One point for a specific farm-level practice (riparian buffer), one for wastewater tertiary nutrient removal, and one for justifying each by the mechanism it interrupts (runoff interception and uptake; point-source nutrient stripping)." },
+        { category: "Part D — Calculation with work shown", points: 2, maxPoints: 2, explanation: "One point for correctly computing current and reduced nitrogen losses (300 kg and 120 kg); one point for the reduction, 180 kg/yr, with units." },
+      ],
+    },
+  ],
+  "ap-macro": [
+    {
+      id: "macro-long-frq-1",
+      title: "Closing a Recessionary Gap",
+      type: "Long FRQ",
+      prompt: "Assume the economy of Norland is currently in short-run equilibrium with real GDP below potential output. The marginal propensity to consume is 0.8, and the recessionary gap is $100 billion. (a) Draw a correctly labeled graph of aggregate demand, short-run aggregate supply, and long-run aggregate supply, showing the current equilibrium and the recessionary gap. (b) Identify one fiscal policy action the government could take to close the gap and calculate the minimum change in government purchases required. (c) Draw a correctly labeled money market graph showing the effect of that fiscal policy on the nominal interest rate in the short run, assuming the central bank takes no action. (d) Explain how the change in the nominal interest rate affects aggregate demand. (e) On your graph in part (a), show the long-run adjustment if the government takes no action instead.",
+      sampleEssay: `Part (a): The graph shows the price level on the vertical axis and real GDP on the horizontal axis. Aggregate demand (AD) and short-run aggregate supply (SRAS) intersect at an equilibrium real GDP, Ye, that lies to the left of the vertical long-run aggregate supply curve (LRAS) at potential output, Yp. The horizontal distance between Ye and Yp is the recessionary gap of $100 billion. The equilibrium price level, PLe, is marked on the vertical axis at the height of the AD–SRAS intersection.
+
+Part (b): The government should increase government purchases (an expansionary fiscal policy). With MPC = 0.8, the spending multiplier is 1 ÷ (1 − 0.8) = 5. The minimum increase in government purchases needed to close a $100 billion gap is $100 billion ÷ 5 = $20 billion.
+
+Part (c): The money market graph shows the nominal interest rate on the vertical axis and the quantity of money on the horizontal axis. The money supply curve is vertical and unchanged. As fiscal expansion raises real GDP and income, the transactions demand for money increases, shifting the money demand curve to the right. The nominal interest rate rises from ir1 to ir2.
+
+Part (d): The higher nominal interest rate raises the cost of borrowing, so interest-sensitive investment spending falls. Because investment is a component of aggregate demand, this partially offsets the fiscal expansion: aggregate demand still rises and real GDP moves toward potential output, but by less than the $100 billion the simple multiplier alone would predict. This is the partial crowding-out of fiscal policy through the money market.
+
+Part (e): If the government takes no action, high unemployment puts downward pressure on nominal wages and other input prices. As production costs fall, the SRAS curve shifts to the right. The economy moves along AD to a new equilibrium at potential output Yp at a lower price level. In the long run, output returns to potential through falling wages and input prices, with the price level lower than in the original equilibrium.`,
+      score: 10,
+      rubricBreakdown: [
+        { category: "Part A — AD–AS graph", points: 2, maxPoints: 2, explanation: "One point for a correctly labeled graph with AD, SRAS, and a vertical LRAS at potential output; one point for showing equilibrium output left of potential with the recessionary gap identified." },
+        { category: "Part B — Fiscal action and calculation", points: 2, maxPoints: 2, explanation: "One point for identifying an increase in government purchases as expansionary fiscal policy; one point for the multiplier 1/(1 − 0.8) = 5 and the minimum change, $100B ÷ 5 = $20 billion." },
+        { category: "Part C — Money market graph", points: 2, maxPoints: 2, explanation: "One point for a correctly labeled money market with a vertical money supply; one point for shifting money demand right (higher income raises transactions demand) and showing a higher nominal interest rate." },
+        { category: "Part D — Interest-rate transmission", points: 2, maxPoints: 2, explanation: "Points are earned for stating that the higher nominal interest rate raises borrowing costs and reduces interest-sensitive investment spending, moderating the increase in aggregate demand." },
+        { category: "Part E — Long-run self-correction", points: 2, maxPoints: 2, explanation: "One point for explaining that unemployment pushes nominal wages and input prices down; one point for showing SRAS shifting right to restore potential output at a lower price level on the part (a) graph." },
+      ],
+    },
+  ],
   "ap-lang": [
     {
       id: "synthesis-1",
@@ -742,6 +903,194 @@ In conclusion, colonial responses to British policies between 1763 and 1776 did 
       ]
     }
   ],
+  "ap-gov": [
+    {
+      id: "concept-application-1",
+      title: "A Safety Rule Meets Its Checks",
+      type: "Concept Application",
+      prompt: "Use the scenario below to answer parts A, B, and C.\n\n(A) Describe the bureaucratic power exercised by the agency in the scenario.\n(B) Explain how the congressional action in the scenario could affect the agency's implementation of the rule.\n(C) Explain how an interest group could use a different branch of government to influence the outcome.",
+      sources: [
+        {
+          id: "scenario",
+          title: "Scenario — The Automatic Braking Rule",
+          content: "Congress passed the Motor Vehicle Safety Act authorizing the National Highway Traffic Safety Administration (NHTSA), an agency within the Department of Transportation, to set 'practicable' safety standards for new vehicles. After several years of crash research, NHTSA published a proposed rule requiring automatic emergency braking on all new passenger vehicles, invited public comment for ninety days, and then issued a final rule with a three-year phase-in. The Alliance for Vehicle Innovation, a trade association of automakers, announced it would challenge the rule. Meanwhile, the House committee with jurisdiction over transportation held oversight hearings at which members questioned the agency's cost estimates, and the committee chair warned that the next appropriations bill might prohibit the agency from spending funds to enforce the rule."
+        }
+      ],
+      sampleEssay: `A. The agency exercised discretionary rulemaking authority. Congress, in the Motor Vehicle Safety Act, set the broad goal of practicable vehicle safety standards but left NHTSA to decide what the evidence required in practice. The agency used that delegated discretion to translate a general statute into a specific, enforceable requirement: it researched crash data, published a proposed rule, took public comment during a ninety-day notice-and-comment period, and issued a final rule requiring automatic emergency braking with a three-year phase-in. This is the bureaucracy's quasi-legislative power to fill in the details of law, exercised here through formal rulemaking procedures rather than through individual enforcement actions.
+
+B. The congressional action could force the agency to weaken, delay, or abandon the rule even though Congress never votes on the rule itself. Congress controls the bureaucracy through oversight and through the power of the purse. The committee's hearings put the agency's cost estimates under public scrutiny, and the chair's threat to attach an appropriations rider barring enforcement spending is the sharper tool: a rule the agency cannot spend money to enforce is a rule in name only. Knowing this, agency leaders have an incentive to revise the phase-in schedule, adjust the standard, or build a stronger cost justification before the appropriations bill is written. The scenario therefore shows Congress checking executive-branch policymaking after the fact, using its Article I spending power to shape how — and whether — a delegated rule is implemented.
+
+C. An interest group could turn to the judiciary to influence the outcome. The Alliance for Vehicle Innovation has already announced a legal challenge, and it could sue in federal court arguing that NHTSA exceeded the authority Congress delegated or that the rule is arbitrary because the agency's cost estimates are flawed. Courts exercising judicial review can vacate a rule that goes beyond the statute, which would send the policy back to the agency or end it entirely. This route is attractive to the group because it does not need to win a majority in Congress; it needs only to persuade judges that the agency acted outside its legal bounds. Interest groups can also file amicus curiae briefs and supply technical evidence in litigation, using the courts as an alternate venue when the rulemaking process itself produced an unfavorable result.`,
+      score: 3,
+      rubricBreakdown: [
+        {
+          category: "Part A — Describe the Bureaucratic Power",
+          points: 1,
+          maxPoints: 1,
+          explanation: "The College Board awards this point for describing, not merely naming, the concept in the scenario. The response identifies discretionary rulemaking authority and then shows it operating: Congress wrote a broad standard ('practicable'), the agency exercised delegated discretion to make it specific, and it used notice-and-comment rulemaking (research, proposal, ninety-day comment period, final rule with phase-in). Each step ties the textbook concept to a fact in the scenario, which is what separates a description that earns the point from a bare label like 'the agency made a rule.'"
+        },
+        {
+          category: "Part B — Explain the Congressional Check",
+          points: 1,
+          maxPoints: 1,
+          explanation: "This point requires a causal explanation of how the congressional action affects implementation. The response names two Article I tools — oversight hearings and an appropriations rider — and explains the mechanism: a rule that cannot be enforced with appropriated funds is effectively dead, so the credible threat of the rider pressures the agency to revise the phase-in, adjust the standard, or strengthen its cost case. The explanation goes one step past description ('Congress can check agencies') to the effect on agency behavior, which is exactly the 'explain how' move the rubric rewards."
+        },
+        {
+          category: "Part C — Explain Interest-Group Use of Another Branch",
+          points: 1,
+          maxPoints: 1,
+          explanation: "The response moves the interest group into a different branch — the judiciary — and explains how that venue changes the outcome: the Alliance can sue, argue the agency exceeded its delegated authority or acted arbitrarily, and win vacatur of the rule through judicial review without ever needing a congressional majority. It adds the supporting detail of amicus briefs and technical evidence, showing the group shaping the record judges see. Naming litigation alone would not earn the point; explaining why the courts are an effective alternate venue does."
+        }
+      ]
+    },
+    {
+      id: "quantitative-analysis-1",
+      title: "The Disappearing Split District",
+      type: "Quantitative Analysis",
+      prompt: "Use the data below to answer parts A, B, C, and D.\n\n(A) Identify the percentage of U.S. House districts that produced a split outcome in 2020.\n(B) Describe the trend in split outcomes shown in the data.\n(C) Draw a conclusion about voter behavior that explains the trend, and explain your reasoning.\n(D) Explain how the trend affects the relationship between House elections and presidential elections.",
+      sources: [
+        {
+          id: "data",
+          title: "Data — Split Outcomes in U.S. House Elections (practice data table)",
+          content: "A 'split outcome' means a House district voted for the presidential candidate of one party and the House candidate of the other party in the same election.\n\nElection year — Share of House districts with a split outcome\n1980 — 32%\n1990 — 27%\n2000 — 21%\n2010 — 15%\n2020 — 8%\n\nOriginal practice table created for this question; use only the values shown."
+        }
+      ],
+      sampleEssay: `A. In 2020, 8 percent of U.S. House districts produced a split outcome, voting for the presidential candidate of one party and the House candidate of the other.
+
+B. Split outcomes have declined steadily over the forty years shown. In 1980 nearly one in three districts (32 percent) split its ticket; the share fell in every period measured — to 27 percent in 1990, 21 percent in 2000, and 15 percent in 2010 — before dropping to just 8 percent in 2020. What was once a common feature of House elections had become rare by 2020, with the decline accelerating in the final decade shown.
+
+C. The trend indicates that voters increasingly cast straight-ticket ballots driven by national party loyalties rather than evaluating House candidates independently. As American politics has nationalized and the parties have polarized, a voter's presidential preference has become a reliable expression of overall partisan identity, so fewer voters cross party lines down the ballot. Local candidate qualities and incumbency, which once persuaded voters in districts that backed the other party's presidential nominee, now rarely overcome that identity. Voters are not necessarily studying House candidates less; rather, the same polarized attitudes that determine their presidential vote also determine their House vote, which is why split outcomes have fallen in every decade rather than fluctuating randomly.
+
+D. The trend fuses House elections to presidential elections. When almost every district's House result mirrors its presidential result, control of the House depends far more on national partisan tides than on hundreds of separate local contests, and a president's party is more likely to carry the House with it — and to lose it in the backlash of a midterm. Individual representatives also have less electoral reason to build a personal, cross-party coalition, because the voters who decide their fate are the same partisans who voted the top of the ticket. That strengthens party discipline and national party brands in the House, while weakening the older pattern in which a member could survive in 'hostile' territory by emphasizing local service over party label.`,
+      score: 4,
+      rubricBreakdown: [
+        {
+          category: "Part A — Identify the Value",
+          points: 1,
+          maxPoints: 1,
+          explanation: "The point is earned by reading the table accurately: 8 percent of districts split in 2020. The response states the value with its correct referent (share of districts, not share of voters nationally) and does not round it into vagueness. On this rubric, precision is the whole task — an answer of 'very few' would not earn the point."
+        },
+        {
+          category: "Part B — Describe the Trend",
+          points: 1,
+          maxPoints: 1,
+          explanation: "A trend description must characterize the whole pattern, not read off one number. The response identifies a steady, four-decade decline (32 to 27 to 21 to 15 to 8 percent), notes that the share fell in every period measured, and quantifies the change ('nearly one in three' to 'just 8 percent'). Citing the endpoints and the consistency of the movement is what the College Board means by describing a pattern in the data."
+        },
+        {
+          category: "Part C — Draw and Explain a Conclusion",
+          points: 1,
+          maxPoints: 1,
+          explanation: "This point requires a conclusion about political behavior plus the reasoning behind it. The response concludes that straight-ticket voting rooted in partisan identity has replaced candidate-by-candidate evaluation, and explains the mechanism: nationalization and polarization make the presidential vote an expression of party identity that carries down the ballot, overwhelming incumbency and local candidate effects. It also uses the shape of the data — decline in every decade — as evidence for a structural cause rather than a one-election fluke."
+        },
+        {
+          category: "Part D — Explain the Consequence",
+          points: 1,
+          maxPoints: 1,
+          explanation: "The final point connects the data to a political institution or process. The response explains that fused House and presidential results make House control hinge on national tides (helping explain presidential-party midterm losses), reduce representatives' incentive to build cross-party personal coalitions, and strengthen party discipline and national brands in the House. Each claim follows from the trend rather than being a generic statement about polarization, which is the link the rubric is scoring."
+        }
+      ]
+    },
+    {
+      id: "scotus-comparison-1",
+      title: "Student Speech, On Campus and Off",
+      type: "SCOTUS Comparison",
+      prompt: "Use the summary of Mahanoy Area School District v. B.L. (2021) below, a nonrequired case, and your knowledge of the required case Tinker v. Des Moines Independent Community School District (1969) to answer parts A, B, and C.\n\n(A) Identify the constitutional clause or amendment that is common to both cases.\n(B) Explain how the facts of Tinker led the Court to protect the students' speech, and explain how the reasoning in Tinker compares with the outcome in Mahanoy.\n(C) Explain how the holding in Tinker reflects the idea that the Constitution limits government power to suppress unpopular views.",
+      sources: [
+        {
+          id: "case-summary",
+          title: "Case Summary — Mahanoy Area School District v. B.L. (2021)",
+          content: "B.L., a high school student, was suspended from the junior varsity cheerleading squad after posting a profane message about the school and the squad to a social media account on a weekend, away from school grounds, using her own phone. The message was visible to her friends but was not sent during school or directed at a classmate. The Supreme Court held 8–1 that the school violated B.L.'s free speech rights. While schools may regulate some off-campus speech, the Court explained that off campus a school's authority is diminished: the student was outside school hours and grounds, spoke through a private channel, and there was no evidence her message caused a substantial disruption at school."
+        }
+      ],
+      sampleEssay: `A. The constitutional provision common to both cases is the freedom of speech protected by the First Amendment, applied to the states and public schools through the Fourteenth Amendment. Tinker's armbands and B.L.'s social media post were both treated by the Court as student expression that a public school — a government actor — punished.
+
+B. In Tinker v. Des Moines (1969), Mary Beth Tinker and other students wore black armbands to school to silently protest the Vietnam War, and the district suspended them under a policy adopted in anticipation of the protest. Because the students' expression was silent, passive, and caused no interference with classes or the rights of others, the Court held that the school could not punish it: students do not 'shed their constitutional rights to freedom of speech or expression at the schoolhouse gate.' The Court established that school officials must show facts that reasonably lead them to forecast a substantial disruption of schoolwork or invasion of the rights of others before suppressing student speech; undifferentiated fear of disturbance is not enough. Mahanoy applies the same protective logic in a new setting. Like the Tinkers, B.L. expressed a view the school disliked — frustration with the squad and school — without evidence of substantial disruption, so punishing her failed the Tinker inquiry. The cases differ in the scope of school authority: Tinker set the standard for on-campus speech, while Mahanoy held that a school's regulatory leeway is diminished off campus, where students are under their parents' supervision and round-the-clock school control would leave student speech protected almost nowhere. The reasoning is continuous — both decisions require real disruption, not mere offense — but Mahanoy narrows where the school may even begin the analysis.
+
+C. The holding in Tinker reflects limited government because it denies public officials the power to suppress a viewpoint simply because it is unpopular or makes administrators uncomfortable. School officials had acted preemptively against an antiwar message they expected to be controversial; the Court answered that the risk of controversy inherent in unpopular speech is precisely what the First Amendment assigns to the government to tolerate. By requiring evidence of substantial disruption rather than official disapproval, the holding makes suppression turn on demonstrable harm to the school's functioning instead of on agreement with the speaker. In this way the decision also serves democratic participation: schools, the Court reasoned, train citizens for self-government, and that training is undermined when the state models censorship of peaceful dissent.`,
+      score: 4,
+      rubricBreakdown: [
+        {
+          category: "Part A — Identify the Common Clause",
+          points: 1,
+          maxPoints: 1,
+          explanation: "The point requires the correct shared constitutional basis, precisely named. The response identifies the First Amendment's freedom of speech and adds the step students often omit: public schools are state actors, so the amendment reaches them through the Fourteenth Amendment. That precision matters — 'free speech' earns the point, and the incorporation detail confirms the writer knows why a federal right can be raised against a local school district in both cases."
+        },
+        {
+          category: "Part B — Required Case Facts and Comparison",
+          points: 2,
+          maxPoints: 2,
+          explanation: "Part B carries two points because it asks for two moves. First, the response explains the required case from its facts: silent armbands protesting Vietnam, a preemptive school ban, no interference with classes — and derives the substantial-disruption rule Tinker created, including the famous 'schoolhouse gate' holding. Second, it compares rather than merely summarizes Mahanoy: the same demand for actual disruption protects B.L., but the off-campus setting diminishes school authority, which is a difference in the reach of the standard rather than a contradiction of it. Awarding both points requires exactly this pairing of an accurate required-case account with an explicit similarity-and-difference analysis."
+        },
+        {
+          category: "Part C — Explain the Constitutional Principle",
+          points: 1,
+          maxPoints: 1,
+          explanation: "This point is earned by explaining how the holding operationalizes a principle, not by repeating the holding. The response connects Tinker to limited government: the substantial-disruption requirement stops officials from converting disapproval of an antiwar viewpoint into punishment, makes demonstrable harm rather than agreement the trigger for suppression, and links that restraint to the school's democratic mission of training citizens. The explanation names the principle, the mechanism by which the rule enforces it, and the reason the founders' design values that restraint."
+        }
+      ]
+    },
+    {
+      id: "argument-essay-1",
+      title: "Federalism as a Safeguard of Liberty",
+      type: "Argument Essay",
+      prompt: "Develop an argument that explains whether federalism primarily protects liberty or primarily obstructs effective national policy in the United States.\n\nUse at least one piece of evidence from one of the following foundational documents:\n• Federalist No. 10\n• Brutus No. 1\n• The United States Constitution\n\nIn your response, you should do the following:\n• Respond to the prompt with a defensible thesis that establishes a line of reasoning.\n• Support your thesis with at least two pieces of specific and relevant evidence, at least one from a foundational document listed above.\n• Use reasoning to explain why your evidence supports your thesis.\n• Respond to an opposing or alternate perspective using refutation, concession, or rebuttal.",
+      sources: [
+        {
+          id: "fed-10",
+          title: "Foundational Document — Federalist No. 10 (Madison)",
+          content: "In the extended republic, a 'greater variety of parties and interests' makes it 'less probable that a majority of the whole will have a common motive to invade the rights of other citizens.' Madison describes a double security for the rights of the people: 'In the compound republic of America, the power surrendered by the people is first divided between two distinct governments, and then the portion allotted to each subdivided among distinct and separate departments. Hence a double security arises to the rights of the people. The different governments will control each other, at the same time that each will be controlled by itself.'"
+        },
+        {
+          id: "brutus-1",
+          title: "Foundational Document — Brutus No. 1 (Anti-Federalist)",
+          content: "Brutus warned that the necessary and proper clause and the supremacy clause would reduce the states to insignificance: a government with power to pass 'all laws which shall be necessary and proper' for executing its powers, whose laws are supreme, will in time absorb the state governments, because the same authority cannot be held by two bodies without clashing until one submits. A large republic, he argued, cannot remain free, because representatives will be too few and too distant to know or sympathize with the people."
+        },
+        {
+          id: "constitution",
+          title: "Foundational Document — The United States Constitution (excerpts)",
+          content: "Article I enumerates Congress's powers, including regulating commerce among the states and making laws 'necessary and proper' for carrying those powers into execution. Article VI makes the Constitution and federal law 'the supreme Law of the Land.' The Tenth Amendment provides: 'The powers not delegated to the United States by the Constitution, nor prohibited by it to the States, are reserved to the States respectively, or to the people.' The Fourteenth Amendment forbids states to abridge the privileges or immunities of citizens, deprive any person of life, liberty, or property without due process, or deny equal protection of the laws, and empowers Congress to enforce those guarantees."
+        }
+      ],
+      sampleEssay: `Federalism primarily protects liberty in the United States, and it does so precisely because it is a system for dividing and checking power rather than merely an arrangement for administering policy. By splitting sovereignty between a national government of enumerated powers and state governments that retain the rest, the Constitution multiplies the points at which an oppressive majority or an ambitious government can be stopped, moves many decisions closer to the citizens they affect, and reserves to the national government the specific role of enforcing a floor of rights that no state may go below. Its costs in coordination are real, but they are the price of the structure's central achievement: no single government in the American system commands the whole field.
+
+The founders understood the division itself as a liberty device. In Federalist No. 10, Madison called the American arrangement a compound republic in which power surrendered by the people is 'first divided between two distinct governments' before being subdivided among departments, so that 'the different governments will control each other, at the same time that each will be controlled by itself.' This double security works in two directions at once. Horizontally, each level watches the other: states resist national encroachment on reserved powers, while national courts and Congress police state violations of federal rights. Vertically dividing power also extends Madison's faction logic across governments, because a majority faction that captures one capital must still contend with officials in the other who owe it nothing. Liberty is protected not by trusting rulers but by arranging institutions so that ambition at one level is checked by ambition at another.
+
+The constitutional text builds that protection into law. Congress receives enumerated powers, and the Tenth Amendment reserves undelegated powers to the states or the people, which means the default setting of the system is that the national government must point to a grant before it acts. In United States v. Lopez (1995), the Supreme Court enforced that default by striking down the Gun-Free School Zones Act as beyond the commerce power, the first time in decades it had refused to let Congress convert a local, non-economic matter into federal jurisdiction. The reserved sphere is not empty formality in the meantime: states use it to govern most criminal law, property, education, and elections, and to experiment at a scale where failure is containable and success is exportable — as when state choices on issues from unemployment insurance design to marijuana regulation produced working models, and cautionary tales, that a single national decision could not have generated. Citizens governed in fifty-one arenas rather than one gain both nearer representation and the ability to judge governments against their neighbors.
+
+Critically, this defense of federalism does not require pretending that state power is harmless, because the Constitution itself refuses that pretense. The Supremacy Clause and the Fourteenth Amendment place a national floor beneath state discretion: states may experiment, but they may not deny due process or equal protection, and Congress may enforce those guarantees against them. McCulloch v. Maryland (1819) confirmed the complementary half of the design, forbidding states to tax the national bank out of existence and so protecting national operations from state obstruction. The result is not two rival sovereignties but an ordered division in which the national government is supreme within its sphere and the states are sovereign within theirs, with the rights of individuals enforceable in both. Federalism protects liberty because each level is simultaneously empowered and fenced.
+
+The strongest opposing argument — pressed at the founding by Brutus and repeated in every era since — is that this division obstructs effective policy and shelters injustice. Brutus warned in Brutus No. 1 that the necessary and proper and supremacy clauses would eventually consolidate all power nationally and extinguish the states, while the modern version of the charge runs the other way: that states have used reserved powers to resist national rights, most shamefully in defending segregation and disfranchisement, and still produce a patchwork in areas like health care and environmental protection where problems cross state lines. The civil rights indictment is historically true, and it should be conceded plainly. But it identifies a failure the constitutional design itself supplies the tools to correct, not a case against the design. It was national power acting through the Fourteenth Amendment, the Civil Rights Act, and federal courts in cases such as Brown v. Board of Education that broke state-enforced segregation — the system corrected state abuse from its other level, which is the double security operating as intended. A unitary government captured by the same prejudices would have left victims with no alternate forum at all; under federalism, citizens oppressed in one arena could and did appeal to the other. The obstruction objection likewise proves too much: delay and negotiation between governments are the predictable friction of any structure that requires power to be checked before it is exercised, and the supremacy clause ensures that when national action is genuinely authorized, state resistance yields.
+
+Federalism's defenders and its critics agree on the facts: dividing sovereignty makes national action slower and sometimes untidy. They disagree about what that untidiness is. Measured by administrative tidiness, federalism obstructs. Measured by the standard the Constitution actually sets — the security of liberty — the division of power between two levels of government, each checking the other and each answerable to the people, is one of the structure's principal safeguards. The compound republic protects freedom not when it is efficient, but when it makes oppression require the cooperation of governments designed to refuse it.`,
+      score: 6,
+      rubricBreakdown: [
+        {
+          category: "Claim / Thesis",
+          points: 1,
+          maxPoints: 1,
+          explanation: "The opening paragraph responds to the prompt with a defensible claim that establishes a line of reasoning, as College Board Row A requires: 'Federalism primarily protects liberty in the United States... by splitting sovereignty... it multiplies the points at which an oppressive majority or an ambitious government can be stopped, moves many decisions closer to the citizens they affect, and reserves to the national government the specific role of enforcing a floor of rights.' That sentence does three rubric jobs at once — it takes a position on the prompt's exact either/or, previews the evidence structure (division, proximity, rights floor), and previews the rebuttal (the floor answers the obstruction charge). It neither restates the prompt nor hedges into saying federalism 'does both equally,' which would establish no line of reasoning."
+        },
+        {
+          category: "Evidence",
+          points: 3,
+          maxPoints: 3,
+          explanation: "Row B is progressive, and the response clears its highest condition: at least two pieces of specific and relevant evidence that support the thesis, at least one from a foundational document listed in the prompt — here it uses all three. Federalist No. 10 supplies the theory in Madison's own words (the 'double security' passage, quoted and attributed), the Constitution supplies the mechanism (enumerated powers, the Tenth Amendment's reserved powers, the Supremacy Clause, and the Fourteenth Amendment), and Brutus No. 1 supplies accurately characterized material for the alternate perspective. Course evidence is specific rather than decorative: United States v. Lopez is used for the proposition that the enumerated-power default is judicially enforced, McCulloch v. Maryland for the proposition that states cannot obstruct national operations, and state policy experimentation is tied to the reserved sphere instead of being listed as trivia. One accurate piece would earn 1 point, and two pieces with at least one specific and thesis-supporting would earn 2; earning the third point is what requires the prompt-listed foundational document to be doing real work, as the Federalist No. 10 quotation is here."
+        },
+        {
+          category: "Reasoning",
+          points: 1,
+          maxPoints: 1,
+          explanation: "Row C asks the writer to explain how or why the evidence supports the claim, and the response builds that explanation into every body paragraph instead of leaving the reader to infer it. The Federalist No. 10 paragraph explains the mechanism twice over: institutionally (each level checks the other, so 'ambition at one level is checked by ambition at another') and through faction theory (a majority capturing one capital must still overcome the other). The constitutional paragraph explains why enumeration plus the Tenth Amendment makes liberty the system's default rather than its exception, and the Lopez discussion shows the default being enforced. Sentences such as 'Liberty is protected not by trusting rulers but by arranging institutions' are the explicit claim-evidence link the rubric is scoring — remove them and the same facts would read as summary; with them, the evidence argues."
+        },
+        {
+          category: "Alternate Perspective",
+          points: 1,
+          maxPoints: 1,
+          explanation: "Row D is the point most responses lose, because the rubric requires the writer first to describe an opposing perspective in its strongest form and then to refute, concede, or rebut it. The response does both halves. It presents the obstruction charge twice — in its founding form (Brutus's prediction that the necessary and proper and supremacy clauses would consolidate power) and in its historically strongest form (states used reserved powers to defend segregation and disfranchisement) — and concedes that the civil rights indictment 'is historically true.' It then rebuts by turning the design back on the objection: the Fourteenth Amendment, the Civil Rights Act, and Brown are the other level of the compound republic correcting the first, and a unitary government captured by the same prejudices would have offered victims no alternate forum. Merely writing 'some disagree, but they are wrong' would earn nothing; describing the view fairly and answering it with evidence is what earns the point."
+        }
+      ]
+    }
+  ],
   "ap-seminar": [
     {
       id: "iwa-1",
@@ -889,6 +1238,18 @@ This research demonstrates that sleep deprivation affects high school academic p
 };
 
 export const tipsData: Record<string, { title: string; content: string; category: string }[]> = {
+  "ap-env": [
+    { title: "Answer the Verb", content: "FRQs reward the exact verb: identify is one line, describe adds detail, explain needs a mechanism, justify needs evidence. Underline the verb before writing.", category: "Exam Prep" },
+    { title: "Show Every Calculation Step", content: "The calculation FRQ gives points for setup, substitution, and answer with units. A bare number earns almost nothing even when it is right.", category: "Exam Prep" },
+    { title: "Keep Ozone and Climate Separate", content: "CFCs and the stratosphere belong to ozone depletion (Montreal). CO2 and methane absorbing infrared belong to climate change. Mixing them is the most penalized error in Unit 9.", category: "Study Strategy" },
+    { title: "Chain Cause to Effect to Fix", content: "For problem-analysis questions, write the chain: pollutant or practice, mechanism of harm, named organism or process affected, then a fix that breaks the first link.", category: "Study Strategy" },
+  ],
+  "ap-macro": [
+    { title: "Draw the Graph Before You Calculate", content: "In FRQs, the labeled graph is usually the first point and it organizes everything after it. Set up AD-AS, money market, loanable funds, Phillips, or FOREX before doing any arithmetic.", category: "Exam Prep" },
+    { title: "Name the Shifter Out Loud", content: "For every curve that moves, say which determinant changed and why. Most lost points are unexplained shifts, not wrong directions.", category: "Study Strategy" },
+    { title: "Keep Nominal and Real Separate", content: "Money market = nominal rate. Loanable funds = real rate. GDP growth questions: check whether prices were stripped out before comparing years.", category: "Study Strategy" },
+    { title: "Chain the Models", content: "Macro FRQs are chains: policy, then interest rate, then investment or net exports, then AD, then output and prices. Practice writing the whole chain, not single graphs.", category: "Exam Prep" },
+  ],
   apush: [
     { title: "Master the 9 Periods", content: "Focus on understanding themes and turning points, not memorizing dates. Ask: What changed? What stayed the same? Why?", category: "Study Strategy" },
     { title: "Practice DBQs Weekly", content: "The DBQ is 25% of your score. Practice analyzing documents, grouping by theme, and writing a thesis with outside evidence.", category: "Exam Prep" },
@@ -934,6 +1295,22 @@ export const tipsData: Record<string, { title: string; content: string; category
 };
 
 export const resourcesData: Record<string, { title: string; url: string; description: string; type: string }[]> = {
+  "ap-env": [
+    { title: "College Board AP Environmental Science", url: "https://apstudents.collegeboard.org/courses/ap-environmental-science", description: "Official course page and exam information", type: "Official" },
+    { title: "AP Classroom", url: "https://apclassroom.collegeboard.org/", description: "Official practice questions and progress checks", type: "Official" },
+    { title: "EPA Environmental Topics", url: "https://www.epa.gov/environmental-topics", description: "Air, water, waste, and chemicals explainers from the regulator", type: "Primary Sources" },
+    { title: "NOAA Climate", url: "https://www.noaa.gov/climate", description: "Climate data, El Niño monitoring, and ocean observations", type: "Primary Sources" },
+    { title: "USGS Water Resources", url: "https://www.usgs.gov/mission-areas/water-resources", description: "Aquifer, watershed, and water-quality data and science", type: "Primary Sources" },
+    { title: "Khan Academy AP Environmental Science", url: "https://www.khanacademy.org/science/ap-environmental-science", description: "Free lessons and practice aligned to the CED units", type: "Video" },
+  ],
+  "ap-macro": [
+    { title: "College Board AP Macroeconomics", url: "https://apstudents.collegeboard.org/courses/ap-macroeconomics", description: "Official course page and exam information", type: "Official" },
+    { title: "AP Classroom", url: "https://apclassroom.collegeboard.org/", description: "Official practice questions and progress checks", type: "Official" },
+    { title: "Federal Reserve Monetary Policy", url: "https://www.federalreserve.gov/monetarypolicy.htm", description: "How the central bank actually conducts policy", type: "Primary Sources" },
+    { title: "BEA GDP Data", url: "https://www.bea.gov/data/gdp/gross-domestic-product", description: "Official GDP estimates and components", type: "Primary Sources" },
+    { title: "BLS Consumer Price Index", url: "https://www.bls.gov/cpi/", description: "Official inflation methodology and releases", type: "Primary Sources" },
+    { title: "OpenStax Principles of Macroeconomics 3e", url: "https://openstax.org/books/principles-macroeconomics-3e/pages/1-introduction", description: "Free peer-reviewed macroeconomics textbook", type: "Study Guide" },
+  ],
   apush: [
     { title: "College Board APUSH", url: "https://apstudents.collegeboard.org/courses/ap-united-states-history", description: "Official course page with exam info and rubrics", type: "Official" },
     { title: "AP Classroom", url: "https://apclassroom.collegeboard.org/", description: "Official practice questions and progress checks", type: "Official" },

@@ -195,15 +195,20 @@
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.48);
 }
 
-/* Keep subject surfaces neutral/transparent — zero color hue on containers. */
+/* Each AP class keeps its own accent (from src/lib/subjects.ts): `ink` on light
+   surfaces, the hand-checked `lit` variant on dark ones. The accent drives
+   text highlights, tints, and — in §15 at the end of this file — the coloured
+   outline on every card, pill, and chip that represents the course. */
 .subject-scope {
-  --subject-ink: #121212;
-  --subject-tint: rgba(255, 255, 255, 0.32);
+  --subject-ink: var(--subject);
+  --subject-tint: var(--subject-wash);
+  --subject-accent: var(--subject);
 }
 
 .dark .subject-scope {
-  --subject-ink: #f0f0f0;
-  --subject-tint: rgba(255, 255, 255, 0.12);
+  --subject-ink: var(--subject-lit);
+  --subject-tint: color-mix(in srgb, var(--subject-lit) 17%, transparent);
+  --subject-accent: var(--subject-lit);
 }
 
 .subject-mark .mk-fill { fill: currentColor; stroke: none; }
@@ -2954,15 +2959,39 @@ main :has(:fullscreen) {
 }
 
 .top-classes-rail .uiverse-radio-inputs {
+  flex-wrap: nowrap;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
   height: 2.375rem;
   align-items: center;
   border-radius: 999px;
   padding: 0.2rem 0.25rem;
 }
 
+.top-classes-rail .top-class-tab-label {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-2px);
+  transition:
+    max-width 220ms var(--ease-settle),
+    opacity 160ms var(--ease-snap),
+    transform 220ms var(--ease-settle);
+}
+
+.top-classes-rail .radio:hover .top-class-tab-label,
+.top-classes-rail .radio:focus-visible .top-class-tab-label,
+.top-classes-rail .radio[data-checked="true"] .top-class-tab-label {
+  max-width: 8rem;
+  opacity: 1;
+  transform: none;
+}
+
 .top-classes-rail .uiverse-radio-inputs .radio .name {
   height: 1.95rem;
-  padding: 0 0.72rem;
+  padding: 0 0.62rem;
   border-radius: 999px;
   font-size: 0.8rem;
 }
@@ -3718,3 +3747,263 @@ main :has(:fullscreen) {
 .criterion-buttons button[aria-pressed="true"][data-grade="secure"] { color: var(--answer-correct); background: var(--answer-correct-bg); }
 .criterion-buttons button[aria-pressed="true"][data-grade="not-yet"] { color: var(--answer-wrong); background: var(--answer-wrong-bg); }
 .criterion-buttons button[aria-pressed="true"][data-grade="partial"] { color: #713f12; background: #fef3c7; }
+
+/* ==========================================================================
+   15. Slow page fade-in & per-course accents
+   ==========================================================================
+
+   Fade-in: the bootstrap in layout.tsx adds `is-entering` to <html> before
+   first paint, which slowly fades / rises the header, each top-level block
+   of <main> (staggered), and the footer into place. The class is removed
+   ~2.4s later so the finished animations (fill: both) can never pin opacity
+   over ScrollEffects' inline scroll-fade afterwards. With JavaScript off
+   the class is never added, so nothing is ever hidden. There is no intro /
+   launch overlay — the site opens straight onto the page.
+
+   Accents: every AP class already carries `ink` / `lit` / `wash` colours in
+   src/lib/subjects.ts. An element that represents a course either lives in a
+   `.subject-scope` subtree or sets those variables inline via subjectVars()
+   plus the `.subject-accent` class; both paths resolve `--subject-accent`
+   (ink in light mode, lit in dark mode) and the rules below turn it into a
+   coloured outline — border, ring, and soft coloured shadow — on cards,
+   chips, pills, tabs, and links. */
+
+/* --- 15a. Slow fade-in for everything on entry ---------------------------- */
+@keyframes page-enter-down {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes page-enter-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes page-enter-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes page-enter-wallpaper {
+  from { opacity: 0.35; transform: scale(1.045); }
+  to { opacity: 1; transform: none; }
+}
+
+html.is-entering .page-wallpaper {
+  animation: page-enter-wallpaper 1600ms var(--ease-settle) both;
+}
+html.is-entering .site-header {
+  animation: page-enter-down 950ms var(--ease-settle) both;
+}
+html.is-entering #main > * {
+  animation: page-enter-rise 1150ms var(--ease-settle) both;
+}
+html.is-entering #main > *:nth-child(2) { animation-delay: 110ms; }
+html.is-entering #main > *:nth-child(3) { animation-delay: 220ms; }
+html.is-entering #main > *:nth-child(4) { animation-delay: 330ms; }
+html.is-entering #main > *:nth-child(n + 5) { animation-delay: 430ms; }
+/* Sections inside a single top-level wrapper (homepage, course scope) stagger too. */
+html.is-entering #main > * > section,
+html.is-entering #main > section {
+  animation: page-enter-rise 1150ms var(--ease-settle) both;
+}
+html.is-entering #main > * > section:nth-of-type(2),
+html.is-entering #main > section:nth-of-type(2) { animation-delay: 140ms; }
+html.is-entering #main > * > section:nth-of-type(3),
+html.is-entering #main > section:nth-of-type(3) { animation-delay: 280ms; }
+html.is-entering #main > * > section:nth-of-type(n + 4),
+html.is-entering #main > section:nth-of-type(n + 4) { animation-delay: 400ms; }
+html.is-entering footer[data-site-footer] {
+  animation: page-enter-fade 1300ms var(--ease-settle) 350ms both;
+}
+
+/* --- 15b. Per-course accent outlines --------------------------------------- */
+/* An element representing one course, with subjectVars() set inline. */
+.subject-accent {
+  --subject-accent: var(--subject);
+  --subject-accent-ink: var(--subject);
+}
+.dark .subject-accent {
+  --subject-accent: var(--subject-lit);
+  --subject-accent-ink: var(--subject-lit);
+}
+
+/* Course pages: every glass surface inside the course scope takes its outline. */
+.subject-scope .glass-box,
+.subject-scope .course-lab,
+.subject-scope .unit-video,
+.subject-scope .review-card,
+.subject-scope .video-library-course,
+.subject-scope .integration-card {
+  border-color: color-mix(in srgb, var(--subject-accent) 52%, rgba(255, 255, 255, 0.85));
+  box-shadow:
+    var(--glass-shadow),
+    0 0 0 1px color-mix(in srgb, var(--subject-accent) 24%, transparent),
+    0 16px 36px -20px color-mix(in srgb, var(--subject-accent) 55%, transparent);
+}
+.dark .subject-scope .glass-box,
+.dark .subject-scope .course-lab,
+.dark .subject-scope .unit-video,
+.dark .subject-scope .review-card,
+.dark .subject-scope .video-library-course,
+.dark .subject-scope .integration-card {
+  border-color: color-mix(in srgb, var(--subject-accent) 58%, transparent);
+}
+/* Nested panels keep the quieter treatment — one accent outline per surface. */
+.subject-scope .glass-box .glass-box,
+.subject-scope .glass-box .unit-video,
+.subject-scope .glass-box .worked-wrap,
+.subject-scope .glass-box .table-scroll {
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow: none;
+}
+.dark .subject-scope .glass-box .glass-box,
+.dark .subject-scope .glass-box .unit-video,
+.dark .subject-scope .glass-box .worked-wrap,
+.dark .subject-scope .glass-box .table-scroll {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+.subject-scope .glass-box-interactive:hover,
+.subject-scope .glass-box-interactive:focus-visible {
+  border-color: var(--subject-accent);
+  box-shadow:
+    var(--glass-shadow),
+    0 0 0 1.5px var(--subject-accent),
+    0 20px 40px -18px color-mix(in srgb, var(--subject-accent) 60%, transparent);
+}
+.subject-scope .tag {
+  border-color: color-mix(in srgb, var(--subject-accent) 38%, rgba(255, 255, 255, 0.85));
+}
+.dark .subject-scope .tag {
+  border-color: color-mix(in srgb, var(--subject-accent) 42%, transparent);
+}
+
+/* Standalone course cards (homepage catalogue, course pickers, …). */
+.subject-accent-card {
+  border-color: color-mix(in srgb, var(--subject-accent) 55%, rgba(255, 255, 255, 0.85)) !important;
+  box-shadow:
+    inset 0 3px 0 0 var(--subject-accent),
+    var(--glass-shadow),
+    0 0 0 1px color-mix(in srgb, var(--subject-accent) 24%, transparent),
+    0 16px 36px -20px color-mix(in srgb, var(--subject-accent) 55%, transparent) !important;
+}
+.dark .subject-accent-card {
+  border-color: color-mix(in srgb, var(--subject-accent) 60%, transparent) !important;
+}
+.subject-accent-card:hover,
+.subject-accent-card:focus-visible {
+  border-color: var(--subject-accent) !important;
+  box-shadow:
+    inset 0 3px 0 0 var(--subject-accent),
+    var(--glass-shadow),
+    0 0 0 1.5px var(--subject-accent),
+    0 22px 42px -18px color-mix(in srgb, var(--subject-accent) 62%, transparent) !important;
+}
+
+/* Icon chip, familiar-name tag, and "Open course" arrow on an accented card. */
+.subject-accent-chip {
+  border-color: color-mix(in srgb, var(--subject-accent) 62%, rgba(255, 255, 255, 0.85)) !important;
+  background: color-mix(in srgb, var(--subject-accent) 12%, rgba(255, 255, 255, 0.45)) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--subject-accent) 20%, transparent);
+}
+.dark .subject-accent-chip {
+  border-color: color-mix(in srgb, var(--subject-accent) 58%, transparent) !important;
+  background: color-mix(in srgb, var(--subject-accent) 16%, transparent) !important;
+}
+.subject-accent-tag {
+  border-color: color-mix(in srgb, var(--subject-accent) 55%, rgba(255, 255, 255, 0.85)) !important;
+  color: var(--subject-accent-ink) !important;
+  background: color-mix(in srgb, var(--subject-accent) 10%, rgba(255, 255, 255, 0.38)) !important;
+  font-weight: 600;
+}
+.dark .subject-accent-tag {
+  border-color: color-mix(in srgb, var(--subject-accent) 52%, transparent) !important;
+  background: color-mix(in srgb, var(--subject-accent) 14%, transparent) !important;
+}
+.subject-accent .subject-accent-open,
+.subject-accent-card .subject-accent-open { color: var(--subject-accent-ink); }
+
+/* Course pills (recall preview, Study Desk filter). */
+.recall-course-pill.subject-accent {
+  border-color: color-mix(in srgb, var(--subject-accent) 48%, rgba(255, 255, 255, 0.85));
+}
+.dark .recall-course-pill.subject-accent {
+  border-color: color-mix(in srgb, var(--subject-accent) 50%, transparent);
+}
+.recall-course-pill.subject-accent:hover {
+  border-color: var(--subject-accent);
+  box-shadow:
+    0 0 0 1px var(--subject-accent),
+    0 8px 20px -8px color-mix(in srgb, var(--subject-accent) 55%, transparent);
+}
+.recall-course-pill.subject-accent[data-active="true"] {
+  border-color: var(--subject-accent);
+  background: color-mix(in srgb, var(--subject-accent) 13%, rgba(255, 255, 255, 0.9));
+  box-shadow:
+    0 0 0 1.5px var(--subject-accent),
+    0 8px 20px -8px color-mix(in srgb, var(--subject-accent) 55%, transparent);
+}
+.dark .recall-course-pill.subject-accent[data-active="true"] {
+  background: color-mix(in srgb, var(--subject-accent) 20%, transparent);
+}
+/* The flip card follows whichever course is selected in the recall preview. */
+.subject-accent-flip {
+  border-color: color-mix(in srgb, var(--subject-accent) 55%, rgba(255, 255, 255, 0.85)) !important;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--subject-accent) 26%, transparent),
+    0 14px 30px -16px color-mix(in srgb, var(--subject-accent) 55%, transparent) !important;
+}
+.dark .subject-accent-flip {
+  border-color: color-mix(in srgb, var(--subject-accent) 58%, transparent) !important;
+}
+.subject-accent-flip:hover {
+  border-color: var(--subject-accent) !important;
+  box-shadow:
+    0 0 0 1.5px var(--subject-accent),
+    0 16px 34px -16px color-mix(in srgb, var(--subject-accent) 60%, transparent) !important;
+}
+
+.recall-action-pill.subject-accent:hover {
+  border-color: var(--subject-accent);
+  box-shadow:
+    0 0 0 1px var(--subject-accent),
+    0 8px 20px -8px color-mix(in srgb, var(--subject-accent) 55%, transparent);
+}
+
+/* Segmented class tabs (header rail, Study Desk) get a per-course ring. */
+.uiverse-radio-inputs .radio.subject-accent-tab .name {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--subject-accent) 0%, transparent);
+}
+.uiverse-radio-inputs .radio.subject-accent-tab:hover .name {
+  box-shadow: inset 0 0 0 1.5px var(--subject-accent);
+}
+.uiverse-radio-inputs .radio.subject-accent-tab[data-checked="true"] .name {
+  box-shadow:
+    inset 0 0 0 2px var(--subject-accent),
+    0 2px 8px color-mix(in srgb, var(--subject-accent) 35%, transparent);
+  color: var(--subject-accent-ink);
+}
+
+/* Course links in menus, sheets, footers, and pickers. */
+.subject-accent-link {
+  border: 1px solid transparent;
+}
+.subject-accent-link:hover,
+.subject-accent-link:focus-visible,
+.subject-accent-link[data-current="true"] {
+  border-color: var(--subject-accent);
+  background: color-mix(in srgb, var(--subject-accent) 11%, transparent) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--subject-accent) 24%, transparent);
+}
+.subject-accent-link .subject-accent-chip { border-width: 1px; }
+
+/* Header pill showing the course you are currently in. */
+.top-classes-pill.subject-accent,
+.header-brand-pill.subject-accent {
+  border-color: color-mix(in srgb, var(--subject-accent) 60%, rgba(255, 255, 255, 0.85));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--subject-accent) 26%, transparent),
+    0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.dark .top-classes-pill.subject-accent,
+.dark .header-brand-pill.subject-accent {
+  border-color: color-mix(in srgb, var(--subject-accent) 58%, transparent);
+}
+

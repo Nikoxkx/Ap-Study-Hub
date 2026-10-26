@@ -50,7 +50,7 @@ export default function AboutPage() {
             <p className="label">The human behind the notes</p>
           </div>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)] font-semibold" style={{ letterSpacing: "-0.028em" }}>
-            One student, seven courses, and nothing to sell you.
+            One student, nine courses, and nothing to sell you.
           </h1>
           <p className="lede mt-5">
             This page is here so you can decide how much to trust the rest of the site: who made

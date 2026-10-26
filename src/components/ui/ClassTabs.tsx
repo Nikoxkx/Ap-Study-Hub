@@ -15,6 +15,10 @@ export interface ClassTabOption {
   label: React.ReactNode;
   href?: string;
   title?: string;
+  /** Per-option classes (e.g. `subject-accent subject-accent-tab` for a course accent outline). */
+  className?: string;
+  /** Per-option inline custom properties (e.g. subjectVars(subject) accent colours). */
+  style?: React.CSSProperties;
 }
 
 interface ClassTabsProps {
@@ -49,7 +53,8 @@ export function ClassTabs({
               href={option.href}
               title={option.title}
               aria-current={active ? "page" : undefined}
-              className="radio no-underline"
+              className={["radio no-underline", option.className].filter(Boolean).join(" ")}
+              style={option.style}
               data-checked={active ? "true" : "false"}
             >
               <span className="name">{option.label}</span>
@@ -58,7 +63,12 @@ export function ClassTabs({
         }
 
         return (
-          <label key={option.value} className="radio" title={option.title}>
+          <label
+            key={option.value}
+            className={["radio", option.className].filter(Boolean).join(" ")}
+            style={option.style}
+            title={option.title}
+          >
             <input
               type="radio"
               name={name}

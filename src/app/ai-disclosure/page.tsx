@@ -85,7 +85,7 @@ const contentAreas = [
   {
     type: "Deep lessons",
     where: "src/content/lessons/*",
-    ai: "Drafted 51 lessons from official curriculum/scoring pages and supporting open textbooks; generated objectives, examples, and original lesson practice",
+    ai: "Drafted 66 lessons from official curriculum/scoring pages and supporting open textbooks; generated objectives, examples, and original lesson practice",
     human: "Official claims carry dated source IDs; automated checks require 10+ paragraphs per lesson, valid citations, course sequence, and practice structure; author retains editorial responsibility",
   },
   {
@@ -102,7 +102,7 @@ const contentAreas = [
   },
   {
     type: "Essays & rubrics",
-    where: "essaysData — 6 essays, mockExamsData — 3 papers",
+    where: "essaysData — 12 essays, mockExamsData — 3 papers",
     ai: "Outlines for DBQ, LEQ, synthesis, rhetorical analysis, argument, IWA/IWR + rubric breakdowns",
     human: "Rewrote in exam register, checked rubric alignment, ensured sophistication point requires nuance, no auto-grading — rubric checklist for self-marking",
   },
@@ -207,8 +207,8 @@ export default function AiDisclosurePage() {
             </table>
           </div>
           <p className="mt-4 max-w-[68ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
-            No AI image generators were used for content. The seven subject symbols — flag, quotation
-            marks, speech bubbles, scales, DNA, integral, and magnifier — are hand-drawn SVG on a 32-unit
+            No AI image generators were used for content. The nine subject symbols — flag, quotation
+            marks, speech bubbles, scales, DNA, integral, magnifier, a rising market graph, and a leaf — are hand-drawn SVG on a 32-unit
             grid (<code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>SubjectMark.tsx</code>).
             README banners are deterministic SVG from <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>build-banners.mjs</code>, not diffusion models.
           </p>
@@ -279,7 +279,7 @@ export default function AiDisclosurePage() {
             {[
               {
                 h: "I sat these exams",
-                p: "Only 7 courses because I have only sat seven. Rule: nothing goes up unless I would have used it the week before the exam.",
+                p: "Only 9 courses because I have only sat nine. Rule: nothing goes up unless I would have used it the week before the exam.",
               },
               {
                 h: "A person chose what to keep",

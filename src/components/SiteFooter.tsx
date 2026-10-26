@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { subjects, formatExamDate } from "@/lib/subjects";
+import { subjects, formatExamDate, subjectVars } from "@/lib/subjects";
 import { getTotals } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { SiteMark, SubjectMark } from "./SubjectMark";
@@ -74,10 +74,10 @@ export function SiteFooter() {
                   <li key={subject.slug}>
                     <Link
                       href={`/course/${subject.slug}`}
-                      className="group inline-flex items-center gap-2 link-draw text-[0.875rem] transition-transform duration-200 hover:translate-x-0.5"
-                      style={{ color: "var(--ink-soft)" }}
+                      className="group subject-accent inline-flex items-center gap-2 link-draw text-[0.875rem] transition-transform duration-200 hover:translate-x-0.5"
+                      style={{ ...subjectVars(subject), color: "var(--ink-soft)" }}
                     >
-                      <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 transition-transform duration-200 group-hover:scale-110 dark:border-white/20 dark:bg-white/10">
+                      <span className="subject-accent-chip inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-white/75 bg-white/45 transition-transform duration-200 group-hover:scale-110 dark:border-white/20 dark:bg-white/10">
                         <SubjectMark subject={subject.mark} size={13} label={subject.symbolLabel} />
                       </span>
                       <span>{subject.familiar}</span>

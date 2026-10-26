@@ -5,7 +5,7 @@ import { isSubjectSlug } from "@/lib/subjects";
 
 export const metadata: Metadata = {
   title: "What should I work on today?",
-  description: "A private study desk for spaced review, mistakes, realistic plans, focus sessions, video notes, goals, reports, and optional sync across seven AP courses.",
+  description: "A private study desk for spaced review, mistakes, realistic plans, focus sessions, video notes, goals, reports, and optional sync across nine AP courses.",
   robots: { index: false, follow: true },
 };
 
