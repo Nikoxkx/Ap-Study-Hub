@@ -105,13 +105,13 @@ export const subjects: Subject[] = [
     intro:
       "AP Lit is a reading exam and a writing exam at once. Section I hands you five passages — at least two poems and at least two prose or drama excerpts — and asks 55 questions in an hour; Section II asks for three essays in two hours, each marked on the same six-point analytic rubric the College Board now publishes: thesis, evidence and commentary, sophistication. The lessons below teach the vocabulary of close reading and the sentence-level moves that earn those points.",
     exam: { date: "2027-05-05", window: "morning" },
-    ink: "#7a3b52",
-    lit: "#e3a8bb",
-    wash: "#f4e7eb",
+    ink: "#423a9e",
+    lit: "#a9a2e2",
+    wash: "#eae8f7",
     washDark: "#1d1d1d",
     revised: "2026-10-26",
     topic: "LITERATURE",
-    symbolLabel: "Engraved rose — literary analysis",
+    symbolLabel: "Quill and inkwell — literary analysis",
     mark: "ap-lit",
   },
   {

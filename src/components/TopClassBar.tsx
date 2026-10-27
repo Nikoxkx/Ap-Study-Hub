@@ -101,7 +101,7 @@ export function TopClassBar() {
               subject={activeSubject.mark}
               size={15}
               label={activeSubject.symbolLabel}
-              tone="light"
+              tone="auto"
             />
           ) : null}
           <span>{activeSubject ? activeSubject.familiar : "AP Courses"}</span>
@@ -147,7 +147,7 @@ export function TopClassBar() {
               subject={activeSubject.mark}
               size={14}
               label={activeSubject.symbolLabel}
-              tone="light"
+              tone="auto"
             />
           ) : null}
           <span>{activeSubject ? activeSubject.familiar : "Courses"}</span>

@@ -6,6 +6,7 @@
  * Run: pnpm validate:presentation
  */
 import { readFileSync } from "node:fs";
+import { inflateSync } from "node:zlib";
 
 const errors = [];
 const read = (path) => readFileSync(path, "utf8");
@@ -88,16 +89,99 @@ for (const field of ["topic", "symbolLabel"]) {
   const count = [...subjects.matchAll(new RegExp(`\\b${field}:\\s*"`, "g"))].length;
   if (count !== SUBJECT_SLUGS.length) fail(`Expected ${SUBJECT_SLUGS.length} subject ${field} values, found ${count}`);
 }
-for (const symbol of ["U.S. flag", "Open book", "Source documents", "Classical capitol", "DNA", "Right triangle trigonometry", "Magnifying glass", "Rising market graph", "Leaf", "Engraved rose"]) {
+for (const symbol of ["U.S. flag", "Open book", "Source documents", "Classical capitol", "DNA", "Right triangle trigonometry", "Magnifying glass", "Rising market graph", "Leaf", "Quill and inkwell"]) {
   if (!marks.includes(symbol)) fail(`SubjectMark is missing the ${symbol} symbol`);
 }
+/**
+ * Decode an 8-bit, non-interlaced RGBA PNG far enough to know what the drawing
+ * actually looks like. Byte 25 alone only proves "RGBA"; it cannot tell a white
+ * mark from a black one, which is exactly how the AP Lit white variant shipped
+ * as an invisible black silhouette. zlib is all this needs.
+ */
+function inspectMark(path) {
+  const png = readFileSync(path);
+  const width = png.readUInt32BE(16);
+  const height = png.readUInt32BE(20);
+  const colourType = png.readUInt8(25);
+  const interlace = png.readUInt8(28);
+  if (colourType !== 6) return { error: "not RGBA" };
+  if (interlace !== 0) return { error: "interlaced" };
+  const chunks = [];
+  for (let offset = 8; offset < png.length; ) {
+    const length = png.readUInt32BE(offset);
+    const type = png.toString("ascii", offset + 4, offset + 8);
+    if (type === "IDAT") chunks.push(png.subarray(offset + 8, offset + 8 + length));
+    offset += 12 + length;
+  }
+  const raw = inflateSync(Buffer.concat(chunks));
+  const stride = width * 4;
+  const pixels = Buffer.alloc(stride * height);
+  let previous = Buffer.alloc(stride);
+  for (let y = 0; y < height; y += 1) {
+    const filter = raw[y * (stride + 1)];
+    const line = raw.subarray(y * (stride + 1) + 1, (y + 1) * (stride + 1));
+    const out = pixels.subarray(y * stride, (y + 1) * stride);
+    for (let x = 0; x < stride; x += 1) {
+      const left = x >= 4 ? out[x - 4] : 0;
+      const up = previous[x];
+      const upLeft = x >= 4 ? previous[x - 4] : 0;
+      const value = line[x];
+      out[x] = filter === 1 ? value + left
+        : filter === 2 ? value + up
+          : filter === 3 ? value + ((left + up) >> 1)
+            : filter === 4 ? value + paeth(left, up, upLeft)
+              : value;
+    }
+    previous = out;
+  }
+  let opaque = 0;
+  let luminance = 0;
+  for (let index = 0; index < pixels.length; index += 4) {
+    if (pixels[index + 3] < 200) continue;
+    opaque += 1;
+    luminance += 0.2126 * pixels[index] + 0.7152 * pixels[index + 1] + 0.0722 * pixels[index + 2];
+  }
+  return {
+    coverage: opaque / (width * height),
+    luminance: opaque ? luminance / opaque : 0,
+  };
+}
+
+function paeth(left, up, upLeft) {
+  const estimate = left + up - upLeft;
+  const toLeft = Math.abs(estimate - left);
+  const toUp = Math.abs(estimate - up);
+  const toUpLeft = Math.abs(estimate - upLeft);
+  return toLeft <= toUp && toLeft <= toUpLeft ? left : toUp <= toUpLeft ? up : upLeft;
+}
+
 for (const slug of SUBJECT_SLUGS) {
-  const iconPath = `public/icons/courses/${slug}.png`;
-  const icon = readFileSync(iconPath);
-  if (icon.readUInt8(25) !== 6) fail(`${iconPath} is not a transparent RGBA PNG`);
-  // A mark that is a single flat colour is a blank canvas: it either vanishes
-  // into the glass header (all white) or paints a solid tile over it (all dark).
-  if (icon.length < 2000) fail(`${iconPath} is too small to contain a drawing (${icon.length} bytes)`);
+  for (const [file, expectation] of [
+    [slug, "ink"],
+    [`${slug}-dark`, "ink"],
+    [`${slug}-white`, "white"],
+  ]) {
+    const iconPath = `public/icons/courses/${file}.png`;
+    const icon = readFileSync(iconPath);
+    if (icon.readUInt8(25) !== 6) fail(`${iconPath} is not a transparent RGBA PNG`);
+    // A mark that is a single flat colour is a blank canvas: it either vanishes
+    // into the glass header (all white) or paints a solid tile over it (all dark).
+    if (icon.length < 2000) fail(`${iconPath} is too small to contain a drawing (${icon.length} bytes)`);
+    const mark = inspectMark(iconPath);
+    if (mark.error) {
+      fail(`${iconPath} could not be inspected: ${mark.error}`);
+      continue;
+    }
+    if (mark.coverage < 0.04 || mark.coverage > 0.6) {
+      fail(`${iconPath} covers ${(mark.coverage * 100).toFixed(1)}% of the canvas — that is a blank tile or a hairline, not a symbol`);
+    }
+    if (expectation === "white" && mark.luminance < 200) {
+      fail(`${iconPath} is meant to be a white symbol but its ink averages ${mark.luminance.toFixed(0)}/255 — it will vanish on dark chrome`);
+    }
+    if (expectation === "ink" && mark.luminance > 90) {
+      fail(`${iconPath} is meant to be dark ink but averages ${mark.luminance.toFixed(0)}/255`);
+    }
+  }
 }
 
 // 3. Real YouTube thumbnails load automatically; the player frame stays opt-in.

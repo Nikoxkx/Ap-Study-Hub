@@ -59,7 +59,7 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **AP U.S. History** (`apush`) | Waving U.S. flag | 9 | 90 | 89 | 66 | 1 essay · 1 interim | 13 |
 | **AP English Language** (`ap-lang`) | Open book | 9 | 90 | 81 | 66 | 3 essays · 1 interim | 9 |
-| **AP English Literature** (`ap-lit`) | Engraved rose | 9 | 90 | 43 | 18 | 0 essays · 1 interim | 11 |
+| **AP English Literature** (`ap-lit`) | Quill and inkwell | 9 | 90 | 43 | 18 | 0 essays · 1 interim | 12 |
 | **AP Seminar** (`ap-seminar`) | Source documents | 5 | 50 | 56 | 48 | 1 essay · 1 mock | 10 |
 | **AP U.S. Gov & Politics** (`ap-gov`) | Classical capitol | 5 | 50 | 40 | 35 | 4 essays · 1 interim | 6 |
 | **AP Biology** (`ap-bio`) | DNA double helix | 8 | 80 | 52 | 47 | 0 essays · 1 interim | 8 |
@@ -67,7 +67,7 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 | **AP Research** (`ap-research`) | Magnifying glass | 5 | 50 | 32 | 30 | 1 essay · 1 interim | 10 |
 | **AP Macroeconomics** (`ap-macro`) | Rising market graph | 6 | 60 | 54 | 39 | 1 essay · 1 interim | 6 |
 | **AP Environmental Science** (`ap-env`) | Leaf | 9 | 90 | 66 | 48 | 1 essay · 1 interim | 10 |
-| **Total** | **10 white RGBA icons** | **75** | **750** | **568** | **447** | **12 essays · 10 interims** | **93** |
+| **Total** | **10 white RGBA icons** | **75** | **750** | **568** | **447** | **12 essays · 10 interims** | **94** |
 
 ---
 
@@ -83,13 +83,13 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 ```
 
 ### Course marks
-Each of the ten courses has a monochrome symbol on a transparent canvas, drawn as solid strokes so it survives the 13–32px sizes the site renders: `ap-lit` uses the supplied open-book line drawing (an engraved rose was tried first and its fine hatching turned to grey mush at icon size). Night mode inverts the ink file, and each course also ships a white variant for permanently dark badges.
+Each of the ten courses has a monochrome symbol on a transparent canvas, drawn as a solid silhouette so it survives the 13–32px sizes the site renders: a flag, an open book, a stack of sources, a capitol, a helix, a triangle, a magnifier, a rising graph, a leaf, and — for AP Literature — a quill rising out of an inkwell. Three drawings of the AP Lit mark came before that one: the engraved rose, the supplied open book, and a stroke-only quill. All three failed the same test — fine hatching and thin lines turn to grey mush at icon size, and the open book simply duplicated AP Language's mark — so the quill is now drawn as geometry in `scripts/build-ap-lit-mark.mjs` (`node scripts/build-ap-lit-mark.mjs` rebuilds all three files). Night mode inverts the ink file, and each course also ships a white variant for permanently dark badges; both variants are checked for actual pixel colour by `pnpm validate:presentation`. Each course also has its own accent colour — AP Literature moved off the wine rose to an iron-gall indigo (`#423a9e`), which sits clear of AP Language's navy and AP Seminar's plum.
 
 ### Interactive labs, one per course
 `/course/<slug>/studio` opens an interactive lab for every course — all ten, without exception: a poetry close-reading annotation lab for AP Lit (Dickinson, with model commentary on personification, dashes and the final stanza's reordering of time), a rhetorical annotation lab for AP Lang, a document annotation lab for APUSH, a required-case matching lab for AP Gov, data-analysis labs for AP Bio, AP Macro and AP Environmental Science, calculus labs with sliders for AP Calc, a source-synthesis matrix for AP Seminar, and a question-and-defence rehearsal for AP Research.
 
 ### Privacy-first unit videos (`UnitVideoPlayer`)
-- Every course unit includes vetted review videos (`Heimler's History`, `Coach Hall Writes`, `Garden of English`, `Bozeman Science`, `Amoeba Sisters`, `3Blue1Brown`, `Professor Leonard`, `Carey LaManna`, and official `Advanced Placement` playlists) verified via YouTube oEmbed (`scripts/validate-videos.ts`).
+- Every course unit includes vetted review videos (`Heimler's History`, `Coach Hall Writes`, `Garden of English`, `Bozeman Science`, `Amoeba Sisters`, `3Blue1Brown`, `Professor Leonard`, `Carey LaManna`, and official `Advanced Placement` playlists). `scripts/validate-videos.ts` keeps the registry structurally honest (valid IDs, one video per catalog unit, no duplicates); watchability is checked by opening each watch page, because YouTube's oEmbed endpoint refuses requests from the build sandbox. Uploaders do set old videos to private — the AP Literature set was rebuilt on 2026-10-26 for exactly that reason, and every AP Lit embed now reports `Visibility: Public`.
 - Pages render static `i.ytimg.com` thumbnails first — **no YouTube scripts or `<iframe>` embeds load until you explicitly opt in** (`youtube-nocookie.com`), or you can open the video directly on YouTube in a new tab.
 
 ### Local-first persistence & optional integrations
@@ -157,7 +157,7 @@ corepack pnpm validate:study          # 1,015 study items, KaTeX math, schedulin
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 93 verified 11-char YouTube IDs, course/unit mapping & thumbnails
 corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
-node scripts/build-ap-lit-mark.mjs     # redraw the AP Lit rose mark (256px RGBA, #121212 + #FFFFFF)
+node scripts/build-ap-lit-mark.mjs     # redraw the AP Lit quill-and-inkwell mark (256px RGBA, #121212 + #FFFFFF)
 corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png
 corepack pnpm check                   # runs all 4 validators + tsc --noEmit + eslint + next build
 corepack pnpm audit --audit-level low # checks direct and transitive dependencies for known advisories
