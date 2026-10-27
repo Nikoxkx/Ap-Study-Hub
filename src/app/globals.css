@@ -4579,18 +4579,19 @@ html.is-entering footer[data-site-footer] {
   z-index: 120;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
-  /* Frosted rather than painted: the room still needs to read as a separate
-     surface, so it keeps a heavier blur than the page panels while letting the
-     room behind it stay faintly present. */
-  background: rgba(240, 239, 235, 0.86);
-  backdrop-filter: blur(26px) saturate(110%);
-  -webkit-backdrop-filter: blur(26px) saturate(110%);
+  /* Opaque, not frosted. A paper is a reading surface: the bedroom-wall of
+     text that used to show through the glass made the questions harder to read
+     than the passages. The page behind is hidden outright (below), so there is
+     nothing to see through the room anyway. */
+  background: rgb(243, 242, 238);
   color: var(--ink);
   font-family: var(--font-ui);
 }
 
 .dark .exam-room {
-  background: rgba(26, 26, 26, 0.72);
+  /* Charcoal, a shade above the raised panels inside it, so the source pane
+     still reads as a panel rather than melting into the room. */
+  background: rgb(26, 26, 26);
 }
 
 /* Break and score report get the same fixed shell as the room. They used to be
@@ -4604,14 +4605,24 @@ html.is-entering footer[data-site-footer] {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding: clamp(0.9rem, 2.6vw, 2.25rem) clamp(0.75rem, 2.6vw, 2.25rem) 4rem;
-  background: rgba(240, 239, 235, 0.96);
-  backdrop-filter: blur(26px) saturate(110%);
-  -webkit-backdrop-filter: blur(26px) saturate(110%);
+  background: rgb(243, 242, 238);
   color: var(--ink);
   font-family: var(--font-ui);
   animation: exam-room-enter 420ms var(--ease-settle) both;
 }
-.dark .exam-stage { background: rgba(26, 26, 26, 0.94); }
+.dark .exam-stage { background: rgb(26, 26, 26); }
+
+/* The page under an open paper is removed from view, not just dimmed: the
+   briefing, the header, the wallpaper, and the footer were all legible through
+   the frosted room and collided with the question text. The room and its stages
+   are portaled onto <body>, so they are untouched by this. */
+body.exam-room-open > main,
+body.exam-room-open > header,
+body.exam-room-open > footer,
+body.exam-room-open > .page-wallpaper,
+body.exam-room-open > .skip-link {
+  visibility: hidden;
+}
 .exam-stage-inner { width: min(100%, 74rem); margin-inline: auto; }
 .exam-stage-inner > .score-report,
 .exam-stage-inner > .exam-break { margin: 0; }

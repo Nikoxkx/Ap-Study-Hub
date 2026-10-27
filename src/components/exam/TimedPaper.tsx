@@ -149,6 +149,17 @@ export function TimedPaper({
     };
   }, [phase]);
 
+  /* While a paper is on screen the page under it is taken out of view
+     completely, not merely dimmed. The room used to be frosted glass over the
+     briefing, so question text sat on top of the headings and paragraphs of the
+     page behind it. `body.exam-room-open` hides those layers (see globals.css);
+     the room itself is painted onto <body>, so it is unaffected. */
+  useEffect(() => {
+    if (phase === "briefing") return;
+    document.body.classList.add("exam-room-open");
+    return () => document.body.classList.remove("exam-room-open");
+  }, [phase]);
+
   // A stage is a fresh screen, so it starts at its own top — not at whatever
   // document offset the student happened to be at when the section ended.
   useEffect(() => {

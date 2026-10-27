@@ -93,9 +93,17 @@ async function main() {
     });
 
     if (!counts().briefing) fail(`${subject.slug}: the paper did not open on the briefing`);
+    if (window.document.body.classList.contains("exam-room-open")) {
+      fail(`${subject.slug}: the page is already hidden behind the briefing`);
+    }
     if (!(await clickStartingWith("Start the clock"))) fail(`${subject.slug}: no start button`);
     if (!counts().room) fail(`${subject.slug}: the room did not open`);
     else if (text(".exam-room").length < 200) fail(`${subject.slug}: the room opened empty`);
+    // The page under an open paper must be hidden, or its headings and
+    // paragraphs sit behind the question text.
+    if (!window.document.body.classList.contains("exam-room-open")) {
+      fail(`${subject.slug}: the page behind the room is still visible`);
+    }
 
     for (let step = 0; step < 16; step += 1) {
       const state = counts();
@@ -118,8 +126,15 @@ async function main() {
     else if (!end.stage) fail(`${subject.slug}: the score report is not on the full-screen stage`);
     else if (text(".exam-stage").length < 400) fail(`${subject.slug}: the score report rendered blank`);
 
+    if (!window.document.body.classList.contains("exam-room-open")) {
+      fail(`${subject.slug}: the score report left the page behind it visible`);
+    }
+
     checked += 1;
     await act(async () => root.unmount());
+    if (window.document.body.classList.contains("exam-room-open")) {
+      fail(`${subject.slug}: the page stayed hidden after the paper closed`);
+    }
   }
 
   if (failures.length) {
