@@ -158,6 +158,25 @@ export const unitVideos: UnitVideo[] = [
   video("ap-env", 7, "5l3NJi_aROM", "Unit 7 APES Air Pollution Review- AP Environmental Science", "Science Panda", "Full unit review", "Criteria pollutants, photochemical smog, inversions, and acid deposition"),
   video("ap-env", 8, "6oAt6e-cTl4", "Unit 8 APES Aquatic and Terrestrial Pollution Review - AP Environmental Science", "Science Panda", "Full unit review", "Eutrophication, oxygen sag, sewage treatment, and waste"),
   video("ap-env", 9, "JSYNMjVQwoU", "AP Environmental Science Unit 9 Review (Everything You Need to Know!)", "Jordan Dischinger-Smedes", "Full unit review", "Ozone depletion, climate change, and biodiversity loss"),
+
+  // AP English Literature — every embed below was opened on 2026-10-26 and
+  // confirmed `Visibility: Public`. The College Board Live Review episodes and
+  // the third-party "AP Lit Help" lectures that used to fill this list have
+  // since been set to private or unlisted by their uploaders, so the set was
+  // rebuilt from Garden of English's AP Lit series, which is public, is taught
+  // by a working AP Lit teacher, and works through released prompts.
+  video("ap-lit", 1, "iEVk2L3zAP8", "WHAT Is AP Lit? (And Why You Should Take It!)", "Garden of English", "Course overview", "What the course asks of you, how it differs from AP Language, and what each exam section rewards"),
+  video("ap-lit", 1, "IDnaMvXLuFk", "Do THIS First When Writing ANY Prose Analysis (Question 2)", "Garden of English", "Exam strategy", "Breaking a prose prompt down before reading: title, author, genre, background, and the task verbs"),
+  video("ap-lit", 2, "m14JmFz6UuM", "WAIT! Before You Read ANY Poem, Do THIS!", "Garden of English", "Exam strategy", "Four steps for reading a poetry prompt so the poem itself is easier to enter"),
+  video("ap-lit", 2, "fbK72UkUCV4", "How to Analyze and Annotate ANY Poem", "Garden of English", "Skill focus", "A repeatable annotation routine for poetry under exam time limits"),
+  video("ap-lit", 3, "seOSYb4eW6I", "How to Identify the LITERARY EFFECT (Q1, Q2 and Q3)", "Garden of English", "Skill focus", "Turning what you notice in a passage into an inference about character, conflict, mood, irony or theme"),
+  video("ap-lit", 4, "8n6KloACRrs", "What You DIDN'T Know About Commentary", "Garden of English", "Skill focus", "The template that reliably produces three sentences of commentary for the Row B evidence-and-commentary point"),
+  video("ap-lit", 5, "VqftCcpCEaE", "ACE Your Poetry Commentary... Every Time", "Garden of English", "Worked example", "Building commentary on a poem's sound and syntax so it answers the topic sentence, not just the quote"),
+  video("ap-lit", 6, "Y1eQjJcflu0", "The Only AP Lit Thesis Template You'll Ever Need", "Garden of English", "Worked example", "A thesis that names a literary element and a defensible interpretation of the whole text"),
+  video("ap-lit", 7, "RfibMaQHFYk", "5 Tips to Better Your AP English Multiple Choice", "Garden of English", "Exam strategy", "Reading for effect, using context instead of vocabulary, and reasoning out why the right answer is right"),
+  video("ap-lit", 8, "-ISD1XCW7x0", "How to Write the BEST Poetry Topic Sentences", "Garden of English", "Worked example", "Transposing annotations from a poem into body-paragraph topic sentences"),
+  video("ap-lit", 9, "paiaU7i1kPQ", "2 BIG CHANGES Coming to the AP English Lit Exam", "English Nerd", "Course overview", "Four options per multiple-choice question, digital-only testing, and what did not change"),
+  video("ap-lit", 9, "0weFeNAf-l0", "Digital AP Exams Are HERE! (Prep Tips)", "Garden of English", "Exam strategy", "Working the Bluebook test room: underlining in the question stem, annotation tools, scratch paper and timing"),
 ];
 
 export function videoWatchUrl(v: UnitVideo): string {

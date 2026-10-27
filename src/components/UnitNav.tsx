@@ -9,9 +9,9 @@ import { useEffect, useRef, useState } from "react";
  * top-weighted root margin, so the active item changes when a heading reaches
  * the upper third of the viewport rather than when it leaves the bottom.
  *
- * Scroll position is read, never written: clicking an item is a plain anchor,
- * so the browser handles smooth scrolling, focus and history. Hijacking that
- * with scrollIntoView is how these rails end up breaking the back button.
+ * Clicking an item is a plain anchor, so the browser handles scrolling, focus
+ * and history. The only scroll position this component ever writes is the
+ * rail's own `scrollTop`; it never scrolls the page.
  */
 
 interface UnitNavProps {
@@ -45,11 +45,26 @@ export function UnitNav({ units }: UnitNavProps) {
     return () => observer.disconnect();
   }, [units]);
 
-  // Keep the active item scrolled into view inside the rail itself on long lists.
+  /* Keep the active item in view *inside the rail* on long lists.
+     This must never call scrollIntoView: that walks up every scrollable
+     ancestor, and below `lg` the rail is not one of them, so on a phone the
+     active item moving as you read scrolled the whole document and threw the
+     reader back to the top of the page. Moving `scrollTop` on the rail itself
+     cannot touch the page. */
   useEffect(() => {
-    if (!activeId || !listRef.current) return;
-    const item = listRef.current.querySelector<HTMLElement>(`[data-for="${activeId}"]`);
-    item?.scrollIntoView({ block: "nearest" });
+    if (!activeId) return;
+    const list = listRef.current;
+    const item = list?.querySelector<HTMLElement>(`[data-for="${activeId}"]`);
+    if (!list || !item) return;
+    if (list.scrollHeight <= list.clientHeight + 1) return;
+
+    const rail = list.getBoundingClientRect();
+    const entry = item.getBoundingClientRect();
+    if (entry.top < rail.top) {
+      list.scrollTop -= rail.top - entry.top;
+    } else if (entry.bottom > rail.bottom) {
+      list.scrollTop += entry.bottom - rail.bottom;
+    }
   }, [activeId]);
 
   return (

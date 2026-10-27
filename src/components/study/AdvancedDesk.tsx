@@ -180,7 +180,7 @@ export function AdvancedDesk({ items, courses, selectedCourse, now }: {
     const lines = [
       "# AP Study Hub — weekly study report",
       `Generated: ${new Date(now).toISOString()}`,
-      `Course filter: ${selectedCourse === "all" ? "All nine courses" : getSubject(selectedCourse)?.familiar ?? selectedCourse}`,
+      `Course filter: ${selectedCourse === "all" ? "All ten courses" : getSubject(selectedCourse)?.familiar ?? selectedCourse}`,
       "",
       "## Last seven days",
       `- Retrieval attempts: ${weekly.attempts} (goal ${goals.reviews})`,

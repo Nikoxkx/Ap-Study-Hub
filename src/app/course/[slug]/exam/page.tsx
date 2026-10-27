@@ -1,27 +1,30 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCourse, getCatalog } from "@/lib/catalog";
-import { TimedPaper } from "@/components/TimedPaper";
+import { getCatalog, getCourse } from "@/lib/catalog";
+import { getAssessment } from "@/lib/exams";
+import { ExamHub } from "@/components/exam/ExamHub";
+import { SubjectMark } from "@/components/SubjectMark";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { absoluteUrl, socialImages } from "@/lib/site";
+import { formatExamDate } from "@/lib/subjects";
 
 type Params = Promise<{ slug: string }>;
 
 export function generateStaticParams() {
-  return getCatalog()
-    .filter((course) => course.mockExams.length > 0)
-    .map((course) => ({ slug: course.subject.slug }));
+  return getCatalog().map((course) => ({ slug: course.subject.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const course = getCourse(slug);
-  if (!course) return {};
+  const assessment = getAssessment(slug);
+  if (!course || !assessment) return {};
 
-  const { subject, mockExams } = course;
-  const minutes = mockExams[0]?.sections.reduce((sum, s) => sum + s.timeMinutes, 0) ?? 0;
-  const title = `${subject.familiar} under exam conditions`;
-  const description = `A ${minutes}-minute original ${subject.familiar} timed practice set with a running clock, constructed source packets, and transparent self-check criteria.`;
+  const { subject } = course;
+  const minutes = assessment.totalMinutes;
+  const title = `${subject.familiar} mock interim assessment`;
+  const description = `A ${minutes}-minute ${subject.familiar} interim assessment in the official format: ${assessment.mcqCount} multiple-choice questions and ${assessment.frqCount} written tasks, marked against the published rubric rows, with a step-by-step guided walkthrough of the same paper.`;
 
   return {
     title,
@@ -40,32 +43,110 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 export default async function ExamPage({ params }: { params: Params }) {
   const { slug } = await params;
   const course = getCourse(slug);
-  if (!course) notFound();
+  const assessment = getAssessment(slug);
+  if (!course || !assessment) notFound();
 
-  const { subject, mockExams, questions } = course;
-  if (mockExams.length === 0) notFound();
+  const { subject } = course;
+  const base = `/course/${subject.slug}`;
+  const breakMinutes = assessment.blueprint.breaks.reduce((sum, item) => sum + item.minutes, 0);
 
   return (
     <div className="wrap space-y-8 py-8 md:py-12">
-      <GlassCard as="header" padding="lg" className="mx-auto max-w-4xl">
-        <p className="label mb-2">With the clock running</p>
-        <h2
-          className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)] font-semibold"
-          style={{ letterSpacing: "-0.025em" }}
-        >
-          {subject.familiar}, with the clock running
+      <GlassCard as="header" padding="lg" className="mx-auto max-w-5xl">
+        <div className="mb-3 flex items-center gap-3">
+          <span
+            className="subject-accent-chip flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/80 bg-white/45 dark:border-white/25 dark:bg-white/10"
+            title={subject.symbolLabel}
+          >
+            <SubjectMark subject={subject.mark} size={28} label={subject.symbolLabel} />
+          </span>
+          <p className="label mb-0">
+            {subject.familiar} · mock interim assessment
+          </p>
+        </div>
+        <h2 className="text-[clamp(1.55rem,1.3rem+1.2vw,2.25rem)] font-semibold" style={{ letterSpacing: "-0.025em" }}>
+          The whole exam, in the official format
         </h2>
-        <p className="lede mt-3">
-          A running clock feels different from untimed practice. Written responses use lined
-          notebook scratch paper and autosave locally.
+        <p className="lede mt-3 max-w-[70ch]">
+          {assessment.blueprint.officialFormat}
         </p>
+
+        <dl className="exam-meta">
+          <div>
+            <dt>Timed</dt>
+            <dd>
+              {Math.floor(assessment.totalMinutes / 60)} h
+              {assessment.totalMinutes % 60 ? ` ${assessment.totalMinutes % 60} m` : ""}
+            </dd>
+          </div>
+          <div>
+            <dt>Break</dt>
+            <dd>{breakMinutes ? `${breakMinutes} min` : "none scheduled"}</dd>
+          </div>
+          <div>
+            <dt>Multiple choice</dt>
+            <dd>{assessment.mcqCount || "—"}</dd>
+          </div>
+          <div>
+            <dt>Written tasks</dt>
+            <dd>{assessment.frqCount || "—"}</dd>
+          </div>
+          <div>
+            <dt>Exam date</dt>
+            <dd>{formatExamDate(subject, "short")}</dd>
+          </div>
+        </dl>
+
+        <ul className="exam-header-links">
+          <li>
+            <Link href={`${base}/notes`} className="link-underlined">
+              Read the lessons
+            </Link>
+          </li>
+          <li>
+            <Link href={`${base}/practice`} className="link-underlined">
+              Untimed practice
+            </Link>
+          </li>
+          <li>
+            {course.counts.essays > 0 ? (
+              <Link href={`${base}/essays`} className="link-underlined">
+                Marked exemplars
+              </Link>
+            ) : (
+              <Link href={`${base}/studio?tab=writing`} className="link-underlined">
+                Write to the rubric
+              </Link>
+            )}
+          </li>
+          <li>
+            <Link href={`${base}/exam/answers`} className="link-underlined" prefetch={false}>
+              Printable answer sheet
+            </Link>
+          </li>
+          <li>
+            <Link href="/guides" className="link-underlined">
+              How to sit a timed paper
+            </Link>
+          </li>
+        </ul>
       </GlassCard>
 
-      {mockExams.map((exam) => (
-        <GlassCard key={exam.id} padding="lg" className="mx-auto max-w-4xl">
-          <TimedPaper exam={exam} allQuestions={questions} courseSlug={subject.slug} />
-        </GlassCard>
-      ))}
+      <GlassCard padding="lg" className="mx-auto max-w-5xl">
+        <ExamHub assessment={assessment} courseSlug={subject.slug} courseLabel={subject.familiar} />
+      </GlassCard>
+
+      <GlassCard padding="md" className="mx-auto max-w-5xl">
+        <h3 className="label mb-2">What this is, and what it is not</h3>
+        <p className="text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
+          The section order, question counts, minutes, calculator rules, and break are copied from the
+          published format for {subject.official}. The passages are public domain or written for this site, and
+          every question and prompt here is original: none is a released College Board question. Scores are
+          practice estimates — the AP reader in May is the only authority on your exam score. Written responses
+          are not machine-graded: the score report shows the published rubric rows and you award each one
+          yourself, with a full-credit exemplar for every prompt to compare against.
+        </p>
+      </GlassCard>
     </div>
   );
 }

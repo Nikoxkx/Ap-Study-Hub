@@ -2,7 +2,7 @@
   "name": "ap-study-hub",
   "version": "1.0.0",
   "private": true,
-  "description": "Learn seven AP subjects deeply with free lessons, recall cards, original practice, marked essays, and real unit videos that can lead to college credit where accepted.",
+  "description": "Learn ten AP subjects deeply with free lessons, recall cards, original practice, full-length interim assessments with real rubric grading, and unit videos that can lead to college credit where accepted.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,7 +25,12 @@
     "validate:videos": "tsx scripts/validate-videos.ts",
     "validate:presentation": "node scripts/validate-presentation.mjs",
     "export:videos": "tsx scripts/export-video-registry.ts",
-    "check": "corepack pnpm validate:content && corepack pnpm validate:study && corepack pnpm validate:presentation && corepack pnpm validate:videos && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build"
+    "check": "corepack pnpm validate:content && corepack pnpm validate:exams && corepack pnpm validate:grading && corepack pnpm validate:exam-ui && corepack pnpm validate:exam-flow && corepack pnpm validate:scroll && corepack pnpm validate:study && corepack pnpm validate:presentation && corepack pnpm validate:videos && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build",
+    "validate:exams": "tsx scripts/validate-exams.ts",
+    "validate:grading": "tsx scripts/validate-grading.ts",
+    "validate:exam-ui": "tsx scripts/validate-exam-ui.tsx",
+    "validate:exam-flow": "tsx scripts/validate-exam-flow.tsx",
+    "validate:scroll": "tsx scripts/validate-scroll-lock.ts"
   },
   "dependencies": {
     "katex": "^0.19.1",
@@ -36,12 +41,14 @@
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/postcss": "4.1.17",
+    "@types/jsdom": "^30.0.0",
     "@types/katex": "^0.16.8",
     "@types/node": "22.19.15",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.3",
+    "jsdom": "^30.1.3",
     "postcss": "8.5.31",
     "tailwindcss": "4.1.17",
     "tsx": "^4.23.15",

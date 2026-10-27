@@ -38,9 +38,29 @@ const storageKeys = [
     when: "Written as you work through a card deck.",
   },
   {
-    key: "aps.exam.{course}.{paper}",
-    what: "Draft text you typed into a timed paper's written sections, so a refresh does not destroy it.",
-    when: "Autosaved while you are sitting a paper.",
+    key: "aps.assessment.{course}.drafts",
+    what: "Every written response you type into the interim assessment, section by section, so a refresh does not destroy an essay.",
+    when: "Autosaved on each keystroke while you are sitting a paper.",
+  },
+  {
+    key: "aps.assessment.{course}.answers / .flags / .frq",
+    what: "Which multiple-choice option you chose, which questions you flagged, and any rubric points you recorded yourself.",
+    when: "Written as you answer, flag, or self-mark.",
+  },
+  {
+    key: "aps.grade.{course}.{task}",
+    what: "The last rubric feedback returned for one written task, so the report survives a reload.",
+    when: "Written after you press Grade or Grade locally.",
+  },
+  {
+    key: "aps.attempts.{course}",
+    what: "Up to eight saved score summaries (date, multiple-choice score, rubric points, estimated AP score) that you choose to keep.",
+    when: "Written only when you press Save this attempt.",
+  },
+  {
+    key: "aps.ai.keys",
+    what: "If you choose model grading: the provider, model name, and API key you paste. The key is stored only in this browser and sent only with your own grading requests.",
+    when: "Written when you save a key in the grading panel; Forget removes it.",
   },
   {
     key: "aps.study.v1",
@@ -189,6 +209,16 @@ export default function PrivacyPage() {
               video frame is still opt-in: until you press play, no YouTube player is requested.
               After you press play, YouTube receives the request for the video and its own policy
               applies. Use “Open on YouTube” if you prefer that boundary to be explicit.
+            </p>
+            <p>
+              Written responses are the one place where your own words can leave the browser, and
+              only when you ask them to. Pressing <strong>Grade locally</strong> runs the rubric
+              analyser inside this page and sends nothing anywhere. Pressing <strong>Grade this
+              response</strong> sends the response, the printed prompt, and the published rubric rows
+              to <code>/api/grade</code> on this site; if you have added a model key, that route
+              forwards them to the provider you chose (OpenAI, Anthropic, or Google) using your key.
+              The route keeps no copy, writes no log line containing your text, and has no database.
+              Without a key it returns the same local analysis, computed on the server.
             </p>
             <p>
               Optional sync uses the Supabase edge function you configure in Advanced. The browser

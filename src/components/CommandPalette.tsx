@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useScrollLock } from "@/lib/scroll-lock";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { subjects } from "@/lib/subjects";
 import { SubjectMark } from "./SubjectMark";
@@ -47,14 +48,17 @@ export function CommandPalette({ commands }: { commands: CommandItem[] }) {
     return () => window.removeEventListener("keydown", listener);
   }, []);
 
+  /* The page is held still with the shared lock, which preserves the reader's
+     scroll position. Writing `body.style.overflow = "hidden"` here instead made
+     a phone jump to the top of the page the moment the palette opened, and
+     leave the reader there when it closed. */
+  useScrollLock(open);
+
   useEffect(() => {
     if (!open) return;
-    const previousOverflow = document.body.style.overflow;
     const trigger = triggerRef.current;
-    document.body.style.overflow = "hidden";
     requestAnimationFrame(() => inputRef.current?.focus());
     return () => {
-      document.body.style.overflow = previousOverflow;
       trigger?.focus();
     };
   }, [open]);

@@ -28,7 +28,7 @@ export function CourseTabs({ slug, available }: CourseTabsProps) {
     { value: `${base}/cards`, href: `${base}/cards`, label: "Cards", show: available.cards },
     { value: `${base}/practice`, href: `${base}/practice`, label: "Practice", show: available.practice },
     { value: `${base}/essays`, href: `${base}/essays`, label: "Essays", show: available.essays },
-    { value: `${base}/exam`, href: `${base}/exam`, label: "Timed paper", show: available.exam },
+    { value: `${base}/exam`, href: `${base}/exam`, label: "Interim exam", show: available.exam },
     { value: `${base}/resources`, href: `${base}/resources`, label: "Sources", show: available.resources },
   ].filter((tab) => tab.show);
 

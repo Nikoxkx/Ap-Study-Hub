@@ -11,7 +11,7 @@ export function getNavigationCommands(): CommandItem[] {
     { id: "study-progress", title: "Weekly progress", context: "Activity, skills, objectives, and review forecast", href: "/study?tab=progress", kind: "Study" },
     { id: "study-data", title: "Backup & offline", context: "JSON restore and offline course packs", href: "/study?tab=data", kind: "Study" },
     { id: "study-advanced", title: "Advanced Study Desk", context: "Goals, video watchlist, reports, roadmap, and optional sync", href: "/study?tab=advanced", kind: "Study" },
-    { id: "videos", title: "Unit video library", context: "Curated videos for every unit of nine AP courses", href: "/videos", kind: "Video" },
+    { id: "videos", title: "Unit video library", context: "Curated videos for every unit of ten AP courses", href: "/videos", kind: "Video" },
     { id: "integrations", title: "Integrations & press kit", context: "Public registry, editorial brief, roadmap, and social card", href: "/integrations", kind: "Site" },
     { id: "guides", title: "Study guides", context: "How to read, retrieve, write, and rehearse", href: "/guides", kind: "Study" },
   ];

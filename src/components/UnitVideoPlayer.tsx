@@ -7,6 +7,7 @@ import {
   videoWatchUrl,
   type UnitVideo,
 } from "@/lib/video-lessons";
+import { useScrollLock } from "@/lib/scroll-lock";
 import { addStudyEvent } from "@/lib/study-model";
 import { useStudyState } from "@/lib/use-study-state";
 import { useVideoProgress } from "@/lib/video-progress";
@@ -66,6 +67,12 @@ export function UnitVideoPlayer({
     document.addEventListener("fullscreenchange", onFullscreenChange);
     return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   }, []);
+
+  /* An expanded player takes the viewport, and the CSS rule that used to hide
+     the page's scrollbar (`body:has(.unit-video-frame[data-expanded])`) made
+     phones snap back to the top of the page. The shared lock holds the page
+     still and restores the scroll position when the player closes. */
+  useScrollLock(expanded);
 
   useEffect(() => {
     if (!expanded) return;

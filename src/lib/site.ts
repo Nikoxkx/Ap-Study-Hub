@@ -26,9 +26,9 @@ export const site = {
   /** Used in <title> templates — short enough to leave room for the page name. */
   shortName: "AP Study Hub",
   origin: readOrigin(),
-  tagline: "Learn nine AP subjects deeply and make the work count",
+  tagline: "Learn ten AP subjects deeply and make the work count",
   description:
-    "Sixty-six deep lessons, active recall, original practice, marked essays and unit videos for nine AP courses — free, private, and built to help you earn college credit where it is accepted.",
+    "Seventy-five deep lessons, active recall, original practice, marked essays, timed interim assessments and unit videos for ten AP courses — free, private, and built to help you earn college credit where it is accepted.",
   author: {
     name: "Yeisbel Pena",
     role: "Student, and the person who writes everything here",
@@ -85,7 +85,7 @@ export const socialImage = {
   width: 1200,
   height: 630,
   type: "image/png",
-  alt: "AP Study Hub — learn nine AP subjects deeply, remember what matters, and make the work count toward college credit where it is accepted.",
+  alt: "AP Study Hub — learn ten AP subjects deeply, remember what matters, and make the work count toward college credit where it is accepted.",
 } as const;
 
 export const socialImages = [socialImage];
