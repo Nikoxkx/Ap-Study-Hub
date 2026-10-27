@@ -17,6 +17,7 @@ import { renderToString } from "react-dom/server";
 import { ExamHub } from "../src/components/exam/ExamHub";
 import { ScoreReport } from "../src/components/exam/ScoreReport";
 import { GuidedWalkthrough } from "../src/components/exam/GuidedWalkthrough";
+import { TimedPaper } from "../src/components/exam/TimedPaper";
 import { getAssessment } from "../src/lib/exams";
 import { subjects } from "../src/lib/subjects";
 
@@ -32,6 +33,20 @@ for (const subject of subjects) {
   const attempts: [string, () => string][] = [
     ["hub", () => renderToString(<ExamHub assessment={assessment} courseSlug={subject.slug} courseLabel={label} />)],
     ["guided", () => renderToString(<GuidedWalkthrough assessment={assessment} courseSlug={subject.slug} courseLabel={label} />)],
+    [
+      // The sitting view is the one that has to open when the button is
+      // clicked, so it is rendered here rather than left to a browser check.
+      "room",
+      () =>
+        renderToString(
+          <TimedPaper
+            assessment={assessment}
+            courseSlug={subject.slug}
+            courseLabel={label}
+            startInRoom
+          />,
+        ),
+    ],
     [
       "report",
       () =>
@@ -56,6 +71,9 @@ for (const subject of subjects) {
       const html = run();
       renders += 1;
       if (html.length < 400) throw new Error(`rendered only ${html.length} characters`);
+      if (name === "room" && !html.includes("exam-room") && !html.includes("question")) {
+        throw new Error("the sitting view rendered no exam room markup");
+      }
       console.log(`  ✓ ${subject.slug.padEnd(11)} ${name.padEnd(6)} ${html.length.toLocaleString()} characters of markup`);
     } catch (error) {
       failures += 1;
@@ -67,4 +85,4 @@ if (failures) {
   console.error(`\n✗ ${failures} exam view${failures === 1 ? "" : "s"} failed to render.`);
   process.exit(1);
 }
-console.log(`\n✓ ${renders} exam views render across ten courses: hub, guided walkthrough, and score report.\n`);
+console.log(`\n✓ ${renders} exam views render across ten courses: hub, guided walkthrough, exam room, and score report.\n`);
