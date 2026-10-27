@@ -171,36 +171,30 @@
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.22);
 }
 
-/* Night mode is charcoal, not black.
-   Earlier revisions used #101010 surfaces stacked on one another, which read as
-   a black page with blacker boxes on it. Every surface here is a translucent
-   grey instead, so the classroom photograph behind the page stays faintly
-   visible and panels feel like smoked glass rather than cut-outs. The values
-   stay strictly neutral (equal R/G/B) — see the note at the top of the file —
-   and text keeps its 4.5:1 contrast because the dimming layer below the content
-   is what carries the darkness, not the panels themselves. */
+/* Night mode keeps its original deep-neutral surfaces. The values stay strictly
+   neutral (equal R/G/B) — see the note at the top of the file. */
 .dark {
   color-scheme: dark;
   accent-color: #d4d4d4;
-  --paper: rgba(30, 30, 30, 0.44);
-  --paper-raised: rgba(52, 52, 52, 0.40);
-  --paper-sunk: rgba(22, 22, 22, 0.30);
-  --ink: #f0f0f0;
-  --ink-soft: #cdcdcd;
-  --ink-faint: #a8a8a8;
-  --rule: rgba(255, 255, 255, 0.20);
-  --rule-strong: rgba(255, 255, 255, 0.38);
+  --paper: #101010;
+  --paper-raised: #171717;
+  --paper-sunk: #0b0b0b;
+  --ink: #ededed;
+  --ink-soft: #c4c4c4;
+  --ink-faint: #9a9a9a;
+  --rule: #383838;
+  --rule-strong: #535353;
   --mark: #ededed;
-  --mark-wash: rgba(255, 255, 255, 0.10);
+  --mark-wash: #1e1e1e;
   --good: #d9d9d9;
-  --good-wash: rgba(255, 255, 255, 0.10);
+  --good-wash: #1a1a1a;
   --warn: #d9d9d9;
-  --warn-wash: rgba(255, 255, 255, 0.14);
-  --subject-tint: rgba(255, 255, 255, 0.10);
-  --glass-bg: rgba(34, 34, 34, 0.40);
-  --glass-border: rgba(255, 255, 255, 0.26);
-  --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.38);
-  --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.38);
+  --warn-wash: #202020;
+  --subject-tint: var(--color-subject-wash-dark, #1d1d1d);
+  --glass-bg: rgba(20, 20, 20, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.48);
+  --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.48);
+  --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.48);
 }
 
 /* The page-wide dim sits under the content and over the wallpaper, in both
@@ -215,8 +209,11 @@ body::before {
   background: linear-gradient(180deg, rgba(246, 244, 239, 0.30), rgba(246, 244, 239, 0.52));
 }
 
+/* Night mode paints no page-wide dim: the surfaces below are opaque, and laying
+   a near-black wash over the wallpaper only made every page read as one flat
+   dark sheet. Day mode keeps its veil. */
 .dark body::before {
-  background: linear-gradient(180deg, rgba(16, 16, 16, 0.62), rgba(16, 16, 16, 0.76));
+  background: none;
 }
 
 @media print {
