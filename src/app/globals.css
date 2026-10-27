@@ -5218,12 +5218,16 @@ html.is-entering footer[data-site-footer] {
 /* The room eases in instead of cutting: a slow fade with a blur that resolves,
    so starting a paper feels like sitting down rather than being dropped. */
 @keyframes exam-room-enter {
-  0% { opacity: 0; filter: blur(14px); transform: scale(0.994); }
-  55% { opacity: 0.9; filter: blur(4px); }
+  0% { opacity: 0; filter: blur(10px); transform: translateY(10px); }
+  60% { opacity: 0.94; filter: blur(3px); }
   100% { opacity: 1; filter: blur(0); transform: none; }
 }
 .exam-room {
-  animation: exam-room-enter 720ms var(--ease-settle) both;
+  /* Long enough to feel like sitting down, short enough that nobody thinks the
+     button failed. If animations are unavailable the room is simply visible,
+     because the resting state is the un-animated one. */
+  animation: exam-room-enter 620ms var(--ease-settle) both;
+  will-change: opacity, transform;
 }
 .exam-room-question-inner > *,
 .exam-room-source-scroll {

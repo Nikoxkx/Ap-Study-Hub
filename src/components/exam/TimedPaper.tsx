@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useStoredState } from "@/lib/use-stored-state";
 import { useStudyState } from "@/lib/use-study-state";
 import { scheduleReview, type StudyState } from "@/lib/study-model";
@@ -124,6 +125,27 @@ export function TimedPaper({
   const [notesOpen, setNotesOpen] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [nowTick, setNowTick] = useState(() => Date.now());
+
+  /* The room is position:fixed, but it used to be rendered inside a glass card
+     whose backdrop-filter makes it a containing block for fixed descendants.
+     The room was therefore clipped to the card and appeared not to open at all.
+     Painting it into <body> puts it back over the whole viewport. */
+  const [portalHost, setPortalHost] = useState<HTMLElement | null>(null);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setPortalHost(document.body));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  // Lock the page behind the room, so the briefs cannot scroll under the paper.
+  useEffect(() => {
+    if (phase !== "sitting" && phase !== "break") return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [phase]);
+
 
   const section = assessment.sections[sectionIndex];
   const breakSpec = blueprint.breaks.find((item) => item.afterSectionId === section?.id);
@@ -563,7 +585,7 @@ export function TimedPaper({
 
   const saveState = savedLabel(savedAt, nowTick);
 
-  return (
+  const room = (
     <>
       <div
         className="exam-room"
@@ -1124,6 +1146,8 @@ export function TimedPaper({
       </div>
     </>
   );
+
+  return portalHost ? createPortal(room, portalHost) : room;
 }
 
 /** Split a paragraph into plain and highlighted runs from stored ranges. */

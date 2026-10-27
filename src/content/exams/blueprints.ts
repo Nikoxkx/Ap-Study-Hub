@@ -137,7 +137,7 @@ export const examBlueprints: ExamBlueprint[] = [
     frqTotal: 18,
     curve: { five: 78, four: 67, three: 53, two: 40 },
     hasMcq: true,
-    questionSource: "mixed",
+    questionSource: "authored",
   },
   {
     slug: "ap-lit",

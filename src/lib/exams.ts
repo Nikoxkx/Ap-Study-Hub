@@ -1,5 +1,6 @@
 import { examBlueprints, getBlueprint } from "@/content/exams/blueprints";
 import { apLitFrqs, apLitQuestions, apLitStimuli } from "@/content/exams/apLit";
+import { apLangPassageQuestions, apLangPassageSets } from "@/content/exams/apLang";
 import {
   apushSaqStimuli,
   authoredFrqs,
@@ -60,6 +61,7 @@ import { getCourse } from "./catalog";
  */
 
 const authoredQuestionBanks: Record<string, ExamQuestion[]> = {
+  "ap-lang": apLangPassageQuestions,
   "ap-lit": apLitQuestions,
   "ap-gov": govSupplements,
   "ap-bio": bioSupplements,
@@ -68,6 +70,7 @@ const authoredQuestionBanks: Record<string, ExamQuestion[]> = {
 };
 
 const authoredStimuli: Record<string, Stimulus[]> = {
+  "ap-lang": apLangPassageSets,
   "ap-lit": apLitStimuli,
   apush: apushSaqStimuli,
   "ap-gov": govStimuli,

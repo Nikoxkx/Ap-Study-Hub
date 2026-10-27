@@ -134,8 +134,8 @@ export default async function ExamPage({ params }: { params: Params }) {
           published format for {subject.official}. The passages are public domain or written for this site, and
           every question and prompt here is original: none is a released College Board question. Scores are
           practice estimates — the AP reader in May is the only authority on your exam score. Written responses
-          are marked row by row against the published rubric, either by a language model you configure or by
-          this site&apos;s measured analysis, and the method used is printed on every score report.
+          are not machine-graded: the score report shows the published rubric rows and you award each one
+          yourself, with a full-credit exemplar for every prompt to compare against.
         </p>
       </GlassCard>
     </div>
