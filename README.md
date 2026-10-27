@@ -100,7 +100,7 @@ Each course has one paper at `/course/<slug>/exam` with two modes and a score re
 - **Public-domain passages.** Every poem, prose excerpt, and document is public domain or written for this site. Nothing is presented as a released College Board question.
 - **Rubric grading.** Written tasks are marked against the published rows (thesis, evidence and commentary, sophistication; DBQ's seven points; SAQ's three; the six-point Gov argument; the four-row Research paper). Each row shows what it measured in your own sentences, what was missing, and one revision that would earn the next point.
 - **Grammar and spelling.** A dependency-free analyser checks agreement, fragments, comma splices, confused words, capitalisation, spacing, register, and spelling against a 30,275-word lexicon built from the site's corpus plus frequency-ranked English. Findings quote the sentence and suggest a fix.
-- **Nothing is hardcoded.** The default grader is `src/lib/grading/grade.ts`, which computes points from measured features. Model grading is opt-in: paste your own provider key in the grading panel and `/api/grade` forwards the response, prompt, and rubric to that provider for a stricter second read. The key never touches the server's storage.
+- **Nothing is hardcoded.** The default grader is `src/lib/grading/grade.ts`, which computes points from measured features, and `scripts/validate-grading.ts` holds it to a calibration: a summary must score below a developed essay, a developed essay below a full argument, and a page of numbers with no setup must not earn calculus method points. Model grading is opt-in: paste your own provider key in the grading panel and `/api/grade` forwards the response, prompt, and rubric to that provider for a stricter second read. The key never touches the server's storage.
 - **A study link for every miss.** The score report lists every response — right, wrong, blank, flagged — with the skill it tested, the explanation, and the lesson to open next, filtered by status so a review pass can start with the wrong ones.
 - **Guided walkthrough.** The same paper, taught question by question: how to read the stem, why each distractor fails, the method for the essay, and a writing coach with a timed plan, evidence checklist, and sentence frames.
 
@@ -141,6 +141,7 @@ Run the full validation and production build pipeline before opening a PR:
 ```bash
 corepack pnpm validate:content        # 75 lessons, 750 paragraphs, citations, glossary & practice schema
 corepack pnpm validate:exams          # section counts, minutes, breaks, rubric totals & score arithmetic for all 10 papers
+corepack pnpm validate:grading        # weak < middle < strong responses, number dumps ≠ worked mathematics
 corepack pnpm validate:study          # 1,015 study items, KaTeX math, scheduling, backups, plans & calendar
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 93 verified 11-char YouTube IDs, course/unit mapping & thumbnails

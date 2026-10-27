@@ -387,6 +387,15 @@ export function gradeLocally(
     }
     if (features.wordCount < 25) points = 0;
 
+    // A quantitative rubric cannot be satisfied by prose. If nothing was set
+    // up in mathematical notation, no row beyond a stated claim can stand.
+    const quantitativeRubric = rubric.rows.some((item) =>
+      item.signals.some((signal) => signal.type === "numeric-work" || signal.type === "final-answer"),
+    );
+    if (quantitativeRubric && features.mathExpressions === 0 && row.id !== "thesis") {
+      points = Math.min(points, 1);
+    }
+
     return {
       id: row.id,
       label: row.label,
@@ -423,6 +432,7 @@ export function gradeLocally(
   const argumentative = signalTypes.has("counterargument") || signalTypes.has("qualification");
   const quantitative = signalTypes.has("numeric-work") || signalTypes.has("units") || signalTypes.has("final-answer");
 
+  const fullMarks = possible > 0 && earned === possible;
   const priorities: string[] = [];
   if (!features.hasThesis) priorities.push("Write a one-sentence claim in the opening paragraph.");
   if (quantitative && !features.mathExpressions && features.wordCount >= 25) {
@@ -451,6 +461,9 @@ export function gradeLocally(
   if (features.mechanics.filter((issue) => issue.severity === "error").length >= 3) {
     priorities.push("Fix the mechanics errors listed below; they cost clarity even when the argument is sound.");
   }
+  // A response that lost nothing should not be handed a list of repairs.
+  if (fullMarks) priorities.length = 0;
+
   if (features.wordCount < 40) {
     priorities.length = 0;
     priorities.push(
@@ -470,7 +483,19 @@ export function gradeLocally(
     used.add(line);
     priorities.push(line);
   }
-  if (!weakRows.length && priorities.length < 3) {
+  if (fullMarks) {
+    priorities.push(
+      quantitative
+        ? "Every measured point was awarded. Check the precision of each number and that every conclusion is stated in words, then try the next paper's harder free response."
+        : "Every measured point was awarded under the measured rules. The remaining work is stylistic: cut one sentence of summary from each paragraph, and make sure every quotation is doing a job your own sentence could not do.",
+    );
+    priorities.push(
+      "Read the strongest model path for this task and rewrite one paragraph to match its level of explanation — full marks here are not a guaranteed 6 in May.",
+    );
+    priorities.push(
+      "Do the same task cold, in the printed time, without the coach open. Speed is the difference between this score and an exam score.",
+    );
+  } else if (priorities.length < 3) {
     const closing = quantitative
       ? "Every measured point was awarded. Check the answer's precision, units, and whether each conclusion is stated in words, then try a harder free response."
       : "Every measured point was awarded. The remaining work is stylistic: tighten repetition, and make sure each paragraph advances one claim rather than restating it.";
@@ -485,9 +510,11 @@ export function gradeLocally(
       : "Name the writer's choice before you quote it, so the evidence has a job in the sentence.",
     "Read the strongest model answer for this task, then rewrite one paragraph to match its level of explanation.",
   ];
-  for (const line of filler) {
-    if (priorities.length >= 3) break;
-    if (!priorities.includes(line)) priorities.push(line);
+  if (!fullMarks) {
+    for (const line of filler) {
+      if (priorities.length >= 3) break;
+      if (!priorities.includes(line)) priorities.push(line);
+    }
   }
 
   const errorCount = features.mechanics.filter((issue) => issue.severity === "error").length;

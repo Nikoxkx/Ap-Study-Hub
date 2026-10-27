@@ -76,12 +76,15 @@ const sixPointAnalytic = (kind: "literary" | "rhetorical" | "argument" | "synthe
         ],
         [
           { type: "quotation", min: kind === "synthesis" ? 2 : 3, note: "Three or more short quoted details from the text(s)" },
-          { type: "citation", min: kind === "synthesis" ? 2 : 1, note: "Line numbers, source letters, or precise locators" },
-          { type: "commentary", min: 0.45, note: "Commentary sentences outnumber evidence sentences" },
-          { type: "line-of-reasoning", min: 2, note: "Two or more explicit 'because / therefore / which shows' links" },
           ...(kind === "synthesis"
-            ? ([{ type: "synthesis", min: 3, note: "At least three sources used, not just named" }] as RubricRow["signals"])
+            ? ([
+                { type: "citation", min: 2, note: "Source letters or locators, so the reader can check each use" },
+                { type: "synthesis", min: 3, note: "At least three sources used, not just named" },
+              ] as RubricRow["signals"])
             : []),
+          { type: "commentary", min: 0.45, note: "Commentary sentences outnumber evidence sentences" },
+          { type: "organization", min: 3, note: "Commentary sustained across at least three paragraphs" },
+          { type: "line-of-reasoning", min: 2, note: "Two or more explicit 'because / therefore / which shows' links" },
         ],
       ),
       row(

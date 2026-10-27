@@ -137,10 +137,18 @@ function buildLegacyFrqs(): void {
         });
       }
       for (const source of prompt.sources ?? []) {
+        // The documents in the legacy bank open with their own source line
+        // ("Jacob Riis, How the Other Half Lives, 1890:"), which a DBQ booklet
+        // prints above the excerpt. Lift it into the caption so the reading
+        // pane names the document instead of just numbering it.
+        const firstLine = source.content.split("\n")[0]?.trim() ?? "";
+        const generic = /^(document|source)\s+[A-F0-9]+$/i.test(source.title.trim());
         stimuli.push({
           id: `${id}-${source.id}`,
-          title: source.title,
+          title: generic && firstLine ? `${source.title} · ${firstLine.replace(/:$/, "").slice(0, 90)}` : source.title,
           kind: "source",
+          attribution:
+            "Historical document reprinted for practice with its original context note. Check the wording against the published source before quoting it in an essay.",
           text: source.content,
         });
       }

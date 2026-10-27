@@ -77,14 +77,13 @@ export interface WritingFeatures {
   lexicalDiversity: number;
 }
 
-const COMMENTARY_VERBS = [
-  "reveals", "suggests", "illustrates", "conveys", "emphasises", "emphasizes", "implies",
-  "demonstrates", "shows", "functions", "creates", "underscores", "exposes", "complicates",
-  "contrasts", "reflects", "argues", "establishes", "indicates", "signals", "positions",
-  "transforms", "reinforces", "undercuts", "qualifies", "frames", "constructs", "mirrors",
-  "amplifies", "complicates", "subverts", "elevates", "diminishes", "enacts", "performs",
-  "proves", "explains", "accounts", "results", "causes", "produces", "increases", "reduces",
-];
+/**
+ * Interpretive verbs, matched by stem so "exposing", "revealed", and "implies"
+ * all count. A reader looks for the sentence that says what a choice *does*;
+ * this is that sentence's vocabulary.
+ */
+const COMMENTARY_PATTERN =
+  /\b(?:reveal|suggest|illustrat|convey|emphasi[sz]|impl(?:y|ies|ied|ying)|demonstrat|show|shown|function|creat|underscor|expos|complicat|contrast|reflect|argu|establish|indicat|signal|position|transform|reinforc|undercut|qualif|fram|construct|mirror|amplif|subvert|elevat|diminish|enact|perform|prov(?:e|es|ed|ing)|explain|account|result|caus|produc|increas|reduc|build|convert|translat|dramati[sz]|assert|insist|conced|admit|shap|drive|sustain|contain|resolv|challeng|undermin|insinuat|evok|locat|echo|turns? (?:the|a|his|her|their)|speaks? to)\w{0,3}\b/i;
 
 const TRANSITIONS = [
   "however", "therefore", "moreover", "furthermore", "consequently", "similarly", "conversely",
@@ -197,7 +196,14 @@ function countMatches(text: string, pattern: RegExp): number {
 /** Quoted fragments of two or more words are evidence, not scare quotes. */
 function extractQuotations(text: string): string[] {
   const results: string[] = [];
-  const patterns = [/"([^"]{3,180})"/g, /“([^”]{3,180})”/g, /'([^']{12,180})'/g];
+  // Single quotes must open a phrase, not close a possessive. "Rossetti's
+  // speaker's" is two apostrophes, not a quotation, so the opening mark has to
+  // sit at a word boundary and the closing mark has to end one.
+  const patterns = [
+    /"([^"]{3,180})"/g,
+    /“([^”]{3,180})”/g,
+    /(?:^|[\s([“‘])'([^']{10,180})'(?=[\s.,;:!?)\]”’]|$)/g,
+  ];
   for (const pattern of patterns) {
     for (const match of text.matchAll(pattern)) {
       const phrase = match[1].trim();
@@ -231,15 +237,13 @@ export function analyzeWriting(
   const citationExamples = uniqueMatch(text, citationPatterns);
   const citationCount = countMatches(text, citationPatterns);
 
-  const commentarySentences = sentences.filter((sentence) =>
-    COMMENTARY_VERBS.some((verb) => new RegExp(`\\b${verb}s?\\b`, "i").test(sentence.text)),
-  );
+  const commentarySentences = sentences.filter((sentence) => COMMENTARY_PATTERN.test(sentence.text));
   const commentaryExamples = commentarySentences
     .slice(0, 4)
     .map((sentence) => sentence.text.slice(0, 160));
 
   const reasoningPattern =
-    /\b(because|therefore|thus|hence|which (?:shows|means|suggests|reveals|allows|makes)|so that|as a result|in order to|consequently|this (?:shows|means|suggests|reveals))\b/gi;
+    /\b(because|therefore|thus|hence|which (?:shows|means|suggests|reveals|allows|makes|is|does|turns|converts|positions)|so that|as a result|in order to|consequently|this (?:shows|means|suggests|reveals|is|makes)|that (?:is|means|shows|reveals)|the effect (?:is|of)|leads? to|results? in|allows? the reader)\b/gi;
   const reasoningExamples = uniqueMatch(text, reasoningPattern);
   const reasoningLinks = countMatches(text, reasoningPattern);
 
@@ -256,7 +260,7 @@ export function analyzeWriting(
   );
   const qualificationMoves = uniqueMatch(
     text,
-    /\b(although|while|unless|except|rather than|not merely|in part|tends? to|in most cases|qualified|to some extent|not simply|neither)\b/gi,
+    /\b(although|while|unless|except|rather than|not merely|in part|tends? to|in most cases|qualified|to some extent|not simply|neither|at once|in some ways|partly|a little|both)\b/gi,
   );
   const contextMoves = uniqueMatch(
     text,
@@ -493,8 +497,29 @@ function editDistance(a: string, b: string, limit = 2): number {
  * "poststructuralist" would be flagged, and a spell-check that cries wolf is
  * worse than none.
  */
+const BRITISH_TO_AMERICAN: [RegExp, string][] = [
+  [/isation$/, "ization"],
+  [/isations$/, "izations"],
+  [/ising$/, "izing"],
+  [/ised$/, "ized"],
+  [/ises$/, "izes"],
+  [/ise$/, "ize"],
+  [/yse$/, "yze"],
+  [/ysed$/, "yzed"],
+  [/ysing$/, "yzing"],
+  [/our$/, "or"],
+  [/ours$/, "ors"],
+  [/re$/, "er"],
+];
+
 export function isKnownForm(word: string, vocabulary: Set<string>): boolean {
   if (vocabulary.has(word)) return true;
+  // British spellings are not errors in an AP response, so an -ise/-our/-re
+  // form of a known American word is accepted rather than flagged.
+  for (const [pattern, replacement] of BRITISH_TO_AMERICAN) {
+    if (!pattern.test(word)) continue;
+    if (vocabulary.has(word.replace(pattern, replacement))) return true;
+  }
   const suffixes = [
     "ations", "ation", "ments", "ment", "ness", "ities", "ity", "ives", "ive", "ical", "ically",
     "ing", "ings", "ed", "es", "s", "ly", "est", "er", "ers", "ion", "ions", "al", "ial", "ic",
@@ -653,6 +678,9 @@ function checkMechanics(
   for (const match of text.matchAll(/,\s+(?:I|he|she|it|they|we)\s+(?:is|are|was|were|has|have|had|will|would|can|could|does|do|did|\w+ed|\w+s)\b/g)) {
     const clauseStart = (match.index ?? 0) - 40;
     const clause = text.slice(Math.max(0, clauseStart), match.index ?? 0);
+    // A comma that follows a closing quotation mark is punctuating the
+    // quotation, not splicing two clauses.
+    if (/["”’)]\s*$/.test(clause)) continue;
     if (!/\b(and|but|so|or|yet|which|because|although)\b\s*$/i.test(clause)) {
       issues.push({
         rule: "comma-splice",
@@ -722,7 +750,7 @@ function checkMechanics(
       if (suggestion) {
         issues.push({
           rule: "spelling",
-          message: `“${raw}” is not in the grader's 30,000-word lexicon. Check the spelling.`,
+          message: `“${raw}” is not in the grader's spelling lexicon. Check the spelling.`,
           snippet: snippetOf(text, match.index ?? 0),
           suggestion: `Did you mean “${suggestion}”?`,
           severity: "error",
