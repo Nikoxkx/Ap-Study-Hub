@@ -228,8 +228,10 @@ export default function AiDisclosurePage() {
             No AI image generators were used for the interface. Nine of the ten subject symbols — flag, quotation
             marks, speech bubbles, scales, DNA, integral, magnifier, a rising market graph, and a leaf — are hand-drawn SVG on a 32-unit
             grid (<code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>SubjectMark.tsx</code>).
-            The AP English Literature rose is a separately supplied raster mark, colour-corrected and
-            re-exported as the same 256px white RGBA icon set.
+            The AP English Literature rose is drawn as geometry by
+            <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>scripts/build-ap-lit-mark.mjs</code>{" "}
+            (a five-petal bloom, a spiral and two leaves traced as paths), rendered to the same 256px
+            RGBA icon set so all ten marks share one stroke weight.
             README banners are deterministic SVG from <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>build-banners.mjs</code>, not diffusion models.
           </p>
         </section>

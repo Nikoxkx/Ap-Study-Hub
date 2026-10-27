@@ -148,6 +148,7 @@ corepack pnpm validate:study          # 1,015 study items, KaTeX math, schedulin
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 93 verified 11-char YouTube IDs, course/unit mapping & thumbnails
 corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
+node scripts/build-ap-lit-mark.mjs     # redraw the AP Lit rose mark (256px RGBA, #121212 + #FFFFFF)
 corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png
 corepack pnpm check                   # runs all 4 validators + tsc --noEmit + eslint + next build
 corepack pnpm audit --audit-level low # checks direct and transitive dependencies for known advisories

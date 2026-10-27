@@ -85,6 +85,9 @@ for (const slug of SUBJECT_SLUGS) {
   const iconPath = `public/icons/courses/${slug}.png`;
   const icon = readFileSync(iconPath);
   if (icon.readUInt8(25) !== 6) fail(`${iconPath} is not a transparent RGBA PNG`);
+  // A mark that is a single flat colour is a blank canvas: it either vanishes
+  // into the glass header (all white) or paints a solid tile over it (all dark).
+  if (icon.length < 2000) fail(`${iconPath} is too small to contain a drawing (${icon.length} bytes)`);
 }
 
 // 3. Real YouTube thumbnails load automatically; the player frame stays opt-in.
