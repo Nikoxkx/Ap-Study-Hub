@@ -1,4 +1,5 @@
 import { getCatalog, getCourse } from "./catalog";
+import { getAssessment } from "./exams";
 import { cardStudyId, questionStudyId, type StudyItem } from "./study-model";
 import type { SubjectSlug } from "./subjects";
 
@@ -9,6 +10,14 @@ export interface StudyCourse {
   examDate: string;
   examLabel: string;
   readingMinutes: number;
+  /** The interim assessment this course is sat on, if one is built. */
+  exam: {
+    minutes: number;
+    mcqCount: number;
+    frqCount: number;
+    points: number;
+    sections: { name: string; type: "mcq" | "frq"; minutes: number; questions: number }[];
+  } | null;
   units: {
     unitNumber: number;
     title: string;
@@ -28,6 +37,22 @@ export function toStudyCourse(slug: SubjectSlug): StudyCourse | null {
     examDate: course.subject.exam.date,
     examLabel: course.subject.exam.window === "deadline" ? "Portfolio deadline" : "Exam date",
     readingMinutes: course.counts.readingMinutes,
+    exam: (() => {
+      const assessment = getAssessment(course.subject.slug);
+      if (!assessment) return null;
+      return {
+        minutes: assessment.totalMinutes,
+        mcqCount: assessment.mcqCount,
+        frqCount: assessment.frqCount,
+        points: assessment.totalPoints,
+        sections: assessment.sections.map((section) => ({
+          name: section.name,
+          type: section.type,
+          minutes: section.minutes,
+          questions: section.type === "mcq" ? section.questions.length : section.frqs.length,
+        })),
+      };
+    })(),
     units: course.units.map((unit) => ({
       unitNumber: unit.unitNumber,
       title: unit.title,

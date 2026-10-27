@@ -97,8 +97,19 @@ export default async function ExamPage({ params }: { params: Params }) {
             </Link>
           </li>
           <li>
-            <Link href={`${base}/essays`} className="link-underlined">
-              Marked exemplars
+            {course.counts.essays > 0 ? (
+              <Link href={`${base}/essays`} className="link-underlined">
+                Marked exemplars
+              </Link>
+            ) : (
+              <Link href={`${base}/studio?tab=writing`} className="link-underlined">
+                Write to the rubric
+              </Link>
+            )}
+          </li>
+          <li>
+            <Link href={`${base}/exam/answers`} className="link-underlined" prefetch={false}>
+              Printable answer sheet
             </Link>
           </li>
           <li>

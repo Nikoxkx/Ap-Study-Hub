@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
 import { useStudyState } from "@/lib/use-study-state";
 import { scheduleReview, type StudyState } from "@/lib/study-model";
@@ -67,19 +67,6 @@ function clock(totalSeconds: number): string {
   return hours > 0 ? `${hours}:${mm}:${ss}` : `${mm}:${ss}`;
 }
 
-function StimulusBlock({ stimulus }: { stimulus: Stimulus }) {
-  return (
-    <figure className="exam-stimulus">
-      <figcaption>
-        <span className="label">{stimulus.kind === "poetry" ? "Poem" : stimulus.kind === "drama" ? "Drama" : stimulus.kind === "prose" ? "Prose fiction" : stimulus.kind === "data" ? "Figure" : "Source"}</span>
-        <strong>{stimulus.title}</strong>
-        {stimulus.attribution ? <span className="exam-attribution">{stimulus.attribution}</span> : null}
-      </figcaption>
-      {stimulus.note ? <p className="exam-note">{stimulus.note}</p> : null}
-      <pre className="exam-passage">{stimulus.text}</pre>
-    </figure>
-  );
-}
 
 export function TimedPaper({
   assessment,
@@ -105,6 +92,11 @@ export function TimedPaper({
   const [sectionStart, setSectionStart] = useState(0);
   const [elapsedBySection, setElapsedBySection] = useState<Record<string, number>>({});
   const [coachOpen, setCoachOpen] = useState<Record<string, boolean>>({});
+  const [activeQuestion, setActiveQuestion] = useState(0);
+  const [activeTask, setActiveTask] = useState(0);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [mobileSource, setMobileSource] = useState(false);
+  const sheetCloseRef = useRef<HTMLButtonElement>(null);
   const [, setStudy] = useStudyState();
 
   const [mcqAnswers, setMcqAnswers] = useStoredState<Record<string, number>>(`${storage}.answers`, NO_MAP, reviveNumbers);
@@ -112,7 +104,6 @@ export function TimedPaper({
   const [drafts, setDrafts] = useStoredState<Record<string, string>>(`${storage}.drafts`, NO_TEXT, reviveText);
   const [frqScores, setFrqScores] = useStoredState<Record<string, number>>(`${storage}.frq`, NO_MAP, reviveNumbers);
 
-  const headingRef = useRef<HTMLHeadingElement>(null);
   const section = assessment.sections[sectionIndex];
   const breakSpec = blueprint.breaks.find((item) => item.afterSectionId === section?.id);
 
@@ -149,14 +140,71 @@ export function TimedPaper({
     return () => window.removeEventListener("beforeunload", handler);
   }, [phase]);
 
+  /** Full-screen attempt; browsers may refuse, and the room still covers the viewport. */
+  const toggleFullscreen = useCallback(() => {
+    if (typeof document === "undefined") return;
+    try {
+      if (document.fullscreenElement) {
+        void document.exitFullscreen?.();
+      } else {
+        void document.documentElement.requestFullscreen?.();
+      }
+    } catch {
+      /* The fixed-position exam room already fills the screen. */
+    }
+  }, []);
+
+  // The room owns the viewport while a paper is being sat: no page scrolling
+  // behind it, and no accidental navigation away.
+  useEffect(() => {
+    if (phase !== "sitting" && phase !== "break") return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [phase]);
+
+  // Opening the answer sheet moves focus into it, so a keyboard user is not
+  // left tabbing behind the dialog.
+  useEffect(() => {
+    if (sheetOpen) sheetCloseRef.current?.focus();
+  }, [sheetOpen]);
+
+  // Arrow keys move between questions, but never while the student is writing.
+  useEffect(() => {
+    if (phase !== "sitting") return;
+    const handler = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+      if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+        const delta = event.key === "ArrowRight" ? 1 : -1;
+        event.preventDefault();
+        if (section.type === "mcq") {
+          setActiveQuestion((index) =>
+            Math.max(0, Math.min(section.questions.length - 1, index + delta)),
+          );
+        } else {
+          setActiveTask((index) => Math.max(0, Math.min(section.frqs.length - 1, index + delta)));
+        }
+      }
+      if (event.key === "Escape") setSheetOpen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [phase, section.type, section.questions.length, section.frqs.length]);
+
   const startSection = useCallback(
     (index: number) => {
       setSectionIndex(index);
       setDeadline(Date.now() + assessment.sections[index].minutes * 60_000);
       setSectionStart(Date.now());
       setExpired(false);
+      setActiveQuestion(0);
+      setActiveTask(0);
+      setSheetOpen(false);
+      setMobileSource(false);
       setPhase("sitting");
-      requestAnimationFrame(() => headingRef.current?.focus());
     },
     [assessment.sections],
   );
@@ -207,22 +255,6 @@ export function TimedPaper({
   const totalMinutes = assessment.sections.reduce((sum, item) => sum + item.minutes, 0);
   const breakMinutes = blueprint.breaks.reduce((sum, item) => sum + item.minutes, 0);
 
-  const grouped = useMemo(() => {
-    if (!section || section.type !== "mcq") return [];
-    const rows: { stimulus?: Stimulus; questions: { question: ExamQuestion; index: number }[] }[] = [];
-    section.questions.forEach((question, index) => {
-      const stimulus = question.stimulusId
-        ? section.stimuli.find((candidate) => candidate.id === question.stimulusId)
-        : undefined;
-      const last = rows[rows.length - 1];
-      if (last && last.stimulus?.id === stimulus?.id) {
-        last.questions.push({ question, index });
-      } else {
-        rows.push({ stimulus, questions: [{ question, index }] });
-      }
-    });
-    return rows;
-  }, [section]);
 
   /* ── Briefing ─────────────────────────────────────────────────────── */
   if (phase === "briefing") {
@@ -356,195 +388,430 @@ export function TimedPaper({
       />
     );
   }
+  /* ── Sitting: full-screen exam room ───────────────────────────────── */
 
-  /* ── Sitting ──────────────────────────────────────────────────────── */
   const low = remaining <= 300;
   const answered = section.questions.filter((question) => mcqAnswers[question.key] !== undefined).length;
   const flagged = section.questions.filter((question) => flags[question.key]).length;
-  const unfinishedWrites = section.frqs.filter((frq) => (drafts[frq.id] ?? "").trim().split(/\s+/).filter(Boolean).length < 20).length;
+  const unfinishedWrites = section.frqs.filter(
+    (frq) => (drafts[frq.id] ?? "").trim().split(/\s+/).filter(Boolean).length < 20,
+  ).length;
+
+  const isMcq = section.type === "mcq";
+  const question = isMcq ? section.questions[Math.min(activeQuestion, section.questions.length - 1)] : null;
+  const task = isMcq ? null : section.frqs[Math.min(activeTask, section.frqs.length - 1)];
+
+  const sourceStimuli: Stimulus[] = isMcq
+    ? section.stimuli.filter((stimulus) => stimulus.id === question?.stimulusId)
+    : (task?.stimulusIds ?? [])
+        .map((id) => section.stimuli.find((stimulus) => stimulus.id === id))
+        .filter((stimulus): stimulus is Stimulus => Boolean(stimulus));
+  const sourceTitle = isMcq
+    ? sourceStimuli[0]?.title ?? "No excerpt for this question"
+    : sourceStimuli[0]?.title ?? "This task gives no excerpt";
+
+  const goToQuestion = (index: number) => {
+    setActiveQuestion(index);
+    setMobileSource(false);
+    requestAnimationFrame(() => {
+      document.getElementById("exam-question-pane")?.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  };
+
+  const step = (delta: number) => {
+    if (isMcq) {
+      goToQuestion(Math.min(section.questions.length - 1, Math.max(0, activeQuestion + delta)));
+    } else {
+      setActiveTask(Math.min(section.frqs.length - 1, Math.max(0, activeTask + delta)));
+    }
+  };
 
   return (
-    <div className="exam-sitting">
-      <div className="exam-clock" data-low={low ? "true" : "false"} data-expired={expired ? "true" : "false"}>
-        <div>
+    <div className="exam-room" data-pane={mobileSource ? "source" : "question"}>
+      <header className="exam-room-bar">
+        <div className="exam-room-id">
           <p className="label">
-            Section {sectionIndex + 1} of {assessment.sections.length} · {courseLabel}
+            {courseLabel} · Section {sectionIndex + 1} of {assessment.sections.length}
           </p>
-          <p className="exam-clock-name">{section.name}</p>
-          {section.subtitle ? <p className="exam-clock-sub">{section.subtitle}</p> : null}
+          <strong>{section.name}</strong>
         </div>
-        {section.type === "mcq" ? (
-          <div className="pace-readout">
-            <p>{answered}/{section.questions.length} answered · {flagged} flagged</p>
-            <p>Pace {clock(Math.round((section.minutes * 60) / Math.max(1, section.questions.length)))}/question</p>
-          </div>
-        ) : (
-          <div className="pace-readout">
-            <p>{section.frqs.length} task{section.frqs.length === 1 ? "" : "s"} · {unfinishedWrites} under 20 words</p>
-            <p>Pace {clock(Math.round((section.minutes * 60) / Math.max(1, section.frqs.length)))}/task</p>
-          </div>
-        )}
-        <div className="exam-clock-time">
-          <p>{clock(remaining)}</p>
+
+        <div className="exam-room-clock" data-low={low ? "true" : "false"} data-expired={expired ? "true" : "false"}>
           <span className="label">{expired ? "time up" : "remaining"}</span>
+          <p>{clock(remaining)}</p>
         </div>
+
+        <div className="exam-room-actions">
+          <button
+            type="button"
+            className="exam-room-button exam-room-sheet-toggle"
+            aria-expanded={sheetOpen}
+            onClick={() => setSheetOpen(true)}
+          >
+            Answer sheet
+          </button>
+          <button type="button" className="exam-room-button exam-room-fullscreen" onClick={toggleFullscreen}>
+            Full screen
+          </button>
+          <button type="button" className="exam-room-button exam-room-finish" onClick={finishSection}>
+            {sectionIndex + 1 < assessment.sections.length ? "Finish section" : "Finish paper"}
+          </button>
+        </div>
+      </header>
+
+      <div className="exam-room-progress">
+        {isMcq ? (
+          <>
+            <span>
+              Question {Math.min(activeQuestion + 1, section.questions.length)} of {section.questions.length}
+            </span>
+            <span>{answered} answered</span>
+            <span>{flagged} flagged</span>
+            <span>Pace {clock(Math.round((section.minutes * 60) / Math.max(1, section.questions.length)))}/question</span>
+          </>
+        ) : (
+          <>
+            <span>
+              Task {Math.min(activeTask + 1, section.frqs.length)} of {section.frqs.length}
+            </span>
+            <span>{unfinishedWrites} under 20 words</span>
+            <span>Pace {clock(Math.round((section.minutes * 60) / Math.max(1, section.frqs.length)))}/task</span>
+          </>
+        )}
+        {section.calculator ? (
+          <span>Calculator {section.calculator.replace("-", " ")}</span>
+        ) : null}
+        {expired ? <span className="exam-room-timeup">Time is up — stop writing</span> : null}
       </div>
 
-      <h3 ref={headingRef} tabIndex={-1} className="exam-section-title">
-        {section.name}
-      </h3>
-      <p className="exam-directions">{section.directions}</p>
-
-      {section.calculator ? (
-        <p className="exam-calc exam-calc-inline">
-          Calculator: {section.calculator.replace("-", " ")}
-        </p>
-      ) : null}
-
-      {expired ? (
-        <p role="alert" className="exam-expired">
-          Time is up for this section. In the real exam you would stop writing now. You can still finish — just
-          be honest with yourself when you read the score.
-        </p>
-      ) : null}
-
-      {section.type === "mcq" ? (
-        <>
-          <nav className="question-navigation no-print" aria-label="Question navigation">
-            {section.questions.map((question, index) => (
-              <a
-                key={question.key}
-                href={`#q-${question.key}`}
-                data-answered={mcqAnswers[question.key] !== undefined}
-                data-flagged={Boolean(flags[question.key])}
-                aria-label={`Question ${index + 1}${
-                  mcqAnswers[question.key] !== undefined ? ", answered" : ", unanswered"
-                }${flags[question.key] ? ", flagged" : ""}`}
-              >
-                {index + 1}
-                {flags[question.key] ? <span aria-hidden="true">⚑</span> : null}
-              </a>
-            ))}
-          </nav>
-
-          <ol className="exam-questions">
-            {grouped.map((group, groupIndex) => (
-              <li key={group.stimulus?.id ?? `group-${groupIndex}`} className="exam-group">
-                {group.stimulus ? <StimulusBlock stimulus={group.stimulus} /> : null}
-                <ol className="exam-question-list">
-                  {group.questions.map(({ question, index }) => (
-                    <li key={question.key} id={`q-${question.key}`} className="exam-question">
-                      <fieldset>
-                        <legend>
-                          <span className="exam-question-number">{String(index + 1).padStart(2, "0")}</span>
-                          <span>{question.question}</span>
-                        </legend>
-                        <div className="exam-question-actions">
-                          <button
-                            type="button"
-                            className="flag-button"
-                            aria-pressed={Boolean(flags[question.key])}
-                            onClick={() =>
-                              setFlags((current) => ({ ...current, [question.key]: !current[question.key] }))
-                            }
-                          >
-                            <span aria-hidden="true">⚑</span>
-                            {flags[question.key] ? "Flagged" : "Flag"}
-                          </button>
-                        </div>
-                        <div className="exam-options">
-                          {question.options.map((option, optionIndex) => {
-                            const selected = mcqAnswers[question.key] === optionIndex;
-                            return (
-                              <label key={optionIndex} data-selected={selected ? "true" : "false"}>
-                                <input
-                                  type="radio"
-                                  name={question.key}
-                                  checked={selected}
-                                  onChange={() =>
-                                    setMcqAnswers((current) => ({ ...current, [question.key]: optionIndex }))
-                                  }
-                                  className="sr-only"
-                                />
-                                <span className="exam-option-letter">{LETTERS[optionIndex]}</span>
-                                <span>{option}</span>
-                              </label>
-                            );
-                          })}
-                        </div>
-                      </fieldset>
+      <div className="exam-room-body">
+        <section className="exam-room-source" aria-label="Excerpt">
+          <div className="exam-room-source-head">
+            <p className="label">{isMcq ? "Excerpt" : "Sources"}</p>
+            <strong>{sourceTitle}</strong>
+            {sourceStimuli[0]?.attribution ? (
+              <span className="exam-attribution">{sourceStimuli[0].attribution}</span>
+            ) : null}
+          </div>
+          <div className="exam-room-source-scroll">
+            {sourceStimuli.length ? (
+              sourceStimuli.map((stimulus) => (
+                <figure key={stimulus.id} className="exam-room-figure">
+                  {sourceStimuli.length > 1 ? (
+                    <figcaption>
+                      <span className="label">{stimulus.kind}</span>
+                      <strong>{stimulus.title}</strong>
+                      {stimulus.attribution ? (
+                        <span className="exam-attribution">{stimulus.attribution}</span>
+                      ) : null}
+                    </figcaption>
+                  ) : null}
+                  {stimulus.note ? <p className="exam-note">{stimulus.note}</p> : null}
+                  <pre className="exam-passage">{stimulus.text}</pre>
+                </figure>
+              ))
+            ) : (
+              <div className="exam-room-reference">
+                <h4>This question stands alone</h4>
+                <p>
+                  {isMcq
+                    ? "There is no passage for this item. Work from the stem and your own knowledge of the course."
+                    : "This task gives no passage. Use a work you have read closely, or the documents named in the prompt."}
+                </p>
+                <h4>Section directions</h4>
+                <p>{section.directions}</p>
+                <ul>
+                  {section.parts?.map((part) => (
+                    <li key={part.label}>
+                      {part.label} · {part.minutes} min
+                      {part.calculator ? ` · calculator ${part.calculator}` : ""}
                     </li>
                   ))}
-                </ol>
-              </li>
-            ))}
-          </ol>
-        </>
-      ) : (
-        <div className="exam-frqs">
-          {section.frqs.map((frq) => {
-            const text = drafts[frq.id] ?? "";
-            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-            const stimuli = (frq.stimulusIds ?? [])
-              .map((id) => section.stimuli.find((stimulus) => stimulus.id === id))
-              .filter((stimulus): stimulus is Stimulus => Boolean(stimulus));
-            return (
-              <article key={frq.id} className="exam-frq" id={`frq-${frq.id}`}>
-                <header>
-                  <p className="label">
-                    {frq.taskType} · {frq.points} points · {frq.minutes} min suggested
-                  </p>
-                  <h4>{frq.title}</h4>
-                </header>
-                {frq.directions ? <p className="exam-frq-directions">{frq.directions}</p> : null}
-                <div className="exam-frq-body">
-                  <div className="exam-frq-writing">
-                    {stimuli.map((stimulus) => (
-                      <StimulusBlock key={stimulus.id} stimulus={stimulus} />
-                    ))}
-                    <p className="exam-frq-prompt">{frq.prompt}</p>
-                    <label className="label" htmlFor={`response-${frq.id}`}>
-                      Your response
-                    </label>
-                    <textarea
-                      id={`response-${frq.id}`}
-                      className="field frq-scratch scratch-paper"
-                      rows={18}
-                      spellCheck
-                      value={text}
-                      onChange={(event) => setDrafts((current) => ({ ...current, [frq.id]: event.target.value }))}
-                      placeholder="Type your response. It saves locally as you write."
-                    />
-                    <p className="exam-word-count">{words} words</p>
+                </ul>
+                <p className="exam-room-reference-fine">
+                  Excerpts are public domain or written for this site. Nothing here is a released College Board
+                  question.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section className="exam-room-question" id="exam-question-pane" aria-label="Question">
+          <div className="exam-room-question-inner">
+            {isMcq && question ? (
+              <>
+                <div className="exam-room-micro">
+                  <button
+                    type="button"
+                    className="exam-room-mobile-toggle"
+                    aria-pressed={mobileSource}
+                    onClick={() => setMobileSource((value) => !value)}
+                  >
+                    {mobileSource ? "Back to the question" : "Show the excerpt"}
+                  </button>
+                  <span className="exam-room-counter">
+                    {Math.min(activeQuestion + 1, section.questions.length)} / {section.questions.length}
+                  </span>
+                </div>
+
+                <fieldset className="exam-room-fieldset">
+                  <legend className="exam-room-stem">
+                    <span className="exam-question-number">
+                      {String(activeQuestion + 1).padStart(2, "0")}
+                    </span>
+                    <span>{question.question}</span>
+                  </legend>
+                  <div className="exam-options exam-room-options">
+                    {question.options.map((option, optionIndex) => {
+                      const selected = mcqAnswers[question.key] === optionIndex;
+                      return (
+                        <label key={optionIndex} data-selected={selected ? "true" : "false"}>
+                          <input
+                            type="radio"
+                            name={question.key}
+                            checked={selected}
+                            onChange={() =>
+                              setMcqAnswers((current) => ({ ...current, [question.key]: optionIndex }))
+                            }
+                            className="sr-only"
+                          />
+                          <span className="exam-option-letter">{LETTERS[optionIndex]}</span>
+                          <span>{option}</span>
+                        </label>
+                      );
+                    })}
                   </div>
-                  <div className="exam-frq-coach">
+                </fieldset>
+
+                <div className="exam-room-controls">
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    onClick={() => step(-1)}
+                    disabled={activeQuestion === 0}
+                  >
+                    ← Previous
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-quiet btn-sm"
+                    aria-pressed={Boolean(flags[question.key])}
+                    onClick={() => setFlags((current) => ({ ...current, [question.key]: !current[question.key] }))}
+                  >
+                    {flags[question.key] ? "⚑ Flagged" : "⚑ Flag for review"}
+                  </button>
+                  {activeQuestion + 1 < section.questions.length ? (
+                    <button type="button" className="btn btn-solid btn-sm" onClick={() => step(1)}>
+                      Next →
+                    </button>
+                  ) : (
+                    <button type="button" className="btn btn-solid btn-sm" onClick={finishSection}>
+                      Finish section →
+                    </button>
+                  )}
+                </div>
+              </>
+            ) : task ? (
+              <>
+                <div className="exam-room-micro">
+                  <button
+                    type="button"
+                    className="exam-room-mobile-toggle"
+                    aria-pressed={mobileSource}
+                    onClick={() => setMobileSource((value) => !value)}
+                  >
+                    {mobileSource ? "Back to the prompt" : "Show the sources"}
+                  </button>
+                  <span className="exam-room-counter">
+                    {task.taskType} · {task.points} points · {task.minutes} min
+                  </span>
+                </div>
+
+                {section.frqs.length > 1 ? (
+                  <nav className="exam-room-task-tabs" aria-label="Written tasks">
+                    {section.frqs.map((frq, index) => (
+                      <button
+                        key={frq.id}
+                        type="button"
+                        data-active={index === activeTask ? "true" : "false"}
+                        aria-current={index === activeTask ? "step" : undefined}
+                        onClick={() => setActiveTask(index)}
+                      >
+                        Q{index + 1}
+                        <span>{frq.taskType}</span>
+                      </button>
+                    ))}
+                  </nav>
+                ) : null}
+
+                <article className="exam-room-frq">
+                  <header>
+                    <p className="label">{task.taskType}</p>
+                    <h3>{task.title}</h3>
+                  </header>
+                  {task.directions ? <p className="exam-frq-directions">{task.directions}</p> : null}
+                  <p className="exam-frq-prompt">{task.prompt}</p>
+                  <label className="label" htmlFor={`response-${task.id}`}>
+                    Your response
+                  </label>
+                  <textarea
+                    id={`response-${task.id}`}
+                    className="field frq-scratch scratch-paper exam-room-textarea"
+                    rows={16}
+                    spellCheck
+                    value={drafts[task.id] ?? ""}
+                    onChange={(event) => setDrafts((current) => ({ ...current, [task.id]: event.target.value }))}
+                    placeholder="Type your response. It saves in this browser as you write."
+                  />
+                  <div className="exam-room-frq-foot">
+                    <span className="exam-word-count">
+                      {(drafts[task.id] ?? "").trim() ? (drafts[task.id] ?? "").trim().split(/\s+/).length : 0} words
+                    </span>
                     <button
                       type="button"
                       className="btn btn-outline btn-sm exam-coach-toggle"
-                      aria-expanded={Boolean(coachOpen[frq.id])}
-                      onClick={() => setCoachOpen((current) => ({ ...current, [frq.id]: !current[frq.id] }))}
+                      aria-expanded={Boolean(coachOpen[task.id])}
+                      onClick={() =>
+                        setCoachOpen((current) => ({ ...current, [task.id]: !current[task.id] }))
+                      }
                     >
-                      {coachOpen[frq.id] ? "Hide the writing coach" : "Show the writing coach"}
+                      {coachOpen[task.id] ? "Hide the writing coach" : "Show the writing coach"}
                     </button>
-                    {coachOpen[frq.id] ? <WritingCoach frq={frq} rubricTotal={frq.points} /> : null}
+                    {activeTask + 1 < section.frqs.length ? (
+                      <button type="button" className="btn btn-solid btn-sm" onClick={() => step(1)}>
+                        Next task →
+                      </button>
+                    ) : (
+                      <button type="button" className="btn btn-solid btn-sm" onClick={finishSection}>
+                        Finish section →
+                      </button>
+                    )}
                   </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      )}
-
-      <div className="exam-finish">
-        <p>
-          {sectionIndex + 1 < assessment.sections.length
-            ? "Finishing this section locks it. In the real exam you cannot return to it."
-            : "Finishing ends the paper. Nothing is marked until now."}
-        </p>
-        <button type="button" className="btn btn-solid" onClick={finishSection}>
-          {sectionIndex + 1 < assessment.sections.length ? "Finish section →" : "Finish the paper"}
-        </button>
+                  {coachOpen[task.id] ? <WritingCoach frq={task} rubricTotal={task.points} /> : null}
+                </article>
+              </>
+            ) : null}
+          </div>
+        </section>
       </div>
+
+      <footer className="exam-room-strip">
+        {isMcq ? (
+          <ol className="exam-room-bubbles" aria-label="Question navigation">
+            {section.questions.map((item, index) => (
+              <li key={item.key}>
+                <button
+                  type="button"
+                  data-active={index === activeQuestion ? "true" : "false"}
+                  data-answered={mcqAnswers[item.key] !== undefined ? "true" : "false"}
+                  data-flagged={flags[item.key] ? "true" : "false"}
+                  aria-current={index === activeQuestion ? "true" : undefined}
+                  aria-label={`Question ${index + 1}${
+                    mcqAnswers[item.key] !== undefined ? ", answered" : ", unanswered"
+                  }${flags[item.key] ? ", flagged" : ""}`}
+                  onClick={() => goToQuestion(index)}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="exam-room-strip-note">
+            {section.frqs.length} written task{section.frqs.length === 1 ? "" : "s"} · {section.minutes} minutes
+            for this section. Blank responses earn zero; a partial answer can still earn rows.
+          </p>
+        )}
+        <div className="exam-room-strip-actions">
+          <a className="exam-room-strip-link" href={`/course/${courseSlug}/exam/answers`}>
+            Printable answer sheet
+          </a>
+          <span>{section.minutes} min section</span>
+        </div>
+      </footer>
+
+      {sheetOpen ? (
+        <div className="exam-sheet" role="dialog" aria-modal="true" aria-label="Answer sheet">
+          <div className="exam-sheet-panel">
+            <header className="exam-sheet-head">
+              <div>
+                <p className="label">{courseLabel} · answer sheet</p>
+                <h3>{section.name}</h3>
+              </div>
+              <button
+                ref={sheetCloseRef}
+                type="button"
+                className="btn btn-quiet btn-sm"
+                onClick={() => setSheetOpen(false)}
+              >
+                Close
+              </button>
+            </header>
+            <p className="exam-sheet-note">
+              Every answer in this section, in order. Blank rows are unanswered; a flag means you meant to
+              come back.
+            </p>
+            <ol className="exam-sheet-grid">
+              {isMcq
+                ? section.questions.map((item, index) => (
+                    <li key={item.key}>
+                      <button
+                        type="button"
+                        data-state={
+                          mcqAnswers[item.key] === undefined
+                            ? "blank"
+                            : flags[item.key]
+                              ? "flagged"
+                              : "answered"
+                        }
+                        onClick={() => {
+                          goToQuestion(index);
+                          setSheetOpen(false);
+                        }}
+                      >
+                        <span className="exam-sheet-number">{String(index + 1).padStart(2, "0")}</span>
+                        <span className="exam-sheet-choice">
+                          {mcqAnswers[item.key] === undefined ? "—" : LETTERS[mcqAnswers[item.key]]}
+                        </span>
+                      </button>
+                    </li>
+                  ))
+                : section.frqs.map((frq, index) => {
+                    const words = (drafts[frq.id] ?? "").trim().split(/\s+/).filter(Boolean).length;
+                    return (
+                      <li key={frq.id} className="exam-sheet-task">
+                        <button
+                          type="button"
+                          data-state={words === 0 ? "blank" : words < 20 ? "flagged" : "answered"}
+                          onClick={() => {
+                            setActiveTask(index);
+                            setSheetOpen(false);
+                          }}
+                        >
+                          <span className="exam-sheet-number">Q{index + 1}</span>
+                          <span className="exam-sheet-choice">{words} words</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+            </ol>
+            <div className="exam-sheet-legend">
+              <span data-state="answered">Answered</span>
+              <span data-state="flagged">Flagged / partial</span>
+              <span data-state="blank">Blank</span>
+            </div>
+            <div className="exam-sheet-foot">
+              <a className="btn btn-outline btn-sm" href={`/course/${courseSlug}/exam/answers`}>
+                Open the printable answer sheet
+              </a>
+              <button type="button" className="btn btn-solid btn-sm" onClick={finishSection}>
+                {sectionIndex + 1 < assessment.sections.length ? "Finish section →" : "Finish the paper"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

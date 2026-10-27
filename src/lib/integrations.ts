@@ -9,7 +9,7 @@ export const integrations = {
   sheet: {
     name: "AP Study Hub — Unit Video Registry (Oct 2026)",
     url: "https://docs.google.com/spreadsheets/d/1uFGBvTYtIpxJbQflqaTNo8NoS6SjVnR5VLqZYtMB0_c/edit",
-    description: "82 verified videos covering 66 units, with a filter, frozen headers, banded rows, and a coverage chart.",
+    description: "93 verified videos covering 75 units, with a filter, frozen headers, banded rows, and a coverage chart.",
   },
   drive: {
     name: "AP Study Hub — Web Assets (Oct 2026)",

@@ -194,13 +194,22 @@ function evaluateSignal(signal: RubricSignal, features: WritingFeatures): Signal
       };
     }
     case "numeric-work": {
-      const numeric = features.numberedWork + features.mathOperators;
+      // Digits alone are not work. The row is awarded for written mathematics —
+      // an equality, an integral with its differential, a derivative, a limit —
+      // and a prose answer that mentions numbers without setting anything up
+      // does not satisfy it.
       return {
         note: signal.note,
-        satisfied: numeric >= min,
-        measured: `${features.numberedWork} number${features.numberedWork === 1 ? "" : "s"} and ${
-          features.mathOperators
-        } mathematical operator${features.mathOperators === 1 ? "" : "s"} shown`,
+        satisfied: features.mathExpressions >= min,
+        measured: features.mathExpressions
+          ? `${features.mathExpressions} written mathematical expression${
+              features.mathExpressions === 1 ? "" : "s"
+            } (${features.numberedWork} number${features.numberedWork === 1 ? "" : "s"}, ${
+              features.mathOperators
+            } operator${features.mathOperators === 1 ? "" : "s"})`
+          : `No equation, integral, derivative, or limit shown (${features.numberedWork} bare number${
+              features.numberedWork === 1 ? "" : "s"
+            })`,
       };
     }
     case "units": {
@@ -258,11 +267,16 @@ function evaluateSignal(signal: RubricSignal, features: WritingFeatures): Signal
       };
     }
     case "final-answer": {
+      const stated = features.conclusionMoves.length + (features.mathExpressions ? 1 : 0);
       return {
         note: signal.note,
-        satisfied: features.numberedWork + features.conclusionMoves.length >= min,
+        satisfied: features.numberedWork > 0 && stated >= min,
         measured: features.numberedWork
-          ? `Numerical result present (${features.numberedWork} numbers)`
+          ? `${features.numberedWork} number${features.numberedWork === 1 ? "" : "s"} reported${
+              features.conclusionMoves.length
+                ? `, with a stated conclusion (${features.conclusionMoves.slice(0, 2).join(", ")})`
+                : ", but no sentence states what the result means"
+            }`
           : "No numerical result detected.",
       };
     }
@@ -392,22 +406,79 @@ export function gradeLocally(response: string, rubric: Rubric): GradeResult {
   if (features.citationCount >= 2) strengths.push("You cited locators, so a reader can check your evidence.");
   if (!strengths.length) strengths.push("You have a draft, which is the only thing that can be improved.");
 
+  // Advice follows the rubric the response was written against. A calculus
+  // free response must not be told to embed quotations, and an essay must not
+  // be told to label its units.
+  const signalTypes = new Set(rubric.rows.flatMap((row) => row.signals.map((signal) => signal.type)));
+  const literary = signalTypes.has("quotation") || signalTypes.has("commentary");
+  const argumentative = signalTypes.has("counterargument") || signalTypes.has("qualification");
+  const quantitative = signalTypes.has("numeric-work") || signalTypes.has("units") || signalTypes.has("final-answer");
+
   const priorities: string[] = [];
   if (!features.hasThesis) priorities.push("Write a one-sentence claim in the opening paragraph.");
-  if (features.quotationCount === 0 && /literary|rhetorical|synthesis/i.test(rubric.title)) {
+  if (quantitative && !features.mathExpressions && features.wordCount >= 25) {
+    priorities.push(
+      "Show the setup, not only the result: write the equation, integral, or derivative before the number.",
+    );
+  }
+  if (signalTypes.has("units") && !features.unitsFound.length && features.wordCount >= 25) {
+    priorities.push("Attach units to every number you report, and say what the number measures.");
+  }
+  if (signalTypes.has("justification") && features.justificationMoves < 2) {
+    priorities.push("Justify each claim with 'because' or 'therefore' rather than asserting it.");
+  }
+  if (literary && features.quotationCount === 0) {
     priorities.push("Embed at least three short quotations so the reader can see the evidence.");
   }
-  if (features.commentaryCount < Math.max(2, features.quotationCount)) {
+  if (literary && features.commentaryCount < Math.max(2, features.quotationCount)) {
     priorities.push("Explain how your evidence works; at present the quotations outweigh the commentary.");
   }
-  if (!features.reasoningLinks) priorities.push("Add explicit links between evidence and claim ('which shows', 'because').");
-  if (!features.counterargumentMoves.length) priorities.push("Answer an alternative reading to reach the top rows.");
+  if (!features.reasoningLinks && (literary || argumentative)) {
+    priorities.push("Add explicit links between evidence and claim ('which shows', 'because').");
+  }
+  if (argumentative && !features.counterargumentMoves.length) {
+    priorities.push("Answer an alternative reading to reach the top rows.");
+  }
   if (features.mechanics.filter((issue) => issue.severity === "error").length >= 3) {
     priorities.push("Fix the mechanics errors listed below; they cost clarity even when the argument is sound.");
   }
-  while (priorities.length < 3) {
-    const next = weakRows[priorities.length];
-    priorities.push(next ? `${next.row.label}: ${next.row.improve}` : "Attempt the full rubric by writing one more paragraph of commentary.");
+  if (features.wordCount < 40) {
+    priorities.length = 0;
+    priorities.push(
+      "This response is too short for the rubric to read. A reader cannot award evidence, commentary, or method rows to a sentence.",
+      quantitative
+        ? "Work each part separately and show the algebra: setup, substitution, answer with units."
+        : "Write at least the opening claim and one body paragraph before asking for a score.",
+    );
+  }
+  // Fill the list from the rows that actually lost points, then stop offering
+  // advice when nothing is missing.
+  const used = new Set(priorities);
+  for (const entry of weakRows) {
+    if (priorities.length >= 4) break;
+    const line = `${entry.row.label}: ${entry.row.improve}`;
+    if (used.has(line)) continue;
+    used.add(line);
+    priorities.push(line);
+  }
+  if (!weakRows.length && priorities.length < 3) {
+    const closing = quantitative
+      ? "Every measured point was awarded. Check the answer's precision, units, and whether each conclusion is stated in words, then try a harder free response."
+      : "Every measured point was awarded. The remaining work is stylistic: tighten repetition, and make sure each paragraph advances one claim rather than restating it.";
+    if (!priorities.includes(closing)) priorities.push(closing);
+  }
+  const filler = [
+    quantitative
+      ? "Re-read the question's parts: each must be answered, labelled, and justified separately."
+      : "Add one more paragraph of commentary that explains how your evidence supports the claim.",
+    quantitative
+      ? "Show a check: substitute your answer back into the original relationship, or compare it with the units."
+      : "Name the writer's choice before you quote it, so the evidence has a job in the sentence.",
+    "Read the strongest model answer for this task, then rewrite one paragraph to match its level of explanation.",
+  ];
+  for (const line of filler) {
+    if (priorities.length >= 3) break;
+    if (!priorities.includes(line)) priorities.push(line);
   }
 
   const errorCount = features.mechanics.filter((issue) => issue.severity === "error").length;

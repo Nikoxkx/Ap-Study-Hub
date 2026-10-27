@@ -9,6 +9,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { ClassTabs } from "@/components/ui/ClassTabs";
 import { DownloadButton } from "@/components/ui/DownloadButton";
 import { getCourse, getCatalog } from "@/lib/catalog";
+import { getAssessment } from "@/lib/exams";
 import { getCourseLabs } from "@/content/labs";
 import { getStudioTasks } from "@/lib/studio-data";
 import { getStudyCourses } from "@/lib/study-data";
@@ -53,7 +54,7 @@ export default async function StudioPage({
   const requested = Array.isArray(query.tab) ? query.tab[0] : query.tab;
   const active = tabs.some((tab) => tab.id === requested) ? requested! : "lab";
   const labs = getCourseLabs(course.subject.slug);
-  const tasks = getStudioTasks(course);
+  const tasks = getStudioTasks(course, getAssessment(course.subject.slug) ?? undefined);
   const courses = getStudyCourses();
   const studyCourse = courses.find((item) => item.slug === course.subject.slug)!;
   const hasVariants = course.subject.slug === "ap-calc" || course.subject.slug === "ap-bio";

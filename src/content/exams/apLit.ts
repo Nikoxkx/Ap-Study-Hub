@@ -35,6 +35,36 @@ const toQuestions = (stimulusId: string, items: LitItem[]): ExamQuestion[] =>
     unitNumber: item.unit,
   }));
 
+export const apLitWorkList = [
+  "Jane Austen, Pride and Prejudice",
+  "Charlotte Brontë, Jane Eyre",
+  "Emily Brontë, Wuthering Heights",
+  "Kate Chopin, The Awakening",
+  "Joseph Conrad, Heart of Darkness",
+  "Charles Dickens, Great Expectations",
+  "F. Scott Fitzgerald, The Great Gatsby",
+  "Charlotte Perkins Gilman, 'The Yellow Wallpaper'",
+  "Nathaniel Hawthorne, The Scarlet Letter",
+  "Henrik Ibsen, A Doll's House",
+  "Henry James, The Turn of the Screw",
+  "Toni Morrison, Beloved",
+  "William Shakespeare, Hamlet",
+  "William Shakespeare, Macbeth",
+  "Mary Shelley, Frankenstein",
+  "Oscar Wilde, The Picture of Dorian Gray",
+  "Tennessee Williams, A Streetcar Named Desire",
+];
+
+/** The literary-argument question prints a list of works instead of a passage. */
+export const apLitWorkListStimulus: Stimulus = {
+  id: "lit-work-list",
+  title: "Suggested works of literary merit",
+  kind: "source",
+  attribution:
+    "The College Board prints a list of works with Question 3. Any work of comparable literary merit is acceptable; this list is a starting point, not a requirement.",
+  text: apLitWorkList.map((work) => `• ${work}`).join("\n"),
+};
+
 export const apLitStimuli: Stimulus[] = [
   {
     id: "lit-sonnet-73",
@@ -238,6 +268,7 @@ Personally, I believe that congenial work, with excitement and change, would do 
 
 But what is one to do?`,
   },
+  apLitWorkListStimulus,
 ];
 
 export const apLitQuestions: ExamQuestion[] = [
@@ -1104,12 +1135,13 @@ export const apLitFrqs: ExamFrq[] = [
     taskType: "Literary Argument",
     title: "Question 3 · Literary argument",
     prompt:
-      "In many works of literature, a character must live with a truth that others cannot or will not acknowledge. Either from your own reading or from the list below, select a work of literary merit in which such a character appears. Then, in a well-written essay, analyze how the character's relation to that unacknowledged truth contributes to the meaning of the work as a whole. Do not merely summarize the plot.",
+      "In many works of literature, a character must live with a truth that others cannot or will not acknowledge. Either from your own reading or from the list of suggested works, select a work of literary merit in which such a character appears. Then, in a well-written essay, analyze how the character's relation to that unacknowledged truth contributes to the meaning of the work as a whole. Do not merely summarize the plot.",
     directions:
-      "Choose a work of literary merit. You may use a work from the list below or another work of comparable literary merit. Write an essay that presents a defensible thesis and supports it with specific evidence.",
+      "Choose a work of literary merit. You may use a work from the list of suggested works beside this question or another work of comparable literary merit. Write an essay that presents a defensible thesis and supports it with specific evidence from the work you name.",
     minutes: 40,
     rubricId: "six-literary",
     points: 6,
+    stimulusIds: ["lit-work-list"],
     coach: literaryCoach(40),
     modelPath: [
       "Thesis: in the chosen work, the character's unacknowledged truth is the pressure that structures every relationship, so the novel's meaning depends on what cannot be said aloud.",
@@ -1121,22 +1153,4 @@ export const apLitFrqs: ExamFrq[] = [
   },
 ];
 
-export const apLitWorkList = [
-  "Jane Austen, Pride and Prejudice",
-  "Charlotte Brontë, Jane Eyre",
-  "Emily Brontë, Wuthering Heights",
-  "Kate Chopin, The Awakening",
-  "Joseph Conrad, Heart of Darkness",
-  "Charles Dickens, Great Expectations",
-  "F. Scott Fitzgerald, The Great Gatsby",
-  "Charlotte Perkins Gilman, 'The Yellow Wallpaper'",
-  "Nathaniel Hawthorne, The Scarlet Letter",
-  "Henrik Ibsen, A Doll's House",
-  "Henry James, The Turn of the Screw",
-  "Toni Morrison, Beloved",
-  "William Shakespeare, Hamlet",
-  "William Shakespeare, Macbeth",
-  "Mary Shelley, Frankenstein",
-  "Oscar Wilde, The Picture of Dorian Gray",
-  "Tennessee Williams, A Streetcar Named Desire",
-];
+

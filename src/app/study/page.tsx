@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-const validTabs = ["today", "review", "mistakes", "plan", "focus", "progress", "data", "advanced"] as const;
+const validTabs = ["today", "review", "mistakes", "plan", "focus", "exams", "progress", "data", "advanced"] as const;
 type StudyTab = typeof validTabs[number];
 
 export default async function StudyPage({ searchParams }: { searchParams: Promise<{ tab?: string | string[]; course?: string | string[] }> }) {

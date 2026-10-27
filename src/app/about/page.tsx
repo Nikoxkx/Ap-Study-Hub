@@ -115,9 +115,11 @@ export default function AboutPage() {
                 validation; no secure exam material is intentionally reproduced.
               </li>
               <li>
-                <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production.
-                Search is hand-rolled scored index, not LLM. Timed papers use rubric checklists for
-                self-marking.
+                <strong>No chatbot:</strong> nothing here talks to you in a conversation, and search is
+                a hand-rolled scored index rather than a model. Essay grading is either a measured
+                rubric analyser that runs without any API, or a model call you turn on yourself with
+                your own provider key — and every point it awards is shown next to the evidence in
+                your own sentences.
               </li>
             </ul>
           </div>

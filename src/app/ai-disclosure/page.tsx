@@ -182,8 +182,20 @@ export default function AiDisclosurePage() {
                 rewrote in personal voice and verified claims.
               </li>
               <li>
-                <strong>No runtime AI:</strong> No chatbot, no AI grading, no AI API calls in production. Optional sync is an ordinary storage API, not an AI service.
-                Search is a hand-rolled scored index over the course and lesson corpus.
+                <strong>No chatbot, and no AI by default:</strong> there is no assistant, no
+                generated hint stream, and no training on your work. Written responses are marked
+                offline by a measured analyser that ships with the site
+                (<code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>src/lib/grading</code>) —
+                it counts rubric signals in your own sentences and never calls a network.
+              </li>
+              <li>
+                <strong>AI grading is opt-in and uses your own key:</strong> paste a provider key into
+                the grading panel and <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>/api/grade</code>{" "}
+                forwards that one response, its prompt, and the rubric rows to the provider you chose
+                for a stricter second read. The key lives in your browser, is sent per request, and is
+                never stored on the server or in a log. Leave it empty and nothing leaves the page.
+                Optional sync is an ordinary storage API, not an AI service; search is a hand-rolled
+                scored index over the course and lesson corpus.
               </li>
             </ul>
           </div>
@@ -213,9 +225,11 @@ export default function AiDisclosurePage() {
             </table>
           </div>
           <p className="mt-4 max-w-[68ch] text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
-            No AI image generators were used for content. The nine subject symbols — flag, quotation
+            No AI image generators were used for the interface. Nine of the ten subject symbols — flag, quotation
             marks, speech bubbles, scales, DNA, integral, magnifier, a rising market graph, and a leaf — are hand-drawn SVG on a 32-unit
             grid (<code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>SubjectMark.tsx</code>).
+            The AP English Literature rose is a separately supplied raster mark, colour-corrected and
+            re-exported as the same 256px white RGBA icon set.
             README banners are deterministic SVG from <code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>build-banners.mjs</code>, not diffusion models.
           </p>
         </section>
@@ -300,8 +314,8 @@ export default function AiDisclosurePage() {
                 p: "Keyboard-only card deck (Space/Enter flip, arrows, 1/2 mark, S shuffle), aria-live practice feedback, 3 localStorage keys listed in /privacy. Manually tested.",
               },
               {
-                h: "No chatbot, no automated grading",
-                p: "No chatbot, no AI grading, no AI API. Timed papers use rubric checklists for self-marking — not a word counter wearing a rubric.",
+                h: "No chatbot, and grading you can inspect",
+                p: "There is no chat interface and no conversation history. Assessment grading is either the measured analyser in src/lib/grading (deterministic, runs in your browser or on this site's own route) or a model call you enable with your own provider key. Every score shows the row it came from and the sentences it was based on, so you can disagree with it.",
               },
               {
                 h: "No College Board endorsement",

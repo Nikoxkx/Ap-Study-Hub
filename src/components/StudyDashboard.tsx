@@ -32,6 +32,7 @@ const tabs = [
   { id: "mistakes", label: "Mistakes" },
   { id: "plan", label: "Plan" },
   { id: "focus", label: "Focus" },
+  { id: "exams", label: "Exams" },
   { id: "progress", label: "Progress" },
   { id: "data", label: "Your data" },
   { id: "advanced", label: "Go deeper" },
@@ -44,10 +45,46 @@ const tabHeadings: Record<Tab, string> = {
   mistakes: "Learn from what tripped you up",
   plan: "Make a plan you can actually keep",
   focus: "One lesson, three ways to study",
+  exams: "Sit a paper, then read the report",
   progress: "See what your work added up to",
   data: "Your work stays yours",
   advanced: "Set a goal, see the pattern, keep going",
 };
+
+
+interface ExamProgress {
+  answered: number;
+  flagged: number;
+  written: number;
+}
+
+/** Read the saved answer keys the exam room writes, without inventing state. */
+function readExamProgress(slugs: string[]): Record<string, ExamProgress> {
+  const out: Record<string, ExamProgress> = {};
+  if (typeof window === "undefined") return out;
+  const count = (key: string, keep: (value: unknown) => boolean) => {
+    try {
+      const raw = window.localStorage.getItem(key);
+      if (!raw) return 0;
+      const parsed: unknown = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return 0;
+      return Object.values(parsed as Record<string, unknown>).filter(keep).length;
+    } catch {
+      return 0;
+    }
+  };
+  for (const slug of slugs) {
+    out[slug] = {
+      answered: count(`aps.assessment.${slug}.answers`, (value) => typeof value === "number"),
+      flagged: count(`aps.assessment.${slug}.flags`, (value) => value === true),
+      written: count(
+        `aps.assessment.${slug}.drafts`,
+        (value) => typeof value === "string" && value.trim().length > 40,
+      ),
+    };
+  }
+  return out;
+}
 
 export function StudyDashboard({
   items,
@@ -64,6 +101,7 @@ export function StudyDashboard({
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
   const [selectedCourse, setSelectedCourse] = useState<SubjectSlug | "all">(initialCourse);
   const [now, setNow] = useState(0);
+  const [examProgress, setExamProgress] = useState<Record<string, ExamProgress>>({});
 
   useEffect(() => {
     const first = window.setTimeout(() => setNow(Date.now()), 0);
@@ -73,6 +111,17 @@ export function StudyDashboard({
       window.clearInterval(id);
     };
   }, []);
+
+  useEffect(() => {
+    const read = () => setExamProgress(readExamProgress(courses.map((course) => course.slug)));
+    read();
+    window.addEventListener("storage", read);
+    const id = window.setInterval(read, 5_000);
+    return () => {
+      window.removeEventListener("storage", read);
+      window.clearInterval(id);
+    };
+  }, [courses]);
 
   const allItems = useMemo(() => {
     const merged = new Map(items.map((item) => [item.id, item]));
@@ -376,6 +425,141 @@ export function StudyDashboard({
               />
             </GlassCard>
           ) : null}
+          {activeTab === "exams" ? (
+            <div className="exam-desk">
+              <GlassCard as="section" padding="lg" aria-labelledby="exam-desk-heading">
+                <div className="panel-heading">
+                  <div>
+                    <p className="label">Interim assessments</p>
+                    <h2 id="exam-desk-heading">Sit the paper, then read the report</h2>
+                    <p>
+                      Every course has a full-length paper in the official format, a printable answer
+                      sheet, and a report that marks each response against the rubric. Nothing here is
+                      scored until you finish a section.
+                    </p>
+                  </div>
+                  <Link
+                    href={`/course/${(selectedCourse === "all" ? nextCourse.slug : selectedCourse)}/exam`}
+                    className="btn btn-solid btn-sm"
+                  >
+                    Open a paper →
+                  </Link>
+                </div>
+
+                <ul className="exam-desk-list">
+                  {courses
+                    .filter((course) => selectedCourse === "all" || course.slug === selectedCourse)
+                    .map((course) => {
+                      const subj = subjects.find((s) => s.slug === course.slug);
+                      const progress = examProgress[course.slug];
+                      const exam = course.exam;
+                      const answered = progress?.answered ?? 0;
+                      const written = progress?.written ?? 0;
+                      const started = answered > 0 || written > 0;
+                      return (
+                        <li
+                          key={course.slug}
+                          className="exam-desk-row subject-accent"
+                          style={subj ? subjectVars(subj) : undefined}
+                        >
+                          <div className="exam-desk-id">
+                            <strong>{subj?.familiar ?? course.label}</strong>
+                            <span>
+                              {exam
+                                ? `${Math.floor(exam.minutes / 60)}h ${exam.minutes % 60}m · ${exam.mcqCount} MCQ · ${exam.frqCount} written · ${exam.points} rubric points`
+                                : "No paper built for this course"}
+                            </span>
+                          </div>
+                          {exam ? (
+                            <div className="exam-desk-parts">
+                              {exam.sections.map((section) => (
+                                <span key={section.name} className="tag" data-tone={section.type}>
+                                  {section.type === "mcq" ? "MCQ" : "WRITTEN"} · {section.questions} ·{" "}
+                                  {section.minutes}m
+                                </span>
+                              ))}
+                            </div>
+                          ) : null}
+                          <div className="exam-desk-progress">
+                            {exam ? (
+                              <>
+                                <span data-state={started ? "started" : "blank"}>
+                                  {started
+                                    ? `${answered}/${exam.mcqCount} answered · ${written}/${exam.frqCount} written`
+                                    : "Not started"}
+                                </span>
+                                {progress?.flagged ? (
+                                  <span className="exam-desk-flag">{progress.flagged} flagged</span>
+                                ) : null}
+                              </>
+                            ) : (
+                              <span>—</span>
+                            )}
+                          </div>
+                          <div className="exam-desk-links">
+                            <Link href={`/course/${course.slug}/exam`} className="btn btn-quiet btn-sm">
+                              {started ? "Resume" : "Sit"}
+                            </Link>
+                            <Link
+                              href={`/course/${course.slug}/exam/answers`}
+                              className="link-underlined"
+                              prefetch={false}
+                            >
+                              Answer sheet
+                            </Link>
+                            <Link href={`/course/${course.slug}/studio`} className="link-underlined">
+                              Studio
+                            </Link>
+                          </div>
+                        </li>
+                      );
+                    })}
+                </ul>
+              </GlassCard>
+
+              <GlassCard as="section" padding="lg" aria-labelledby="exam-desk-after">
+                <div className="panel-heading">
+                  <div>
+                    <p className="label">After the clock stops</p>
+                    <h2 id="exam-desk-after">What the report gives you</h2>
+                  </div>
+                </div>
+                <ol className="exam-desk-report">
+                  <li>
+                    <strong>A score, with its arithmetic.</strong> Multiple-choice and written points
+                    are combined at the published weights, then shown against estimated cut scores —
+                    labelled as an estimate, because only the College Board sets the real ones.
+                  </li>
+                  <li>
+                    <strong>Every response, with its lesson.</strong> Each question is listed with what
+                    you chose, what was right, why, and the lesson that teaches it.
+                  </li>
+                  <li>
+                    <strong>Rubric marking for each essay.</strong> Row-by-row points against the
+                    published rubric, quoting your own sentences, with spelling and grammar listed
+                    separately. Add a model key for an AI second read.
+                  </li>
+                  <li>
+                    <strong>A study list.</strong> The weak units are turned into the same review and
+                    mistake queue as the rest of the desk.
+                  </li>
+                </ol>
+                <div className="exam-desk-actions">
+                  <Link href={`/course/${nextCourse.slug}/exam`} className="btn btn-outline btn-sm">
+                    Sit {nextCourse.label}&apos;s paper
+                  </Link>
+                  <button
+                    type="button"
+                    className="link-underlined"
+                    onClick={() => selectTab("plan")}
+                  >
+                    Fold it into a study plan →
+                  </button>
+                </div>
+              </GlassCard>
+            </div>
+          ) : null}
+
           {activeTab === "progress" ? (
             <GlassCard padding="lg">
               <ProgressPanel

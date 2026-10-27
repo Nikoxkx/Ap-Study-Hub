@@ -99,10 +99,29 @@ Each course has one paper at `/course/<slug>/exam` with two modes and a score re
 - **Official shape.** Section order, question counts, minutes, calculator rules, and breaks come from the published exam format — 55 MCQs in 60 minutes and three 40-minute essays for AP Lit, 55 in 55 plus SAQ/DBQ/LEQ for APUSH, 30 no-calculator and 15 calculator MCQs for Calculus, and so on. `scripts/validate` keeps the counts honest.
 - **Public-domain passages.** Every poem, prose excerpt, and document is public domain or written for this site. Nothing is presented as a released College Board question.
 - **Rubric grading.** Written tasks are marked against the published rows (thesis, evidence and commentary, sophistication; DBQ's seven points; SAQ's three; the six-point Gov argument; the four-row Research paper). Each row shows what it measured in your own sentences, what was missing, and one revision that would earn the next point.
-- **Grammar and spelling.** A dependency-free analyser checks agreement, fragments, comma splices, confused words, capitalisation, spacing, register, and spelling against a 20,500-word lexicon built from the site's corpus plus frequency-ranked English. Findings quote the sentence and suggest a fix.
+- **Grammar and spelling.** A dependency-free analyser checks agreement, fragments, comma splices, confused words, capitalisation, spacing, register, and spelling against a 30,275-word lexicon built from the site's corpus plus frequency-ranked English. Findings quote the sentence and suggest a fix.
 - **Nothing is hardcoded.** The default grader is `src/lib/grading/grade.ts`, which computes points from measured features. Model grading is opt-in: paste your own provider key in the grading panel and `/api/grade` forwards the response, prompt, and rubric to that provider for a stricter second read. The key never touches the server's storage.
-- **A study link for every miss.** The score report lists every response — right, wrong, blank, flagged — with the skill it tested, the explanation, and the lesson to open next.
+- **A study link for every miss.** The score report lists every response — right, wrong, blank, flagged — with the skill it tested, the explanation, and the lesson to open next, filtered by status so a review pass can start with the wrong ones.
 - **Guided walkthrough.** The same paper, taught question by question: how to read the stem, why each distractor fails, the method for the essay, and a writing coach with a timed plan, evidence checklist, and sentence frames.
+
+### The exam room
+
+Sitting a paper takes over the screen instead of scrolling a page.
+
+- **One question at a time, passage beside it.** A two-pane room: the passage, document set, data figure, or poem stays on the left while the question or essay prompt sits on the right, so nothing has to be scrolled back to. The layout is identical for all ten courses — the pane only changes what it is showing.
+- **A bar that answers the three questions you actually have:** where am I, how long is left, and how do I get out. The clock counts down against a wall-clock deadline (a backgrounded tab cannot steal minutes), turns amber with five minutes left, and stops at zero.
+- **Answer sheet.** A monospace grid of every question in the section, marked answered / flagged / blank, letting you jump anywhere. It doubles as the review surface at the end.
+- **Full screen, and a phone that works.** One button asks the browser for full screen; below 900px the two panes become one column with a Passage / Question switch, so the same room is usable on a phone in a corridor.
+- **Breaks and sections.** Section changes and the scheduled break are enforced by the same state machine, so the paper cannot be sat out of order.
+- **Autosave.** Answers, flags, and essay drafts are written to `localStorage` on every keystroke under `aps.assessment.<course>.*`; closing the tab does not lose the paper.
+
+### The answer sheet, on paper
+
+`/course/<slug>/exam/answers` prints a blank answer sheet in the same shape as the paper: one bubble row per multiple-choice question (labelled with the options that question actually offers), ruled space sized to each written task, and nothing that gives the answer away. It is `noindex`, prints without the site chrome, and lets a paper be sat with a pen — or re-sat from a marked sheet without reprinting the questions.
+
+### The study desk knows about exams
+
+`/study?tab=exams` lists every course's paper with its clock, section counts, and rubric total; it reads the same `localStorage` keys the exam room writes, so it can say *"23/55 answered · 1/3 written"* and offer Resume, Answer sheet, or Studio. The report a finished paper produces turns weak units into the desk's normal review and mistake queue.
 
 Cut scores are not published by the College Board, so the 1–5 figure is an estimate from public scoring worksheets and is labelled as an estimate everywhere it appears.
 
@@ -121,7 +140,8 @@ Run the full validation and production build pipeline before opening a PR:
 
 ```bash
 corepack pnpm validate:content        # 75 lessons, 750 paragraphs, citations, glossary & practice schema
-corepack pnpm validate:study          # 645 study items, KaTeX math, scheduling, backups, plans & calendar
+corepack pnpm validate:exams          # section counts, minutes, breaks, rubric totals & score arithmetic for all 10 papers
+corepack pnpm validate:study          # 1,015 study items, KaTeX math, scheduling, backups, plans & calendar
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 93 verified 11-char YouTube IDs, course/unit mapping & thumbnails
 corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
@@ -150,7 +170,7 @@ public/
   bg-class.jpg                  wallpaper: /course/[slug], /cards, /videos, /guides
   bg-class2.jpg                 wallpaper: /notes, /practice, /studio, /essays, /exam, /resources, /print
   fonts/                        self-hosted WOFF2 subsets (Newsreader, Public Sans, JetBrains Mono, Kalam)
-  icons/courses/                9 pure-white (#FFFFFF) transparent RGBA AP course symbols
+  icons/courses/                10 pure-white (#FFFFFF) transparent RGBA AP course symbols
   og-image.png                  compiled 1200×630 Open Graph card
   social-preview.png            compiled 1200×630 GitHub / social preview card
   sw.js                         same-origin offline service worker
@@ -167,13 +187,19 @@ src/
     SiteHeaderShell.tsx         directional scroll-fade shell preserving fixed modal viewports
     TopClassBar.tsx             hover-reveal AP Courses bar + mobile touch sheet with white AP symbols
     MobileNav.tsx               unified Menu popover (SiteSearch, Study Desk, links, ThemeSwitch)
-    StudySystemVisual.tsx       interactive 7-course cold-recall card preview inside the homepage hero
-    StudyDashboard.tsx          spacious local-first Study Desk with white AP course filter pills & 8 tabs
-    SubjectMark.tsx             7 pure-white RGBA AP course symbols across light glass & neutral night mode
+    StudySystemVisual.tsx       interactive ten-course cold-recall card preview inside the homepage hero
+    StudyDashboard.tsx          spacious local-first Study Desk with white AP course filter pills & 9 tabs
+    SubjectMark.tsx             10 pure-white RGBA AP course symbols across light glass & neutral night mode
     UnitVideoPlayer.tsx         click-to-load youtube-nocookie player + conflict-free full-screen view
     CardDeck.tsx                keyboard-first active-recall flashcard deck
     PracticeSet.tsx             accessible multiple-choice runner with section-level remediation
-    TimedPaper.tsx              essay & mock-exam workspace with autosave + NotebookPaper scratchpad
+    exam/
+      TimedPaper.tsx            full-screen exam room: two panes, clock, answer sheet, breaks, autosave
+      ExamHub.tsx               briefing, simulation, guided walkthrough, and score report switch
+      ScoreReport.tsx           composite arithmetic, per-response review, rubric marking
+      GraderPanel.tsx           rubric rows, mechanics list, optional model-key second read
+      GuidedWalkthrough.tsx     the same paper taught question by question
+      WritingCoach.tsx          timed plan, evidence checklist, sentence frames per essay
     study/AdvancedDesk.tsx      spaced-review queue, missed-question drill, and study analytics
     ui/
       PageBackground.tsx        route-mapped full-viewport classroom/corridor wallpaper layer

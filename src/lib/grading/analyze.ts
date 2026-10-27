@@ -59,6 +59,8 @@ export interface WritingFeatures {
   specificFacts: string[];
   numberedWork: number;
   mathOperators: number;
+  /** Written mathematics: equations, integrals, derivatives, limits. */
+  mathExpressions: number;
   unitsFound: string[];
   justificationMoves: number;
   experimentalDesignTerms: string[];
@@ -300,6 +302,17 @@ export function analyzeWriting(response: string, options: { vocabulary?: Set<str
 
   const numberedWork = countMatches(text, /\b\d+(?:\.\d+)?\b/g);
   const mathOperators = countMatches(text, /(=|×|÷|∫|∑|\+|−|\/|\^|√)/g);
+  // Written mathematics, not merely digits. A response that says "the answer
+  // is 42" has numbers; a response that sets up work has equations. Readers
+  // award the method rows for the latter, so the offline pass counts the
+  // notation that actually carries an argument: an equality, an integral with
+  // a differential, a derivative, or a limit.
+  const equations = countMatches(text, /[A-Za-z0-9)\]}][^\n]{0,40}?=\s*[-−]?[A-Za-z0-9(∫]/g);
+  const calculusNotation = countMatches(
+    text,
+    /(∫|\bd[A-Za-z]\s*\/\s*d[A-Za-z]\b|\bdy\/dx\b|\bdP\/dt\b|\bv\(t\)|\blim\b|\bdx\b|\bdt\b)/g,
+  );
+  const mathExpressions = equations + calculusNotation;
   const unitsFound = uniqueMatch(text, /\b(kg|g|mg|mL|L|km|cm|m\/s|m\/s²|kWh|MW|GW|J|kJ|N|mol|M|%|°C|ppm|ppb|tonnes?|billion|million|trillion|litres?|meters?|metres?|hours?|seconds?|years?)\b/gi, 8);
   const justificationMoves = countMatches(text, /\b(because|since|therefore|thus|as a result|which means|so that|explains?|justif(?:y|ies)|due to)\b/gi);
   const experimentalDesignTerms = uniqueMatch(
@@ -362,6 +375,7 @@ export function analyzeWriting(response: string, options: { vocabulary?: Set<str
     specificFacts,
     numberedWork,
     mathOperators,
+    mathExpressions,
     unitsFound,
     justificationMoves,
     experimentalDesignTerms,

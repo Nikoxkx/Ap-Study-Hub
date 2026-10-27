@@ -65,14 +65,16 @@ const shortcuts = [
   { keys: "Ctrl / Cmd + K", where: "Everywhere", does: "Open the course and lesson command navigator" },
   { keys: "↑ / ↓ + Enter", where: "Command navigator", does: "Choose and open a command" },
   { keys: "Esc", where: "Search, navigator, mobile menu", does: "Close the panel and restore focus" },
+  { keys: "← / →", where: "Exam room", does: "Previous and next question, or previous and next written task" },
+  { keys: "Esc", where: "Exam room answer sheet", does: "Close the sheet and put focus back on the question" },
 ];
 
 const known = [
   {
-    problem: "The timed paper is hostile on a small screen",
+    problem: "The exam room is better on a large screen",
     detail:
-      "Sitting a full paper on a phone means a lot of scrolling between the source documents and the answer box. It is usable but not pleasant. The honest advice is to use the largest screen you have — which is also true of the real exam.",
-    status: "Not fixed",
+      "The paper now takes over the viewport: the passage stays beside the question on a laptop, and below 900px the two panes become one column with a Passage / Question switch, so reading and answering are one tap apart rather than a scroll apart. On a phone the answer-sheet grid is tight and that extra tap remains. The largest screen you have is still the better experience — which is also true of the real exam.",
+    status: "Improved, not perfect",
   },
   {
     problem: "Long tables scroll sideways",

@@ -97,7 +97,7 @@ export function FRQStudio({ tasks, courseSlug }: { tasks: StudioTask[]; courseSl
       </div> : null}
 
       {phase === "briefing" ? <div className="studio-briefing">
-        <div><p className="label mb-2">Honest self-assessment</p><p>Write under time, mark each criterion yourself, then compare with an exemplar when one matches this task. No AI grade or AP 1–5 prediction is produced.</p></div>
+        <div><p className="label mb-2">Honest self-assessment</p><p>Write under time, mark each criterion yourself, then compare with an exemplar when one matches this task. This studio does not score you; the interim assessment's grader is the place for a marked read and an AP 1–5 estimate.</p></div>
         <button type="button" className="btn btn-solid" onClick={start}>{draft ? "Resume timed draft" : "Start timed draft"}</button>
       </div> : null}
 

@@ -12,8 +12,8 @@ import { ClassTabs } from "@/components/ui/ClassTabs";
  *
  * Sits on the exact same horizontal level as the AP Study Hub logo pill,
  * `Jump to ⌘K`, and the Hamburger Menu button. On desktop mouse hover it
- * smoothly reveals the nine-course segmented bar on the same row. The
- * tabs are icon-first so all nine fit where seven once did; hovering (or
+ * smoothly reveals the ten-course segmented bar on the same row. The
+ * tabs are icon-first so all ten fit where seven once did; hovering (or
  * tabbing to) a symbol expands its course name, and the current course
  * keeps its name shown. On mobile/tablet tap it opens a clean glass
  * course sheet.

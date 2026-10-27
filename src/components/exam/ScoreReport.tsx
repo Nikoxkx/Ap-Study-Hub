@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
 import type { Assessment } from "@/content/exams/types";
-import { scoreAssessment, skillBreakdown, unitBreakdown } from "@/lib/exams";
+import { getRubricForFrq, scoreAssessment, skillBreakdown, unitBreakdown } from "@/lib/exams";
 import { GraderPanel } from "./GraderPanel";
 
 /**
@@ -295,7 +295,9 @@ export function ScoreReport({
             Each task is marked against the rubric printed with it. Use the row-level evidence to check the
             judgement; a reader awards points for what is present, not for what was intended.
           </p>
-          {frqs.map(({ frq }) => (
+          {frqs.map(({ frq }) => {
+            const rubric = getRubricForFrq(frq);
+            return (
             <article key={frq.id} className="sheet score-frq">
               <header>
                 <p className="label">
@@ -307,7 +309,7 @@ export function ScoreReport({
               <details className="score-frq-rubric">
                 <summary>Rubric rows</summary>
                 <ul>
-                  {(frq.rubric?.rows ?? []).map((row) => (
+                  {(rubric?.rows ?? []).map((row) => (
                     <li key={row.id}>
                       <strong>
                         {row.label} ({row.maxPoints})
@@ -327,17 +329,18 @@ export function ScoreReport({
                 <h5 className="label">What you wrote</h5>
                 <p>{drafts[frq.id]?.trim() || "Nothing was written for this task."}</p>
               </div>
-              {frq.rubric ? (
+              {rubric ? (
                 <GraderPanel
                   courseSlug={courseSlug}
                   frq={frq}
-                  rubric={frq.rubric}
+                  rubric={rubric}
                   response={drafts[frq.id] ?? ""}
                   onGraded={onFrqScore}
                 />
               ) : null}
             </article>
-          ))}
+            );
+          })}
         </section>
       ) : null}
 
