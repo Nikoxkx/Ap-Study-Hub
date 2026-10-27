@@ -75,6 +75,12 @@ else {
 if (!/\.dark body \{\s*background-image: none;/.test(css)) {
   fail("Night mode still paints a body background wash");
 }
+// The wallpaper lives behind body::before, so checking the body alone misses
+// a full-page overlay that makes every dark-mode page much darker.
+const darkWallpaperVeil = css.match(/\.dark body::before\s*\{([^}]*)\}/)?.[1];
+if (!darkWallpaperVeil || !/background:\s*none\s*;/.test(darkWallpaperVeil)) {
+  fail("Night mode must not dim the wallpaper with a page-wide veil");
+}
 for (const oldTint of [
   "#0f1114", "#171a1e", "#0b0d10", "#e9ecf1", "#bcc3cd", "#949da8",
   "#343a42", "#4b535d", "#202329", "#12151a", "#161a20",

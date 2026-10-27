@@ -206,9 +206,7 @@
   --on-accent: #f4f4f4;
 }
 
-/* The page-wide dim sits under the content and over the wallpaper, in both
-   schemes. It replaces the old approach of painting each panel darker and
-   darker until the photograph was gone. */
+/* The light-mode veil sits under the content and over the wallpaper. */
 body::before {
   content: "";
   position: fixed;
@@ -218,12 +216,10 @@ body::before {
   background: linear-gradient(180deg, rgba(246, 244, 239, 0.30), rgba(246, 244, 239, 0.52));
 }
 
-/* Night mode now keeps a light veil over the wallpaper: the surfaces above it
-   are frosted rather than sealed, so without the veil a bright photograph would
-   wash out white panel text. It stays much lighter than an opaque sheet, so the
-   wallpaper still reads through every blurred panel. */
+/* Keep the wallpaper undimmed in night mode, as it was before the page-wide
+   black veil was introduced. Frosted panels retain their existing styling. */
 .dark body::before {
-  background: linear-gradient(180deg, rgba(8, 8, 8, 0.42), rgba(8, 8, 8, 0.56));
+  background: none;
 }
 
 @media print {
