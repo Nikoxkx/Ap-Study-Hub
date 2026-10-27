@@ -299,7 +299,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
           className="btn btn-sm"
           style={{
             border: "1px solid var(--good)",
-            color: verdict === "got" ? "var(--paper-raised)" : "var(--good)",
+            color: verdict === "got" ? "var(--on-accent)" : "var(--good)",
             background: verdict === "got" ? "var(--good)" : "transparent",
           }}
         >
@@ -311,7 +311,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
           className="btn btn-sm"
           style={{
             border: "1px solid var(--mark)",
-            color: verdict === "again" ? "var(--paper-raised)" : "var(--mark)",
+            color: verdict === "again" ? "var(--on-accent)" : "var(--mark)",
             background: verdict === "again" ? "var(--mark)" : "transparent",
           }}
         >

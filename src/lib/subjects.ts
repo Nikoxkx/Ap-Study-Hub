@@ -255,6 +255,40 @@ export function getSubject(slug: string): Subject | undefined {
   return bySlug.get(slug);
 }
 
+/**
+ * Quantitative/science courses grade their written section as free-response
+ * questions (FRQs), never "essays". The humanities and writing courses keep
+ * the essay vocabulary their rubrics actually use.
+ */
+const FRQ_SUBJECT_SLUGS: ReadonlySet<SubjectSlug> = new Set<SubjectSlug>([
+  "ap-bio",
+  "ap-calc",
+  "ap-macro",
+  "ap-env",
+]);
+
+export function isFrqSubject(slug: string): boolean {
+  return FRQ_SUBJECT_SLUGS.has(slug as SubjectSlug);
+}
+
+export interface WrittenWorkCopy {
+  /** Tab and heading label, capitalised: "Essays" or "FRQs". */
+  tab: string;
+  /** Lowercase singular for running prose: "essay" or "FRQ". */
+  singular: string;
+  /** Lowercase plural for running prose: "essays" or "FRQs". */
+  plural: string;
+  /** What the student types, lowercase: "essay" or "response". */
+  responseNoun: string;
+}
+
+/** Subject-correct name for the marked written-work section and its items. */
+export function writtenWorkCopy(slug: string): WrittenWorkCopy {
+  return isFrqSubject(slug)
+    ? { tab: "FRQs", singular: "FRQ", plural: "FRQs", responseNoun: "response" }
+    : { tab: "Essays", singular: "essay", plural: "essays", responseNoun: "essay" };
+}
+
 export function isSubjectSlug(slug: string): slug is SubjectSlug {
   return bySlug.has(slug);
 }

@@ -7,6 +7,7 @@ import { UnitNav } from "@/components/UnitNav";
 import { LessonContent } from "@/components/LessonContent";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { absoluteUrl, socialImages } from "@/lib/site";
+import { writtenWorkCopy } from "@/lib/subjects";
 
 type Params = Promise<{ slug: string }>;
 
@@ -40,6 +41,7 @@ export default async function NotesPage({ params }: { params: Params }) {
 
   const { subject, units, counts } = course;
   if (units.length === 0) notFound();
+  const written = writtenWorkCopy(subject.slug);
 
   return (
     <div className="wrap py-8 md:py-12">
@@ -153,7 +155,7 @@ export default async function NotesPage({ params }: { params: Params }) {
                 <>
                   , then read a{" "}
                   <Link href={`/course/${subject.slug}/essays`} className="link-underlined">
-                    marked essay
+                    marked {written.singular}
                   </Link>
                 </>
               ) : null}

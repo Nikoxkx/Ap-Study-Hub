@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { ClassTabs } from "@/components/ui/ClassTabs";
+import { writtenWorkCopy } from "@/lib/subjects";
 
 interface CourseTabsProps {
   slug: string;
@@ -19,6 +20,7 @@ interface CourseTabsProps {
 export function CourseTabs({ slug, available }: CourseTabsProps) {
   const pathname = usePathname() ?? "";
   const base = `/course/${slug}`;
+  const written = writtenWorkCopy(slug);
 
   const tabs = [
     { value: base, href: base, label: "Overview", show: true },
@@ -27,7 +29,7 @@ export function CourseTabs({ slug, available }: CourseTabsProps) {
     { value: `${base}/studio`, href: `${base}/studio`, label: "Studio", show: true },
     { value: `${base}/cards`, href: `${base}/cards`, label: "Cards", show: available.cards },
     { value: `${base}/practice`, href: `${base}/practice`, label: "Practice", show: available.practice },
-    { value: `${base}/essays`, href: `${base}/essays`, label: "Essays", show: available.essays },
+    { value: `${base}/essays`, href: `${base}/essays`, label: written.tab, show: available.essays },
     { value: `${base}/exam`, href: `${base}/exam`, label: "Interim exam", show: available.exam },
     { value: `${base}/resources`, href: `${base}/resources`, label: "Sources", show: available.resources },
   ].filter((tab) => tab.show);

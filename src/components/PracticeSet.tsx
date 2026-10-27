@@ -370,7 +370,7 @@ export function PracticeSet({
                             : "transparent",
                     color:
                       (checked && (isAnswer || selected)) || selected
-                        ? "var(--paper-raised)"
+                        ? "var(--on-accent)"
                         : "var(--ink-faint)",
                   }}
                 >

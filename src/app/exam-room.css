@@ -30,7 +30,11 @@
 
 /* Break and score report get the same fixed shell as the room. They used to be
    returned into the page flow, which left the student looking at empty page
-   under a locked scroll after finishing a section. */
+   under a locked scroll after finishing a section.
+
+   The stage is frosted rather than sealed: a strong blur and a semi-opaque wash
+   keep the page behind alive as soft colour while making any text back there
+   unreadable, so the report copy never collides with the page copy. */
 .exam-stage {
   position: fixed;
   inset: 0;
@@ -39,22 +43,32 @@
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding: clamp(0.9rem, 2.6vw, 2.25rem) clamp(0.75rem, 2.6vw, 2.25rem) 4rem;
-  background: rgb(243, 242, 238);
+  background: rgba(243, 242, 238, 0.72);
+  backdrop-filter: blur(26px) saturate(125%);
+  -webkit-backdrop-filter: blur(26px) saturate(125%);
   color: var(--ink);
   font-family: var(--font-ui);
   animation: exam-room-enter 420ms var(--ease-settle) both;
 }
-.dark .exam-stage { background: rgb(26, 26, 26); }
+.dark .exam-stage {
+  background: rgba(13, 13, 13, 0.68);
+  backdrop-filter: blur(30px) saturate(130%);
+  -webkit-backdrop-filter: blur(30px) saturate(130%);
+}
 
 /* The page under an open paper is removed from view, not just dimmed: the
    briefing, the header, the wallpaper, and the footer were all legible through
    the frosted room and collided with the question text. The room and its stages
-   are portaled onto <body>, so they are untouched by this. */
-body.exam-room-open > main,
-body.exam-room-open > header,
-body.exam-room-open > footer,
-body.exam-room-open > .page-wallpaper,
-body.exam-room-open > .skip-link {
+   are portaled onto <body>, so they are untouched by this.
+
+   The score report (exam-review-open) is the deliberate exception: its stage is
+   a heavy frosted wash, so the page behind stays rendered as blurred colour
+   instead of being hidden outright. */
+body.exam-room-open:not(.exam-review-open) > main,
+body.exam-room-open:not(.exam-review-open) > header,
+body.exam-room-open:not(.exam-review-open) > footer,
+body.exam-room-open:not(.exam-review-open) > .page-wallpaper,
+body.exam-room-open:not(.exam-review-open) > .skip-link {
   visibility: hidden;
 }
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCatalog, getTotals, nextExam } from "@/lib/catalog";
-import { subjects, formatExamDate, examInstant, examTimeLabel, subjectVars } from "@/lib/subjects";
+import { subjects, formatExamDate, examInstant, examTimeLabel, subjectVars, writtenWorkCopy } from "@/lib/subjects";
 import { daysUntil } from "@/lib/clock";
 import { SubjectMark, SiteMark } from "@/components/SubjectMark";
 import { Countdown } from "@/components/Countdown";
@@ -58,7 +58,7 @@ const studySurfaces = [
     body: "Multiple-choice sets with option-level explanations and a direct route back to the exact teaching section.",
   },
   {
-    name: "Marked Essays",
+    name: "Marked Essays & FRQs",
     badge: "Rubric rows",
     body: "Full sample responses broken out point by point: thesis, evidence, commentary, and complexity.",
   },
@@ -101,8 +101,8 @@ export default function HomePage() {
 
           <p className="canvas-subtext mt-6 max-w-2xl text-[clamp(1.05rem,0.96rem+0.45vw,1.25rem)] leading-relaxed">
             {totals.units} lessons and {totals.paragraphs} teaching paragraphs explain the why
-            behind every unit. Recall cards, original practice, marked essays, and unit videos help
-            you earn a score your college may accept for credit — with zero accounts or paywalls.
+            behind every unit. Recall cards, original practice, marked essays and FRQs, and unit
+            videos help you earn a score your college may accept for credit — with zero accounts or paywalls.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
@@ -216,6 +216,7 @@ export default function HomePage() {
         <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {catalog.map((course, index) => {
             const { subject, counts } = course;
+            const written = writtenWorkCopy(subject.slug);
             return (
               <li key={subject.slug} className="flex">
                 <Link
@@ -258,7 +259,7 @@ export default function HomePage() {
                       <span>{counts.units} lessons</span>
                       <span>{counts.flashcards} cards</span>
                       <span>{counts.questions} Qs</span>
-                      {counts.essays > 0 ? <span>{counts.essays} essays</span> : null}
+                      {counts.essays > 0 ? <span>{counts.essays} {written.plural}</span> : null}
                     </div>
                     <div className="mt-3 flex items-center justify-between text-[0.8125rem]">
                       <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink-faint)" }}>

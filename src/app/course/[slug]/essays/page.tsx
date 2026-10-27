@@ -4,6 +4,7 @@ import { getCourse, getCatalog } from "@/lib/catalog";
 import { EssayReader } from "@/components/EssayReader";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { absoluteUrl, socialImages } from "@/lib/site";
+import { writtenWorkCopy } from "@/lib/subjects";
 
 type Params = Promise<{ slug: string }>;
 
@@ -19,8 +20,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!course) return {};
 
   const { subject, essays } = course;
+  const written = writtenWorkCopy(subject.slug);
   const types = [...new Set(essays.map((e) => e.type))].join(", ");
-  const title = `${subject.familiar} essays, marked and explained`;
+  const title = `${subject.familiar} ${written.tab}, marked and explained`;
   const description = `${essays.length} full ${subject.familiar} responses (${types}) with every rubric point broken out and explained.`;
 
   return {
@@ -44,6 +46,7 @@ export default async function EssaysPage({ params }: { params: Params }) {
 
   const { subject, essays } = course;
   if (essays.length === 0) notFound();
+  const written = writtenWorkCopy(subject.slug);
 
   return (
     <div className="wrap space-y-8 py-8 md:py-12">
@@ -55,7 +58,7 @@ export default async function EssaysPage({ params }: { params: Params }) {
           className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)] font-semibold"
           style={{ letterSpacing: "-0.025em" }}
         >
-          {subject.familiar} essays, marked so you can see why
+          {subject.familiar} {written.tab}, marked so you can see why
         </h2>
         <p className="lede mt-3">
           A high-scoring response is a set of decisions, each of which earned a specific point. The
@@ -70,9 +73,9 @@ export default async function EssaysPage({ params }: { params: Params }) {
       <GlassCard as="aside" padding="md">
         <h3 className="label mb-2">How to use these</h3>
         <p className="max-w-[65ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-          Do not copy the sentences. Copy the moves: where the thesis sits, how a source gets
-          introduced before it gets used, and what a sentence of commentary looks like when it is
-          doing work rather than restating evidence.
+          {written.tab === "FRQs"
+            ? "Do not copy the working. Copy the moves: how each part is set up, where the formula or evidence gets introduced, and what a line of justification looks like when it earns the point rather than restating the prompt."
+            : "Do not copy the sentences. Copy the moves: where the thesis sits, how a source gets introduced before it gets used, and what a sentence of commentary looks like when it is doing work rather than restating evidence."}
         </p>
       </GlassCard>
     </div>

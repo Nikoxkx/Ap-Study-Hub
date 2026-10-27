@@ -41,7 +41,7 @@ export default async function SearchPage({
           </h1>
           <p className="lede mt-3">
             {indexSize().toLocaleString("en-US")} indexed items across every course — notes, key
-            terms, cards, questions, and essays.
+            terms, cards, questions, essays, and FRQs.
           </p>
 
           <form action="/search" method="get" role="search" className="mt-7 grid gap-3 sm:grid-cols-[minmax(0,1fr)_12rem_auto] sm:items-center">

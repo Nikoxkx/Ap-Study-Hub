@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
 import type { ExamFrq, Rubric, RubricRow } from "@/content/exams/types";
+import { writtenWorkCopy } from "@/lib/subjects";
 
 /**
  * Self-scoring against the official rubric.
@@ -77,6 +78,7 @@ export function RubricSelfScore({
 }) {
   const [mark, setMark] = useStoredState<SelfMark>(`aps.selfscore.${courseSlug}.${frq.id}`, EMPTY_MARK, reviveMark);
   const [showRubric, setShowRubric] = useState(true);
+  const written = writtenWorkCopy(courseSlug);
 
   const words = useMemo(() => {
     const plain = response.replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ");
@@ -116,8 +118,8 @@ export function RubricSelfScore({
 
       {words < 25 ? (
         <p className="selfscore-warn">
-          This response is {words} words. A reader would not see a complete essay here — mark the rows honestly
-          rather than generously.
+          This response is {words} words. A reader would not see a complete {written.singular} here — mark the rows
+          honestly rather than generously.
         </p>
       ) : null}
 
