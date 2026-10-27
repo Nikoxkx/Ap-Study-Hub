@@ -11,6 +11,7 @@ import { getLessons, getSource } from "@/content/lessons";
 import type { Lesson } from "@/content/lessons";
 import { countWords } from "@/content/lessons/text";
 import { getBlueprint } from "@/content/exams/blueprints";
+import { exemplarEssays } from "@/content/exams/exemplars";
 import { subjects, type Subject, type SubjectSlug } from "./subjects";
 
 
@@ -287,7 +288,7 @@ export function getCourse(slug: SubjectSlug | string): CourseBundle | null {
     };
   });
 
-  const essays = essaysData[subject.slug] ?? [];
+  const essays = [...(essaysData[subject.slug] ?? []), ...exemplarEssays(subject.slug)];
   const tips = tipsData[subject.slug] ?? [];
   const mockExams = mockExamsData[subject.slug] ?? [];
 

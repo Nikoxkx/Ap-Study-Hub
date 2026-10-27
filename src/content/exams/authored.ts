@@ -817,7 +817,7 @@ export const macroFrqs: ExamFrq[] = [
     taskType: "Long Free Response",
     title: "Question 1 · Recessionary gap and fiscal policy",
     prompt:
-      "Assume the United States economy is in short-run equilibrium below full employment. The marginal propensity to consume is 0.8.\n\n(a) Draw a correctly labelled aggregate demand–aggregate supply graph showing the current equilibrium, labelling the recessionary gap.\n(b) Calculate the minimum change in government spending needed to close the gap if the gap is $200 billion. Show your work.\n(c) Explain how the spending change you calculated affects the loanable funds market and real interest rates.\n(d) Suppose instead the government cuts taxes by $200 billion. Explain why this would not close the gap.",
+      "Assume the United States economy is in short-run equilibrium below full employment. The marginal propensity to consume is 0.8.\n\n(a) Draw a correctly labelled aggregate demand–aggregate supply graph showing the current equilibrium, labelling the recessionary gap.\n(b) Calculate the minimum change in government spending needed to close the gap if the gap is $200 billion. Show your work.\n(c) Explain how the spending change you calculated affects the loanable funds market and real interest rates.\n(d) Suppose instead the government cuts taxes by $200 billion. Calculate the change in aggregate demand this produces, and explain why a $200 billion tax cut has a different effect from a $200 billion increase in government spending.",
     minutes: 30,
     rubricId: "macro-frq-1",
     rubric: partsRubric(
@@ -829,7 +829,7 @@ export const macroFrqs: ExamFrq[] = [
         { label: "(b) Multiplier", points: 2, expect: "numeric-work", note: "1/(1 − MPC) computed", full: "Calculates 1/(1 − 0.8) = 5.", zero: "No multiplier or an inverted formula." },
         { label: "(b) Spending change", points: 1, expect: "final-answer", note: "Gap divided by the multiplier with direction", full: "States an increase of $40 billion.", zero: "No value or the wrong direction." },
         { label: "(c) Loanable funds", points: 2, expect: "line-of-reasoning", note: "Demand shift, interest rate effect, crowding out", full: "Explains that government borrowing increases demand for loanable funds, raising the real interest rate and reducing private investment.", zero: "No mechanism or no interest-rate effect." },
-        { label: "(d) Tax multiplier", points: 2, expect: "justification", note: "Tax multiplier is smaller in magnitude", full: "Explains that the tax multiplier is −MPC/(1 − MPC) = −4, so a $200 billion cut raises output by $800 billion — or, if the gap requires $1,000 billion of total change, that a tax cut of this size is insufficient because part of it is saved.", zero: "Asserts that taxes do not work, with no multiplier reasoning." },
+        { label: "(d) Tax multiplier", points: 2, expect: "justification", note: "Tax multiplier is smaller in magnitude", full: "Computes the tax multiplier −MPC/(1 − MPC) = −4, so a $200 billion cut raises aggregate demand by $800 billion, and explains that the effect differs from spending because the first increment of a tax cut is partly saved (0.8 × $200 = $160 billion of new consumption).", zero: "Asserts that taxes do not work, with no multiplier reasoning." },
       ],
     ),
     points: 10,
@@ -852,7 +852,7 @@ export const macroFrqs: ExamFrq[] = [
       frames: ["The spending multiplier is 1/(1 − MPC) = ___.", "A $___ billion increase in government spending shifts AD right by ___.", "Government borrowing shifts ___ to the ___, raising ___."],
       pitfalls: ["Shifting SRAS for a demand policy.", "Forgetting to label the gap.", "Treating the tax multiplier as equal to the spending multiplier."],
     },
-    modelPath: ["(a) AD shifts right from AD₁ to AD₂, moving equilibrium toward LRAS.", "(b) Multiplier = 5; $200B ÷ 5 = $40B increase in spending.", "(c) Deficit borrowing raises demand for loanable funds, pushing real interest rates up and crowding out some investment.", "(d) The tax multiplier is −4, not 5, because households save part of a tax cut, so the same dollar amount changes output less."],
+    modelPath: ["(a) AD shifts right from AD₁ to AD₂, moving equilibrium toward LRAS.", "(b) Multiplier = 5; $200B ÷ 5 = $40B increase in spending.", "(c) Deficit borrowing raises demand for loanable funds, pushing real interest rates up and crowding out some investment.", "(d) The tax multiplier is −0.8/0.2 = −4, so a $200 billion tax cut raises aggregate demand by $800 billion; it is smaller per dollar than the spending multiplier of 5 because households save 20% of the cut, so the first round adds only $160 billion of consumption."],
   },
   {
     id: "ap-macro-frq-2",

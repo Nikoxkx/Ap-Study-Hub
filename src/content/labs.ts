@@ -144,6 +144,22 @@ export const courseLabs: CourseLab[] = [
     ],
   },
   {
+    id: "lit-dickinson-annotation", courseSlug: "ap-lit", unitNumber: 5, kind: "annotation",
+    title: "Close-read a poem the way the poetry essay asks you to",
+    sourceTitle: "Emily Dickinson, “Because I could not stop for Death” (c. 1863), public-domain excerpt",
+    sourceContext: "Dickinson's speaker narrates her own funeral journey in retrospect, addressing the reader from beyond death.",
+    instructions: "Select a segment, choose the analytical tag that names what the poet is doing, and write a sentence of commentary before revealing the model. The goal is commentary, not device-spotting: every model note says what the choice achieves.",
+    prompt: "How does Dickinson's personification and punctuation turn a death journey into a controlled, almost courteous narrative?",
+    tags: ["Personification", "Diction", "Syntax and punctuation", "Structure and turn", "Speaker's attitude", "Tone"],
+    segments: [
+      { id: "kindly", text: "Because I could not stop for Death –\nHe kindly stopped for me –", annotation: "Death is a polite gentleman caller, not a terror: 'kindly' and the capital H make him an agent with manners. The dashes replace expected punctuation, so the sentence never quite closes — the effect is a speaker who narrates calmly from inside an event she cannot interrupt. Model commentary: personification converts an abstraction into a social visit, which is what allows the poem's eerie composure." },
+      { id: "civility", text: "We slowly drove – He knew no haste\nAnd I had put away\nMy labor and my leisure too,\nFor His Civility –", annotation: "'Civility' is the poem's most surprising abstraction: dying is described as an exchange of courtesy. The speaker's surrender of 'labor and leisure' — the whole of a life — is stated with the same even tone as the carriage ride. The attitude is not fear but acquiescence, and the capitalized Civility makes it a social contract rather than a surrender." },
+      { id: "school", text: "We passed the School, where Children strove\nAt Recess – in the Ring –\nWe passed the Fields of Gazing Grain –\nWe passed the Setting Sun –", annotation: "The triple anaphora of 'We passed' walks the reader through childhood, maturity and the end of day in a single stanza, so the journey is a lifetime compressed. The detail is ordinary — schoolyard, grain, sunset — and its flatness keeps the poem from melodrama. Structure carries meaning here: the stanza's movement is chronological even though the speaker's position is outside time." },
+      { id: "chill", text: "The Dews drew quivering and Chill –\nFor only Gossamer, my Gown –\nMy Tippet – only Tulle –", annotation: "The shift from landscape to the speaker's body is where the poem's temperature drops. 'Gossamer' and 'Tulle' are wedding garments made of nothing, and 'quivering' introduces the only fear in the poem — felt by the body, not admitted by the voice. The gap between the calm narration and the cold detail is the poem's irony, and naming that gap is what earns commentary marks." },
+      { id: "eternity", text: "Since then – 'tis Centuries – and yet\nFeels shorter than the Day\nI first surmised the Horses' Heads\nWere toward Eternity –", annotation: "The final stanza reorders time: centuries feel shorter than the day the speaker understood where the carriage was headed. 'Surmised' is deliberately understated — she did not know, she guessed — and the poem ends on a dash rather than a stop, leaving the journey unresolved. A conclusion about the poem should account for that refusal to settle." },
+    ],
+  },
+  {
     id: "lang-inaugural-annotation", courseSlug: "ap-lang", unitNumber: 1, kind: "annotation",
     title: "Trace rhetorical choices in a public address",
     sourceTitle: "Abraham Lincoln, Second Inaugural Address (1865), public-domain excerpt",

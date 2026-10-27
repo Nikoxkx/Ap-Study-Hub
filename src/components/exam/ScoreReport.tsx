@@ -5,7 +5,8 @@ import { useMemo, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
 import type { Assessment } from "@/content/exams/types";
 import { getRubricForFrq, scoreAssessment, skillBreakdown, unitBreakdown } from "@/lib/exams";
-import { GraderPanel } from "./GraderPanel";
+import { RubricSelfScore } from "./RubricSelfScore";
+import { sanitizeRichText } from "@/lib/rich-text";
 
 /**
  * Score report.
@@ -327,19 +328,22 @@ export function ScoreReport({
               </details>
               <div className="score-frq-response">
                 <h5 className="label">What you wrote</h5>
-                <p>{drafts[frq.id]?.trim() || "Nothing was written for this task."}</p>
+                {/^\s*</.test(drafts[frq.id] ?? "") ? (
+                  <div
+                    className="score-frq-rich"
+                    dangerouslySetInnerHTML={{ __html: sanitizeRichText(drafts[frq.id] ?? "") }}
+                  />
+                ) : (
+                  <p>{drafts[frq.id]?.trim() || "Nothing was written for this task."}</p>
+                )}
               </div>
               {rubric ? (
-                <GraderPanel
+                <RubricSelfScore
                   courseSlug={courseSlug}
                   frq={frq}
                   rubric={rubric}
                   response={drafts[frq.id] ?? ""}
-                  sources={(frq.stimulusIds ?? [])
-                    .map((id) => assessment.stimuli.find((stimulus) => stimulus.id === id)?.text)
-                    .filter((text): text is string => Boolean(text))
-                    .join("\n\n")}
-                  onGraded={onFrqScore}
+                  onScored={onFrqScore}
                 />
               ) : null}
             </article>

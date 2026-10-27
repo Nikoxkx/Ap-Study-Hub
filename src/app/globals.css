@@ -165,34 +165,62 @@
   --subject: var(--color-subject);
   --subject-ink: #141414;
   --subject-tint: rgba(255, 255, 255, 0.32);
-  --glass-bg: rgba(217, 217, 217, 0.58);
-  --glass-border: #ffffff;
+  --glass-bg: rgba(226, 226, 226, 0.44);
+  --glass-border: rgba(255, 255, 255, 0.92);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.22);
 }
 
+/* Night mode is charcoal, not black.
+   Earlier revisions used #101010 surfaces stacked on one another, which read as
+   a black page with blacker boxes on it. Every surface here is a translucent
+   grey instead, so the classroom photograph behind the page stays faintly
+   visible and panels feel like smoked glass rather than cut-outs. The values
+   stay strictly neutral (equal R/G/B) — see the note at the top of the file —
+   and text keeps its 4.5:1 contrast because the dimming layer below the content
+   is what carries the darkness, not the panels themselves. */
 .dark {
   color-scheme: dark;
   accent-color: #d4d4d4;
-  --paper: #101010;
-  --paper-raised: #171717;
-  --paper-sunk: #0b0b0b;
-  --ink: #ededed;
-  --ink-soft: #c4c4c4;
-  --ink-faint: #9a9a9a;
-  --rule: #383838;
-  --rule-strong: #535353;
+  --paper: rgba(30, 30, 30, 0.44);
+  --paper-raised: rgba(52, 52, 52, 0.40);
+  --paper-sunk: rgba(22, 22, 22, 0.30);
+  --ink: #f0f0f0;
+  --ink-soft: #cdcdcd;
+  --ink-faint: #a8a8a8;
+  --rule: rgba(255, 255, 255, 0.20);
+  --rule-strong: rgba(255, 255, 255, 0.38);
   --mark: #ededed;
-  --mark-wash: #1e1e1e;
+  --mark-wash: rgba(255, 255, 255, 0.10);
   --good: #d9d9d9;
-  --good-wash: #1a1a1a;
+  --good-wash: rgba(255, 255, 255, 0.10);
   --warn: #d9d9d9;
-  --warn-wash: #202020;
-  --subject-tint: var(--color-subject-wash-dark, #1d1d1d);
-  --glass-bg: rgba(20, 20, 20, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.48);
-  --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.48);
-  --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.48);
+  --warn-wash: rgba(255, 255, 255, 0.14);
+  --subject-tint: rgba(255, 255, 255, 0.10);
+  --glass-bg: rgba(34, 34, 34, 0.40);
+  --glass-border: rgba(255, 255, 255, 0.26);
+  --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.38);
+  --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.38);
+}
+
+/* The page-wide dim sits under the content and over the wallpaper, in both
+   schemes. It replaces the old approach of painting each panel darker and
+   darker until the photograph was gone. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(246, 244, 239, 0.30), rgba(246, 244, 239, 0.52));
+}
+
+.dark body::before {
+  background: linear-gradient(180deg, rgba(16, 16, 16, 0.62), rgba(16, 16, 16, 0.76));
+}
+
+@media print {
+  body::before { display: none; }
 }
 
 /* Each AP class keeps its own accent (from src/lib/subjects.ts): `ink` on light
@@ -414,8 +442,8 @@ table,
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(16px) saturate(118%);
+  -webkit-backdrop-filter: blur(16px) saturate(118%);
   border-radius: 17px;
   color: var(--ink);
 }
@@ -4554,18 +4582,18 @@ html.is-entering footer[data-site-footer] {
   z-index: 120;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
-  /* The room must be opaque even in light mode, where --paper is transparent
-     over the page painting. A frosted near-white keeps the room calm without
-     letting the syllabus show through the paper. */
-  background: rgba(246, 245, 241, 0.97);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* Frosted rather than painted: the room still needs to read as a separate
+     surface, so it keeps a heavier blur than the page panels while letting the
+     room behind it stay faintly present. */
+  background: rgba(240, 239, 235, 0.86);
+  backdrop-filter: blur(26px) saturate(110%);
+  -webkit-backdrop-filter: blur(26px) saturate(110%);
   color: var(--ink);
   font-family: var(--font-ui);
 }
 
 .dark .exam-room {
-  background: rgba(16, 16, 16, 0.98);
+  background: rgba(26, 26, 26, 0.72);
 }
 
 .exam-room-bar {
@@ -5111,3 +5139,411 @@ html.is-entering footer[data-site-footer] {
   text-underline-offset: 0.18em;
 }
 .deadline-card-links a + a { color: var(--ink-soft); }
+
+/* ------------------------------------------------------------------ */
+/* Exam hub mode cards                                                 */
+/* ------------------------------------------------------------------ */
+
+/* The two modes are the first decision a student makes on this page, so they
+   behave like physical cards: lift, focus ring, and a moving sheen on hover. */
+.exam-mode-switch button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 240ms var(--ease-settle),
+    border-color 200ms var(--ease-snap),
+    background 200ms var(--ease-snap),
+    box-shadow 260ms var(--ease-settle);
+}
+.exam-mode-switch button::after {
+  content: "";
+  position: absolute;
+  inset: -40% -60%;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.55) 48%, transparent 58%);
+  transform: translateX(-70%);
+  opacity: 0;
+  transition: transform 620ms var(--ease-settle), opacity 320ms var(--ease-snap);
+}
+.exam-mode-switch button strong {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.exam-mode-switch button strong::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  border: 1.5px solid currentColor;
+  opacity: 0.45;
+  transition: background 200ms var(--ease-snap), opacity 200ms var(--ease-snap), transform 260ms var(--ease-settle);
+}
+.exam-mode-switch button:hover {
+  transform: translateY(-3px);
+  border-color: var(--subject-ink, var(--ink));
+  box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.55);
+}
+.exam-mode-switch button:hover::after,
+.exam-mode-switch button:focus-visible::after {
+  transform: translateX(70%);
+  opacity: 1;
+}
+.exam-mode-switch button:hover strong::before {
+  transform: scale(1.25);
+  opacity: 0.9;
+}
+.exam-mode-switch button:focus-visible {
+  outline: 2px solid var(--subject-ink, var(--ink));
+  outline-offset: 3px;
+}
+.exam-mode-switch button[aria-selected="true"] {
+  background: var(--subject-tint, var(--paper-raised));
+}
+.exam-mode-switch button[aria-selected="true"] strong::before {
+  background: currentColor;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exam-mode-switch button::after { display: none; }
+  .exam-mode-switch button:hover { transform: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Exam room · Bluebook-shaped chrome                                 */
+/* ------------------------------------------------------------------ */
+
+/* The room eases in instead of cutting: a slow fade with a blur that resolves,
+   so starting a paper feels like sitting down rather than being dropped. */
+@keyframes exam-room-enter {
+  0% { opacity: 0; filter: blur(14px); transform: scale(0.994); }
+  55% { opacity: 0.9; filter: blur(4px); }
+  100% { opacity: 1; filter: blur(0); transform: none; }
+}
+.exam-room {
+  animation: exam-room-enter 720ms var(--ease-settle) both;
+}
+.exam-room-question-inner > *,
+.exam-room-source-scroll {
+  animation: exam-room-content 900ms var(--ease-settle) both;
+}
+@keyframes exam-room-content {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exam-room, .exam-room-question-inner > *, .exam-room-source-scroll { animation: none; }
+}
+
+/* Single-column layout when the question has no stimulus, exactly as the real
+   app gives a standalone question the whole width. */
+.exam-room[data-layout="single"] .exam-room-body { grid-template-columns: minmax(0, 1fr); }
+.exam-room[data-layout="single"] .exam-room-question-inner {
+  max-width: 76ch;
+  margin-inline: auto;
+}
+
+.exam-room-tools { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+.exam-room-button {
+  padding: 0.36rem 0.7rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0.4rem;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.76rem;
+  line-height: 1.1;
+  cursor: pointer;
+  transition: background 160ms var(--ease-snap), border-color 160ms var(--ease-snap);
+}
+.exam-room-button:hover { background: var(--paper-sunk); border-color: var(--ink); }
+.exam-room-button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.exam-room-mark {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.exam-room-mark[aria-pressed="true"] { color: var(--ink); background: var(--mark-wash); border-color: var(--ink); }
+
+/* Excerpt highlights */
+.exam-highlight {
+  background: color-mix(in srgb, var(--subject-ink, #d8b24a) 26%, transparent);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+  cursor: pointer;
+  box-decoration-break: clone;
+}
+.exam-highlight:hover { background: color-mix(in srgb, var(--subject-ink, #d8b24a) 40%, transparent); }
+.exam-highlight-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-sunk);
+  font-size: 0.74rem;
+}
+.exam-highlight-list { list-style: none; margin: 0.5rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.exam-highlight-list li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.82rem;
+}
+.exam-highlight-quote { font-family: var(--font-display); }
+
+/* Written response: a small rich-text editor, as the digital exam provides. */
+.exam-editor { border: 1px solid var(--rule-strong); border-radius: 0.5rem; overflow: hidden; }
+.exam-editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.4rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-sunk);
+}
+.exam-editor-toolbar button {
+  width: 1.9rem;
+  height: 1.9rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 0.3rem;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.exam-editor-toolbar button:hover { border-color: var(--rule-strong); background: var(--paper-raised); }
+.exam-editor-divider { width: 1px; height: 1.2rem; background: var(--rule-strong); margin-inline: 0.2rem; }
+.exam-editor-hint { margin-left: auto; font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-faint); }
+.exam-editor-surface {
+  min-height: 18rem;
+  padding: 0.9rem 1rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--paper-raised);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  outline: none;
+  overflow-y: auto;
+}
+.exam-editor-surface:empty::before,
+.exam-editor-surface[data-empty="true"]::before {
+  content: attr(data-placeholder);
+  color: var(--ink-faint);
+}
+.exam-editor-surface:focus { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--subject-ink, var(--ink)) 45%, transparent); }
+.exam-room-save {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+}
+.exam-room-save[data-state="saved"] { color: var(--good); }
+
+/* Directions / highlights dialogs reuse the review sheet shell. */
+.exam-directions-panel { max-width: 46rem; }
+.exam-directions-text { margin-top: 0.9rem; font-size: 0.9rem; line-height: 1.65; white-space: pre-wrap; }
+.exam-directions-parts { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.45rem; }
+.exam-directions-parts li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.82rem;
+}
+.exam-directions-parts span { color: var(--ink-soft); }
+.exam-directions-fine { margin-top: 1rem; font-size: 0.72rem; color: var(--ink-faint); }
+
+@media (max-width: 900px) {
+  .exam-room-tools { order: 4; flex: 1 1 100%; }
+  .exam-room-finish { order: 3; }
+  .exam-room[data-layout="single"] .exam-room-question-inner { padding-inline: 0.9rem; }
+  .exam-editor-surface { min-height: 14rem; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Self-scoring against the official rubric                            */
+/* ------------------------------------------------------------------ */
+
+.selfscore { margin-top: 1rem; border-top: 1px solid var(--rule); padding-top: 1rem; }
+.selfscore-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.selfscore-head h4 { margin: 0.1rem 0 0.25rem; font-family: var(--font-display); font-size: 1.05rem; }
+.selfscore-source { font-size: 0.76rem; color: var(--ink-faint); max-width: 60ch; }
+.selfscore-total { text-align: right; flex-shrink: 0; }
+.selfscore-total strong { font-family: var(--font-display); font-size: 2rem; font-weight: 500; }
+.selfscore-total span { font-size: 0.9rem; color: var(--ink-faint); }
+.selfscore-total p { font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); }
+.selfscore-total[data-complete="true"] strong { color: var(--good); }
+
+.selfscore-warn {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.7rem;
+  border-left: 3px solid var(--warn);
+  background: var(--warn-wash);
+  font-size: 0.8rem;
+}
+.selfscore-actions { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.75rem; }
+.selfscore-words { font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-faint); }
+
+.selfscore-rows { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 1.25rem; }
+.selfscore-rows > li { padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
+.selfscore-row-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.selfscore-row-head strong { font-size: 0.92rem; }
+.selfscore-max { margin-left: 0.5rem; font-family: var(--font-mono); font-size: 0.66rem; color: var(--ink-faint); }
+.selfscore-scale { display: flex; gap: 0.25rem; }
+.selfscore-scale button {
+  min-width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0.35rem;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 140ms var(--ease-snap), border-color 140ms var(--ease-snap), transform 140ms var(--ease-settle);
+}
+.selfscore-scale button:hover { transform: translateY(-1px); border-color: var(--ink); }
+.selfscore-scale button[data-chosen="true"] {
+  background: var(--mark);
+  border-color: var(--mark);
+  color: #fff;
+  font-weight: 600;
+}
+.dark .selfscore-scale button[data-chosen="true"] { color: #111; }
+
+.selfscore-descriptors { list-style: none; margin: 0.7rem 0 0; padding: 0; display: grid; gap: 0.35rem; }
+.selfscore-descriptors li {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.79rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.selfscore-descriptors li[data-current="true"] {
+  color: var(--ink);
+  background: var(--mark-wash);
+  border-radius: 0.3rem;
+  padding: 0.15rem 0.35rem;
+  margin-inline: -0.35rem;
+}
+.selfscore-points {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  text-align: right;
+}
+.selfscore-chosen { margin-top: 0.6rem; font-size: 0.8rem; color: var(--ink-soft); }
+.selfscore-note { display: block; margin-top: 0.7rem; }
+.selfscore-note textarea { margin-top: 0.3rem; font-size: 0.82rem; }
+.selfscore-foot { margin-top: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+.selfscore-fine { margin-top: 0.5rem; font-size: 0.72rem; color: var(--ink-faint); }
+
+.score-frq-rich {
+  font-size: 0.86rem;
+  line-height: 1.65;
+  white-space: normal;
+}
+.score-frq-rich p { margin: 0 0 0.6rem; }
+.score-frq-rich ul,
+.score-frq-rich ol { margin: 0.4rem 0 0.6rem 1.2rem; }
+
+/* ------------------------------------------------------------------ */
+/* Full-credit exemplars                                              */
+/* ------------------------------------------------------------------ */
+
+.exemplar {
+  margin-top: 1.25rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0.6rem;
+  background: var(--paper-sunk);
+}
+.exemplar[data-open="true"] { background: var(--paper-raised); }
+.exemplar-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.exemplar-head h5 { margin: 0.15rem 0 0.2rem; font-family: var(--font-display); font-size: 1.02rem; line-height: 1.3; }
+.exemplar-scale { font-family: var(--font-mono); font-size: 0.66rem; color: var(--ink-faint); }
+.exemplar-teaser { margin-top: 0.6rem; font-size: 0.8rem; color: var(--ink-soft); }
+.exemplar-framing {
+  margin-top: 0.9rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--mark);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.exemplar-craft { margin: 0.9rem 0 0 1.1rem; display: grid; gap: 0.3rem; font-size: 0.82rem; }
+.exemplar-body {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  line-height: 1.72;
+}
+.exemplar-body h6 { margin-top: 1.1rem; }
+.exemplar-body h6:first-child { margin-top: 0; }
+.exemplar-body p { margin-bottom: 0.75rem; }
+.exemplar-breakdown-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule-strong);
+  flex-wrap: wrap;
+}
+.exemplar-rows { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 1rem; }
+.exemplar-rows > li { padding-bottom: 0.9rem; border-bottom: 1px solid var(--rule); }
+.exemplar-row-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.exemplar-row-head strong { font-size: 0.86rem; }
+.exemplar-row-head span {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink);
+  background: var(--mark-wash);
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+}
+.exemplar-rows blockquote {
+  margin: 0.5rem 0;
+  padding-left: 0.7rem;
+  border-left: 2px solid var(--rule-strong);
+  font-family: var(--font-display);
+  font-size: 0.84rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.exemplar-rows p { font-size: 0.82rem; line-height: 1.6; }
+.exemplar-avoids { margin-top: 1rem; font-size: 0.8rem; color: var(--ink-soft); }
+.exemplar-avoids ul { margin: 0.35rem 0 0 1.1rem; display: grid; gap: 0.25rem; }
+
+@media (max-width: 700px) {
+  .exemplar-head { flex-direction: column; }
+  .exemplar-body { font-size: 0.88rem; line-height: 1.66; }
+}
+.selfscore-link {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.selfscore-link:hover { color: var(--ink); }
+@media (max-width: 700px) { .selfscore-link { margin-left: 0; } }

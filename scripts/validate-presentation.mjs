@@ -35,9 +35,19 @@ else {
   ];
   for (const token of neutralTokens) {
     const declaration = darkTokens.match(new RegExp(`${token.replaceAll("-", "\\-")}:\\s*([^;]+);`));
-    const hex = declaration?.[1].match(/#[0-9a-fA-F]{6}/)?.[0];
-    if (!hex) fail(`${token} has no hex colour in .dark`);
-    else if (!isNeutralHex(hex)) fail(`${token} is tinted: ${hex}`);
+    const value = declaration?.[1] ?? "";
+    // A surface may be a neutral grey hex or a neutral white/black alpha wash —
+    // both are grayscale. Anything with an unequal channel is a colour cast.
+    const hex = value.match(/#[0-9a-fA-F]{6}/)?.[0];
+    const rgba = value.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,/);
+    if (hex) {
+      if (!isNeutralHex(hex)) fail(`${token} is tinted: ${hex}`);
+    } else if (rgba) {
+      const [, r, g, b] = rgba;
+      if (r !== g || g !== b) fail(`${token} is tinted: ${value.trim()}`);
+    } else {
+      fail(`${token} has no colour in .dark`);
+    }
   }
 }
 if (!/\.dark body \{\s*background-image: none;/.test(css)) {

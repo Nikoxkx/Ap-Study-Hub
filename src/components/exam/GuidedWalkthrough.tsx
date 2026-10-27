@@ -5,6 +5,8 @@ import { useState } from "react";
 import { mcqStrategies } from "@/content/exams/rubrics";
 import type { Assessment, ExamQuestion, Stimulus } from "@/content/exams/types";
 import { WritingCoach } from "./WritingCoach";
+import { ExemplarResponse } from "./ExemplarResponse";
+import { getExemplar } from "@/content/exams/exemplars";
 
 /**
  * Guided walkthrough.
@@ -267,7 +269,9 @@ export function GuidedWalkthrough({
         </ol>
       ) : (
         <div className="walk-frqs">
-          {section.frqs.map((frq) => (
+          {section.frqs.map((frq) => {
+            const exemplar = getExemplar(frq.id);
+            return (
             <article key={frq.id} className="sheet walk-frq">
               <header>
                 <p className="label">
@@ -292,8 +296,10 @@ export function GuidedWalkthrough({
                 </ol>
               </div>
               <WritingCoach frq={frq} rubricTotal={frq.points} />
+              {exemplar ? <ExemplarResponse exemplar={exemplar} /> : null}
             </article>
-          ))}
+            );
+          })}
         </div>
       )}
 

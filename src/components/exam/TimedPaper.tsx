@@ -8,6 +8,11 @@ import type { SubjectSlug } from "@/lib/subjects";
 import type { Assessment, ExamFrq, ExamQuestion, Stimulus } from "@/content/exams/types";
 import { WritingCoach } from "./WritingCoach";
 import { ScoreReport } from "./ScoreReport";
+import {
+  richTextWordCount,
+  sanitizeRichText,
+  savedLabel,
+} from "@/lib/rich-text";
 
 /**
  * Full interim assessment, sat under the clock.
@@ -73,16 +78,19 @@ export function TimedPaper({
   courseSlug,
   courseLabel,
   onGuided,
+  startInRoom = false,
 }: {
   assessment: Assessment;
   courseSlug: SubjectSlug;
   courseLabel: string;
   onGuided?: () => void;
+  /** Render straight into the first section. Used by the markup validator. */
+  startInRoom?: boolean;
 }) {
   const { blueprint } = assessment;
   const storage = `aps.assessment.${courseSlug}`;
 
-  const [phase, setPhase] = useState<Phase>("briefing");
+  const [phase, setPhase] = useState<Phase>(startInRoom ? "sitting" : "briefing");
   const [sectionIndex, setSectionIndex] = useState(0);
   const [deadline, setDeadline] = useState<number | null>(null);
   const [remaining, setRemaining] = useState(0);
@@ -106,6 +114,15 @@ export function TimedPaper({
   // Answer eliminator, as the digital exam offers: a crossed-out option stays
   // readable but is visibly ruled out. Stored as "0,2" per question.
   const [crossed, setCrossed] = useStoredState<Record<string, string>>(`${storage}.crossed`, NO_TEXT, reviveText);
+  // Excerpt highlights, stored per paragraph as "start-end" ranges. The real
+  // exam offers annotation tools; this is the same idea in a form that survives
+  // a reload.
+  const [marks, setMarks] = useStoredState<Record<string, string>>(`${storage}.marks`, NO_TEXT, reviveText);
+  const [pendingMark, setPendingMark] = useState<{ stimulusId: string; paragraph: number; start: number; end: number } | null>(null);
+  const [dirOpen, setDirOpen] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [nowTick, setNowTick] = useState(() => Date.now());
 
   const section = assessment.sections[sectionIndex];
   const breakSpec = blueprint.breaks.find((item) => item.afterSectionId === section?.id);
@@ -168,6 +185,13 @@ export function TimedPaper({
     };
   }, [phase]);
 
+  // The save indicator counts up, so it needs a slow clock of its own.
+  useEffect(() => {
+    if (phase !== "sitting") return;
+    const id = window.setInterval(() => setNowTick(Date.now()), 5_000);
+    return () => window.clearInterval(id);
+  }, [phase]);
+
   // Opening the answer sheet moves focus into it, so a keyboard user is not
   // left tabbing behind the dialog.
   useEffect(() => {
@@ -207,6 +231,9 @@ export function TimedPaper({
       setActiveTask(0);
       setSheetOpen(false);
       setMobileSource(false);
+      setDirOpen(false);
+      setNotesOpen(false);
+      setPendingMark(null);
       setPhase("sitting");
     },
     [assessment.sections],
@@ -405,9 +432,7 @@ export function TimedPaper({
   const low = remaining <= 300;
   const answered = section.questions.filter((question) => mcqAnswers[question.key] !== undefined).length;
   const flagged = section.questions.filter((question) => flags[question.key]).length;
-  const unfinishedWrites = section.frqs.filter(
-    (frq) => (drafts[frq.id] ?? "").trim().split(/\s+/).filter(Boolean).length < 20,
-  ).length;
+  const unfinishedWrites = section.frqs.filter((frq) => richTextWordCount(drafts[frq.id] ?? "") < 20).length;
 
   const isMcq = section.type === "mcq";
   const question = isMcq ? section.questions[Math.min(activeQuestion, section.questions.length - 1)] : null;
@@ -421,6 +446,9 @@ export function TimedPaper({
   const sourceTitle = isMcq
     ? sourceStimuli[0]?.title ?? "No excerpt for this question"
     : sourceStimuli[0]?.title ?? "This task gives no excerpt";
+  // The real app gives the question the whole width when there is nothing to
+  // read beside it, so the panes only split when a stimulus exists.
+  const hasSource = sourceStimuli.length > 0;
 
   const goToQuestion = (index: number) => {
     setActiveQuestion(index);
@@ -455,275 +483,329 @@ export function TimedPaper({
     }
   };
 
+  const highlightsFor = (stimulusId: string, paragraph: number): [number, number][] =>
+    (marks[`${stimulusId}:${paragraph}`] ?? "")
+      .split(",")
+      .map((chunk) => chunk.split("-").map((value) => Number.parseInt(value, 10)))
+      .filter((pair): pair is [number, number] => pair.length === 2 && pair.every(Number.isFinite))
+      .map(([start, end]) => [start, end] as [number, number])
+      .filter(([start, end]) => end > start);
+
+  const highlightCount = Object.values(marks).filter(Boolean).length;
+
+  const applyHighlight = (stimulusId: string, paragraph: number, start: number, end: number) => {
+    setMarks((current) => {
+      const key = `${stimulusId}:${paragraph}`;
+      const existing = (current[key] ?? "")
+        .split(",")
+        .map((chunk) => chunk.split("-").map((value) => Number.parseInt(value, 10)))
+        .filter((pair): pair is [number, number] => pair.length === 2 && pair.every(Number.isFinite));
+      const merged = mergeRanges([...existing, [start, end] as [number, number]]);
+      return { ...current, [key]: merged.map(([a, b]) => `${a}-${b}`).join(",") };
+    });
+    setPendingMark(null);
+  };
+
+  const clearHighlight = (stimulusId: string, paragraph: number) => {
+    setMarks((current) => {
+      const next = { ...current };
+      delete next[`${stimulusId}:${paragraph}`];
+      return next;
+    });
+  };
+
+  const captureSelection = () => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed || !selection.rangeCount) {
+      setPendingMark(null);
+      return;
+    }
+    const range = selection.getRangeAt(0);
+    const findParagraph = (node: Node | null): HTMLElement | null => {
+      const element = node?.nodeType === Node.ELEMENT_NODE ? (node as HTMLElement) : node?.parentElement ?? null;
+      return element?.closest<HTMLElement>("[data-para]") ?? null;
+    };
+    const startParagraph = findParagraph(range.startContainer);
+    const endParagraph = findParagraph(range.endContainer);
+    const stimulusId = startParagraph?.dataset.stimulus;
+    const paragraph = Number.parseInt(startParagraph?.dataset.para ?? "", 10);
+    if (!startParagraph || !stimulusId || !Number.isFinite(paragraph)) {
+      setPendingMark(null);
+      return;
+    }
+    if (endParagraph !== startParagraph) {
+      setPendingMark(null);
+      return;
+    }
+    const before = document.createRange();
+    before.selectNodeContents(startParagraph);
+    before.setEnd(range.startContainer, range.startOffset);
+    const start = before.toString().length;
+    const length = range.toString().length;
+    if (!length) {
+      setPendingMark(null);
+      return;
+    }
+    setPendingMark({ stimulusId, paragraph, start, end: start + length });
+  };
+
+  const changeDraft = (frqId: string, html: string) => {
+    setDrafts((current) => ({ ...current, [frqId]: sanitizeRichText(html) }));
+    setSavedAt(Date.now());
+  };
+
+  const formatDraft = (command: "bold" | "italic" | "underline" | "insertUnorderedList" | "insertOrderedList") => {
+    document.execCommand(command, false);
+    const editor = document.querySelector<HTMLElement>("[data-editor='true']");
+    if (editor) changeDraft(task?.id ?? "", editor.innerHTML);
+  };
+
+  const saveState = savedLabel(savedAt, nowTick);
+
   return (
-    <div className="exam-room" data-pane={mobileSource ? "source" : "question"}>
-      <header className="exam-room-bar">
-        <div className="exam-room-id">
-          <p className="label">
-            {courseLabel} · Section {sectionIndex + 1} of {assessment.sections.length}
-          </p>
-          <strong>{section.name}</strong>
-        </div>
+    <>
+      <div
+        className="exam-room"
+        data-pane={mobileSource ? "source" : "question"}
+        data-layout={hasSource ? "split" : "single"}
+        key={`room-${sectionIndex}`}
+      >
+        <header className="exam-room-bar">
+          <div className="exam-room-id">
+            <p className="label">
+              {courseLabel} · Section {sectionIndex + 1} of {assessment.sections.length}
+            </p>
+            <strong>{section.name}</strong>
+          </div>
 
-        <div className="exam-room-clock" data-low={low ? "true" : "false"} data-expired={expired ? "true" : "false"}>
-          <span className="label">{expired ? "time up" : "remaining"}</span>
-          <p>{clock(remaining)}</p>
-        </div>
+          <div className="exam-room-tools" role="group" aria-label="Exam tools">
+            <button
+              type="button"
+              className="exam-room-button"
+              aria-expanded={dirOpen}
+              onClick={() => setDirOpen(true)}
+            >
+              Directions
+            </button>
+            <button
+              type="button"
+              className="exam-room-button"
+              aria-expanded={notesOpen}
+              onClick={() => setNotesOpen(true)}
+            >
+              Highlights{highlightCount ? ` (${highlightCount})` : ""}
+            </button>
+            <button
+              type="button"
+              className="exam-room-button exam-room-sheet-toggle"
+              aria-expanded={sheetOpen}
+              onClick={() => setSheetOpen(true)}
+            >
+              Review
+            </button>
+            <button type="button" className="exam-room-button exam-room-fullscreen" onClick={toggleFullscreen}>
+              Full screen
+            </button>
+          </div>
 
-        <div className="exam-room-actions">
-          <button
-            type="button"
-            className="exam-room-button exam-room-sheet-toggle"
-            aria-expanded={sheetOpen}
-            onClick={() => setSheetOpen(true)}
+          <div
+            className="exam-room-clock"
+            data-low={low ? "true" : "false"}
+            data-expired={expired ? "true" : "false"}
+            aria-live="off"
           >
-            Answer sheet
-          </button>
-          <button type="button" className="exam-room-button exam-room-fullscreen" onClick={toggleFullscreen}>
-            Full screen
-          </button>
+            <span className="label">{expired ? "time up" : "time remaining"}</span>
+            <p>{clock(remaining)}</p>
+          </div>
+
           <button type="button" className="exam-room-button exam-room-finish" onClick={finishSection}>
             {sectionIndex + 1 < assessment.sections.length ? "Finish section" : "Finish paper"}
           </button>
+        </header>
+
+        <div className="exam-room-progress">
+          {isMcq ? (
+            <>
+              <span>
+                Question {Math.min(activeQuestion + 1, section.questions.length)} of {section.questions.length}
+              </span>
+              <span>{answered} answered</span>
+              <span>{flagged} marked for review</span>
+              <span>Pace {clock(Math.round((section.minutes * 60) / Math.max(1, section.questions.length)))}/question</span>
+            </>
+          ) : (
+            <>
+              <span>
+                Task {Math.min(activeTask + 1, section.frqs.length)} of {section.frqs.length}
+              </span>
+              <span>{unfinishedWrites} under 20 words</span>
+              <span>Pace {clock(Math.round((section.minutes * 60) / Math.max(1, section.frqs.length)))}/task</span>
+            </>
+          )}
+          {section.calculator ? <span>Calculator {section.calculator.replace("-", " ")}</span> : null}
+          {expired ? <span className="exam-room-timeup">Time is up — stop writing</span> : null}
         </div>
-      </header>
 
-      <div className="exam-room-progress">
-        {isMcq ? (
-          <>
-            <span>
-              Question {Math.min(activeQuestion + 1, section.questions.length)} of {section.questions.length}
-            </span>
-            <span>{answered} answered</span>
-            <span>{flagged} flagged</span>
-            <span>Pace {clock(Math.round((section.minutes * 60) / Math.max(1, section.questions.length)))}/question</span>
-          </>
-        ) : (
-          <>
-            <span>
-              Task {Math.min(activeTask + 1, section.frqs.length)} of {section.frqs.length}
-            </span>
-            <span>{unfinishedWrites} under 20 words</span>
-            <span>Pace {clock(Math.round((section.minutes * 60) / Math.max(1, section.frqs.length)))}/task</span>
-          </>
-        )}
-        {section.calculator ? (
-          <span>Calculator {section.calculator.replace("-", " ")}</span>
-        ) : null}
-        {expired ? <span className="exam-room-timeup">Time is up — stop writing</span> : null}
-      </div>
-
-      <div className="exam-room-body">
-        <section className="exam-room-source" aria-label="Excerpt">
-          <div className="exam-room-source-head">
-            <p className="label">{isMcq ? "Excerpt" : "Sources"}</p>
-            <strong>{sourceTitle}</strong>
-            {sourceStimuli[0]?.attribution ? (
-              <span className="exam-attribution">{sourceStimuli[0].attribution}</span>
-            ) : null}
-          </div>
-          <div className="exam-room-source-scroll">
-            {sourceStimuli.length ? (
-              sourceStimuli.map((stimulus) => (
-                <figure key={stimulus.id} className="exam-room-figure">
-                  {sourceStimuli.length > 1 ? (
-                    <figcaption>
-                      <span className="label">{stimulus.kind}</span>
-                      <strong>{stimulus.title}</strong>
-                      {stimulus.attribution ? (
-                        <span className="exam-attribution">{stimulus.attribution}</span>
-                      ) : null}
-                    </figcaption>
+        <div className="exam-room-body">
+          {hasSource ? (
+            <section className="exam-room-source" aria-label="Excerpt">
+              <div className="exam-room-source-head">
+                <div>
+                  <p className="label">{isMcq ? "Excerpt" : "Sources"}</p>
+                  <strong>{sourceTitle}</strong>
+                  {sourceStimuli[0]?.attribution ? (
+                    <span className="exam-attribution">{sourceStimuli[0].attribution}</span>
                   ) : null}
-                  {stimulus.note ? <p className="exam-note">{stimulus.note}</p> : null}
-                  <pre className="exam-passage">{stimulus.text}</pre>
-                </figure>
-              ))
-            ) : (
-              <div className="exam-room-reference">
-                <h4>This question stands alone</h4>
-                <p>
-                  {isMcq
-                    ? "There is no passage for this item. Work from the stem and your own knowledge of the course."
-                    : "This task gives no passage. Use a work you have read closely, or the documents named in the prompt."}
-                </p>
-                <h4>Section directions</h4>
-                <p>{section.directions}</p>
-                <ul>
-                  {section.parts?.map((part) => (
-                    <li key={part.label}>
-                      {part.label} · {part.minutes} min
-                      {part.calculator ? ` · calculator ${part.calculator}` : ""}
-                    </li>
-                  ))}
-                </ul>
-                <p className="exam-room-reference-fine">
-                  Excerpts are public domain or written for this site. Nothing here is a released College Board
-                  question.
-                </p>
+                </div>
+                <button
+                  type="button"
+                  className="exam-room-mobile-toggle"
+                  aria-pressed={mobileSource}
+                  onClick={() => setMobileSource((value) => !value)}
+                >
+                  {mobileSource ? "Back to the question" : "Show the excerpt"}
+                </button>
               </div>
-            )}
-          </div>
-        </section>
 
-        <section className="exam-room-question" id="exam-question-pane" aria-label="Question">
-          <div className="exam-room-question-inner">
-            {isMcq && question ? (
-              <>
-                <div className="exam-room-micro">
+              {pendingMark ? (
+                <div className="exam-highlight-bar" role="status">
+                  <span>Selection highlighted?</span>
                   <button
                     type="button"
-                    className="exam-room-mobile-toggle"
-                    aria-pressed={mobileSource}
-                    onClick={() => setMobileSource((value) => !value)}
+                    className="btn btn-solid btn-sm"
+                    onClick={() => applyHighlight(pendingMark.stimulusId, pendingMark.paragraph, pendingMark.start, pendingMark.end)}
                   >
-                    {mobileSource ? "Back to the question" : "Show the excerpt"}
+                    Highlight
                   </button>
-                  <span className="exam-room-counter">
-                    {Math.min(activeQuestion + 1, section.questions.length)} / {section.questions.length}
-                  </span>
+                  <button type="button" className="btn btn-quiet btn-sm" onClick={() => setPendingMark(null)}>
+                    Cancel
+                  </button>
                 </div>
+              ) : null}
 
-                <fieldset className="exam-room-fieldset">
-                  <legend className="exam-room-stem">
-                    <span className="exam-question-number">
-                      {String(activeQuestion + 1).padStart(2, "0")}
-                    </span>
-                    <span>{question.question}</span>
-                  </legend>
-                  <div className="exam-options exam-room-options">
-                    {question.options.map((option, optionIndex) => {
-                      const selected = mcqAnswers[question.key] === optionIndex;
-                      const isCrossed = (crossed[question.key] ?? "")
-                        .split(",")
-                        .includes(String(optionIndex));
-                      return (
-                        <div key={optionIndex} className="exam-option-row" data-crossed={isCrossed ? "true" : "false"}>
-                          <label data-selected={selected ? "true" : "false"} data-crossed={isCrossed ? "true" : "false"}>
-                            <input
-                              type="radio"
-                              name={question.key}
-                              checked={selected}
-                              onChange={() =>
-                                setMcqAnswers((current) => ({ ...current, [question.key]: optionIndex }))
-                              }
-                              className="sr-only"
-                            />
-                            <span className="exam-option-letter">{LETTERS[optionIndex]}</span>
-                            <span>{option}</span>
-                          </label>
-                          <button
-                            type="button"
-                            className="exam-option-cross"
-                            aria-pressed={isCrossed}
-                            aria-label={`${isCrossed ? "Restore" : "Cross out"} option ${LETTERS[optionIndex]}`}
-                            onClick={() => toggleCrossed(question.key, optionIndex)}
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </fieldset>
+              <div className="exam-room-source-scroll" onMouseUp={captureSelection} onKeyUp={captureSelection}>
+                {sourceStimuli.map((stimulus) => (
+                  <figure key={stimulus.id} className="exam-room-figure">
+                    {sourceStimuli.length > 1 ? (
+                      <figcaption>
+                        <span className="label">{stimulus.kind}</span>
+                        <strong>{stimulus.title}</strong>
+                        {stimulus.attribution ? (
+                          <span className="exam-attribution">{stimulus.attribution}</span>
+                        ) : null}
+                      </figcaption>
+                    ) : null}
+                    {stimulus.note ? <p className="exam-note">{stimulus.note}</p> : null}
+                    <div className="exam-passage">
+                      {stimulus.text.split(/\n{2,}/).map((paragraph, paragraphIndex) => (
+                        <p
+                          key={paragraphIndex}
+                          data-stimulus={stimulus.id}
+                          data-para={paragraphIndex}
+                          className="exam-paragraph"
+                        >
+                          {segmentsOf(paragraph, highlightsFor(stimulus.id, paragraphIndex)).map((segment, index) =>
+                            segment.highlighted ? (
+                              <mark
+                                key={index}
+                                className="exam-highlight"
+                                title="Click to remove this highlight"
+                                onClick={() => clearHighlight(stimulus.id, paragraphIndex)}
+                              >
+                                {segment.text}
+                              </mark>
+                            ) : (
+                              <span key={index}>{segment.text}</span>
+                            ),
+                          )}
+                        </p>
+                      ))}
+                    </div>
+                  </figure>
+                ))}
+              </div>
+            </section>
+          ) : null}
 
-                <div className="exam-room-controls">
-                  <button
-                    type="button"
-                    className="btn btn-outline btn-sm"
-                    onClick={() => step(-1)}
-                    disabled={activeQuestion === 0}
-                  >
-                    ← Previous
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-quiet btn-sm"
-                    aria-pressed={Boolean(flags[question.key])}
-                    onClick={() => setFlags((current) => ({ ...current, [question.key]: !current[question.key] }))}
-                  >
-                    {flags[question.key] ? "⚑ Flagged" : "⚑ Flag for review"}
-                  </button>
-                  {activeQuestion + 1 < section.questions.length ? (
-                    <button type="button" className="btn btn-solid btn-sm" onClick={() => step(1)}>
-                      Next →
-                    </button>
-                  ) : (
-                    <button type="button" className="btn btn-solid btn-sm" onClick={finishSection}>
-                      Finish section →
-                    </button>
-                  )}
-                </div>
-              </>
-            ) : task ? (
-              <>
-                <div className="exam-room-micro">
-                  <button
-                    type="button"
-                    className="exam-room-mobile-toggle"
-                    aria-pressed={mobileSource}
-                    onClick={() => setMobileSource((value) => !value)}
-                  >
-                    {mobileSource ? "Back to the prompt" : "Show the sources"}
-                  </button>
-                  <span className="exam-room-counter">
-                    {task.taskType} · {task.points} points · {task.minutes} min
-                  </span>
-                </div>
-
-                {section.frqs.length > 1 ? (
-                  <nav className="exam-room-task-tabs" aria-label="Written tasks">
-                    {section.frqs.map((frq, index) => (
-                      <button
-                        key={frq.id}
-                        type="button"
-                        data-active={index === activeTask ? "true" : "false"}
-                        aria-current={index === activeTask ? "step" : undefined}
-                        onClick={() => setActiveTask(index)}
-                      >
-                        Q{index + 1}
-                        <span>{frq.taskType}</span>
-                      </button>
-                    ))}
-                  </nav>
-                ) : null}
-
-                <article className="exam-room-frq">
-                  <header>
-                    <p className="label">{task.taskType}</p>
-                    <h3>{task.title}</h3>
-                  </header>
-                  {task.directions ? <p className="exam-frq-directions">{task.directions}</p> : null}
-                  <p className="exam-frq-prompt">{task.prompt}</p>
-                  <label className="label" htmlFor={`response-${task.id}`}>
-                    Your response
-                  </label>
-                  <textarea
-                    id={`response-${task.id}`}
-                    className="field frq-scratch scratch-paper exam-room-textarea"
-                    rows={16}
-                    spellCheck
-                    value={drafts[task.id] ?? ""}
-                    onChange={(event) => setDrafts((current) => ({ ...current, [task.id]: event.target.value }))}
-                    placeholder="Type your response. It saves in this browser as you write."
-                  />
-                  <div className="exam-room-frq-foot">
-                    <span className="exam-word-count">
-                      {(drafts[task.id] ?? "").trim() ? (drafts[task.id] ?? "").trim().split(/\s+/).length : 0} words
+          <section className="exam-room-question" id="exam-question-pane" aria-label="Question">
+            <div className="exam-room-question-inner">
+              {isMcq && question ? (
+                <>
+                  <div className="exam-room-micro">
+                    <span className="exam-room-counter">
+                      {Math.min(activeQuestion + 1, section.questions.length)} / {section.questions.length}
                     </span>
                     <button
                       type="button"
-                      className="btn btn-outline btn-sm exam-coach-toggle"
-                      aria-expanded={Boolean(coachOpen[task.id])}
-                      onClick={() =>
-                        setCoachOpen((current) => ({ ...current, [task.id]: !current[task.id] }))
-                      }
+                      className="exam-room-mark"
+                      aria-pressed={Boolean(flags[question.key])}
+                      onClick={() => setFlags((current) => ({ ...current, [question.key]: !current[question.key] }))}
                     >
-                      {coachOpen[task.id] ? "Hide the writing coach" : "Show the writing coach"}
+                      {flags[question.key] ? "★ Marked for review" : "☆ Mark for review"}
                     </button>
-                    {activeTask + 1 < section.frqs.length ? (
+                  </div>
+
+                  <fieldset className="exam-room-fieldset">
+                    <legend className="exam-room-stem">
+                      <span className="exam-question-number">
+                        {String(activeQuestion + 1).padStart(2, "0")}
+                      </span>
+                      <span>{question.question}</span>
+                    </legend>
+                    <div className="exam-options exam-room-options">
+                      {question.options.map((option, optionIndex) => {
+                        const selected = mcqAnswers[question.key] === optionIndex;
+                        const isCrossed = (crossed[question.key] ?? "").split(",").includes(String(optionIndex));
+                        return (
+                          <div
+                            key={optionIndex}
+                            className="exam-option-row"
+                            data-crossed={isCrossed ? "true" : "false"}
+                          >
+                            <label data-selected={selected ? "true" : "false"} data-crossed={isCrossed ? "true" : "false"}>
+                              <input
+                                type="radio"
+                                name={question.key}
+                                checked={selected}
+                                onChange={() => {
+                                  setMcqAnswers((current) => ({ ...current, [question.key]: optionIndex }));
+                                  setSavedAt(Date.now());
+                                }}
+                                className="sr-only"
+                              />
+                              <span className="exam-option-letter">{LETTERS[optionIndex]}</span>
+                              <span>{option}</span>
+                            </label>
+                            <button
+                              type="button"
+                              className="exam-option-cross"
+                              aria-pressed={isCrossed}
+                              aria-label={`${isCrossed ? "Restore" : "Cross out"} option ${LETTERS[optionIndex]}`}
+                              onClick={() => toggleCrossed(question.key, optionIndex)}
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+
+                  <div className="exam-room-controls">
+                    <button
+                      type="button"
+                      className="btn btn-outline btn-sm"
+                      onClick={() => step(-1)}
+                      disabled={activeQuestion === 0}
+                    >
+                      ← Back
+                    </button>
+                    <button type="button" className="btn btn-quiet btn-sm" onClick={() => setSheetOpen(true)}>
+                      Go to question
+                    </button>
+                    {activeQuestion + 1 < section.questions.length ? (
                       <button type="button" className="btn btn-solid btn-sm" onClick={() => step(1)}>
-                        Next task →
+                        Next →
                       </button>
                     ) : (
                       <button type="button" className="btn btn-solid btn-sm" onClick={finishSection}>
@@ -731,130 +813,348 @@ export function TimedPaper({
                       </button>
                     )}
                   </div>
-                  {coachOpen[task.id] ? <WritingCoach frq={task} rubricTotal={task.points} /> : null}
-                </article>
-              </>
-            ) : null}
-          </div>
-        </section>
-      </div>
+                </>
+              ) : task ? (
+                <>
+                  <div className="exam-room-micro">
+                    <span className="exam-room-counter">
+                      Task {Math.min(activeTask + 1, section.frqs.length)} / {section.frqs.length}
+                    </span>
+                    <span className="exam-room-save" data-state={savedAt ? "saved" : "draft"}>
+                      {saveState}
+                    </span>
+                  </div>
 
-      <footer className="exam-room-strip">
-        {isMcq ? (
-          <ol className="exam-room-bubbles" aria-label="Question navigation">
-            {section.questions.map((item, index) => (
-              <li key={item.key}>
-                <button
-                  type="button"
-                  data-active={index === activeQuestion ? "true" : "false"}
-                  data-answered={mcqAnswers[item.key] !== undefined ? "true" : "false"}
-                  data-flagged={flags[item.key] ? "true" : "false"}
-                  aria-current={index === activeQuestion ? "true" : undefined}
-                  aria-label={`Question ${index + 1}${
-                    mcqAnswers[item.key] !== undefined ? ", answered" : ", unanswered"
-                  }${flags[item.key] ? ", flagged" : ""}`}
-                  onClick={() => goToQuestion(index)}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="exam-room-strip-note">
-            {section.frqs.length} written task{section.frqs.length === 1 ? "" : "s"} · {section.minutes} minutes
-            for this section. Blank responses earn zero; a partial answer can still earn rows.
-          </p>
-        )}
-        <div className="exam-room-strip-actions">
-          <a className="exam-room-strip-link" href={`/course/${courseSlug}/exam/answers`}>
-            Printable answer sheet
-          </a>
-          <span>{section.minutes} min section</span>
-        </div>
-      </footer>
+                  <article className="exam-room-frq">
+                    <header>
+                      <p className="label">
+                        {task.taskType} · {task.points} points · {task.minutes} min suggested
+                      </p>
+                      <h3>{task.title}</h3>
+                    </header>
+                    {task.directions ? <p className="exam-frq-directions">{task.directions}</p> : null}
+                    <p className="exam-frq-prompt">{task.prompt}</p>
 
-      {sheetOpen ? (
-        <div className="exam-sheet" role="dialog" aria-modal="true" aria-label="Answer sheet">
-          <div className="exam-sheet-panel">
-            <header className="exam-sheet-head">
-              <div>
-                <p className="label">{courseLabel} · answer sheet</p>
-                <h3>{section.name}</h3>
-              </div>
-              <button
-                ref={sheetCloseRef}
-                type="button"
-                className="btn btn-quiet btn-sm"
-                onClick={() => setSheetOpen(false)}
-              >
-                Close
-              </button>
-            </header>
-            <p className="exam-sheet-note">
-              Every answer in this section, in order. Blank rows are unanswered; a flag means you meant to
-              come back.
-            </p>
-            <ol className="exam-sheet-grid">
-              {isMcq
-                ? section.questions.map((item, index) => (
-                    <li key={item.key}>
-                      <button
-                        type="button"
-                        data-state={
-                          mcqAnswers[item.key] === undefined
-                            ? "blank"
-                            : flags[item.key]
-                              ? "flagged"
-                              : "answered"
-                        }
-                        onClick={() => {
-                          goToQuestion(index);
-                          setSheetOpen(false);
-                        }}
-                      >
-                        <span className="exam-sheet-number">{String(index + 1).padStart(2, "0")}</span>
-                        <span className="exam-sheet-choice">
-                          {mcqAnswers[item.key] === undefined ? "—" : LETTERS[mcqAnswers[item.key]]}
-                        </span>
-                      </button>
-                    </li>
-                  ))
-                : section.frqs.map((frq, index) => {
-                    const words = (drafts[frq.id] ?? "").trim().split(/\s+/).filter(Boolean).length;
-                    return (
-                      <li key={frq.id} className="exam-sheet-task">
+                    <div className="exam-editor">
+                      <div className="exam-editor-toolbar" role="toolbar" aria-label="Formatting">
+                        <button type="button" onClick={() => formatDraft("bold")} aria-label="Bold" title="Bold">
+                          <strong>B</strong>
+                        </button>
+                        <button type="button" onClick={() => formatDraft("italic")} aria-label="Italic" title="Italic">
+                          <em>I</em>
+                        </button>
                         <button
                           type="button"
-                          data-state={words === 0 ? "blank" : words < 20 ? "flagged" : "answered"}
+                          onClick={() => formatDraft("underline")}
+                          aria-label="Underline"
+                          title="Underline"
+                        >
+                          <span style={{ textDecoration: "underline" }}>U</span>
+                        </button>
+                        <span className="exam-editor-divider" aria-hidden="true" />
+                        <button
+                          type="button"
+                          onClick={() => formatDraft("insertUnorderedList")}
+                          aria-label="Bulleted list"
+                          title="Bulleted list"
+                        >
+                          •
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => formatDraft("insertOrderedList")}
+                          aria-label="Numbered list"
+                          title="Numbered list"
+                        >
+                          1.
+                        </button>
+                        <span className="exam-editor-divider" aria-hidden="true" />
+                        <span className="exam-editor-hint">Autosaves as you type</span>
+                      </div>
+                      <div
+                        className="exam-room-textarea exam-editor-surface"
+                        data-editor="true"
+                        role="textbox"
+                        aria-multiline="true"
+                        aria-label={`Response to ${task.title}`}
+                        contentEditable
+                        suppressContentEditableWarning
+                        spellCheck
+                        data-placeholder="Type your response. It saves in this browser as you write."
+                        onInput={(event) => changeDraft(task.id, event.currentTarget.innerHTML)}
+                        onPaste={(event) => {
+                          // Paste as plain text: the exam editor does not accept
+                          // foreign formatting, and neither should this one.
+                          event.preventDefault();
+                          const text = event.clipboardData.getData("text/plain");
+                          document.execCommand("insertText", false, text);
+                        }}
+                        ref={(node) => {
+                          if (!node) return;
+                          const wanted = sanitizeRichText(drafts[task.id] ?? "");
+                          if (node.dataset.hydratedFor !== task.id) {
+                            node.innerHTML = wanted;
+                            node.dataset.hydratedFor = task.id;
+                          }
+                        }}
+                      />
+                    </div>
+
+                    <div className="exam-room-frq-foot">
+                      <span className="exam-word-count">{richTextWordCount(drafts[task.id] ?? "")} words</span>
+                      <button
+                        type="button"
+                        className="btn btn-outline btn-sm exam-coach-toggle"
+                        aria-expanded={Boolean(coachOpen[task.id])}
+                        onClick={() => setCoachOpen((current) => ({ ...current, [task.id]: !current[task.id] }))}
+                      >
+                        {coachOpen[task.id] ? "Hide the writing coach" : "Show the writing coach"}
+                      </button>
+                      {activeTask + 1 < section.frqs.length ? (
+                        <button type="button" className="btn btn-solid btn-sm" onClick={() => step(1)}>
+                          Next task →
+                        </button>
+                      ) : (
+                        <button type="button" className="btn btn-solid btn-sm" onClick={finishSection}>
+                          Finish section →
+                        </button>
+                      )}
+                    </div>
+                    {coachOpen[task.id] ? <WritingCoach frq={task} rubricTotal={task.points} /> : null}
+                  </article>
+                </>
+              ) : null}
+            </div>
+          </section>
+        </div>
+
+        <footer className="exam-room-strip">
+          {isMcq ? (
+            <ol className="exam-room-bubbles" aria-label="Question navigation">
+              {section.questions.map((item, index) => (
+                <li key={item.key}>
+                  <button
+                    type="button"
+                    data-active={index === activeQuestion ? "true" : "false"}
+                    data-answered={mcqAnswers[item.key] !== undefined ? "true" : "false"}
+                    data-flagged={flags[item.key] ? "true" : "false"}
+                    aria-current={index === activeQuestion ? "true" : undefined}
+                    aria-label={`Question ${index + 1}${
+                      mcqAnswers[item.key] !== undefined ? ", answered" : ", unanswered"
+                    }${flags[item.key] ? ", marked for review" : ""}`}
+                    onClick={() => goToQuestion(index)}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="exam-room-strip-note">
+              {section.frqs.length} written task{section.frqs.length === 1 ? "" : "s"} · {section.minutes} minutes for
+              this section. Blank responses earn zero; a partial answer can still earn rows.
+            </p>
+          )}
+          <div className="exam-room-strip-actions">
+            <a className="exam-room-strip-link" href={`/course/${courseSlug}/exam/answers`}>
+              Printable answer sheet
+            </a>
+            <span>{section.minutes} min section</span>
+          </div>
+        </footer>
+
+        {sheetOpen ? (
+          <div className="exam-sheet" role="dialog" aria-modal="true" aria-label="Review answers">
+            <div className="exam-sheet-panel">
+              <header className="exam-sheet-head">
+                <div>
+                  <p className="label">{courseLabel} · review</p>
+                  <h3>{section.name}</h3>
+                </div>
+                <button
+                  ref={sheetCloseRef}
+                  type="button"
+                  className="btn btn-quiet btn-sm"
+                  onClick={() => setSheetOpen(false)}
+                >
+                  Close
+                </button>
+              </header>
+              <p className="exam-sheet-note">
+                Every answer in this section, in order. Blank rows are unanswered; a star means you meant to come
+                back.
+              </p>
+              <ol className="exam-sheet-grid">
+                {isMcq
+                  ? section.questions.map((item, index) => (
+                      <li key={item.key}>
+                        <button
+                          type="button"
+                          data-state={
+                            mcqAnswers[item.key] === undefined
+                              ? "blank"
+                              : flags[item.key]
+                                ? "flagged"
+                                : "answered"
+                          }
                           onClick={() => {
-                            setActiveTask(index);
+                            goToQuestion(index);
                             setSheetOpen(false);
                           }}
                         >
-                          <span className="exam-sheet-number">Q{index + 1}</span>
-                          <span className="exam-sheet-choice">{words} words</span>
+                          <span className="exam-sheet-number">{String(index + 1).padStart(2, "0")}</span>
+                          <span className="exam-sheet-choice">
+                            {mcqAnswers[item.key] === undefined ? "—" : LETTERS[mcqAnswers[item.key]]}
+                          </span>
                         </button>
                       </li>
-                    );
-                  })}
-            </ol>
-            <div className="exam-sheet-legend">
-              <span data-state="answered">Answered</span>
-              <span data-state="flagged">Flagged / partial</span>
-              <span data-state="blank">Blank</span>
-            </div>
-            <div className="exam-sheet-foot">
-              <a className="btn btn-outline btn-sm" href={`/course/${courseSlug}/exam/answers`}>
-                Open the printable answer sheet
-              </a>
-              <button type="button" className="btn btn-solid btn-sm" onClick={finishSection}>
-                {sectionIndex + 1 < assessment.sections.length ? "Finish section →" : "Finish the paper"}
-              </button>
+                    ))
+                  : section.frqs.map((frq, index) => {
+                      const words = richTextWordCount(drafts[frq.id] ?? "");
+                      return (
+                        <li key={frq.id} className="exam-sheet-task">
+                          <button
+                            type="button"
+                            data-state={words === 0 ? "blank" : words < 20 ? "flagged" : "answered"}
+                            onClick={() => {
+                              setActiveTask(index);
+                              setSheetOpen(false);
+                            }}
+                          >
+                            <span className="exam-sheet-number">Q{index + 1}</span>
+                            <span>{frq.title}</span>
+                            <span className="exam-sheet-words">{words} words</span>
+                          </button>
+                        </li>
+                      );
+                    })}
+              </ol>
+              <div className="exam-sheet-legend" aria-hidden="true">
+                <span data-state="answered">answered</span>
+                <span data-state="flagged">marked for review</span>
+                <span data-state="blank">blank</span>
+              </div>
+              <footer className="exam-sheet-foot">
+                <span>{examSheetSummary(answered, section.questions.length, isMcq)}</span>
+                <button type="button" className="btn btn-solid btn-sm" onClick={finishSection}>
+                  {sectionIndex + 1 < assessment.sections.length ? "Finish section" : "Finish paper"}
+                </button>
+              </footer>
             </div>
           </div>
-        </div>
-      ) : null}
-    </div>
+        ) : null}
+
+        {dirOpen ? (
+          <div className="exam-sheet" role="dialog" aria-modal="true" aria-label="Directions">
+            <div className="exam-sheet-panel exam-directions-panel">
+              <header className="exam-sheet-head">
+                <div>
+                  <p className="label">Directions</p>
+                  <h3>{section.name}</h3>
+                </div>
+                <button type="button" className="btn btn-quiet btn-sm" onClick={() => setDirOpen(false)}>
+                  Return to questions
+                </button>
+              </header>
+              <p className="exam-directions-text">{section.directions}</p>
+              {section.parts?.length ? (
+                <ul className="exam-directions-parts">
+                  {section.parts.map((part) => (
+                    <li key={part.label}>
+                      <strong>{part.label}</strong>
+                      <span>
+                        {part.minutes} minutes
+                        {part.calculator ? ` · calculator ${part.calculator.replace("-", " ")}` : ""}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              <p className="exam-directions-fine">
+                {section.minutes} minutes for this section. The clock does not stop when you open this panel.
+              </p>
+            </div>
+          </div>
+        ) : null}
+
+        {notesOpen ? (
+          <div className="exam-sheet" role="dialog" aria-modal="true" aria-label="Highlights">
+            <div className="exam-sheet-panel exam-directions-panel">
+              <header className="exam-sheet-head">
+                <div>
+                  <p className="label">Highlights</p>
+                  <h3>{sourceTitle}</h3>
+                </div>
+                <button type="button" className="btn btn-quiet btn-sm" onClick={() => setNotesOpen(false)}>
+                  Close
+                </button>
+              </header>
+              <p className="exam-sheet-note">
+                Select text in the excerpt to highlight it. Click a highlight in the excerpt to remove it.
+              </p>
+              <ol className="exam-highlight-list">
+                {Object.entries(marks)
+                  .filter(([, value]) => value)
+                  .map(([key, value]) => {
+                    const [stimulusId, paragraph] = key.split(":");
+                    const stimulus = section.stimuli.find((item) => item.id === stimulusId);
+                    const text = stimulus?.text.split(/\n{2,}/)[Number(paragraph)] ?? "";
+                    return segmentsOf(text, highlightsFor(stimulusId, Number(paragraph)))
+                      .filter((segment) => segment.highlighted)
+                      .map((segment, index) => (
+                        <li key={`${key}-${index}`}>
+                          <span className="exam-highlight-quote">“{segment.text}”</span>
+                          <button
+                            type="button"
+                            className="link-underlined"
+                            onClick={() => clearHighlight(stimulusId, Number(paragraph))}
+                          >
+                            Remove
+                          </button>
+                        </li>
+                      ));
+                  })}
+              </ol>
+              {highlightCount ? null : <p className="exam-directions-fine">Nothing highlighted yet.</p>}
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </>
   );
+}
+
+/** Split a paragraph into plain and highlighted runs from stored ranges. */
+function segmentsOf(text: string, ranges: [number, number][]): { text: string; highlighted: boolean }[] {
+  if (!ranges.length) return [{ text, highlighted: false }];
+  const sorted = [...ranges].sort((a, b) => a[0] - b[0]);
+  const segments: { text: string; highlighted: boolean }[] = [];
+  let cursor = 0;
+  for (const [start, end] of sorted) {
+    const from = Math.max(cursor, Math.min(start, text.length));
+    const to = Math.max(from, Math.min(end, text.length));
+    if (from > cursor) segments.push({ text: text.slice(cursor, from), highlighted: false });
+    if (to > from) segments.push({ text: text.slice(from, to), highlighted: true });
+    cursor = to;
+  }
+  if (cursor < text.length) segments.push({ text: text.slice(cursor), highlighted: false });
+  return segments;
+}
+
+/** Merge overlapping ranges so a paragraph is never split into two marks. */
+function mergeRanges(ranges: [number, number][]): [number, number][] {
+  const sorted = [...ranges].sort((a, b) => a[0] - b[0]);
+  const merged: [number, number][] = [];
+  for (const range of sorted) {
+    const last = merged[merged.length - 1];
+    if (last && range[0] <= last[1]) last[1] = Math.max(last[1], range[1]);
+    else merged.push([...range] as [number, number]);
+  }
+  return merged;
+}
+
+function examSheetSummary(answered: number, total: number, isMcq: boolean): string {
+  if (!isMcq) return "Check each response before you finish the section.";
+  const blank = Math.max(0, total - answered);
+  return `${answered} of ${total} answered · ${blank} blank${blank === 1 ? "" : "s"}`;
 }
