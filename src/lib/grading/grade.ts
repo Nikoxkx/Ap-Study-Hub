@@ -368,6 +368,9 @@ export function gradeLocally(
     sources: options.sources,
   });
 
+  const expectedWords = Math.max(120, rubric.total * 20);
+  const lengthFactor = Math.min(1, features.wordCount / expectedWords);
+
   const rows: CriterionResult[] = rubric.rows.map((row) => {
     const results = row.signals.map((signal) => evaluateSignal(signal, features));
     const satisfied = results.filter((result) => result.satisfied).length;
@@ -394,6 +397,15 @@ export function gradeLocally(
     );
     if (quantitativeRubric && features.mathExpressions === 0 && row.id !== "thesis") {
       points = Math.min(points, 1);
+    }
+
+    // Sustained-prose rubrics reward sustained prose. Signals can be present in
+    // two sentences, but a 60-word answer to a 24-point research task has not
+    // done the work those points describe, so rows are capped by length until
+    // the answer is at least half the length the rubric implies.
+    if (!quantitativeRubric && lengthFactor < 0.5) {
+      const cap = Math.max(1, Math.ceil(row.maxPoints * lengthFactor));
+      points = Math.min(points, cap);
     }
 
     return {
@@ -526,6 +538,10 @@ export function gradeLocally(
       } were detected. Each is listed with the sentence and a suggested fix.`;
 
   const bodyParagraphs = Math.max(0, features.paragraphCount);
+  const lengthNote =
+    lengthFactor < 0.5
+      ? ` This is ${features.wordCount} words against roughly ${expectedWords} that a ${possible}-point task implies, so the rows were capped: a reader would not see this as a complete response.`
+      : "";
   const summary = `${features.wordCount} words in ${features.sentenceCount} sentences and ${bodyParagraphs} paragraph${
     bodyParagraphs === 1 ? "" : "s"
   }. The measured rows give ${earned} of ${possible} points. ${
@@ -538,7 +554,7 @@ export function gradeLocally(
           features.commentaryCount
         } sentences of interpretive commentary.`
       : "No quotations were detected."
-  }`;
+  }${lengthNote}`;
 
   const nextSteps = [
     ...weakRows.slice(0, 3).map((entry) => ({ title: entry.row.label, detail: entry.row.improve })),

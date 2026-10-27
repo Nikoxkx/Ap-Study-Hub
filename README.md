@@ -142,6 +142,7 @@ Run the full validation and production build pipeline before opening a PR:
 corepack pnpm validate:content        # 75 lessons, 750 paragraphs, citations, glossary & practice schema
 corepack pnpm validate:exams          # section counts, minutes, breaks, rubric totals & score arithmetic for all 10 papers
 corepack pnpm validate:grading        # weak < middle < strong responses, number dumps ≠ worked mathematics
+corepack pnpm validate:exam-ui        # hub, walkthrough, and score report render for all ten papers
 corepack pnpm validate:study          # 1,015 study items, KaTeX math, scheduling, backups, plans & calendar
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 93 verified 11-char YouTube IDs, course/unit mapping & thumbnails
