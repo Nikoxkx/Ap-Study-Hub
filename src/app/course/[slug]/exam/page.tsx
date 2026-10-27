@@ -65,7 +65,10 @@ export default async function ExamPage({ params }: { params: Params }) {
         <dl className="exam-meta">
           <div>
             <dt>Timed</dt>
-            <dd>{Math.floor(assessment.totalMinutes / 60)}h {assessment.totalMinutes % 60}m</dd>
+            <dd>
+              {Math.floor(assessment.totalMinutes / 60)} h
+              {assessment.totalMinutes % 60 ? ` ${assessment.totalMinutes % 60} m` : ""}
+            </dd>
           </div>
           <div>
             <dt>Break</dt>

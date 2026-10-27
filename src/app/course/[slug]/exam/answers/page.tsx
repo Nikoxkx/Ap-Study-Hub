@@ -19,6 +19,13 @@ type Params = Promise<{ slug: string }>;
 
 const LETTERS = ["A", "B", "C", "D", "E"];
 
+function formatDuration(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (!hours) return `${rest} min`;
+  return rest ? `${hours} h ${rest} m` : `${hours} h`;
+}
+
 export function generateStaticParams() {
   return getCatalog().map((course) => ({ slug: course.subject.slug }));
 }
@@ -69,9 +76,9 @@ export default async function AnswerSheetPage({ params }: { params: Params }) {
           <p className="label">Interim assessment · answer sheet</p>
           <h1>{subject.official}</h1>
           <p className="answer-sheet-meta">
-            {Math.floor(assessment.totalMinutes / 60)}h {assessment.totalMinutes % 60}m ·{" "}
-            {assessment.mcqCount} multiple-choice · {assessment.frqCount} written ·{" "}
-            {assessment.totalPoints} rubric points
+            {formatDuration(assessment.totalMinutes)} ·{" "}
+            {assessment.mcqCount ? `${assessment.mcqCount} multiple-choice · ` : ""}
+            {assessment.frqCount} written · {assessment.totalPoints} rubric points
           </p>
           <div className="answer-sheet-fields">
             <span>Name ______________________________</span>
@@ -79,9 +86,11 @@ export default async function AnswerSheetPage({ params }: { params: Params }) {
             <span>Period ______</span>
           </div>
           <p className="answer-sheet-directions">
-            Shade one letter per question. If you change an answer, cross out the old bubble and shade the new
-            one. Do not write in the margins beside the grid. Written tasks go in the ruled boxes, one task per
-            box, and nothing outside the box is read. This sheet is for practice; it is not scored by a machine.
+            {mcqSections.length
+              ? "Shade one letter per question. If you change an answer, cross out the old bubble and shade the new one, and do not write in the margins beside the grid. "
+              : ""}
+            Written tasks go in the ruled boxes, one task per box, and nothing outside the box is read. This
+            sheet is for practice; it is not scored by a machine.
           </p>
         </header>
 
@@ -146,9 +155,10 @@ export default async function AnswerSheetPage({ params }: { params: Params }) {
 
         <footer className="answer-sheet-foot">
           <p>
-            {totalMcq} multiple-choice · {totalFrq} written · {assessment.stimuli.length} passages. Score it by
-            hand from the rubric on the paper, or retype the responses into the digital paper for row-by-row
-            marking.
+            {totalMcq ? `${totalMcq} multiple-choice · ` : ""}
+            {totalFrq} written · {assessment.stimuli.length} printed source
+            {assessment.stimuli.length === 1 ? "" : "s"}. Score it by hand from the rubric on the paper, or
+            retype the responses into the digital paper for row-by-row marking.
           </p>
           <p>
             Original practice written in the published format. Not a released College Board exam. Cut scores are

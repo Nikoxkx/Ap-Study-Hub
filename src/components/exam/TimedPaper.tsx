@@ -103,6 +103,9 @@ export function TimedPaper({
   const [flags, setFlags] = useStoredState<Record<string, boolean>>(`${storage}.flags`, NO_FLAGS, reviveBooleans);
   const [drafts, setDrafts] = useStoredState<Record<string, string>>(`${storage}.drafts`, NO_TEXT, reviveText);
   const [frqScores, setFrqScores] = useStoredState<Record<string, number>>(`${storage}.frq`, NO_MAP, reviveNumbers);
+  // Answer eliminator, as the digital exam offers: a crossed-out option stays
+  // readable but is visibly ruled out. Stored as "0,2" per question.
+  const [crossed, setCrossed] = useStoredState<Record<string, string>>(`${storage}.crossed`, NO_TEXT, reviveText);
 
   const section = assessment.sections[sectionIndex];
   const breakSpec = blueprint.breaks.find((item) => item.afterSectionId === section?.id);
@@ -321,6 +324,14 @@ export function TimedPaper({
               Passages are public domain or original; questions and prompts are written for this site in the
               College Board format. None of it is a released exam question.
             </li>
+            <li>
+              The room takes over the screen: the passage stays on the left while the question stays on the
+              right, in every course. On a phone the panes become one column with a Passage / Question switch.
+            </li>
+            <li>
+              The answer sheet button lists every question in the section and shows what is answered, flagged,
+              or still blank. Arrow keys move between questions; Esc closes the sheet.
+            </li>
             <li>Answers and drafts save to this browser on every keystroke. A reload will not lose them.</li>
             <li>Nothing is marked until the final section ends — no hints, no running score.</li>
           </ul>
@@ -382,6 +393,7 @@ export function TimedPaper({
           setMcqAnswers({});
           setFrqScores({});
           setFlags({});
+          setCrossed({});
           setElapsedBySection({});
           setSectionIndex(0);
         }}
@@ -415,6 +427,23 @@ export function TimedPaper({
     setMobileSource(false);
     requestAnimationFrame(() => {
       document.getElementById("exam-question-pane")?.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  };
+
+  const toggleCrossed = (questionKey: string, optionIndex: number) => {
+    setCrossed((current) => {
+      const set = new Set(
+        (current[questionKey] ?? "")
+          .split(",")
+          .map((value) => Number.parseInt(value, 10))
+          .filter((value) => Number.isFinite(value)),
+      );
+      if (set.has(optionIndex)) set.delete(optionIndex);
+      else set.add(optionIndex);
+      const next = { ...current };
+      if (set.size) next[questionKey] = [...set].sort((a, b) => a - b).join(",");
+      else delete next[questionKey];
+      return next;
     });
   };
 
@@ -565,20 +594,34 @@ export function TimedPaper({
                   <div className="exam-options exam-room-options">
                     {question.options.map((option, optionIndex) => {
                       const selected = mcqAnswers[question.key] === optionIndex;
+                      const isCrossed = (crossed[question.key] ?? "")
+                        .split(",")
+                        .includes(String(optionIndex));
                       return (
-                        <label key={optionIndex} data-selected={selected ? "true" : "false"}>
-                          <input
-                            type="radio"
-                            name={question.key}
-                            checked={selected}
-                            onChange={() =>
-                              setMcqAnswers((current) => ({ ...current, [question.key]: optionIndex }))
-                            }
-                            className="sr-only"
-                          />
-                          <span className="exam-option-letter">{LETTERS[optionIndex]}</span>
-                          <span>{option}</span>
-                        </label>
+                        <div key={optionIndex} className="exam-option-row" data-crossed={isCrossed ? "true" : "false"}>
+                          <label data-selected={selected ? "true" : "false"} data-crossed={isCrossed ? "true" : "false"}>
+                            <input
+                              type="radio"
+                              name={question.key}
+                              checked={selected}
+                              onChange={() =>
+                                setMcqAnswers((current) => ({ ...current, [question.key]: optionIndex }))
+                              }
+                              className="sr-only"
+                            />
+                            <span className="exam-option-letter">{LETTERS[optionIndex]}</span>
+                            <span>{option}</span>
+                          </label>
+                          <button
+                            type="button"
+                            className="exam-option-cross"
+                            aria-pressed={isCrossed}
+                            aria-label={`${isCrossed ? "Restore" : "Cross out"} option ${LETTERS[optionIndex]}`}
+                            onClick={() => toggleCrossed(question.key, optionIndex)}
+                          >
+                            ✕
+                          </button>
+                        </div>
                       );
                     })}
                   </div>

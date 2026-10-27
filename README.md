@@ -110,7 +110,8 @@ Sitting a paper takes over the screen instead of scrolling a page.
 
 - **One question at a time, passage beside it.** A two-pane room: the passage, document set, data figure, or poem stays on the left while the question or essay prompt sits on the right, so nothing has to be scrolled back to. The layout is identical for all ten courses — the pane only changes what it is showing.
 - **A bar that answers the three questions you actually have:** where am I, how long is left, and how do I get out. The clock counts down against a wall-clock deadline (a backgrounded tab cannot steal minutes), turns amber with five minutes left, and stops at zero.
-- **Answer sheet.** A monospace grid of every question in the section, marked answered / flagged / blank, letting you jump anywhere. It doubles as the review surface at the end.
+- **Answer sheet.** A monospace grid of every question in the section, marked answered / flagged / blank, letting you jump anywhere. It doubles as the review surface at the end, and it is not the same thing as the printable sheet below.
+- **The tools the digital exam gives you:** flag for review, and an ✕ eliminator that crosses out a choice without hiding it.
 - **Full screen, and a phone that works.** One button asks the browser for full screen; below 900px the two panes become one column with a Passage / Question switch, so the same room is usable on a phone in a corridor.
 - **Breaks and sections.** Section changes and the scheduled break are enforced by the same state machine, so the paper cannot be sat out of order.
 - **Autosave.** Answers, flags, and essay drafts are written to `localStorage` on every keystroke under `aps.assessment.<course>.*`; closing the tab does not lose the paper.

@@ -5073,3 +5073,32 @@ html.is-entering footer[data-site-footer] {
 .exam-room-sheet-toggle {
   flex: 0 0 auto;
 }
+
+/* Answer eliminator, as the digital exam offers it. */
+.exam-option-row { display: flex; align-items: stretch; gap: 0.35rem; }
+.exam-option-row label { flex: 1 1 auto; min-width: 0; }
+.exam-option-row[data-crossed="true"] label {
+  color: var(--ink-faint);
+  border-style: dashed;
+}
+.exam-option-row[data-crossed="true"] label > span:last-child {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.exam-option-cross {
+  flex: 0 0 auto;
+  width: 2.1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-cut);
+  background: transparent;
+  color: var(--ink-faint);
+  font-size: 0.68rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.exam-option-cross:hover { color: var(--ink); border-color: var(--rule-strong); }
+.exam-option-cross[aria-pressed="true"] {
+  color: var(--ink);
+  border-color: var(--mark);
+  background: var(--mark-wash);
+}
