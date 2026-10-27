@@ -10,7 +10,9 @@ import {
 import { getLessons, getSource } from "@/content/lessons";
 import type { Lesson } from "@/content/lessons";
 import { countWords } from "@/content/lessons/text";
+import { getBlueprint } from "@/content/exams/blueprints";
 import { subjects, type Subject, type SubjectSlug } from "./subjects";
+
 
 /**
  * The join between the subject registry, the deep lesson library, and the
@@ -87,6 +89,11 @@ export interface CourseBundle {
   tips: Tip[];
   resources: Resource[];
   mockExams: (typeof mockExamsData)[string];
+  /**
+   * The interim assessment for this course: the official section counts and
+   * clock. Null only if no blueprint exists, which the validators forbid.
+   */
+  interim: { minutes: number; mcqCount: number; frqCount: number; frqPoints: number; breaks: number } | null;
   counts: {
     units: number;
     paragraphs: number;
@@ -122,6 +129,84 @@ function inferCardUnit(front: string, legacyUnits: (typeof unitsData)[string]): 
       return needle === candidate || needle.includes(candidate) || candidate.includes(needle);
     }),
   )?.unitNumber;
+}
+
+/**
+ * Every multiple-choice question needs a unit so the review screen can say
+ * which lesson to read next. Lesson practice already carries one; the legacy
+ * drill bank does not, so its unit is inferred from the question's own
+ * vocabulary against each unit's glossary. This is a heuristic, but a wrong
+ * guess only changes which lesson a link opens, and an absent link helps nobody.
+ */
+function inferQuestionUnit(
+  question: { question: string; options: string[]; explanation: string; skill?: string; lessonTitle?: string },
+  units: Unit[],
+): number | undefined {
+  if (question.lessonTitle) {
+    const named = units.find((unit) => normalized(unit.title) === normalized(question.lessonTitle ?? ""));
+    if (named) return named.unitNumber;
+  }
+  const haystack = normalized(
+    [question.question, ...question.options, question.explanation, question.skill ?? ""].join(" "),
+  );
+  let best: number | undefined;
+  let bestScore = 0;
+  for (const unit of units) {
+    const terms = unit.lesson ? unit.lesson.glossary.map((entry) => entry.term) : unit.keyTerms;
+    let score = 0;
+    for (const term of terms) {
+      const needle = normalized(term);
+      if (needle.length < 5) continue;
+      if (haystack.includes(needle)) score += 1;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = unit.unitNumber;
+    }
+  }
+  if (bestScore > 0) return best;
+
+  // History units are labelled with date ranges; a question that names a year
+  // belongs to the unit whose range contains it.
+  const years = [...haystack.matchAll(/\b(1[5-9]\d{2}|20\d{2})\b/g)].map((match) => Number(match[1]));
+  if (years.length) {
+    for (const unit of units) {
+      const range = unit.title.match(/(1[5-9]\d{2}|20\d{2})\D+(1[5-9]\d{2}|20\d{2}|present)/i);
+      if (!range) continue;
+      const start = Number(range[1]);
+      const end = /present/i.test(range[2]) ? 2100 : Number(range[2]);
+      if (years.some((year) => year >= start && year <= end)) return unit.unitNumber;
+    }
+  }
+
+  // Second pass: the question's own vocabulary against the unit's teaching
+  // prose. Weaker, but better than a review row with no lesson to open.
+  const STOP = new Set([
+    "which", "following", "question", "answer", "correct", "because", "would", "should", "about",
+    "there", "their", "these", "those", "where", "while", "other", "using", "value", "values",
+  ]);
+  const tokens = [...new Set(haystack.split(" ").filter((token) => token.length >= 6 && !STOP.has(token)))];
+  let proseBest: number | undefined;
+  let proseScore = 0;
+  for (const unit of units) {
+    const prose = normalized(
+      [
+        unit.title,
+        unit.description,
+        ...(unit.lesson
+          ? unit.lesson.sections.map((section) => section.heading)
+          : []),
+        ...(unit.lesson ? unit.lesson.objectives : []),
+      ].join(" "),
+    );
+    let score = 0;
+    for (const token of tokens) if (prose.includes(token)) score += 1;
+    if (score > proseScore) {
+      proseScore = score;
+      proseBest = unit.unitNumber;
+    }
+  }
+  return proseScore >= 2 ? proseBest : proseScore === 1 ? proseBest : undefined;
 }
 
 export function getCourse(slug: SubjectSlug | string): CourseBundle | null {
@@ -186,10 +271,21 @@ export function getCourse(slug: SubjectSlug | string): CourseBundle | null {
   );
   // Legacy IDs stay stable because timed papers address this bank by ID.
   // Lesson-linked questions are appended and exposed through the unit filter.
-  const questions: QuizQuestion[] = [
-    ...(quizData[subject.slug] ?? []),
+  type BankQuestion = QuizQuestion & { unitNumber?: number; lessonTitle?: string };
+  const questions: QuizQuestion[] = ([
+    ...((quizData[subject.slug] ?? []) as BankQuestion[]),
     ...lessonQuestions,
-  ].map((question, id) => ({ ...question, id }));
+  ] as BankQuestion[]).map((question, id) => {
+    const unitNumber = question.unitNumber ?? inferQuestionUnit(question, units);
+    return {
+      ...question,
+      id,
+      unitNumber,
+      lessonTitle:
+        question.lessonTitle ??
+        (unitNumber === undefined ? undefined : units.find((unit) => unit.unitNumber === unitNumber)?.title),
+    };
+  });
 
   const essays = essaysData[subject.slug] ?? [];
   const tips = tipsData[subject.slug] ?? [];
@@ -241,6 +337,17 @@ export function getCourse(slug: SubjectSlug | string): CourseBundle | null {
     tips,
     resources,
     mockExams,
+    interim: (() => {
+      const blueprint = getBlueprint(subject.slug);
+      if (!blueprint) return null;
+      return {
+        minutes: blueprint.timedMinutes,
+        mcqCount: blueprint.mcqTotal,
+        frqCount: blueprint.sections.reduce((sum, section) => sum + (section.frqIds?.length ?? 0), 0),
+        frqPoints: blueprint.frqTotal,
+        breaks: blueprint.breaks.length,
+      };
+    })(),
     counts: {
       units: units.length,
       paragraphs,

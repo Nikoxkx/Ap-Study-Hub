@@ -69,7 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     if (course.essays.length) {
       pages.push({ url: absoluteUrl(`${base}/essays`), lastModified, changeFrequency: "monthly", priority: 0.75 });
     }
-    if (course.mockExams.length) {
+    if (course.interim) {
       pages.push({ url: absoluteUrl(`${base}/exam`), lastModified, changeFrequency: "monthly", priority: 0.6 });
     }
     if (course.resources.length) {

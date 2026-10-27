@@ -32,6 +32,12 @@ const sampleByCourse: Record<SubjectSlug, SamplePrompt> = {
     answer:
       "Exigence is the urgent problem or spark that prompts a speaker to write now; purpose is the concrete change in belief or action the speaker seeks from the audience.",
   },
+  "ap-lit": {
+    unit: "Unit 2 · Poetry I",
+    term: "Volta",
+    answer:
+      "The turn in a poem — the moment the argument shifts direction, often at line 9 of a sonnet or at a stanza break, where the poem stops describing and starts claiming.",
+  },
   "ap-seminar": {
     unit: "Unit 2 · Evaluating Perspectives",
     term: "Line of Reasoning",
@@ -87,7 +93,7 @@ export function StudySystemVisual() {
     <div
       className="space-y-6 rounded-2xl border border-white/80 bg-white/30 p-6 sm:p-7 dark:border-white/20 dark:bg-white/[0.04]"
       role="region"
-      aria-label="Interactive recall preview across all nine AP courses"
+      aria-label="Interactive recall preview across all ten AP courses"
     >
       {/* Header row with generous breathing room */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-4 dark:border-white/15">

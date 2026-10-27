@@ -140,7 +140,7 @@ export function StudyDashboard({
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
           <div
             className="study-hero-mark flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/80 bg-white/45 p-2.5 dark:border-white/25 dark:bg-white/10"
-            title={selectedSubject?.symbolLabel ?? "All nine courses"}
+            title={selectedSubject?.symbolLabel ?? "All ten courses"}
           >
             {selectedSubject ? (
               <SubjectMark subject={selectedSubject.mark} size={36} label={selectedSubject.symbolLabel} />
@@ -182,7 +182,7 @@ export function StudyDashboard({
               onClick={() => selectCourse("all")}
               className="recall-course-pill"
             >
-              <span>All nine courses</span>
+              <span>All ten courses</span>
             </button>
             {courses.map((course) => {
               const subj = subjects.find((s) => s.slug === course.slug);

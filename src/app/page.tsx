@@ -37,7 +37,7 @@ const faqs = [
   {
     question: "Which AP courses are covered?",
     answer:
-      "Nine: AP United States History, AP English Language and Composition, AP Seminar, AP United States Government and Politics, AP Biology, AP Calculus AB/BC, AP Research, AP Macroeconomics, and AP Environmental Science.",
+      "Ten: AP United States History, AP English Language and Composition, AP English Literature and Composition, AP Seminar, AP United States Government and Politics, AP Biology, AP Calculus AB/BC, AP Research, AP Macroeconomics, and AP Environmental Science.",
   },
 ];
 
@@ -70,7 +70,7 @@ const studySurfaces = [
   {
     name: "Verified Unit Videos",
     badge: "Privacy-first",
-    body: "Real YouTube thumbnails for every unit across all nine courses, with opt-in privacy-enhanced players.",
+    body: "Real YouTube thumbnails for every unit across all ten courses, with opt-in privacy-enhanced players.",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function HomePage() {
             className="canvas-heading text-[clamp(2.25rem,1.5rem+3.4vw,4.25rem)] font-semibold"
             style={{ letterSpacing: "-0.032em", lineHeight: 1.04 }}
           >
-            Learn nine AP subjects deeply — on a quieter kind of study hub.
+            Learn ten AP subjects deeply — on a quieter kind of study hub.
           </h1>
 
           <p className="canvas-subtext mt-6 max-w-2xl text-[clamp(1.05rem,0.96rem+0.45vw,1.25rem)] leading-relaxed">
@@ -200,7 +200,7 @@ export default function HomePage() {
       {/* ── 01 · Centered Section Heading + 3-Column Glass Course Cards ─── */}
       <section id="catalogue" className="wrap py-14 md:py-20" aria-labelledby="catalogue-heading">
         <div className="mx-auto mb-12 max-w-2xl text-center">
-          <p className="label mb-2">01 · Nine AP Courses</p>
+          <p className="label mb-2">01 · Ten AP Courses</p>
           <h2
             id="catalogue-heading"
             className="canvas-heading text-[clamp(1.85rem,1.4rem+1.8vw,2.75rem)] font-semibold"
@@ -385,7 +385,7 @@ export default function HomePage() {
           <div className="table-scroll">
             <table className="data-table">
               <caption className="sr-only">
-                AP exam dates for the nine courses covered on this site
+                AP exam dates for the ten courses covered on this site
               </caption>
               <thead>
                 <tr>
@@ -449,8 +449,8 @@ export default function HomePage() {
               <p>
                 So I started keeping my own notes properly, and at some point it was obvious they
                 would be more useful in public than in a private doc. Nothing goes up unless I would
-                have used it myself the week before an exam. That is why there are nine courses and
-                not thirty — I have only sat nine.
+                have used it myself the week before an exam. That is why there are ten courses and
+                not thirty — I have sat, or am sitting, every one of them.
               </p>
               <p>
                 If something here is wrong,{" "}

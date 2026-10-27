@@ -50,7 +50,7 @@ export default function AboutPage() {
             <p className="label">The human behind the notes</p>
           </div>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)] font-semibold" style={{ letterSpacing: "-0.028em" }}>
-            One student, nine courses, and nothing to sell you.
+            One student, ten courses, and nothing to sell you.
           </h1>
           <p className="lede mt-5">
             This page is here so you can decide how much to trust the rest of the site: who made
@@ -194,7 +194,7 @@ export default function AboutPage() {
                   <th scope="col">Cards</th>
                   <th scope="col">Questions</th>
                   <th scope="col">Essays</th>
-                  <th scope="col">Timed paper</th>
+                  <th scope="col">Interim assessment</th>
                 </tr>
               </thead>
               <tbody>
@@ -210,7 +210,11 @@ export default function AboutPage() {
                     <td className="tabular-nums">{course.counts.flashcards || "—"}</td>
                     <td className="tabular-nums">{course.counts.questions || "—"}</td>
                     <td className="tabular-nums">{course.counts.essays || "—"}</td>
-                    <td>{course.mockExams.length > 0 ? "Yes" : "—"}</td>
+                    <td>
+                      {course.interim
+                        ? `${Math.round(course.interim.minutes / 60 * 10) / 10}h · ${course.interim.mcqCount} MCQ · ${course.interim.frqCount} written`
+                        : "—"}
+                    </td>
                   </tr>
                 ))}
               </tbody>

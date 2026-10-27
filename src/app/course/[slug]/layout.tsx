@@ -109,7 +109,7 @@ export default async function CourseLayout({
           cards: counts.flashcards > 0,
           practice: counts.questions > 0,
           essays: counts.essays > 0,
-          exam: course.mockExams.length > 0,
+          exam: Boolean(course.interim),
           resources: counts.resources > 0,
         }}
       />

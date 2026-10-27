@@ -13,13 +13,13 @@ import { absoluteUrl, socialImages } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Watch every unit, with real YouTube thumbnails",
   description:
-    "Eighty-two curated AP teaching videos covering all 66 units across nine courses, with actual YouTube thumbnails and privacy-enhanced players inside every unit.",
+    "Ninety-three curated AP teaching videos covering all 75 units across ten courses, with actual YouTube thumbnails and privacy-enhanced players inside every unit.",
   alternates: { canonical: "/videos" },
   openGraph: {
     images: socialImages,
     title: "A real video for every unit · AP Study Hub",
     description:
-      "Curated videos for every unit of nine AP courses, with real thumbnails and a player inside each lesson.",
+      "Curated videos for every unit of ten AP courses, with real thumbnails and a player inside each lesson.",
     url: absoluteUrl("/videos"),
   },
   twitter: { card: "summary_large_image", images: socialImages },
@@ -82,14 +82,14 @@ export default async function VideosPage({ searchParams }: { searchParams: Searc
           See the idea, then try it yourself.
         </h1>
         <p className="lede mt-3">
-          Teaching videos paired with every unit across all nine courses. Real YouTube thumbnails
+          Teaching videos paired with every unit across all ten courses. Real YouTube thumbnails
           load automatically; open a course to play each video in place, or jump straight to the
           lesson where it is embedded.
         </p>
 
         <form method="get" className="mt-6 grid gap-4 sm:grid-cols-[14rem_minmax(0,1fr)_auto_auto] sm:items-center">
           <select aria-label="Filter by course" className="field" name="course" defaultValue={selectedCourse}>
-            <option value="all">All nine courses</option>
+            <option value="all">All ten courses</option>
             {subjects.map((subject) => (
               <option key={subject.slug} value={subject.slug}>
                 {subject.familiar}

@@ -73,14 +73,15 @@ for (const path of ["src/components/VariantLab.tsx", "src/components/labs/DataLa
 }
 
 // 2. Every subject has a short topic and a symbol meaning.
+const SUBJECT_SLUGS = ["apush", "ap-lang", "ap-seminar", "ap-gov", "ap-bio", "ap-calc", "ap-research", "ap-macro", "ap-env", "ap-lit"];
 for (const field of ["topic", "symbolLabel"]) {
   const count = [...subjects.matchAll(new RegExp(`\\b${field}:\\s*"`, "g"))].length;
-  if (count !== 9) fail(`Expected 9 subject ${field} values, found ${count}`);
+  if (count !== SUBJECT_SLUGS.length) fail(`Expected ${SUBJECT_SLUGS.length} subject ${field} values, found ${count}`);
 }
-for (const symbol of ["U.S. flag", "Open book", "Source documents", "Classical capitol", "DNA", "Right triangle trigonometry", "Magnifying glass", "Rising market graph", "Leaf"]) {
+for (const symbol of ["U.S. flag", "Open book", "Source documents", "Classical capitol", "DNA", "Right triangle trigonometry", "Magnifying glass", "Rising market graph", "Leaf", "Engraved rose"]) {
   if (!marks.includes(symbol)) fail(`SubjectMark is missing the ${symbol} symbol`);
 }
-for (const slug of ["apush", "ap-lang", "ap-seminar", "ap-gov", "ap-bio", "ap-calc", "ap-research", "ap-macro", "ap-env"]) {
+for (const slug of SUBJECT_SLUGS) {
   const iconPath = `public/icons/courses/${slug}.png`;
   const icon = readFileSync(iconPath);
   if (icon.readUInt8(25) !== 6) fail(`${iconPath} is not a transparent RGBA PNG`);

@@ -102,9 +102,15 @@ const contentAreas = [
   },
   {
     type: "Essays & rubrics",
-    where: "essaysData — 12 essays, mockExamsData — 3 papers",
-    ai: "Outlines for DBQ, LEQ, synthesis, rhetorical analysis, argument, IWA/IWR + rubric breakdowns",
-    human: "Rewrote in exam register, checked rubric alignment, ensured sophistication point requires nuance, no auto-grading — rubric checklist for self-marking",
+    where: "essaysData — 12 marked exemplars, src/content/exams — 10 interim assessments",
+    ai: "Outlines for DBQ, LEQ, SAQ, synthesis, rhetorical analysis, argument, prose and poetry analysis, literary argument, IWA/IWR + rubric breakdowns",
+    human: "Rewrote in exam register, checked rubric alignment against the published rows, ensured the sophistication point requires nuance, and verified every passage is public domain or written for the site",
+  },
+  {
+    type: "Assessment grading",
+    where: "src/lib/grading/*, /api/grade",
+    ai: "Rubric row scoring, evidence and commentary detection, grammar and spelling findings, and the written feedback you read after a paper",
+    human: "Rubrics copied from the published College Board descriptors; every score shows the sentences it was based on and which row it missed; the local analyser is the default, model grading is opt-in with your own key, and the estimate is labelled as an estimate because cut scores are not published",
   },
   {
     type: "Resources",

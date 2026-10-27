@@ -158,7 +158,24 @@ export const unitVideos: UnitVideo[] = [
   video("ap-env", 7, "5l3NJi_aROM", "Unit 7 APES Air Pollution Review- AP Environmental Science", "Science Panda", "Full unit review", "Criteria pollutants, photochemical smog, inversions, and acid deposition"),
   video("ap-env", 8, "6oAt6e-cTl4", "Unit 8 APES Aquatic and Terrestrial Pollution Review - AP Environmental Science", "Science Panda", "Full unit review", "Eutrophication, oxygen sag, sewage treatment, and waste"),
   video("ap-env", 9, "JSYNMjVQwoU", "AP Environmental Science Unit 9 Review (Everything You Need to Know!)", "Jordan Dischinger-Smedes", "Full unit review", "Ozone depletion, climate change, and biodiversity loss"),
+
+  // AP English Literature — College Board's AP Daily faculty lectures and
+  // live-review sessions for the unit skills, plus essay walkthroughs that use
+  // released prompts. Two extra strategy videos cover Question 3 and the
+  // commentary row, which is where most points are lost.
+  video("ap-lit", 1, "HepnSKSGWek", "Unit 1: AP English Literature Faculty Lecture (Short Fiction I)", "AP English Literature and Composition", "Unit breakdown", "Character, setting, structure, and narration through \u201cThe Tell-Tale Heart\u201d"),
+  video("ap-lit", 2, "07Xe8BjegEw", "Unit 2: AP English Literature Faculty Lecture (Poetry I)", "AP English Literature and Composition", "Unit breakdown", "Speaker, structure, and figurative language as the basis of poetry analysis"),
+  video("ap-lit", 3, "PyI0mZWovtc", "Longer Fiction or Drama: Plot Structure", "AP English Literature and Composition", "Skill focus", "How a significant event or structural choice functions in a whole work"),
+  video("ap-lit", 4, "c4vq8aHv1Lc", "How to Ace the AP Literature Prose Essay", "AP English Literature and Composition", "Worked example", "Annotating a released prose passage and building the prose analysis essay"),
+  video("ap-lit", 5, "fPu1HJytfYI", "How to Ace the AP Lit Poetry Essay", "AP English Literature and Composition", "Worked example", "Reading a released poem, drafting a thesis, and planning the poetry essay"),
+  video("ap-lit", 6, "Uccn7RusNgs", "AP English Literature Prose Fiction Analysis Essay: Read the Prompt", "AP English Literature and Composition", "Skill focus", "Breaking down a prose prompt before writing so the essay answers what is asked"),
+  video("ap-lit", 7, "8XQpkYCDgxw", "2021 Live Review 2: Annotating Text Deliberately", "AP English Literature and Composition", "Exam strategy", "A repeatable annotation routine for exam passages and poems"),
+  video("ap-lit", 8, "tqZkYTPys08", "2022 Live Review 4: A Three-Part Approach to Poetry", "AP English Literature and Composition", "Exam strategy", "Reading, analysing, and writing about poetry under exam time limits"),
+  video("ap-lit", 9, "MsILZwN-Q0w", "Easy Books for AP Lit Q3", "AP English Literature and Composition", "Exam strategy", "Choosing a work you can support with scenes for the literary argument essay"),
+  video("ap-lit", 9, "lnJL7DPWXQM", "2022 Live Review 3: The Three Rubric Rows", "AP English Literature and Composition", "Skill focus", "Thesis, evidence and commentary, and sophistication on the 6-point analytic rubric"),
+  video("ap-lit", 9, "2c1G126UeYE", "2022 Live Review 7: Developing Commentary", "AP English Literature and Composition", "Skill focus", "Making commentary explain how evidence supports a line of reasoning"),
 ];
+
 
 export function videoWatchUrl(v: UnitVideo): string {
   return `https://www.youtube.com/watch?v=${v.id}`;

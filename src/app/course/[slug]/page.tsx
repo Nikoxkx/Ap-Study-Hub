@@ -93,11 +93,11 @@ export default async function CourseOverviewPage({ params }: { params: Params })
     },
     {
       href: `${base}/exam`,
-      label: "Beat the clock",
-      count: course.mockExams.length,
-      unit: course.mockExams.length === 1 ? "paper" : "papers",
-      body: "Practise the pacing before the real clock starts.",
-      show: course.mockExams.length > 0,
+      label: "Sit the interim",
+      count: course.interim?.minutes ?? 0,
+      unit: "minutes",
+      body: "The whole exam in the official format, then the same paper taught step by step.",
+      show: Boolean(course.interim),
     },
     {
       href: `${base}/resources`,

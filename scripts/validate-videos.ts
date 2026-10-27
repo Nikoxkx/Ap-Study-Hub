@@ -39,8 +39,8 @@ for (const subject of subjects) {
   }
 }
 
-if (coverage.units !== 66) fail(`Expected 66 covered units; found ${coverage.units}`);
-if (coverage.videos < 66) fail(`Expected at least 66 videos; found ${coverage.videos}`);
+if (coverage.units !== 75) fail(`Expected 75 covered units; found ${coverage.units}`);
+if (coverage.videos < 75) fail(`Expected at least 75 videos; found ${coverage.videos}`);
 
 console.log(`${coverage.videos} videos · ${coverage.units} units · ${subjects.length} courses`);
 for (const [slug, row] of Object.entries(coverage.byCourse)) {

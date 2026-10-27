@@ -66,7 +66,7 @@ export default async function StudioPage({
     `${base}/print`,
     ...tabs.filter((tab) => tab.id !== "variants" || hasVariants).map((tab) => `${base}/studio?tab=${tab.id}`),
     ...(course.essays.length ? [`${base}/essays`] : []),
-    ...(course.mockExams.length ? [`${base}/exam`] : []),
+    ...(course.interim ? [`${base}/exam`] : []),
   ];
 
   const visibleTabs = tabs.filter((tab) => tab.id !== "variants" || hasVariants);
