@@ -322,7 +322,10 @@ export function StudyDashboard({
                     )}{" "}
                     days
                   </strong>
-                  <Link href={`/course/${nextCourse.slug}/studio`}>Open course studio →</Link>
+                  <div className="deadline-card-links">
+                    <Link href={`/course/${nextCourse.slug}/exam`}>Sit the interim paper →</Link>
+                    <Link href={`/course/${nextCourse.slug}/studio`}>Open course studio →</Link>
+                  </div>
                 </section>
                 <section className="today-plan">
                   <p className="label">Your plan for today</p>

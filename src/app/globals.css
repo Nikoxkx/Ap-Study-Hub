@@ -5102,3 +5102,12 @@ html.is-entering footer[data-site-footer] {
   border-color: var(--mark);
   background: var(--mark-wash);
 }
+
+.deadline-card-links { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.7rem; }
+.deadline-card-links a {
+  color: var(--subject-ink);
+  font-size: 0.75rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.deadline-card-links a + a { color: var(--ink-soft); }
