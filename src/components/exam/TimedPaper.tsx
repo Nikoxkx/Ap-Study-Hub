@@ -6,7 +6,7 @@ import { useScrollLock } from "@/lib/scroll-lock";
 import { useStoredState } from "@/lib/use-stored-state";
 import { useStudyState } from "@/lib/use-study-state";
 import { scheduleReview, type StudyState } from "@/lib/study-model";
-import type { SubjectSlug } from "@/lib/subjects";
+import { getSubject, subjectVars, type SubjectSlug } from "@/lib/subjects";
 import type { Assessment, ExamFrq, ExamQuestion, Stimulus } from "@/content/exams/types";
 import { WritingCoach } from "./WritingCoach";
 import { SubjectMark } from "@/components/SubjectMark";
@@ -93,6 +93,10 @@ export function TimedPaper({
 }) {
   const { blueprint } = assessment;
   const storage = `aps.assessment.${courseSlug}`;
+  /* The room and its stages portal onto <body>, outside the course page's
+     .subject-scope wrapper, so the subject accent has to travel with them. */
+  const subject = getSubject(courseSlug);
+  const subjectStyle = subject ? subjectVars(subject) : undefined;
 
   const [phase, setPhase] = useState<Phase>(startInRoom ? "sitting" : "briefing");
   const [sectionIndex, setSectionIndex] = useState(0);
@@ -158,6 +162,14 @@ export function TimedPaper({
     if (phase === "briefing") return;
     document.body.classList.add("exam-room-open");
     return () => document.body.classList.remove("exam-room-open");
+  }, [phase]);
+
+  /* The score report deliberately keeps the page behind it rendered: its stage
+     is a heavy frosted wash (see exam-room.css), so page text shows through only
+     as blurred colour instead of being hidden like it is during the sitting. */
+  useEffect(() => {
+    document.body.classList.toggle("exam-review-open", phase === "review");
+    return () => document.body.classList.remove("exam-review-open");
   }, [phase]);
 
   // A stage is a fresh screen, so it starts at its own top — not at whatever
@@ -341,7 +353,13 @@ export function TimedPaper({
    */
   const stage = (content: ReactNode, label: string) => {
     const shell = (
-      <div className="exam-stage" role="dialog" aria-modal="true" aria-label={label}>
+      <div
+        className="exam-stage subject-scope"
+        style={subjectStyle}
+        role="dialog"
+        aria-modal="true"
+        aria-label={label}
+      >
         <div className="exam-stage-inner">{content}</div>
       </div>
     );
@@ -637,7 +655,8 @@ export function TimedPaper({
   const room = (
     <>
       <div
-        className="exam-room"
+        className="exam-room subject-scope"
+        style={subjectStyle}
         data-pane={mobileSource ? "source" : "question"}
         data-layout={hasSource ? "split" : "single"}
         key={`room-${sectionIndex}`}

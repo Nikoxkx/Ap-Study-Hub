@@ -538,7 +538,7 @@ export function StudyDashboard({
                     you chose, what was right, why, and the lesson that teaches it.
                   </li>
                   <li>
-                    <strong>Rubric marking for each essay.</strong> Row-by-row points against the
+                    <strong>Rubric marking for each written response.</strong> Row-by-row points against the
                     published rubric, quoting your own sentences, with spelling and grammar listed
                     separately. Add a model key for an AI second read.
                   </li>

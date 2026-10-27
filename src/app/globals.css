@@ -169,6 +169,10 @@
   --glass-border: rgba(255, 255, 255, 0.92);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  /* Solid foreground for text sitting on an ink/accent fill. The paper
+     tokens are surfaces, so in night mode they carry alpha and cannot be
+     reused as a text colour. */
+  --on-accent: var(--paper-raised);
 }
 
 /* Night mode keeps its original deep-neutral surfaces. The values stay strictly
@@ -176,25 +180,30 @@
 .dark {
   color-scheme: dark;
   accent-color: #d4d4d4;
-  --paper: #101010;
-  --paper-raised: #171717;
-  --paper-sunk: #0b0b0b;
+  /* Night surfaces are frosted, not sealed black: each panel is a translucent
+     neutral with a backdrop blur (see the frosted-surface rule below), so the
+     wallpaper stays alive behind every card instead of reading as flat black
+     slabs. The alphas stay high enough that white text keeps its contrast. */
+  --paper: rgba(15, 15, 15, 0.66);
+  --paper-raised: rgba(28, 28, 28, 0.58);
+  --paper-sunk: rgba(8, 8, 8, 0.62);
   --ink: #ededed;
   --ink-soft: #c4c4c4;
   --ink-faint: #9a9a9a;
-  --rule: #383838;
-  --rule-strong: #535353;
+  --rule: rgba(255, 255, 255, 0.14);
+  --rule-strong: rgba(255, 255, 255, 0.3);
   --mark: #ededed;
-  --mark-wash: #1e1e1e;
+  --mark-wash: rgba(237, 237, 237, 0.12);
   --good: #d9d9d9;
-  --good-wash: #1a1a1a;
+  --good-wash: rgba(217, 217, 217, 0.12);
   --warn: #d9d9d9;
-  --warn-wash: #202020;
-  --subject-tint: var(--color-subject-wash-dark, #1d1d1d);
-  --glass-bg: rgba(20, 20, 20, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.48);
+  --warn-wash: rgba(217, 217, 217, 0.14);
+  --subject-tint: var(--color-subject-wash-dark, rgba(255, 255, 255, 0.08));
+  --glass-bg: rgba(18, 18, 18, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.32);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.48);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.48);
+  --on-accent: #f4f4f4;
 }
 
 /* The page-wide dim sits under the content and over the wallpaper, in both
@@ -209,11 +218,12 @@ body::before {
   background: linear-gradient(180deg, rgba(246, 244, 239, 0.30), rgba(246, 244, 239, 0.52));
 }
 
-/* Night mode paints no page-wide dim: the surfaces below are opaque, and laying
-   a near-black wash over the wallpaper only made every page read as one flat
-   dark sheet. Day mode keeps its veil. */
+/* Night mode now keeps a light veil over the wallpaper: the surfaces above it
+   are frosted rather than sealed, so without the veil a bright photograph would
+   wash out white panel text. It stays much lighter than an opaque sheet, so the
+   wallpaper still reads through every blurred panel. */
 .dark body::before {
-  background: none;
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0.42), rgba(8, 8, 8, 0.56));
 }
 
 @media print {
@@ -358,7 +368,7 @@ table,
   top: -4rem;
   z-index: 100;
   background: var(--ink);
-  color: var(--paper);
+  color: var(--on-accent);
   padding: 0.625rem 1rem;
   border-radius: var(--radius-cut);
   font-size: 0.875rem;
@@ -1049,7 +1059,7 @@ main,
 
 .objective-level:last-child { border-right: 0; }
 .objective-level:hover { background: var(--paper-sunk); color: var(--ink); }
-.objective-level[aria-pressed="true"] { background: var(--subject-ink); color: var(--paper-raised); }
+.objective-level[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
 
 /* Notebook paper for scratch work & worked solutions ----------------------- */
 .scratch-paper {
@@ -1346,7 +1356,7 @@ textarea.scratch-paper {
 .segmented { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--rule-strong); border-radius: var(--radius-cut); overflow: hidden; }
 .segmented button { flex: 1 1 auto; min-height: 2.35rem; padding: 0.45rem 0.65rem; border: 0; border-right: 1px solid var(--rule); background: var(--paper-raised); color: var(--ink-soft); font-size: 0.6875rem; cursor: pointer; }
 .segmented button:last-child { border-right: 0; }
-.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--paper-raised); }
+.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--on-accent); }
 .lab-slider > span { display: flex; justify-content: space-between; gap: 0.75rem; color: var(--ink-soft); font-size: 0.75rem; }
 .lab-slider output { color: var(--ink); font-family: var(--font-mono); }
 .lab-slider input { width: 100%; margin-top: 0.5rem; accent-color: var(--subject-ink); }
@@ -1437,7 +1447,7 @@ textarea.scratch-paper {
 .criterion-buttons { display: flex; border: 1px solid var(--rule); border-radius: var(--radius-cut); overflow: hidden; }
 .criterion-buttons button { padding: 0.45rem 0.6rem; border: 0; border-right: 1px solid var(--rule); background: transparent; color: var(--ink-faint); font-size: 0.6875rem; cursor: pointer; }
 .criterion-buttons button:last-child { border-right: 0; }
-.criterion-buttons button[aria-pressed="true"] { background: var(--subject-ink); color: var(--paper-raised); }
+.criterion-buttons button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
 .exemplar-comparison { padding-top: 1.5rem; border-top: 2px solid var(--ink); }
 .exemplar-comparison > div:first-child > p:last-child { max-width: 65ch; margin-top: 0.5rem; color: var(--ink-soft); font-size: 0.8125rem; }
 .comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
@@ -1477,7 +1487,7 @@ textarea.scratch-paper {
 .study-tabs { display: flex; overflow-x: auto; margin-bottom: 2rem; border-block: 1px solid var(--rule); }
 .study-tabs button { display: inline-flex; align-items: center; gap: 0.4rem; flex: 0 0 auto; min-height: 2.85rem; padding: 0.65rem 0.9rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--ink-soft); font-size: 0.8125rem; cursor: pointer; }
 .study-tabs button[aria-pressed="true"] { border-color: var(--subject-ink); color: var(--ink); font-weight: 650; }
-.study-tabs button span { display: grid; place-items: center; min-width: 1.25rem; height: 1.25rem; border-radius: 999px; background: var(--mark); color: var(--paper-raised); font-family: var(--font-mono); font-size: 0.625rem; }
+.study-tabs button span { display: grid; place-items: center; min-width: 1.25rem; height: 1.25rem; border-radius: 999px; background: var(--mark); color: var(--on-accent); font-family: var(--font-mono); font-size: 0.625rem; }
 .study-loading { padding: 3rem; border: 1px solid var(--rule); color: var(--ink-soft); text-align: center; }
 .panel-heading { display: flex; align-items: start; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.5rem; }
 .panel-heading h2 { margin-top: 0.3rem; font-size: clamp(1.5rem, 1.25rem + 0.8vw, 2rem); }
@@ -1543,7 +1553,7 @@ textarea.scratch-paper {
 .weekday-picker { display: flex; margin-top: 0.5rem; }
 .weekday-picker button { flex: 1; min-width: 2rem; min-height: 2.25rem; padding: 0.35rem; border: 1px solid var(--rule-strong); border-right: 0; background: var(--paper-raised); color: var(--ink-faint); font-size: 0.625rem; cursor: pointer; }
 .weekday-picker button:last-child { border-right: 1px solid var(--rule-strong); }
-.weekday-picker button[aria-pressed="true"] { background: var(--subject-ink); color: var(--paper-raised); }
+.weekday-picker button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
 .deadline-note strong { display: block; margin-top: 0.25rem; font-family: var(--font-display); font-size: 1.5rem; }
 .deadline-note p { color: var(--ink-faint); font-size: 0.625rem; }
 .plan-days { display: grid; gap: 0.65rem; }
@@ -1927,7 +1937,7 @@ main :has(:fullscreen) {
 .packet-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
 .packet-unit-links { display: flex; flex: 1; flex-wrap: wrap; justify-content: center; gap: 0.35rem; }
 .packet-unit-links a { padding: 0.3rem 0.45rem; color: var(--ink-soft); font-size: 0.6875rem; text-decoration: none; }
-.packet-unit-links a[aria-current="page"] { background: var(--ink); color: var(--paper-raised); }
+.packet-unit-links a[aria-current="page"] { background: var(--ink); color: var(--on-accent); }
 .packet-cover { padding: 2rem 0; border-block: 3px double var(--ink); }
 .packet-cover h1 { margin-top: 0.75rem; font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
 .packet-cover > p:not(.label):not(.packet-directions) { margin-top: 0.75rem; color: var(--ink-soft); font-size: 1.125rem; }
@@ -2228,6 +2238,71 @@ main :has(:fullscreen) {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.24);
   box-shadow: none;
+}
+
+/* Frosted paper surfaces.
+   The panels below still take their colour from the --paper* tokens, but those
+   tokens are now translucent in night mode, so each panel needs its own
+   backdrop blur to read as frosted glass rather than a see-through sheet.
+   Only card-level surfaces are listed: tiny tracks, meters, and buttons inherit
+   the blur of the panel they sit in instead of stacking filter layers. */
+.objective-levels,
+.lab-equation,
+.source-plate,
+.annotation-passage,
+.model-note,
+.defense-prompt,
+.studio-briefing,
+.variant-toolbar,
+.prerequisite-map a,
+.focus-preview,
+.focus-instruction,
+.privacy-note,
+.code-block,
+.status-line:not(:empty),
+.question-navigation,
+.exam-mode-switch button,
+.exam-notes,
+.exam-clock,
+.coach-panel,
+.response-list > li,
+.score-frq-response,
+.grader-keys,
+.grader-notice,
+.grader-method,
+.walk-strategy,
+.walk-question,
+.walk-reveal,
+.walk-frq-plan,
+.exam-room-bar,
+.exam-room-progress,
+.exam-room-source,
+.exam-room-strip,
+.exam-sheet-panel,
+.answer-sheet,
+.exam-desk-row,
+.exam-highlight-bar,
+.exam-editor-toolbar,
+.exam-editor-surface,
+.exemplar,
+.exemplar[data-open="true"],
+.score-card {
+  backdrop-filter: blur(16px) saturate(118%);
+  -webkit-backdrop-filter: blur(16px) saturate(118%);
+}
+
+/* In night mode the blur runs a touch stronger: the wallpaper photographs are
+   busier than the light-mode wash, and the score report sits over the page. */
+.dark .exam-notes,
+.dark .coach-panel,
+.dark .response-list > li,
+.dark .score-frq-response,
+.dark .exam-sheet-panel,
+.dark .answer-sheet,
+.dark .exemplar,
+.dark .score-card {
+  backdrop-filter: blur(22px) saturate(124%);
+  -webkit-backdrop-filter: blur(22px) saturate(124%);
 }
 
 /* 1. Universal Rotating 7-Square Logo (GPU-only translate3d) --------------- */
@@ -4234,12 +4309,37 @@ html.is-entering footer[data-site-footer] {
   border-radius: var(--radius-cut);
   cursor: pointer;
   font-size: 0.9375rem;
-  transition: background 140ms var(--ease-snap), border-color 140ms var(--ease-snap);
+  background: transparent;
+  transition:
+    background 160ms var(--ease-snap),
+    border-color 160ms var(--ease-snap),
+    box-shadow 220ms var(--ease-settle),
+    transform 220ms var(--ease-settle);
 }
-.exam-options label:hover { background: var(--paper-sunk); }
+/* Hover lifts the row so the pointer target reads as pressable. */
+.exam-options label:hover {
+  background: var(--paper-sunk);
+  border-color: var(--rule-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, 0.5);
+}
+.exam-options label:active { transform: translateY(0); }
+.exam-options label:has(input:focus-visible) {
+  outline: 2px solid var(--subject-ink, var(--ink));
+  outline-offset: 2px;
+}
+/* The selected answer keeps a faint accent-coloured outline and wash even on
+   a busy wallpaper, so the choice is obvious at a glance. */
 .exam-options label[data-selected="true"] {
-  border-color: var(--subject-ink, var(--ink));
-  background: var(--subject-tint, var(--paper-sunk));
+  border-color: color-mix(in srgb, var(--subject-ink, var(--ink)) 60%, transparent);
+  background: color-mix(in srgb, var(--subject-ink, var(--ink)) 11%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--subject-ink, var(--ink)) 38%, transparent),
+    0 12px 26px -14px color-mix(in srgb, var(--subject-ink, var(--ink)) 75%, transparent);
+}
+.exam-options label[data-selected="true"]:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--subject-ink, var(--ink)) 15%, transparent);
 }
 .exam-option-letter {
   font-family: var(--font-mono);
@@ -4247,6 +4347,10 @@ html.is-entering footer[data-site-footer] {
   font-weight: 600;
   color: var(--ink-faint);
   padding-top: 0.15rem;
+  transition: color 160ms var(--ease-snap);
+}
+.exam-options label[data-selected="true"] .exam-option-letter {
+  color: var(--subject-ink, var(--ink));
 }
 
 .exam-frqs { display: grid; gap: 2.5rem; }
@@ -4325,21 +4429,81 @@ html.is-entering footer[data-site-footer] {
 .coach-model { margin: 0.35rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.35rem; font-size: 0.8rem; color: var(--ink-soft); }
 
 /* Score report */
-.score-hero { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--rule); }
+/* Each report block is its own frosted card, so a long report reads as a stack
+   of clearly separated surfaces instead of one continuous sheet of text. */
+.score-card {
+  margin-top: 1.5rem;
+  padding: clamp(1.1rem, 2.4vw, 1.75rem);
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-cut);
+  box-shadow: var(--shadow-lift);
+}
+.score-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.5rem 2rem;
+  align-items: start;
+  margin-top: 0;
+}
+.score-hero-main { min-width: 0; }
+.score-complete-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--answer-correct) 45%, transparent);
+  background: color-mix(in srgb, var(--answer-correct) 12%, transparent);
+  color: var(--answer-correct);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
 .score-title { font-size: clamp(1.3rem, 1.15rem + 0.7vw, 1.7rem); }
 .score-blurb { margin-top: 0.4rem; max-width: 62ch; font-size: 0.84rem; color: var(--ink-soft); }
-.score-hero-figures { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.score-hero-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-cut);
+  background: var(--paper-sunk);
+}
+.score-hero-figures > div { min-width: 5.5rem; }
 .score-big { font-family: var(--font-display); font-size: 2.1rem; font-weight: 600; line-height: 1; }
 .score-big span { font-size: 1rem; color: var(--ink-faint); }
 .score-ap { color: var(--subject-ink, var(--ink)); }
+.score-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+}
+.score-action-primary {
+  border-color: var(--subject-ink, var(--ink));
+}
+.score-final-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  padding: 1.25rem 0 0.5rem;
+}
 .score-caveat { margin-top: 1rem; font-size: 0.78rem; color: var(--ink-faint); }
-.score-sections { margin-top: 2rem; }
+.score-sections { margin-top: 1.5rem; }
 .score-sections table { width: 100%; border-collapse: collapse; margin-top: 0.6rem; font-size: 0.84rem; }
 .score-sections th, .score-sections td { padding: 0.5rem 0.6rem; text-align: left; border-bottom: 1px solid var(--rule); }
 .score-sections thead th { font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); }
-.score-next { margin-top: 2rem; }
+.score-next { margin-top: 1.5rem; }
 .score-next ul { margin-top: 0.5rem; padding-left: 1.1rem; display: grid; gap: 0.4rem; font-size: 0.86rem; color: var(--ink-soft); }
-.score-responses { margin-top: 2.5rem; }
+.score-responses { margin-top: 1.5rem; }
 .score-responses-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
 .response-filters { display: flex; flex-wrap: wrap; gap: 0.3rem; }
 .response-filters button {
@@ -4377,7 +4541,7 @@ html.is-entering footer[data-site-footer] {
 .response-answer { color: var(--answer-correct); }
 .response-explanation { margin-top: 0.35rem; font-size: 0.82rem; color: var(--ink-soft); }
 .response-lesson { margin-top: 0.4rem; font-size: 0.78rem; }
-.score-frqs { margin-top: 2.5rem; }
+.score-frqs { margin-top: 1.5rem; }
 .score-frq { margin-top: 1rem; padding: 1rem 1.1rem; }
 .score-frq header h5 { font-size: 1rem; margin-top: 0.15rem; }
 .score-frq-prompt { margin-top: 0.6rem; font-size: 0.86rem; color: var(--ink-soft); white-space: pre-wrap; }
@@ -4387,11 +4551,18 @@ html.is-entering footer[data-site-footer] {
 .score-frq-rubric li[data-points] { font-size: 0.78rem; color: var(--ink-soft); }
 .score-frq-response { margin-top: 0.9rem; padding: 0.8rem; background: var(--paper-sunk); border-radius: var(--radius-cut); }
 .score-frq-response p { margin-top: 0.35rem; white-space: pre-wrap; font-family: var(--font-display); font-size: 0.9rem; line-height: 1.6; }
-.score-attempts { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule-strong); }
+.score-attempts { margin-top: 1.5rem; }
 .score-attempts-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
 .score-attempts-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .attempt-list { list-style: none; margin: 0.9rem 0 0; padding: 0; display: grid; gap: 0.35rem; font-size: 0.8rem; }
 .attempt-list li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem; padding: 0.45rem 0.6rem; border: 1px solid var(--rule); border-radius: var(--radius-cut); }
+
+@media (max-width: 720px) {
+  .score-hero { grid-template-columns: minmax(0, 1fr); }
+  .score-hero-figures { justify-content: space-between; }
+  .score-actions .btn,
+  .score-final-actions .btn { flex: 1 1 auto; }
+}
 
 /* Grader */
 .grader { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--rule-strong); }
@@ -4476,8 +4647,31 @@ html.is-entering footer[data-site-footer] {
 .walk-question-text { font-family: var(--font-display); font-size: 0.95rem; line-height: 1.5; }
 .walk-skill { margin-top: 0.25rem; font-size: 0.75rem; color: var(--ink-faint); }
 .walk-options { display: grid; gap: 0.35rem; }
-.walk-options label { display: flex; gap: 0.6rem; padding: 0.45rem 0.65rem; border: 1px solid var(--rule); border-radius: var(--radius-cut); font-size: 0.9rem; cursor: pointer; }
-.walk-options label[data-state="chosen"] { border-color: var(--subject-ink, var(--ink)); }
+.walk-options label {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-cut);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background 160ms var(--ease-snap),
+    border-color 160ms var(--ease-snap),
+    box-shadow 220ms var(--ease-settle),
+    transform 220ms var(--ease-settle);
+}
+.walk-options label:hover {
+  background: var(--paper-sunk);
+  border-color: var(--rule-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, 0.5);
+}
+.walk-options label[data-state="chosen"] {
+  border-color: color-mix(in srgb, var(--subject-ink, var(--ink)) 60%, transparent);
+  background: color-mix(in srgb, var(--subject-ink, var(--ink)) 11%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--subject-ink, var(--ink)) 38%, transparent);
+}
 .walk-options label[data-state="correct"] { border-color: var(--answer-correct); background: var(--answer-correct-bg); }
 .walk-options label[data-state="chosen-wrong"] { border-color: var(--answer-wrong); background: var(--answer-wrong-bg); }
 .walk-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.65rem; }
@@ -4641,7 +4835,7 @@ html.is-entering footer[data-site-footer] {
 }
 .exam-room-button:hover { background: var(--paper-sunk); }
 .exam-room-button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.exam-room-finish { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.exam-room-finish { background: var(--ink); border-color: var(--ink); color: var(--on-accent); }
 .exam-room-finish:hover { background: var(--ink-soft); }
 
 .exam-room-progress {
@@ -4786,10 +4980,19 @@ html.is-entering footer[data-site-footer] {
   font-size: 0.72rem;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
+  transition:
+    background 160ms var(--ease-snap),
+    border-color 160ms var(--ease-snap),
+    transform 180ms var(--ease-settle);
+}
+.exam-room-bubbles button:hover {
+  transform: translateY(-2px);
+  border-color: var(--rule-strong);
+  background: var(--paper-sunk);
 }
 .exam-room-bubbles button[data-answered="true"] { background: var(--paper-sunk); color: var(--ink); border-color: var(--rule-strong); }
 .exam-room-bubbles button[data-flagged="true"] { box-shadow: inset 0 -2px 0 var(--mark); }
-.exam-room-bubbles button[data-active="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.exam-room-bubbles button[data-active="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-accent); }
 .exam-room-strip-actions { display: flex; align-items: center; gap: 0.9rem; font-size: 0.72rem; color: var(--ink-faint); }
 .exam-room-strip-link { color: var(--ink-soft); text-underline-offset: 2px; }
 .exam-room-strip-note { margin: 0; font-size: 0.76rem; color: var(--ink-soft); }
@@ -4840,6 +5043,17 @@ html.is-entering footer[data-site-footer] {
   font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
+  transition:
+    background 160ms var(--ease-snap),
+    border-color 160ms var(--ease-snap),
+    box-shadow 200ms var(--ease-settle),
+    transform 200ms var(--ease-settle);
+}
+.exam-sheet-grid button:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--subject-ink, var(--ink)) 55%, transparent);
+  background: color-mix(in srgb, var(--subject-ink, var(--ink)) 9%, transparent);
+  box-shadow: 0 8px 18px -12px rgba(0, 0, 0, 0.55);
 }
 .exam-sheet-grid button[data-state="answered"] { border-color: var(--rule-strong); }
 .exam-sheet-grid button[data-state="flagged"] { border-color: var(--mark); background: var(--mark-wash); }

@@ -105,6 +105,11 @@ async function main() {
     if (!window.document.body.classList.contains("exam-room-open")) {
       fail(`${subject.slug}: the page behind the room is still visible`);
     }
+    // Only the score report frosts the page instead of hiding it; while a
+    // section is being sat the review marker must not be on yet.
+    if (window.document.body.classList.contains("exam-review-open")) {
+      fail(`${subject.slug}: the sitting room is marked as the score report`);
+    }
 
     for (let step = 0; step < 16; step += 1) {
       const state = counts();
@@ -128,13 +133,21 @@ async function main() {
     else if (text(".exam-stage").length < 400) fail(`${subject.slug}: the score report rendered blank`);
 
     if (!window.document.body.classList.contains("exam-room-open")) {
-      fail(`${subject.slug}: the score report left the page behind it visible`);
+      fail(`${subject.slug}: the score report lost its full-screen stage lock`);
+    }
+    // The report keeps the page behind rendered on purpose and frosts it with
+    // the review marker, so its text cannot collide with the report text.
+    if (!window.document.body.classList.contains("exam-review-open")) {
+      fail(`${subject.slug}: the score report is not marked as a frosted review stage`);
     }
 
     checked += 1;
     await act(async () => root.unmount());
     if (window.document.body.classList.contains("exam-room-open")) {
       fail(`${subject.slug}: the page stayed hidden after the paper closed`);
+    }
+    if (window.document.body.classList.contains("exam-review-open")) {
+      fail(`${subject.slug}: the review marker stayed on the body after closing`);
     }
     // The page must scroll again the moment the paper is gone. A leaked
     // `overflow: hidden` (what the old hand-rolled lock did) froze the site.

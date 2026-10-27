@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Assessment } from "@/content/exams/types";
-import type { SubjectSlug } from "@/lib/subjects";
+import { writtenWorkCopy, type SubjectSlug } from "@/lib/subjects";
 import { TimedPaper } from "./TimedPaper";
 import { GuidedWalkthrough } from "./GuidedWalkthrough";
 
@@ -24,6 +24,7 @@ export function ExamHub({
   courseLabel: string;
 }) {
   const [mode, setMode] = useState<"simulation" | "walkthrough">("simulation");
+  const written = writtenWorkCopy(courseSlug);
 
   return (
     <div className="exam-hub">
@@ -44,7 +45,7 @@ export function ExamHub({
           onClick={() => setMode("walkthrough")}
         >
           <strong>Guided walkthrough</strong>
-          <span>Step-by-step teaching for every question, and a writing plan for every essay.</span>
+          <span>Step-by-step teaching for every question, and a writing plan for every {written.singular}.</span>
         </button>
       </div>
 

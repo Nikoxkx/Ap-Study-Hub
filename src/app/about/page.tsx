@@ -195,7 +195,7 @@ export default function AboutPage() {
                   <th scope="col">Paragraphs</th>
                   <th scope="col">Cards</th>
                   <th scope="col">Questions</th>
-                  <th scope="col">Essays</th>
+                  <th scope="col">Essays / FRQs</th>
                   <th scope="col">Interim assessment</th>
                 </tr>
               </thead>

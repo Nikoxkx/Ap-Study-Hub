@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
 import type { Assessment } from "@/content/exams/types";
 import { getRubricForFrq, scoreAssessment, skillBreakdown, unitBreakdown } from "@/lib/exams";
+import { writtenWorkCopy } from "@/lib/subjects";
 import { RubricSelfScore } from "./RubricSelfScore";
 import { sanitizeRichText } from "@/lib/rich-text";
 
@@ -71,6 +72,7 @@ export function ScoreReport({
 }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [attempts, setAttempts] = useStoredState<Attempt[]>(`aps.attempts.${courseSlug}`, [], reviveAttempts);
+  const written = writtenWorkCopy(courseSlug);
 
   const score = useMemo(
     () => scoreAssessment(assessment, mcqAnswers, frqScores),
@@ -126,14 +128,17 @@ export function ScoreReport({
 
   return (
     <div className="score-report">
-      <section className="score-hero">
-        <div>
+      <section className="score-hero score-card">
+        <div className="score-hero-main">
+          <span className="score-complete-badge">
+            <span aria-hidden="true">✓</span> Paper complete
+          </span>
           <p className="label">Interim assessment · {courseLabel}</p>
           <h3 className="score-title">Your score report</h3>
           <p className="score-blurb">
             Section weights follow the published exam: {assessment.blueprint.mcqWeight}% multiple choice,{" "}
             {assessment.blueprint.frqWeight}% free response. Written answers count only after you mark them with
-            the rubric grader, so the estimate below rises as you grade each essay.
+            the rubric grader, so the estimate below rises as you grade each {written.singular}.
           </p>
         </div>
         <div className="score-hero-figures">
@@ -157,6 +162,17 @@ export function ScoreReport({
             <p className="label">estimated AP score</p>
           </div>
         </div>
+        <div className="score-actions">
+          <Link href="/" className="btn btn-solid score-action-primary">
+            <span aria-hidden="true">←</span> Return to homepage
+          </Link>
+          <Link href={`/course/${courseSlug}`} className="btn btn-outline">
+            Back to {courseLabel}
+          </Link>
+          <button type="button" className="btn btn-quiet" onClick={onRetake}>
+            Sit it again
+          </button>
+        </div>
       </section>
 
       <p className="score-caveat">
@@ -165,7 +181,7 @@ export function ScoreReport({
         sanity check, not a prediction.
       </p>
 
-      <section className="score-sections">
+      <section className="score-sections score-card">
         <h4 className="label">By section</h4>
         <table>
           <thead>
@@ -196,7 +212,7 @@ export function ScoreReport({
       </section>
 
       {(weakUnits.length || weakSkills.length) && allMcq.length ? (
-        <section className="score-next">
+        <section className="score-next score-card">
           <h4 className="label">Study this next</h4>
           <ul>
             {weakUnits.map((unit) => (
@@ -220,7 +236,7 @@ export function ScoreReport({
       ) : null}
 
       {allMcq.length ? (
-        <section className="score-responses">
+        <section className="score-responses score-card">
           <div className="score-responses-head">
             <div>
               <h4 className="label">Every response</h4>
@@ -290,7 +306,7 @@ export function ScoreReport({
       ) : null}
 
       {frqs.length ? (
-        <section className="score-frqs">
+        <section className="score-frqs score-card">
           <h4 className="label">Written responses, marked row by row</h4>
           <p className="score-blurb">
             Each task is marked against the rubric printed with it. Use the row-level evidence to check the
@@ -352,7 +368,7 @@ export function ScoreReport({
         </section>
       ) : null}
 
-      <section className="score-attempts">
+      <section className="score-attempts score-card">
         <div className="score-attempts-head">
           <div>
             <h4 className="label">Attempt history</h4>
@@ -361,9 +377,6 @@ export function ScoreReport({
           <div className="score-attempts-actions">
             <button type="button" className="btn btn-outline btn-sm" onClick={saveAttempt}>
               Save this attempt
-            </button>
-            <button type="button" className="btn btn-solid btn-sm" onClick={onRetake}>
-              Sit it again
             </button>
           </div>
         </div>
@@ -384,6 +397,18 @@ export function ScoreReport({
           <p className="score-blurb">No saved attempts yet.</p>
         )}
       </section>
+
+      <div className="score-final-actions">
+        <Link href="/" className="btn btn-solid score-action-primary">
+          <span aria-hidden="true">←</span> Return to homepage
+        </Link>
+        <Link href={`/course/${courseSlug}/exam`} className="btn btn-outline">
+          Back to the exam hub
+        </Link>
+        <button type="button" className="btn btn-quiet" onClick={onRetake}>
+          Sit it again
+        </button>
+      </div>
     </div>
   );
 }

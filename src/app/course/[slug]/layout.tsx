@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCourse } from "@/lib/catalog";
-import { subjects, formatExamDate, examTimeLabel, examInstant, subjectVars } from "@/lib/subjects";
+import { subjects, formatExamDate, examTimeLabel, examInstant, subjectVars, writtenWorkCopy } from "@/lib/subjects";
 import { formatDate } from "@/lib/site";
 import { daysUntil } from "@/lib/clock";
 import { SubjectMark } from "@/components/SubjectMark";
@@ -29,6 +29,7 @@ export default async function CourseLayout({
 
   const { subject, counts } = course;
   const daysOut = daysUntil(examInstant(subject));
+  const written = writtenWorkCopy(subject.slug);
 
   const trail = [
     { name: "Home", href: "/" },
@@ -76,7 +77,7 @@ export default async function CourseLayout({
                   <li>{counts.paragraphs} paragraphs</li>
                   <li>{counts.flashcards} cards</li>
                   <li>{counts.questions} questions</li>
-                  {counts.essays > 0 ? <li>{counts.essays} marked essays</li> : null}
+                  {counts.essays > 0 ? <li>{counts.essays} marked {written.plural}</li> : null}
                   <li>~{counts.readingMinutes} min read</li>
                   <li>
                     revised <time dateTime={subject.revised}>{formatDate(subject.revised)}</time>
