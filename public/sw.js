@@ -1,6 +1,6 @@
 /* AP Study Hub offline worker. Same-origin pages and assets only; YouTube thumbnails, opt-in player frames, and sync requests bypass this worker. */
-const PAGES = "aps-study-pages-v6";
-const ASSETS = "aps-study-assets-v6";
+const PAGES = "aps-study-pages-v7";
+const ASSETS = "aps-study-assets-v7";
 const CORE = ["/", "/study", "/videos", "/integrations", "/manifest.webmanifest", "/pwa-icon/192", "/pwa-icon/512", "/og-image.png", "/social-preview.png"];
 
 self.addEventListener("install", (event) => {
@@ -35,13 +35,23 @@ async function networkFirst(request) {
   }
 }
 
-async function cacheFirst(request) {
+/**
+ * Stale-while-revalidate for artwork.
+ *
+ * Marks and wallpapers are redrawn from time to time. Serving them cache-first
+ * meant a student who had visited before kept the old drawing forever; this
+ * returns the cached copy immediately and refreshes it for the next visit.
+ */
+async function staleWhileRevalidate(request) {
   const cache = await caches.open(ASSETS);
   const cached = await cache.match(request);
-  if (cached) return cached;
-  const response = await fetch(request);
-  if (response.ok && response.type === "basic") await cache.put(request, response.clone());
-  return response;
+  const network = fetch(request)
+    .then((response) => {
+      if (response.ok && response.type === "basic") cache.put(request, response.clone());
+      return response;
+    })
+    .catch(() => cached);
+  return cached ?? network;
 }
 
 self.addEventListener("fetch", (event) => {
@@ -52,7 +62,7 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.startsWith("/_next/static/")) {
     event.respondWith(networkFirst(request));
   } else if (url.pathname.startsWith("/fonts/") || url.pathname.startsWith("/icons/") || url.pathname.startsWith("/bg-") || url.pathname.startsWith("/pwa-icon/") || url.pathname === "/icon" || url.pathname === "/apple-icon" || url.pathname === "/og-image.png" || url.pathname === "/social-preview.png") {
-    event.respondWith(cacheFirst(request));
+    event.respondWith(staleWhileRevalidate(request));
   } else {
     event.respondWith(networkFirst(request));
   }

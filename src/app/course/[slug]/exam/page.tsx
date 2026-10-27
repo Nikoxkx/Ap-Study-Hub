@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getCatalog, getCourse } from "@/lib/catalog";
 import { getAssessment } from "@/lib/exams";
 import { ExamHub } from "@/components/exam/ExamHub";
+import { SubjectMark } from "@/components/SubjectMark";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { absoluteUrl, socialImages } from "@/lib/site";
 import { formatExamDate } from "@/lib/subjects";
@@ -52,9 +53,17 @@ export default async function ExamPage({ params }: { params: Params }) {
   return (
     <div className="wrap space-y-8 py-8 md:py-12">
       <GlassCard as="header" padding="lg" className="mx-auto max-w-5xl">
-        <p className="label mb-2">
-          Mock interim assessment · {subject.official}
-        </p>
+        <div className="mb-3 flex items-center gap-3">
+          <span
+            className="subject-accent-chip flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/80 bg-white/45 dark:border-white/25 dark:bg-white/10"
+            title={subject.symbolLabel}
+          >
+            <SubjectMark subject={subject.mark} size={28} label={subject.symbolLabel} />
+          </span>
+          <p className="label mb-0">
+            {subject.familiar} · mock interim assessment
+          </p>
+        </div>
         <h2 className="text-[clamp(1.55rem,1.3rem+1.2vw,2.25rem)] font-semibold" style={{ letterSpacing: "-0.025em" }}>
           The whole exam, in the official format
         </h2>

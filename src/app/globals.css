@@ -4632,7 +4632,8 @@ html.is-entering footer[data-site-footer] {
   background: var(--paper-raised);
 }
 
-.exam-room-id { min-width: 0; }
+.exam-room-id { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+.exam-room-symbol { flex-shrink: 0; }
 .exam-room-id p { margin: 0 0 0.1rem; }
 .exam-room-id strong {
   display: block;

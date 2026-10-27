@@ -6,6 +6,16 @@ import { Logo } from "@/components/ui/Logo";
  * Renders a single `<img>` per course: crisp dark strokes in day mode, and
  * pure `#FFFFFF` white strokes in night mode (`.dark`).
  */
+/**
+ * Bumped whenever the mark artwork changes.
+ *
+ * The icons are static files under /public, and an installed offline worker
+ * serves /icons/ from its cache, so a redrawn mark can otherwise stay stale in
+ * a student's browser indefinitely. A versioned URL is a cache miss everywhere:
+ * HTTP cache, service worker cache, and the Next.js asset cache.
+ */
+const MARK_ASSET_VERSION = "2";
+
 export const subjectSymbolLabels: Record<SubjectSlug, string> = {
   apush: "U.S. flag — American history",
   "ap-lang": "Open book — rhetoric and composition",
@@ -39,8 +49,8 @@ export function SubjectMark({
   const resolvedLabel = label ?? subjectSymbolLabels[subject];
   const src =
     tone === "light"
-      ? `/icons/courses/${subject}-white.png`
-      : `/icons/courses/${subject}-dark.png`;
+      ? `/icons/courses/${subject}-white.png?v=${MARK_ASSET_VERSION}`
+      : `/icons/courses/${subject}-dark.png?v=${MARK_ASSET_VERSION}`;
 
   return (
     // eslint-disable-next-line @next/next/no-img-element

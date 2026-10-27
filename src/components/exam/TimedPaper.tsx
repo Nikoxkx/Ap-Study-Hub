@@ -8,6 +8,7 @@ import { scheduleReview, type StudyState } from "@/lib/study-model";
 import type { SubjectSlug } from "@/lib/subjects";
 import type { Assessment, ExamFrq, ExamQuestion, Stimulus } from "@/content/exams/types";
 import { WritingCoach } from "./WritingCoach";
+import { SubjectMark } from "@/components/SubjectMark";
 import { ScoreReport } from "./ScoreReport";
 import { StimulusTable } from "./StimulusTable";
 import {
@@ -640,10 +641,15 @@ export function TimedPaper({
       >
         <header className="exam-room-bar">
           <div className="exam-room-id">
-            <p className="label">
-              {courseLabel} · Section {sectionIndex + 1} of {assessment.sections.length}
-            </p>
-            <strong>{section.name}</strong>
+            {/* The course mark rides along into the room, so the paper is
+                always identified by the same symbol as the rest of the course. */}
+            <SubjectMark subject={courseSlug} size={22} className="exam-room-symbol" />
+            <div>
+              <p className="label">
+                {courseLabel} · Section {sectionIndex + 1} of {assessment.sections.length}
+              </p>
+              <strong>{section.name}</strong>
+            </div>
           </div>
 
           <div className="exam-room-tools" role="group" aria-label="Exam tools">

@@ -46,7 +46,7 @@ export default async function CourseLayout({
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
             <div className="flex gap-5">
               <span
-                className="subject-accent-chip hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/80 bg-white/45 sm:flex dark:border-white/25 dark:bg-white/10"
+                className="subject-accent-chip flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/80 bg-white/45 sm:h-14 sm:w-14 dark:border-white/25 dark:bg-white/10"
                 title={subject.symbolLabel}
               >
                 <SubjectMark subject={subject.mark} size={32} label={subject.symbolLabel} />

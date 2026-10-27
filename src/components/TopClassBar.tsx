@@ -99,7 +99,7 @@ export function TopClassBar() {
           {activeSubject ? (
             <SubjectMark
               subject={activeSubject.mark}
-              size={15}
+              size={18}
               label={activeSubject.symbolLabel}
               tone="auto"
             />
@@ -145,7 +145,7 @@ export function TopClassBar() {
           {activeSubject ? (
             <SubjectMark
               subject={activeSubject.mark}
-              size={14}
+              size={17}
               label={activeSubject.symbolLabel}
               tone="auto"
             />
