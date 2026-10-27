@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import "./exam-room.css";
 import "katex/dist/katex.min.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -10,7 +11,7 @@ import { ScrollEffects } from "@/components/ui/ScrollEffects";
 import { site, socialImages } from "@/lib/site";
 import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
 
-const bootstrapScript = `(function(){try{var c=localStorage.getItem("aps.theme");var m=window.matchMedia("(prefers-color-scheme: dark)").matches;if(c==="dark"||((c==="system"||!c)&&m)){document.documentElement.classList.add("dark")}document.documentElement.dataset.theme=c||"system";document.documentElement.classList.add("is-entering");window.setTimeout(function(){document.documentElement.classList.remove("is-entering")},2400);if("serviceWorker"in navigator&&localStorage.getItem("aps:sw-ver")!=="v7"){localStorage.setItem("aps:sw-ver","v7");navigator.serviceWorker.getRegistrations().then(function(rs){if(!rs.length)return;Promise.all([Promise.all(rs.map(function(r){return r.unregister()})),window.caches?caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}):Promise.resolve()]).then(function(){location.reload()})})}}catch(e){}})();`;
+const bootstrapScript = `(function(){try{var c=localStorage.getItem("aps.theme");var m=window.matchMedia("(prefers-color-scheme: dark)").matches;if(c==="dark"||((c==="system"||!c)&&m)){document.documentElement.classList.add("dark")}document.documentElement.dataset.theme=c||"system";document.documentElement.classList.add("is-entering");window.setTimeout(function(){document.documentElement.classList.remove("is-entering")},2400);if("serviceWorker"in navigator&&localStorage.getItem("aps:sw-ver")!=="v8"){localStorage.setItem("aps:sw-ver","v8");navigator.serviceWorker.getRegistrations().then(function(rs){if(!rs.length)return;Promise.all([Promise.all(rs.map(function(r){return r.unregister()})),window.caches?caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}):Promise.resolve()]).then(function(){location.reload()})})}}catch(e){}})();`;
 
 /**
  * Typography and preload.

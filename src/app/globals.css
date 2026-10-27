@@ -4573,56 +4573,8 @@ html.is-entering footer[data-site-footer] {
  * panes of 180px each are worse than one pane you can read.
  */
 
-.exam-room {
-  position: fixed;
-  inset: 0;
-  z-index: 120;
-  display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
-  /* Opaque, not frosted. A paper is a reading surface: the bedroom-wall of
-     text that used to show through the glass made the questions harder to read
-     than the passages. The page behind is hidden outright (below), so there is
-     nothing to see through the room anyway. */
-  background: rgb(243, 242, 238);
-  color: var(--ink);
-  font-family: var(--font-ui);
-}
-
-.dark .exam-room {
-  /* Charcoal, a shade above the raised panels inside it, so the source pane
-     still reads as a panel rather than melting into the room. */
-  background: rgb(26, 26, 26);
-}
-
-/* Break and score report get the same fixed shell as the room. They used to be
-   returned into the page flow, which left the student looking at empty page
-   under a locked scroll after finishing a section. */
-.exam-stage {
-  position: fixed;
-  inset: 0;
-  z-index: 121;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  padding: clamp(0.9rem, 2.6vw, 2.25rem) clamp(0.75rem, 2.6vw, 2.25rem) 4rem;
-  background: rgb(243, 242, 238);
-  color: var(--ink);
-  font-family: var(--font-ui);
-  animation: exam-room-enter 420ms var(--ease-settle) both;
-}
-.dark .exam-stage { background: rgb(26, 26, 26); }
-
-/* The page under an open paper is removed from view, not just dimmed: the
-   briefing, the header, the wallpaper, and the footer were all legible through
-   the frosted room and collided with the question text. The room and its stages
-   are portaled onto <body>, so they are untouched by this. */
-body.exam-room-open > main,
-body.exam-room-open > header,
-body.exam-room-open > footer,
-body.exam-room-open > .page-wallpaper,
-body.exam-room-open > .skip-link {
-  visibility: hidden;
-}
+/* Exam room shell, opacity, and page-hiding rules live in exam-room.css,
+   imported right after this file. */
 .exam-stage-inner { width: min(100%, 74rem); margin-inline: auto; }
 .exam-stage-inner > .score-report,
 .exam-stage-inner > .exam-break { margin: 0; }

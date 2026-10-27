@@ -198,6 +198,8 @@ scripts/
   build-social-image.mjs        renders 1200×630 social cards over bg-music-class.jpg via @resvg/resvg-js
 src/
   app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
+    globals.css                 design tokens, light/dark surfaces, and every shared component
+    exam-room.css               exam room shell: painted (not frosted) surface, hidden page behind
   components/
     SiteHeader.tsx              single-row leveled header bar (Logo, TopClassBar, Jump to ⌘K, MobileNav)
     SiteHeaderShell.tsx         directional scroll-fade shell preserving fixed modal viewports
