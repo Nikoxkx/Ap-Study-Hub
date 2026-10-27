@@ -9,7 +9,7 @@ import { Logo } from "@/components/ui/Logo";
 export const subjectSymbolLabels: Record<SubjectSlug, string> = {
   apush: "U.S. flag — American history",
   "ap-lang": "Open book — rhetoric and composition",
-  "ap-lit": "Quill and inkwell — literary analysis",
+  "ap-lit": "Engraved rose — literary analysis",
   "ap-seminar": "Source documents — synthesis and inquiry",
   "ap-gov": "Classical capitol — constitutional government",
   "ap-bio": "DNA double helix — living systems",

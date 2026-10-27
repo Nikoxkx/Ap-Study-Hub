@@ -80,7 +80,10 @@ function QuestionWalk({
   const correct = question.correctIndex;
 
   return (
-    <li className="walk-question" data-revealed={revealed ? "true" : "false"}>
+    // A div, not an <li>: the caller already wraps each question in its own
+    // list item so that the shared passage can sit above it. Nesting an <li>
+    // here produced invalid markup and a hydration error on every walkthrough.
+    <div className="walk-question" data-revealed={revealed ? "true" : "false"}>
       <div className="walk-question-head">
         <span className="walk-number">{String(index + 1).padStart(2, "0")}</span>
         <div>
@@ -191,7 +194,7 @@ function QuestionWalk({
           ) : null}
         </div>
       ) : null}
-    </li>
+    </div>
   );
 }
 

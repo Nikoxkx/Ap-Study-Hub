@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useStoredState } from "@/lib/use-stored-state";
 import { useStudyState } from "@/lib/use-study-state";
@@ -137,13 +137,24 @@ export function TimedPaper({
   }, []);
 
   // Lock the page behind the room, so the briefs cannot scroll under the paper.
+  // The break and the score report are full-screen stages too, so they stay
+  // locked; only the briefing returns the page to the student.
   useEffect(() => {
-    if (phase !== "sitting" && phase !== "break") return;
+    if (phase === "briefing") return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previous;
     };
+  }, [phase]);
+
+  // A stage is a fresh screen, so it starts at its own top — not at whatever
+  // document offset the student happened to be at when the section ended.
+  useEffect(() => {
+    if (phase === "briefing" || phase === "sitting") return;
+    window.scrollTo({ top: 0 });
+    const stage = document.querySelector<HTMLElement>(".exam-stage");
+    if (stage) stage.scrollTop = 0;
   }, [phase]);
 
 
@@ -309,6 +320,26 @@ export function TimedPaper({
   const breakMinutes = blueprint.breaks.reduce((sum, item) => sum + item.minutes, 0);
 
 
+  /**
+   * Full-screen stage for everything that is not the sitting room itself.
+   *
+   * The break and the score report used to be returned straight into the page
+   * flow while the room itself was a portal painted over the viewport. Finishing
+   * a section therefore unmounted the room and dropped the student back at
+   * whatever document position they had been on when they pressed start — in
+   * practice a blank screen, because the hub is far down the page and the body
+   * was still scroll-locked. Both phases now get the same fixed shell, and both
+   * go through <body>, so the viewport always contains the next thing to read.
+   */
+  const stage = (content: ReactNode, label: string) => {
+    const shell = (
+      <div className="exam-stage" role="dialog" aria-modal="true" aria-label={label}>
+        <div className="exam-stage-inner">{content}</div>
+      </div>
+    );
+    return portalHost ? createPortal(shell, portalHost) : shell;
+  };
+
   /* ── Briefing ─────────────────────────────────────────────────────── */
   if (phase === "briefing") {
     return (
@@ -403,7 +434,7 @@ export function TimedPaper({
 
   /* ── Break ────────────────────────────────────────────────────────── */
   if (phase === "break") {
-    return (
+    return stage(
       <div className="exam-break">
         <p className="label">Break</p>
         <p className="exam-break-clock">{clock(breakRemaining)}</p>
@@ -421,13 +452,14 @@ export function TimedPaper({
           </button>
           <span>Resumes automatically when the break clock ends.</span>
         </div>
-      </div>
+      </div>,
+      "Break between sections",
     );
   }
 
   /* ── Review ───────────────────────────────────────────────────────── */
   if (phase === "review") {
-    return (
+    return stage(
       <ScoreReport
         assessment={assessment}
         courseSlug={courseSlug}
@@ -445,9 +477,18 @@ export function TimedPaper({
           setFlags({});
           setCrossed({});
           setElapsedBySection({});
+          setDrafts({});
+          setMarks({});
           setSectionIndex(0);
+          setDeadline(null);
+          setRemaining(0);
+          setExpired(false);
+          setSavedAt(null);
+          setActiveQuestion(0);
+          setActiveTask(0);
         }}
-      />
+      />,
+      "Score report",
     );
   }
   /* ── Sitting: full-screen exam room ───────────────────────────────── */

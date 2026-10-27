@@ -111,7 +111,7 @@ export const subjects: Subject[] = [
     washDark: "#1d1d1d",
     revised: "2026-10-26",
     topic: "LITERATURE",
-    symbolLabel: "Quill and inkwell — literary analysis",
+    symbolLabel: "Engraved rose — literary analysis",
     mark: "ap-lit",
   },
   {

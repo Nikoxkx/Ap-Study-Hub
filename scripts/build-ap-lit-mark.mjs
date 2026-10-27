@@ -1,22 +1,26 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 /**
- * Build the AP Literature course mark.
+ * Build the AP Literature course mark from the supplied rose engraving.
  *
- * Drawn here as geometry, not traced from a picture. The other nine marks are
- * solid silhouettes that read at 15–32px — a flag, an open book, a stack of
- * sources, a capitol, a helix, a triangle, a magnifier, a rising graph, a leaf.
- * Two supplied drawings were tried first and both failed that test: an engraved
- * rose (fine grey hatching, turns to mush) and an open book (thin ink lines,
- * disappears at icon size, and duplicates AP Language's book).
+ * The artwork in `assets/marks/ap-lit-rose.png` is the authoritative logo: a
+ * black-ink engraved rose on a white ground. It is used everywhere the site
+ * shows an AP Literature symbol — the header chip, the course hero, the study
+ * desk, the exam briefing and the print sheets — so this script is the single
+ * source of truth for all three PNG variants.
  *
- * The mark is therefore a quill rising out of an inkwell — literature and the
- * writing about it — built as two solid masses with a light well punched out of
- * the pot and three barbs cut from the feather. That is the same construction
- * as the other marks: filled shape, a few negative-space details, no hairlines.
+ * Turning the scan into an icon is a four-step job:
+ *   1. flatten to greyscale and negate, so ink is light and paper is black;
+ *   2. lift the mid-tones (`-level 20%,66%`) so the hatching survives as line
+ *      weight instead of dissolving into grey haze at 15px;
+ *   3. use that grey as the alpha channel and paint the RGB a flat colour;
+ *   4. trim, fit to a 244px art box, and centre on a 256px canvas.
+ *
+ * NB: the obvious `xc:colour mask -alpha off -compose CopyOpacity -composite`
+ * silently drops the colour and writes a pure black image — it shipped once,
+ * which is why the white variant was invisible on the night header. Building
+ * alpha first and colorizing the RGB afterwards avoids that entirely.
  *
  * Outputs (256×256, sRGB, truecolour + alpha):
  *   ap-lit.png / ap-lit-dark.png — ink, for day surfaces
@@ -25,85 +29,51 @@ import { join } from "node:path";
  * Requires ImageMagick's `convert` (or `magick` via MAGICK_BIN).
  */
 
+const SOURCE = "assets/marks/ap-lit-rose.png";
 const OUT_DIR = "public/icons/courses";
 const CANVAS = 256;
 const ART = 244;
-const SOURCE = 340;
 
 const INK = "#121212";
 const WHITE = "#ffffff";
+
+/** Mid-tone lift: enough to hold the engraving at 15px without flooding it. */
+const LEVEL = "20%,66%";
 
 function run(args) {
   execFileSync(process.env.MAGICK_BIN ?? "convert", args, { stdio: ["ignore", "inherit", "inherit"] });
 }
 
 /**
- * The drawing, at its own scale.
+ * Paint one variant.
  *
- * White is ink; black is a hole. Keeping it as a single mask means the shape can
- * be adjusted by editing one path rather than re-deriving a colour composite.
+ * Alpha comes from the negated luminance of the engraving, so the paper is
+ * transparent and the ink is opaque; the RGB is then flood-colorized, which
+ * leaves the alpha untouched.
  */
-function buildMask(target) {
+function paint(target, colour) {
   run([
-    "-size", `${SOURCE}x${SOURCE}`, "xc:black",
-    "-fill", "white", "-stroke", "none",
-    // Feather: a filled blade curving up to the right from the pot.
-    "-draw", "path 'M 150,236 C 156,176 176,128 214,88 C 236,64 258,52 274,50 C 268,74 254,104 232,132 C 206,164 178,204 162,244 Z'",
-    // Inkwell rim and body.
-    "-draw", "roundrectangle 96,238 244,262 10,10",
-    "-draw", "path 'M 108,268 L 232,268 L 214,318 L 126,318 Z'",
-    // Negative space: the ink window in the pot.
-    "-fill", "black",
-    "-draw", "path 'M 140,284 L 202,284 L 196,302 L 146,302 Z'",
-    // Negative space: three barbs, cut rather than drawn.
-    "-stroke", "black", "-strokewidth", "11",
-    "-draw", "stroke-linecap round line 172,220 142,216",
-    "-draw", "stroke-linecap round line 188,194 164,180",
-    "-draw", "stroke-linecap round line 206,164 188,146",
-    target,
-  ]);
-}
-
-/**
- * Paint the mask a single colour.
- *
- * NB: the obvious `xc:colour mask -alpha off -compose CopyOpacity -composite`
- * silently drops the colour and writes a pure black image — it did exactly that
- * for a while, which is why the white build was invisible on the night header.
- * Building alpha from the mask first and then colorizing the RGB keeps the
- * painted colour intact.
- */
-function finish(mask, colour, target) {
-  run([
-    mask,
-    "-alpha", "off",
+    SOURCE,
     "-colorspace", "Gray",
-    "-alpha", "copy",
+    "-negate",
+    "-level", LEVEL,
     "-trim", "+repage",
     "-resize", `${ART}x${ART}`,
+    "-alpha", "copy",
     "-fill", colour,
     "-colorize", "100",
     "-background", "none",
     "-gravity", "center",
     "-extent", `${CANVAS}x${CANVAS}`,
     "-colorspace", "sRGB",
+    "-type", "TrueColorAlpha",
+    "-define", "png:color-type=6",
     "-depth", "8",
-    `PNG32:${target}`,
+    `PNG32:${join(OUT_DIR, target)}`,
   ]);
+  console.log(`wrote ${join(OUT_DIR, target)}`);
 }
 
-const work = mkdtempSync(join(tmpdir(), "ap-lit-mask-"));
-try {
-  const mask = join(work, "mask.png");
-  buildMask(mask);
-
-  finish(mask, INK, join(OUT_DIR, "ap-lit.png"));
-  finish(mask, INK, join(OUT_DIR, "ap-lit-dark.png"));
-  finish(mask, WHITE, join(OUT_DIR, "ap-lit-white.png"));
-
-  for (const file of ["ap-lit.png", "ap-lit-dark.png", "ap-lit-white.png"]) {
-    console.log(`wrote ${join(OUT_DIR, file)}`);
-  }
-} finally {
-  rmSync(work, { recursive: true, force: true });
-}
+paint("ap-lit.png", INK);
+paint("ap-lit-dark.png", INK);
+paint("ap-lit-white.png", WHITE);

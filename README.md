@@ -59,7 +59,7 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **AP U.S. History** (`apush`) | Waving U.S. flag | 9 | 90 | 89 | 66 | 1 essay · 1 interim | 13 |
 | **AP English Language** (`ap-lang`) | Open book | 9 | 90 | 81 | 66 | 3 essays · 1 interim | 9 |
-| **AP English Literature** (`ap-lit`) | Quill and inkwell | 9 | 90 | 43 | 18 | 0 essays · 1 interim | 12 |
+| **AP English Literature** (`ap-lit`) | Engraved rose | 9 | 90 | 43 | 18 | 0 essays · 1 interim | 12 |
 | **AP Seminar** (`ap-seminar`) | Source documents | 5 | 50 | 56 | 48 | 1 essay · 1 mock | 10 |
 | **AP U.S. Gov & Politics** (`ap-gov`) | Classical capitol | 5 | 50 | 40 | 35 | 4 essays · 1 interim | 6 |
 | **AP Biology** (`ap-bio`) | DNA double helix | 8 | 80 | 52 | 47 | 0 essays · 1 interim | 8 |
@@ -83,7 +83,7 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 ```
 
 ### Course marks
-Each of the ten courses has a monochrome symbol on a transparent canvas, drawn as a solid silhouette so it survives the 13–32px sizes the site renders: a flag, an open book, a stack of sources, a capitol, a helix, a triangle, a magnifier, a rising graph, a leaf, and — for AP Literature — a quill rising out of an inkwell. Three drawings of the AP Lit mark came before that one: the engraved rose, the supplied open book, and a stroke-only quill. All three failed the same test — fine hatching and thin lines turn to grey mush at icon size, and the open book simply duplicated AP Language's mark — so the quill is now drawn as geometry in `scripts/build-ap-lit-mark.mjs` (`node scripts/build-ap-lit-mark.mjs` rebuilds all three files). Night mode inverts the ink file, and each course also ships a white variant for permanently dark badges; both variants are checked for actual pixel colour by `pnpm validate:presentation`. Each course also has its own accent colour — AP Literature moved off the wine rose to an iron-gall indigo (`#423a9e`), which sits clear of AP Language's navy and AP Seminar's plum.
+Each of the ten courses has a monochrome symbol on a transparent canvas: a flag, an open book, an engraved rose, a stack of sources, a capitol, a helix, a triangle, a magnifier, a rising graph, and a leaf. **AP Literature uses the supplied rose engraving** (`assets/marks/ap-lit-rose.png`) everywhere a course symbol appears — the header chip, the course hero, the study desk, the exam briefing and the print sheets — so there is one logo and one source of truth. `scripts/build-ap-lit-mark.mjs` turns that artwork into the three shipped variants: it negates the ink to build the alpha channel, lifts the mid-tones so the hatching survives at 15px instead of dissolving into grey, then colorizes the RGB ink `#121212` or white (`node scripts/build-ap-lit-mark.mjs` rebuilds all three files). Night mode inverts the ink file and each course also ships a white variant for permanently dark badges; `pnpm validate:presentation` decodes every one of those PNGs and asserts the white variants really are white, so a mark can no longer ship invisible. AP Literature also carries its own accent colour, an iron-gall indigo (`#423a9e`) that sits clear of AP Language's navy and AP Seminar's plum.
 
 ### Interactive labs, one per course
 `/course/<slug>/studio` opens an interactive lab for every course — all ten, without exception: a poetry close-reading annotation lab for AP Lit (Dickinson, with model commentary on personification, dashes and the final stanza's reordering of time), a rhetorical annotation lab for AP Lang, a document annotation lab for APUSH, a required-case matching lab for AP Gov, data-analysis labs for AP Bio, AP Macro and AP Environmental Science, calculus labs with sliders for AP Calc, a source-synthesis matrix for AP Seminar, and a question-and-defence rehearsal for AP Research.
@@ -153,13 +153,14 @@ corepack pnpm validate:content        # 75 lessons, 750 paragraphs, citations, g
 corepack pnpm validate:exams          # section counts, minutes, breaks, rubric totals & score arithmetic for all 10 papers
 corepack pnpm validate:grading        # weak < middle < strong responses, number dumps ≠ worked mathematics
 corepack pnpm validate:exam-ui        # hub, walkthrough, and score report render for all ten papers
+corepack pnpm validate:exam-flow      # clicks every paper from briefing to score report in jsdom
 corepack pnpm validate:study          # 1,015 study items, KaTeX math, scheduling, backups, plans & calendar
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
-corepack pnpm validate:videos         # 93 verified 11-char YouTube IDs, course/unit mapping & thumbnails
+corepack pnpm validate:videos         # 94 verified 11-char YouTube IDs, course/unit mapping & thumbnails
 corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
-node scripts/build-ap-lit-mark.mjs     # redraw the AP Lit quill-and-inkwell mark (256px RGBA, #121212 + #FFFFFF)
+node scripts/build-ap-lit-mark.mjs     # rebuild the AP Lit rose mark from assets/marks (256px RGBA, #121212 + #FFFFFF)
 corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png
-corepack pnpm check                   # runs all 4 validators + tsc --noEmit + eslint + next build
+corepack pnpm check                   # runs every validator + tsc --noEmit + eslint + next build
 corepack pnpm audit --audit-level low # checks direct and transitive dependencies for known advisories
 ```
 
@@ -191,7 +192,8 @@ scripts/
   validate-lessons.ts           verifies lesson depth, citations, cards, and practice integrity
   validate-study.ts             verifies study catalog joins, KaTeX math, scheduling, backups, and exports
   validate-videos.ts            verifies curated YouTube IDs and unit coverage
-  validate-presentation.mjs     enforces neutral dark tokens, SubjectMark icons, video privacy, and PNG headers
+  validate-exam-flow.tsx        mounts the real exam room in jsdom and clicks every paper to the report
+  validate-presentation.mjs     neutral dark tokens, SubjectMark icons decoded to real pixel colour, CSP, OG PNGs
   build-social-image.mjs        renders 1200×630 social cards over bg-music-class.jpg via @resvg/resvg-js
 src/
   app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
@@ -202,7 +204,7 @@ src/
     MobileNav.tsx               unified Menu popover (SiteSearch, Study Desk, links, ThemeSwitch)
     StudySystemVisual.tsx       interactive ten-course cold-recall card preview inside the homepage hero
     StudyDashboard.tsx          spacious local-first Study Desk with white AP course filter pills & 9 tabs
-    SubjectMark.tsx             10 pure-white RGBA AP course symbols across light glass & neutral night mode
+    SubjectMark.tsx             10 AP course symbols: ink in day, white on night glass, rose for AP Lit
     UnitVideoPlayer.tsx         click-to-load youtube-nocookie player + conflict-free full-screen view
     CardDeck.tsx                keyboard-first active-recall flashcard deck
     PracticeSet.tsx             accessible multiple-choice runner with section-level remediation

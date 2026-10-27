@@ -89,7 +89,7 @@ for (const field of ["topic", "symbolLabel"]) {
   const count = [...subjects.matchAll(new RegExp(`\\b${field}:\\s*"`, "g"))].length;
   if (count !== SUBJECT_SLUGS.length) fail(`Expected ${SUBJECT_SLUGS.length} subject ${field} values, found ${count}`);
 }
-for (const symbol of ["U.S. flag", "Open book", "Source documents", "Classical capitol", "DNA", "Right triangle trigonometry", "Magnifying glass", "Rising market graph", "Leaf", "Quill and inkwell"]) {
+for (const symbol of ["U.S. flag", "Open book", "Source documents", "Classical capitol", "DNA", "Right triangle trigonometry", "Magnifying glass", "Rising market graph", "Leaf", "Engraved rose"]) {
   if (!marks.includes(symbol)) fail(`SubjectMark is missing the ${symbol} symbol`);
 }
 /**
