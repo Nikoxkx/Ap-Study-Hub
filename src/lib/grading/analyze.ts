@@ -129,7 +129,7 @@ const WORD_CONFUSIONS: { pattern: RegExp; message: string; suggestion: string }[
   { pattern: /\birregardless\b/i, message: "'irregardless' is nonstandard.", suggestion: "regardless" },
   { pattern: /\bmore\s+\w+\s+then\b/i, message: "'then' used for comparison.", suggestion: "than" },
   { pattern: /\bthe affect of\b/i, message: "'affect' is the verb; the noun is 'effect'.", suggestion: "the effect of" },
-  { pattern: /\bdefiantly\b(?=\s+(?:be|do|not|the)) /i, message: "'defiantly' where 'definitely' is meant.", suggestion: "definitely" },
+  { pattern: /\bdefiantly\b(?=\s+(?:be|do|not|the|want|need)\b)/i, message: "'defiantly' where 'definitely' is meant.", suggestion: "definitely" },
   { pattern: /\bloose\s+(the|a|an)\b/i, message: "'loose' where 'lose' is meant.", suggestion: "lose" },
   { pattern: /\bits\s+(a|an|the|going|not|been)\b/i, message: "'its' is possessive; 'it's' means 'it is'.", suggestion: "it's" },
   { pattern: /\bit's\s+own\b/i, message: "'it's own' needs the possessive.", suggestion: "its own" },
@@ -207,8 +207,15 @@ function extractQuotations(text: string): string[] {
   return results.slice(0, 20);
 }
 
-export function analyzeWriting(response: string, options: { vocabulary?: Set<string> } = {}): WritingFeatures {
+export function analyzeWriting(
+  response: string,
+  options: { vocabulary?: Set<string>; sources?: string } = {},
+): WritingFeatures {
   const text = response ?? "";
+  // The sources a prompt prints are not "outside evidence". Facts that appear
+  // in the documents themselves are removed from the specific-fact list so a
+  // DBQ cannot earn the beyond-the-documents point by repeating Document A.
+  const sourceText = (options.sources ?? "").toLowerCase();
   const { paragraphs, sentences } = segment(text);
   const words = text.match(/[A-Za-z][A-Za-z'’-]*/g) ?? [];
   const lower = text.toLowerCase();
@@ -255,10 +262,23 @@ export function analyzeWriting(response: string, options: { vocabulary?: Set<str
     text,
     /\b(context|era|period|century|decade|years (?:before|after|later)|historically|after the|before the|during the|background)\b/gi,
   );
+  // Dated framing ("between 1840 and 1860") contextualises as surely as the
+  // word "context" does, so a span of years counts as a contextual move.
+  const datedFraming = [
+    ...text.matchAll(/\bbetween\s+1[5-9]\d{2}\s+and\s+(?:1[5-9]\d{2}|20\d{2})\b/gi),
+    ...text.matchAll(/\b(?:eighteenth|nineteenth|twentieth|twenty-first)[- ]century\b/gi),
+    ...text.matchAll(/\bby\s+1[5-9]\d{2}\b/gi),
+  ].map((match) => match[0].toLowerCase());
+  for (const move of datedFraming) if (!contextMoves.includes(move)) contextMoves.push(move);
 
   const sourceMatches = new Set<string>();
-  for (const match of text.matchAll(/\b(?:source|document)\s+([A-F])\b/gi)) {
+  for (const match of text.matchAll(/\b(?:source|document|doc\.)\s+([A-F])\b/gi)) {
     sourceMatches.add(match[1].toUpperCase());
+  }
+  // "Documents A, B, and C" is three sources, not one. Readers count what the
+  // response actually uses, so a run of letters after the word is unpacked.
+  for (const group of text.matchAll(/\b(?:sources?|documents?|docs?\.)\s+((?:[A-F]\b[\s,;/&]*(?:and\s+|or\s+)?){2,})/gi)) {
+    for (const letter of group[1].matchAll(/\b([A-F])\b/g)) sourceMatches.add(letter[1].toUpperCase());
   }
 
   // Sourcing: a sentence that both names a document and analyses who wrote it,
@@ -277,7 +297,9 @@ export function analyzeWriting(response: string, options: { vocabulary?: Set<str
   // sentence-initial words. Enough to tell "the North and South disagreed" from
   // "the Kansas-Nebraska Act of 1854".
   const factSet = new Set<string>();
-  for (const match of text.matchAll(/\b(?:1[5-9]\d{2}|20\d{2})\b/g)) factSet.add(match[0]);
+  for (const match of text.matchAll(/\b(?:1[5-9]\d{2}|20\d{2})\b/g)) {
+    if (!sourceText.includes(match[0])) factSet.add(match[0]);
+  }
   for (const match of text.matchAll(/\b\d+(?:\.\d+)?\s?(?:%|percent|million|billion|thousand)\b/gi)) {
     factSet.add(match[0].trim());
   }
@@ -286,6 +308,7 @@ export function analyzeWriting(response: string, options: { vocabulary?: Set<str
     for (let index = 0; index < words.length; index += 1) {
       const word = words[index];
       if (!/^[A-Z]/.test(word) || STOP_CAPITALS.has(word)) continue;
+      if (sourceText.includes(word.toLowerCase())) continue;
       const next = words[index + 1] ?? "";
       // A capitalised phrase ("Kansas-Nebraska Act", "Republican Party") is a
       // named development. A single capitalised adjective ("Civil", "Northern")

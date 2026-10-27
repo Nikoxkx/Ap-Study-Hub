@@ -216,6 +216,52 @@ function bankQuestions(course: CourseBundle): ExamQuestion[] {
  * across units, in unit order. Authored exam items (which carry their own
  * stimuli) are placed first when a course supplies them.
  */
+
+/**
+ * Even out the answer key.
+ *
+ * The authored banks were written course by course, and writers (like most
+ * people) drift towards "B" when inventing options: across the ten papers the
+ * correct answer was B roughly 60% of the time and D almost never. That makes a
+ * practice paper gameable and it is nothing like a real key, which is roughly
+ * uniform. Options are rotated, never reordered or edited, so each question's
+ * content and explanation are untouched while the letters come out balanced.
+ */
+function hashKey(value: string): number {
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i += 1) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return Math.abs(hash);
+}
+
+function balanceAnswerKey(questions: ExamQuestion[]): ExamQuestion[] {
+  const counts: number[] = [];
+  return questions.map((question) => {
+    const size = question.options.length;
+    if (size < 2) return question;
+    while (counts.length < size) counts.push(0);
+    const fewest = Math.min(...counts.slice(0, size));
+    const candidates = counts
+      .slice(0, size)
+      .map((count, index) => (count === fewest ? index : -1))
+      .filter((index) => index >= 0);
+    const target = candidates[hashKey(question.key) % candidates.length];
+    counts[target] += 1;
+    const shift = (target - question.correctIndex + size) % size;
+    if (!shift) return question;
+    return {
+      ...question,
+      options: [
+        ...question.options.slice(size - shift),
+        ...question.options.slice(0, size - shift),
+      ],
+      correctIndex: target,
+    };
+  });
+}
+
 function selectQuestions(pool: ExamQuestion[], count: number): ExamQuestion[] {
   const seen = new Set<string>();
   const unique = pool.filter((question) => {
@@ -270,7 +316,7 @@ export function getAssessment(slug: string): Assessment | null {
   const sections: ResolvedSection[] = blueprint.sections.map((section: ExamSection) => {
     let questions: ExamQuestion[] = [];
     if (section.type === "mcq" && section.questionCount) {
-      questions = selectQuestions(remaining, section.questionCount);
+      questions = balanceAnswerKey(selectQuestions(remaining, section.questionCount));
       const used = new Set(questions.map((question) => question.key));
       for (let i = remaining.length - 1; i >= 0; i -= 1) {
         if (used.has(remaining[i].key)) remaining.splice(i, 1);

@@ -335,6 +335,10 @@ export function ScoreReport({
                   frq={frq}
                   rubric={rubric}
                   response={drafts[frq.id] ?? ""}
+                  sources={(frq.stimulusIds ?? [])
+                    .map((id) => assessment.stimuli.find((stimulus) => stimulus.id === id)?.text)
+                    .filter((text): text is string => Boolean(text))
+                    .join("\n\n")}
                   onGraded={onFrqScore}
                 />
               ) : null}

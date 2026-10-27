@@ -45,12 +45,15 @@ export function GraderPanel({
   frq,
   rubric,
   response,
+  sources,
   onGraded,
 }: {
   courseSlug: string;
   frq: ExamFrq;
   rubric: Rubric;
   response: string;
+  /** The excerpt or document set printed with the task, if any. */
+  sources?: string;
   onGraded: (frqId: string, earned: number) => void;
 }) {
   const gradeKey = `aps.grade.${courseSlug}.${frq.id}`;
@@ -67,7 +70,7 @@ export function GraderPanel({
     setError(null);
     try {
       const { gradeLocally } = await import("@/lib/grading/grade");
-      const result = gradeLocally(response, rubric);
+      const result = gradeLocally(response, rubric, { sources });
       setStoredGrade(result);
       onGraded(frq.id, result.earned);
     } catch (caught) {
@@ -75,7 +78,7 @@ export function GraderPanel({
     } finally {
       setBusy(false);
     }
-  }, [frq.id, onGraded, response, rubric, setStoredGrade]);
+  }, [frq.id, onGraded, response, rubric, setStoredGrade, sources]);
 
   const runAi = useCallback(async () => {
     setBusy(true);

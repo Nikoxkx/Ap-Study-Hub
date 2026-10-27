@@ -179,7 +179,9 @@ function evaluateSignal(signal: RubricSignal, features: WritingFeatures): Signal
         note: signal.note,
         satisfied: facts.length >= min,
         measured: facts.length
-          ? `${facts.length} specific fact${facts.length === 1 ? "" : "s"}: ${facts.slice(0, 5).join(", ")}`
+          ? `${facts.length} specific fact${facts.length === 1 ? "" : "s"} from outside the sources: ${facts
+              .slice(0, 5)
+              .join(", ")}${facts.length > 5 ? ", …" : ""}`
           : "No dates, statistics, or named developments outside the documents.",
       };
     }
@@ -356,8 +358,15 @@ function summarizeRow(row: RubricRow, results: SignalResult[]): string {
   return parts.join(" ");
 }
 
-export function gradeLocally(response: string, rubric: Rubric): GradeResult {
-  const features = analyzeWriting(response, { vocabulary: spellingVocabulary() });
+export function gradeLocally(
+  response: string,
+  rubric: Rubric,
+  options: { sources?: string } = {},
+): GradeResult {
+  const features = analyzeWriting(response, {
+    vocabulary: spellingVocabulary(),
+    sources: options.sources,
+  });
 
   const rows: CriterionResult[] = rubric.rows.map((row) => {
     const results = row.signals.map((signal) => evaluateSignal(signal, features));

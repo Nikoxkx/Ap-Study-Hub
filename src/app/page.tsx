@@ -63,9 +63,9 @@ const studySurfaces = [
     body: "Full sample responses broken out point by point: thesis, evidence, commentary, and complexity.",
   },
   {
-    name: "Timed Papers & Studio",
-    badge: "Notebook scratch",
-    body: "Original timed sets, interactive course labs, and lined notebook paper for equations and free-response drafts.",
+    name: "Full-Length Interim Exams",
+    badge: "Exam room",
+    body: "A full-screen paper for every course: passage beside question, official clock and break, printable answer sheet, and a rubric-marked report on every response.",
   },
   {
     name: "Verified Unit Videos",

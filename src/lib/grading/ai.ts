@@ -298,7 +298,9 @@ export async function gradeResponse(input: {
   response: string;
   config: AiConfig | null;
 }): Promise<GradeResult> {
-  const local = gradeLocally(input.response, input.rubric);
+  const local = gradeLocally(input.response, input.rubric, {
+    sources: input.passages.map((passage) => passage.text).join("\n\n"),
+  });
   if (!input.config) return local;
   try {
     const prompt = buildGradingPrompt(input);
