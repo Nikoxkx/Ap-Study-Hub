@@ -1729,10 +1729,10 @@ textarea.scratch-paper {
   padding: 0.5rem 0.9rem;
   font-size: 0.8125rem;
 }
-body:has(.unit-video-frame[data-expanded="true"]),
-body:has(:fullscreen) {
-  overflow: hidden;
-}
+/* The expanded player's page lock is taken in JS (useScrollLock in
+   UnitVideoPlayer), which preserves the scroll position. The CSS lock that used
+   to live here made mobile Safari jump to the top of the page. Real fullscreen
+   is still locked by the browser, so it needs no rule of its own. */
 body:has(.unit-video-frame[data-expanded="true"]) .site-header,
 body:has(:fullscreen) .site-header {
   opacity: 0 !important;

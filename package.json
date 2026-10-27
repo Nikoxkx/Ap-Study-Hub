@@ -25,11 +25,12 @@
     "validate:videos": "tsx scripts/validate-videos.ts",
     "validate:presentation": "node scripts/validate-presentation.mjs",
     "export:videos": "tsx scripts/export-video-registry.ts",
-    "check": "corepack pnpm validate:content && corepack pnpm validate:exams && corepack pnpm validate:grading && corepack pnpm validate:exam-ui && corepack pnpm validate:exam-flow && corepack pnpm validate:study && corepack pnpm validate:presentation && corepack pnpm validate:videos && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build",
+    "check": "corepack pnpm validate:content && corepack pnpm validate:exams && corepack pnpm validate:grading && corepack pnpm validate:exam-ui && corepack pnpm validate:exam-flow && corepack pnpm validate:scroll && corepack pnpm validate:study && corepack pnpm validate:presentation && corepack pnpm validate:videos && corepack pnpm typecheck && corepack pnpm lint && corepack pnpm build",
     "validate:exams": "tsx scripts/validate-exams.ts",
     "validate:grading": "tsx scripts/validate-grading.ts",
     "validate:exam-ui": "tsx scripts/validate-exam-ui.tsx",
-    "validate:exam-flow": "tsx scripts/validate-exam-flow.tsx"
+    "validate:exam-flow": "tsx scripts/validate-exam-flow.tsx",
+    "validate:scroll": "tsx scripts/validate-scroll-lock.ts"
   },
   "dependencies": {
     "katex": "^0.19.1",

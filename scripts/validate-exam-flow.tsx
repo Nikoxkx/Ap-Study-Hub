@@ -22,6 +22,7 @@ import { createRoot } from "react-dom/client";
 import { TimedPaper } from "../src/components/exam/TimedPaper";
 import { getAssessment } from "../src/lib/exams";
 import { subjects } from "../src/lib/subjects";
+import { isScrollLocked } from "../src/lib/scroll-lock";
 
 async function main() {
   const dom = new JSDOM('<!doctype html><html><body><div id="root"></div></body></html>', {
@@ -134,6 +135,13 @@ async function main() {
     await act(async () => root.unmount());
     if (window.document.body.classList.contains("exam-room-open")) {
       fail(`${subject.slug}: the page stayed hidden after the paper closed`);
+    }
+    // The page must scroll again the moment the paper is gone. A leaked
+    // `overflow: hidden` (what the old hand-rolled lock did) froze the site.
+    if (isScrollLocked()) fail(`${subject.slug}: the page stayed scroll-locked`);
+    const bodyStyle = window.document.body.style;
+    if (bodyStyle.position === "fixed" || bodyStyle.overflow === "hidden") {
+      fail(`${subject.slug}: the body is still pinned after the paper closed`);
     }
   }
 

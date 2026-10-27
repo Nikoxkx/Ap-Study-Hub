@@ -122,6 +122,7 @@ Sitting a paper takes over the screen instead of scrolling a page.
 - **Answer sheet.** A monospace grid of every question in the section, marked answered / flagged / blank, letting you jump anywhere. It doubles as the review surface at the end, and it is not the same thing as the printable sheet below.
 - **The tools the digital exam gives you:** flag for review, an ✕ eliminator that crosses out a choice without hiding it, and excerpt highlighting. There is no Desmos: the exam room does not pretend to implement a graphing calculator it cannot match.
 - **Nothing behind the paper.** The room is painted rather than frosted, and the page underneath it — header, wallpaper, briefing, footer — is hidden outright while a paper is open (`body.exam-room-open`). Reading a question against the heading and paragraphs of the page behind it was the definition of a hard-to-read exam; both the opacity and the hidden page are checked by `validate:exam-flow`.
+- **A page that always scrolls, and stays where you left it.** Surfaces that take the viewport — the room, the command palette, an expanded video — hold the page with one shared, reference-counted lock (`src/lib/scroll-lock.ts`) that pins the body at its current offset and puts the reader back exactly there on release. Per-overlay `body.style.overflow = "hidden"` was what made a phone jump to the top of a page when a dialog opened, and what could leave the whole site unable to scroll after a paper was closed. The lock's contract is tested by `validate:scroll`, and `validate:exam-flow` asserts that no paper leaves a lock or a pinned body behind. The contents rail on the notes page only ever moves its own `scrollTop`, never the document, for the same reason.
 - **Full screen, and a phone that works.** One button asks the browser for full screen; below 900px the two panes become one column with a Passage / Question switch, so the same room is usable on a phone in a corridor.
 - **Breaks and sections.** Section changes and the scheduled break are enforced by the same state machine, so the paper cannot be sat out of order.
 - **Autosave.** Answers, flags, and essay drafts are written to `localStorage` on every keystroke under `aps.assessment.<course>.*`; closing the tab does not lose the paper.
@@ -155,6 +156,7 @@ corepack pnpm validate:exams          # section counts, minutes, breaks, rubric 
 corepack pnpm validate:grading        # weak < middle < strong responses, number dumps ≠ worked mathematics
 corepack pnpm validate:exam-ui        # hub, walkthrough, and score report render for all ten papers
 corepack pnpm validate:exam-flow      # clicks every paper from briefing to score report in jsdom
+corepack pnpm validate:scroll         # page lock: pins, nests, restores, cannot leak
 corepack pnpm validate:study          # 1,015 study items, KaTeX math, scheduling, backups, plans & calendar
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 94 verified 11-char YouTube IDs, course/unit mapping & thumbnails
@@ -194,6 +196,7 @@ scripts/
   validate-study.ts             verifies study catalog joins, KaTeX math, scheduling, backups, and exports
   validate-videos.ts            verifies curated YouTube IDs and unit coverage
   validate-exam-flow.tsx        mounts the real exam room in jsdom and clicks every paper to the report
+  validate-scroll-lock.ts       asserts the shared page lock nests and restores scroll position
   validate-presentation.mjs     neutral dark tokens, SubjectMark icons decoded to real pixel colour, CSP, OG PNGs
   build-social-image.mjs        renders 1200×630 social cards over bg-music-class.jpg via @resvg/resvg-js
 src/

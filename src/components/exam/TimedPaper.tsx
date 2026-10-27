@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useScrollLock } from "@/lib/scroll-lock";
 import { useStoredState } from "@/lib/use-stored-state";
 import { useStudyState } from "@/lib/use-study-state";
 import { scheduleReview, type StudyState } from "@/lib/study-model";
@@ -137,17 +138,16 @@ export function TimedPaper({
     return () => cancelAnimationFrame(id);
   }, []);
 
-  // Lock the page behind the room, so the briefs cannot scroll under the paper.
-  // The break and the score report are full-screen stages too, so they stay
-  // locked; only the briefing returns the page to the student.
-  useEffect(() => {
-    if (phase === "briefing") return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [phase]);
+  /* Lock the page behind the room, so the briefs cannot scroll under the paper.
+     The break and the score report are full-screen stages too, so they stay
+     locked; only the briefing returns the page to the student.
+
+     This uses the shared lock rather than `body.style.overflow` directly. The
+     room used to carry two overlapping hand-rolled locks whose cleanups
+     restored each other's saved value, so leaving a paper could strand
+     `overflow: hidden` on <body> and freeze scrolling on the page after it;
+     the shared lock is reference-counted and puts the scroll position back. */
+  useScrollLock(phase !== "briefing");
 
   /* While a paper is on screen the page under it is taken out of view
      completely, not merely dimmed. The room used to be frosted glass over the
@@ -220,16 +220,8 @@ export function TimedPaper({
     }
   }, []);
 
-  // The room owns the viewport while a paper is being sat: no page scrolling
-  // behind it, and no accidental navigation away.
-  useEffect(() => {
-    if (phase !== "sitting" && phase !== "break") return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [phase]);
+  // The room owns the viewport while a paper is being sat. (The scroll lock
+  // itself is taken once, above, for every phase after the briefing.)
 
   // The save indicator counts up, so it needs a slow clock of its own.
   useEffect(() => {
