@@ -8,6 +8,7 @@ import type { SubjectSlug } from "@/lib/subjects";
 import type { Assessment, ExamFrq, ExamQuestion, Stimulus } from "@/content/exams/types";
 import { WritingCoach } from "./WritingCoach";
 import { ScoreReport } from "./ScoreReport";
+import { StimulusTable } from "./StimulusTable";
 import {
   richTextWordCount,
   sanitizeRichText,
@@ -696,7 +697,8 @@ export function TimedPaper({
                       </figcaption>
                     ) : null}
                     {stimulus.note ? <p className="exam-note">{stimulus.note}</p> : null}
-                    <div className="exam-passage">
+                    {stimulus.table ? <StimulusTable stimulus={stimulus} /> : null}
+                    <div className="exam-passage" data-has-table={stimulus.table ? "true" : "false"}>
                       {stimulus.text.split(/\n{2,}/).map((paragraph, paragraphIndex) => (
                         <p
                           key={paragraphIndex}

@@ -7,6 +7,7 @@ import type { Assessment, ExamQuestion, Stimulus } from "@/content/exams/types";
 import { WritingCoach } from "./WritingCoach";
 import { ExemplarResponse } from "./ExemplarResponse";
 import { getExemplar } from "@/content/exams/exemplars";
+import { StimulusTable } from "./StimulusTable";
 
 /**
  * Guided walkthrough.
@@ -57,7 +58,7 @@ function Passage({ stimulus }: { stimulus: Stimulus }) {
         <strong>{stimulus.title}</strong>
         {stimulus.attribution ? <span className="exam-attribution">{stimulus.attribution}</span> : null}
       </figcaption>
-      <pre className="exam-passage">{stimulus.text}</pre>
+      {stimulus.table ? <StimulusTable stimulus={stimulus} /> : <pre className="exam-passage">{stimulus.text}</pre>}
     </figure>
   );
 }

@@ -174,18 +174,35 @@ export const govStimuli: Stimulus[] = [
     id: "gov-quant-data",
     title: "Figure · Trust in the federal government and turnout by age, selected years",
     kind: "data",
+    table: {
+      caption: "Share of adults saying they trust the federal government to do what is right most or all of the time",
+      head: ["Year", "Trust in the federal government (%)"],
+      rows: [
+        ["1964", "77"],
+        ["1980", "25"],
+        ["2000", "44"],
+        ["2020", "20"],
+      ],
+    },
     attribution: "Constructed data set written for practice; percentages are illustrative, not official.",
-    text: `Share of adults saying they trust the federal government to do what is right most or all of the time:
-1964: 77%
-1980: 25%
-2000: 44%
-2020: 20%
-
-Voter turnout in presidential elections by age group:
-18–29: 2020 — 51%
-30–44: 2020 — 63%
-45–64: 2020 — 71%
-65+: 2020 — 74%`,
+    text: "Share of adults saying they trust the federal government to do what is right most or all of the time, by year.",
+  },
+  {
+    id: "gov-quant-turnout",
+    title: "Figure · Voter turnout in the 2020 presidential election, by age group",
+    kind: "data",
+    attribution: "Constructed data set written for practice; percentages are illustrative, not official.",
+    text: "Voter turnout in the 2020 presidential election, by age group.",
+    table: {
+      caption: "Voter turnout in the 2020 presidential election, by age group",
+      head: ["Age group", "Turnout (%)"],
+      rows: [
+        ["18–29", "51"],
+        ["30–44", "63"],
+        ["45–64", "71"],
+        ["65+", "74"],
+      ],
+    },
   },
 ];
 
@@ -230,6 +247,7 @@ export const govFrqs: ExamFrq[] = [
     prompt:
       "Use the figure to answer all four parts.\n\n(a) Identify the trend in trust in the federal government between 1964 and 2020.\n(b) Explain one political reason for the trend you identified.\n(c) Explain how the turnout data relate to a linkage institution.\n(d) Draw a conclusion about the implications of these data for representative democracy.",
     minutes: 20,
+    stimulusIds: ["gov-quant-data", "gov-quant-turnout"],
     rubricId: "gov-quant-four",
     rubric: govQuantRubric,
     points: 4,

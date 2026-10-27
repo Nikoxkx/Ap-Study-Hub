@@ -29,6 +29,16 @@ export interface Stimulus {
   text: string;
   /** Optional examination note shown above the passage. */
   note?: string;
+  /**
+   * Structured table for a data figure. When present it is rendered as a real
+   * table (with a caption) instead of a block of text, so numbers line up in
+   * columns the way they do on the paper exam.
+   */
+  table?: {
+    caption?: string;
+    head: string[];
+    rows: string[][];
+  };
 }
 
 /** A single multiple-choice item in an interim assessment. */
