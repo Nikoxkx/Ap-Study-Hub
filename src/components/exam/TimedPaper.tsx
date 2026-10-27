@@ -257,6 +257,10 @@ export function TimedPaper({
 
   const startSection = useCallback(
     (index: number) => {
+      // A double click on a finish button must not push the paper past its last
+      // section: an out-of-range index makes `section` undefined and the room
+      // throws, which is the one way to reach a genuinely blank screen.
+      if (index < 0 || index >= assessment.sections.length) return;
       setSectionIndex(index);
       setDeadline(Date.now() + assessment.sections[index].minutes * 60_000);
       setSectionStart(Date.now());
