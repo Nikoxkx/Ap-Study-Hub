@@ -25,6 +25,27 @@ const thumbnail = read("src/components/VideoThumbnail.tsx");
 const player = read("src/components/UnitVideoPlayer.tsx");
 const marks = read("src/components/SubjectMark.tsx");
 
+// 0. The exam room's own sheet is imported after globals.css, so anything it
+//    declares for `.exam-room` wins over later-in-file print rules. That is fine
+//    for the screen and fatal for paper: assert the sheet carries its own print
+//    block, after the fixed shell, that puts the room back into the document.
+const examRoom = read("src/app/exam-room.css");
+const roomShell = examRoom.indexOf(".exam-room {");
+const roomPrint = examRoom.lastIndexOf("@media print");
+if (roomShell === -1) fail("exam-room.css no longer declares the room shell");
+else if (roomPrint === -1) fail("exam-room.css lost its print block: printing a paper would clip it");
+else if (roomPrint < roomShell) fail("exam-room.css print block must come after the fixed shell");
+else {
+  const printBlock = examRoom.slice(roomPrint);
+  for (const declaration of ["position: static", "display: block", "animation: none"]) {
+    if (!printBlock.includes(declaration)) fail(`exam-room.css print block is missing ${declaration}`);
+  }
+  if (!/body\.exam-room-open[\s\S]*position: static !important/.test(printBlock)) {
+    fail("exam-room.css print block no longer overrides the pinned scroll-lock body");
+  }
+}
+if (!/import "\.\/exam-room\.css";/.test(layout)) fail("layout.tsx does not import the exam room sheet");
+
 // 1. Night mode is strictly grayscale — no blue, green, or purple cast.
 const darkTokens = css.match(/\.dark \{([\s\S]*?)\n\}/)?.[1];
 if (!darkTokens) fail("Could not find the .dark token block in globals.css");
@@ -209,4 +230,4 @@ if (errors.length) {
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Neutral night mode, subject symbols, real video thumbnails, and static social preview are intact.");
+console.log("✓ Exam room print sheet, neutral night mode, subject symbols, real video thumbnails, and static social preview are intact.");

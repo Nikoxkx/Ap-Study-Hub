@@ -57,3 +57,38 @@ body.exam-room-open > .page-wallpaper,
 body.exam-room-open > .skip-link {
   visibility: hidden;
 }
+
+/* Print.
+   This file is imported after globals.css, so its fixed shell would otherwise
+   beat the print rules that turn the room back into a document. Printing a
+   paper — the answer sheet, a finished score report — must produce paper, not
+   a clipped viewport. */
+@media print {
+  .exam-room,
+  .exam-stage {
+    position: static;
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    background: #fff;
+    animation: none;
+    inset: auto;
+  }
+  .exam-room-question,
+  .exam-room-source-scroll,
+  .exam-stage {
+    overflow: visible;
+    max-height: none;
+  }
+  /* The scroll lock pins <body> with inline styles; a print sheet needs the
+     document to flow again, so these have to override inline declarations. */
+  body.exam-room-open,
+  body[style] {
+    position: static !important;
+    top: 0 !important;
+    overflow: visible !important;
+    padding-right: 0 !important;
+  }
+}
