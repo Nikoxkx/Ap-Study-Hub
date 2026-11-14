@@ -117,7 +117,7 @@ export default function AboutPage() {
               <li>
                 <strong>No chatbot:</strong> nothing here talks to you in a conversation, and search is
                 a hand-rolled scored index rather than a model. Essay grading is either a measured
-                rubric analyser that runs without any API, or a model call you turn on yourself with
+                rubric analyzer that runs without any API, or a model call you turn on yourself with
                 your own provider key — and every point it awards is shown next to the evidence in
                 your own sentences.
               </li>
@@ -127,7 +127,7 @@ export default function AboutPage() {
 
         <section className="mt-16" aria-labelledby="method-heading">
           <SectionHead folio="03" title="How a lesson earns its place here" id="method-heading">
-            Four rules, applied to everything here.
+            Five rules, applied to everything here.
           </SectionHead>
 
           <ol className="rule-top">
@@ -146,6 +146,11 @@ export default function AboutPage() {
                 rule: "Practice questions are original",
                 detail:
                   "None are reproduced from secure exam material. They are written to sit in the same difficulty band, with distractors drawn from the mistakes people actually make rather than three obviously wrong options.",
+              },
+              {
+                rule: "You have to be able to say it, not just read it",
+                detail:
+                  "Every lesson ends with one full-credit written answer and the words to say out loud when someone asks how you got there. Both are written in the same voice as the rest of the page: first person, ordinary words, and an honest sentence about where the argument is weakest.",
               },
               {
                 rule: "Every outbound link is opened before it is listed",
@@ -259,7 +264,7 @@ export default function AboutPage() {
               },
               {
                 h: "No leaked exam questions",
-                p: "Everything is original. If a site is offering you this year's secure items, it is either lying or committing a fairly serious offence on your behalf.",
+                p: "Everything is original. If a site is offering you this year's secure items, it is either lying or committing a fairly serious offense on your behalf.",
               },
               {
                 h: "Nothing to buy here",

@@ -59,8 +59,9 @@ export default async function PracticePage({ params, searchParams }: { params: P
             {subject.familiar} practice that explains your mistakes
           </h2>
           <p className="lede mt-3">
-            Original questions with reasoned feedback. Filter to one lesson for focused retrieval,
-            or work through the full course set.
+            Written for this site, not lifted from a released exam. Each wrong answer tells you why it is
+            wrong and links back to the paragraph that fixes it, so a miss becomes a place to read
+            rather than a number at the end.
           </p>
 
           {skills.length > 0 ? (
@@ -85,7 +86,7 @@ export default async function PracticePage({ params, searchParams }: { params: P
         <GlassCard as="aside" padding="md">
           <h3 className="label mb-2">A note on where these come from</h3>
           <p className="text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            None of these are real College Board questions. Released official questions are linked
+            None of these are real College Board questions, and they are not pretending to be. Released official questions are linked
             from the{" "}
             <a href={`/course/${subject.slug}/resources`} className="link-underlined">
               sources page

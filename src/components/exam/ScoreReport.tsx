@@ -294,7 +294,7 @@ export function ScoreReport({
                   ) : (
                     <p className="response-lesson">
                       <Link href={`/course/${courseSlug}/practice`} className="link-underlined">
-                        Practise {question.skill.toLowerCase()} →
+                        Practice {question.skill.toLowerCase()} →
                       </Link>
                     </p>
                   )}
@@ -310,7 +310,7 @@ export function ScoreReport({
           <h4 className="label">Written responses, marked row by row</h4>
           <p className="score-blurb">
             Each task is marked against the rubric printed with it. Use the row-level evidence to check the
-            judgement; a reader awards points for what is present, not for what was intended.
+            judgment; a reader awards points for what is present, not for what was intended.
           </p>
           {frqs.map(({ frq }) => {
             const rubric = getRubricForFrq(frq);

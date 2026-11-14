@@ -1176,21 +1176,48 @@ textarea.scratch-paper {
 .worked-wrap:not([open]) .worked-summary > .label::after { content: " +"; }
 
 .worked-paper {
-  --worked-line: var(--scratch-rule);
-  --worked-margin: var(--scratch-margin);
+  --worked-line: var(--quad-rule);
+  --worked-margin: var(--quad-margin);
+  font-family: var(--font-hand);
+  font-weight: 300;
+  font-size: 19px;
+  --worked-line-height: 30px;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  line-height: var(--scratch-line);
+  line-height: var(--worked-line-height);
 }
+
+/* The paper is white in both themes, so its own ink is fixed too. */
+.worked-paper .katex { color: var(--quad-ink); }
+
+/* One line box for every element on the sheet, so the type never drifts off
+   the rules. Mixing 20.5px, 24px and the browser default was enough to make
+   the same sheet look misaligned at two different zoom levels. */
+.worked-paper .worked-problem,
+.worked-paper .worked-problem p,
+.worked-paper .worked-step,
+.worked-paper .worked-notation,
+.worked-paper .worked-reason,
+.worked-paper .worked-step-number,
+.worked-paper .worked-answer,
+.worked-paper .worked-check,
+.worked-paper .label {
+  line-height: var(--worked-line-height);
+}
+
+.worked-paper .worked-notation .katex-display,
+.worked-paper .worked-answer .katex-display { line-height: 1.2; margin: 0.15em 0; }
 
 .worked-paper .label,
 .worked-paper .worked-step-number,
 .worked-paper .worked-reason,
 .worked-paper .worked-check,
 .worked-paper .worked-answer {
-  color: var(--scratch-ink);
+  color: var(--quad-ink);
 }
+
+.worked-paper .worked-check .label { color: #6b7a86; }
 
 .dark .worked-paper .worked-step-number {
   color: #b0392a;
@@ -1199,15 +1226,9 @@ textarea.scratch-paper {
 .worked-problem {
   position: relative;
   padding-bottom: 2rem;
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  line-height: var(--scratch-line);
-}
-
-.worked-problem .label,
-.worked-answer .label,
-.worked-check .label {
-  line-height: var(--scratch-line);
+  font-family: var(--font-hand);
+  font-weight: 300;
+  font-size: 19px;
 }
 
 .worked-steps {
@@ -1224,7 +1245,6 @@ textarea.scratch-paper {
   min-height: 4rem;
   padding-block: 1rem;
   border-top: 1px solid color-mix(in srgb, var(--worked-line) 55%, transparent);
-  line-height: var(--scratch-line);
 }
 
 .worked-step-number {
@@ -1233,7 +1253,6 @@ textarea.scratch-paper {
   color: #b0392a;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
-  line-height: var(--scratch-line);
 }
 
 .dark .worked-step-number { color: var(--mark); }
@@ -1249,21 +1268,19 @@ textarea.scratch-paper {
   color: #57534a;
   font-family: var(--font-ui);
   font-size: 0.8125rem;
-  line-height: var(--scratch-line);
 }
 
-.dark .worked-reason { color: var(--scratch-ink); }
+.dark .worked-reason { color: var(--quad-ink); }
 
 .worked-answer {
   margin-top: 2rem;
   padding: 1rem;
   border-block: 2px solid color-mix(in srgb, var(--worked-margin) 80%, transparent);
   background: color-mix(in srgb, var(--worked-margin) 9%, transparent);
-  line-height: var(--scratch-line);
 }
 
 .worked-answer .katex-display { text-align: left; }
-.worked-check { margin-top: 2rem; font-size: 0.875rem; line-height: var(--scratch-line); }
+.worked-check { margin-top: 2rem; font-size: 0.875rem; }
 
 /* Command palette ------------------------------------------------------------ */
 .command-trigger {
@@ -5790,3 +5807,464 @@ html.is-entering footer[data-site-footer] {
 .stimulus-table tbody tr:last-child td { border-bottom: none; }
 .stimulus-table-note { margin-top: 0.4rem; font-size: 0.66rem; color: var(--ink-faint); }
 .exam-passage[data-has-table="true"] p:first-child { color: var(--ink-faint); font-size: 0.82rem; }
+
+/* --------------------------------------------------------------------------
+   Paper surfaces for the notes
+   -------------------------------------------------------------------------
+   Two papers, and the choice is not decorative:
+
+   · `.quad-paper` is the quadrille notebook page from the reference photograph
+     (a 2 mm blue grid with a red margin rule) and carries every example that
+     has arithmetic or algebra in it. Students line numbers up in columns on
+     squared paper, so a worked solution that is meant to be copied should sit
+     on the same paper they will copy it onto.
+   · `.scratch-paper` remains the ruled loose-leaf sheet and carries written
+     work that has no numbers in it: thesis lines, evidence, commentary.
+
+   Grid geometry is taken from the reference: horizontal rules every 1rem,
+   vertical rules every 1rem, the margin rule sitting in the same square
+   column as the photograph's, and rules that fade near the edges the way
+   printed paper does.
+   -------------------------------------------------------------------------- */
+
+.quad-paper {
+  --quad-square: 1rem;
+  --quad-rule: #b7cfe8;
+  --quad-rule-soft: #cfe0f0;
+  --quad-margin: #e3a49c;
+  --quad-ink: #24333f;
+  --quad-pad-left: 3.5rem;
+  position: relative;
+  color: var(--quad-ink);
+  color-scheme: light;
+  border: 1px solid rgba(180, 190, 204, 0.72);
+  border-radius: 3px;
+  background-color: #ffffff;
+  background-image:
+    /* the margin rule, drawn on a vertical grid line */
+    linear-gradient(
+      90deg,
+      transparent calc(var(--quad-pad-left) - 1px),
+      var(--quad-margin) calc(var(--quad-pad-left) - 1px),
+      var(--quad-margin) var(--quad-pad-left),
+      transparent var(--quad-pad-left)
+    ),
+    /* vertical rules */
+    repeating-linear-gradient(
+      90deg,
+      var(--quad-rule) 0,
+      var(--quad-rule) 1px,
+      transparent 1px,
+      transparent var(--quad-square)
+    ),
+    /* horizontal rules */
+    repeating-linear-gradient(
+      to bottom,
+      var(--quad-rule-soft) 0,
+      var(--quad-rule-soft) 1px,
+      transparent 1px,
+      transparent var(--quad-square)
+    );
+  background-position: 0 0, 0 0, 0 0;
+  background-attachment: local;
+  padding: calc(var(--quad-square) * 1.5) 1.5rem 2rem var(--quad-pad-left);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.07),
+    0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.dark .quad-paper {
+  color: var(--quad-ink);
+  background-color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+}
+
+/* the paper's own text stays on the grid instead of drifting between rules */
+.quad-paper .notebook-line {
+  line-height: var(--quad-square);
+  min-height: var(--quad-square);
+}
+
+@media (max-width: 640px) {
+  .quad-paper {
+    --quad-square: 1rem;
+    --quad-pad-left: 2.5rem;
+    padding-inline: 1rem 0.9rem;
+    padding-left: var(--quad-pad-left);
+  }
+}
+
+/* Written example and spoken defence --------------------------------------- */
+
+.written-example { margin-top: 1.5rem; }
+
+.written-example-head { margin-bottom: 1rem; }
+
+.written-prompt {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  max-width: 66ch;
+  color: var(--ink);
+}
+
+.written-plan {
+  margin-bottom: 1.25rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--paper-raised) 78%, transparent);
+}
+
+.written-plan-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: decimal;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.written-plan-list li + li { margin-top: 0.35rem; }
+
+.written-paper {
+  position: relative;
+  font-family: var(--font-hand);
+  font-weight: 300;
+  font-size: 19px;
+  --written-line-height: 30px;
+  line-height: var(--written-line-height);
+}
+
+.written-paper.quad-paper {
+  padding-top: 2.25rem;
+}
+
+.written-paper.scratch-paper {
+  padding-top: 2.25rem;
+}
+
+.written-paper-tab {
+  position: absolute;
+  top: 0.35rem;
+  left: calc(var(--scratch-margin-x, 64px) + 16px);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9aa6b3;
+}
+
+.written-paper.quad-paper .written-paper-tab { left: calc(var(--quad-pad-left) + 0.15rem); }
+
+.written-line {
+  margin: 0 0 0.4rem;
+  line-height: var(--written-line-height);
+}
+
+.written-line-math { margin: 0 0 0.5rem; line-height: var(--written-line-height); }
+.written-line-math .katex-display { margin: 0.15em 0; text-align: left; line-height: 1.25; }
+
+.written-because,
+.written-trap {
+  margin-top: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-left: 2px solid var(--rule-strong);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.written-trap {
+  border-left-color: var(--mark);
+  background: color-mix(in srgb, var(--mark) 4%, transparent);
+}
+
+/* Defense panel ------------------------------------------------------------ */
+
+.defense-panel {
+  margin-block: 2rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-cut);
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-lift);
+}
+
+.defense-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.defense-title { font-size: 1.125rem; letter-spacing: -0.01em; }
+
+.defense-tag { white-space: nowrap; }
+
+.defense-lede {
+  max-width: 68ch;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.defense-two-col,
+.defense-body {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 720px) {
+  .defense-two-col { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .defense-body { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+}
+
+.defense-cell {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--subject-wash, var(--paper)) 55%, transparent);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.defense-question {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.defense-answer { background: var(--paper-raised); }
+
+.defense-keep {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.defense-keep li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.defense-keep li + li { margin-top: 0.45rem; }
+
+.defense-keep li::before {
+  content: "☐";
+  position: absolute;
+  left: 0;
+  color: var(--mark);
+  font-size: 0.8rem;
+}
+
+.defense-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.defense-steps li {
+  display: grid;
+  grid-template-columns: 1.35rem minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: start;
+}
+
+.defense-steps li + li { margin-top: 0.6rem; }
+
+.defense-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1;
+}
+
+.defense-script {
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+.defense-script-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.defense-script-summary::-webkit-details-marker { display: none; }
+.defense-script[open] .defense-script-summary > .label:last-child { transform: rotate(45deg); }
+
+.defense-script-body {
+  display: grid;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+@media (min-width: 720px) {
+  .defense-script-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+.defense-script-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.defense-script-list li + li { margin-top: 0.4rem; }
+
+@media print {
+  .written-paper.quad-paper,
+  .written-paper.scratch-paper {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+  .defense-script[open] .defense-script-body,
+  .defense-script-body { display: block; }
+  .packet-lesson .defense-panel { break-inside: avoid; break-before: page; }
+  .packet-lesson .written-example { break-inside: avoid; }
+}
+
+/* Notes page: how a lesson works, and why the paper changes ---------------- */
+
+.notes-howto {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+@media (min-width: 860px) {
+  .notes-howto { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 2rem; }
+}
+
+.notes-howto-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.notes-howto-list li {
+  position: relative;
+  padding-left: 1.15rem;
+}
+
+.notes-howto-list li + li { margin-top: 0.55rem; }
+
+.notes-howto-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--mark);
+}
+
+.notes-howto-list strong { color: var(--ink); font-weight: 600; }
+
+.notes-paper-key p {
+  display: grid;
+  grid-template-columns: 1.9rem minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: start;
+  margin: 0 0 0.7rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.notes-paper-key strong { color: var(--ink); font-weight: 600; }
+
+.paper-swatch {
+  display: block;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 1px solid rgba(150, 165, 180, 0.6);
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.paper-swatch-quad {
+  background-image:
+    linear-gradient(90deg, #e0a49c 0 1px, transparent 1px),
+    repeating-linear-gradient(90deg, #b7cfe8 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(to bottom, #cfe0f0 0 1px, transparent 1px 7px);
+  background-position: 6px 0, 0 0, 0 0;
+}
+
+.paper-swatch-ruled {
+  background-image:
+    linear-gradient(90deg, transparent 6px, #e0a49c 6px, #e0a49c 7px, transparent 7px),
+    repeating-linear-gradient(to bottom, #cfe0f0 0 1px, transparent 1px 7px);
+}
+
+/* Defense page ------------------------------------------------------------- */
+
+.defense-unit-card .defense-panel {
+  margin-block: 0 0.5rem;
+  box-shadow: none;
+  background: color-mix(in srgb, var(--paper-raised) 70%, transparent);
+}
+
+.defense-unit-card .defense-head { margin-bottom: 0.5rem; }
+.defense-unit-card .defense-title { font-size: 1rem; }
+.defense-unit-card .defense-lede { display: none; }
+
+.written-model { border-top: 1px solid var(--rule); }
+
+.written-model-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.written-model-summary::-webkit-details-marker { display: none; }
+.written-model[open] .written-model-summary > .label:last-child { transform: rotate(45deg); }
+.written-model-body { padding-bottom: 0.75rem; }
+
+.voice-rules {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+}
+
+@media (min-width: 820px) {
+  .voice-rules { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 2rem; }
+}
+
+.voice-rules dt {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.voice-rules dd {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}

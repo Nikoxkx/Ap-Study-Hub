@@ -133,7 +133,7 @@ function evaluateSignal(signal: RubricSignal, features: WritingFeatures): Signal
         satisfied: features.conclusionMoves.length >= min,
         measured: features.conclusionMoves.length
           ? `Closing move found: ${features.conclusionMoves.slice(0, 2).join(", ")}`
-          : "No closing or generalising move detected.",
+          : "No closing or generalizing move detected.",
       };
     }
     case "counterargument": {
@@ -169,8 +169,8 @@ function evaluateSignal(signal: RubricSignal, features: WritingFeatures): Signal
         note: signal.note,
         satisfied: moves.length >= min,
         measured: moves.length
-          ? `${moves.length} document${moves.length === 1 ? "" : "s"} analysed for author, purpose, audience, or situation`
-          : "No document is analysed for who wrote it, for whom, when, or why.",
+          ? `${moves.length} document${moves.length === 1 ? "" : "s"} analyzed for author, purpose, audience, or situation`
+          : "No document is analyzed for who wrote it, for whom, when, or why.",
       };
     }
     case "outside-evidence": {
@@ -515,7 +515,7 @@ export function gradeLocally(
   }
   const filler = [
     quantitative
-      ? "Re-read the question's parts: each must be answered, labelled, and justified separately."
+      ? "Re-read the question's parts: each must be answered, labeled, and justified separately."
       : "Add one more paragraph of commentary that explains how your evidence supports the claim.",
     quantitative
       ? "Show a check: substitute your answer back into the original relationship, or compare it with the units."

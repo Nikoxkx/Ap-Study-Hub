@@ -16,7 +16,7 @@ import { NeumorphicSwitch } from "@/components/ui/NeumorphicSwitch";
  * `sort(() => Math.random() - 0.5)` — a comparator that is not a valid ordering,
  * so it produces a measurably biased permutation. Both are fixed here.
  *
- * Behaviour:
+ * Behavior:
  *   Space / Enter  flip
  *   ← →            previous / next
  *   1 / 2          mark "got it" / "again"

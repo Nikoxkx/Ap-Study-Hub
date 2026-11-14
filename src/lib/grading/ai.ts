@@ -92,7 +92,7 @@ TASK TYPE: ${input.taskType}
 PROMPT GIVEN TO THE STUDENT:
 ${input.prompt}
 
-${passages ? `PASSAGE(S) THE STUDENT WAS ANALYSING:\n${passages}\n` : ""}
+${passages ? `PASSAGE(S) THE STUDENT WAS ANALYZING:\n${passages}\n` : ""}
 
 RUBRIC:
 ${rubricText}
@@ -105,9 +105,9 @@ ${input.response}
 Instructions:
 1. Award points row by row, using ONLY the allowed values for that row.
 2. Do not reward length. A short precise answer can outscore a long vague one.
-3. Quote the student's own words as evidence for every judgement. If a requirement is absent, say what is absent.
+3. Quote the student's own words as evidence for every judgment. If a requirement is absent, say what is absent.
 4. Judge grammar, spelling, and clarity. List real errors with the sentence and a corrected version. Do not invent errors.
-5. Be aware of model/human error: if a judgement is borderline, choose the lower value and explain why.
+5. Be aware of model/human error: if a judgment is borderline, choose the lower value and explain why.
 6. Return JSON only, matching this schema exactly:
 
 {
@@ -215,7 +215,7 @@ interface RawGrade {
   nextSteps?: { title?: string; detail?: string }[];
 }
 
-/** Merge a model's judgement into the local result, keeping measured evidence. */
+/** Merge a model's judgment into the local result, keeping measured evidence. */
 export function mergeAiGrade(local: GradeResult, raw: unknown, rubric: Rubric, config: AiConfig): GradeResult {
   const data = (raw ?? {}) as RawGrade;
   if (!Array.isArray(data.rows) || data.rows.length === 0) {

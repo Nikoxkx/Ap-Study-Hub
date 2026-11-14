@@ -7,6 +7,9 @@ import { getWorkedExamples } from "@/content/worked";
 import { Markdown } from "@/lib/markdown";
 import { MathAwareText } from "@/lib/math";
 import { WorkedPaper } from "@/components/WorkedPaper";
+import { WrittenExample } from "@/components/WrittenExample";
+import { DefensePanel } from "@/components/DefensePanel";
+import { getCourseDefense, getUnitDefense, getWrittenWork } from "@/content/written-work";
 import { PrintButton } from "@/components/PrintButton";
 
 export function generateStaticParams() {
@@ -50,7 +53,7 @@ export default async function PrintPacketPage({ params, searchParams }: {
         <h1>{course.subject.official}</h1>
         <p>{rawUnit ? units[0].title : `${course.counts.units} lessons · notes, worked examples, retrieval practice, and answer key`}</p>
         <div className="packet-meta"><span>Name ____________________</span><span>Date ____________</span><span>{course.subject.exam.date} · {course.subject.exam.window}</span></div>
-        <p className="packet-directions">Read with a pen. Cover worked lines before revealing them, complete the retrieval section without the key, and write the reason for every correction. Original practice; not released College Board material.</p>
+        <p className="packet-directions">Read with a pen. Cover the worked lines before you read them, try each unit&#39;s written answer before you look at it, then say the defense lines out loud — quietly is fine, but out loud. Complete the retrieval section without the key and write the reason for every correction. Original practice; not released College Board material.</p>
       </header>
 
       {units.map((unit) => {
@@ -64,6 +67,8 @@ export default async function PrintPacketPage({ params, searchParams }: {
             {lesson.sections.map((section) => <section key={section.heading}><h3>{section.heading}</h3>{section.paragraphs.map((paragraph, index) => <Markdown key={index} source={paragraph} idPrefix={`packet-${unit.unitNumber}-${index}-`} />)}</section>)}
           </div>
           {getWorkedExamples(course.subject.slug, unit.unitNumber).map((example) => <WorkedPaper key={example.id} example={example} defaultOpen />)}
+          {getWrittenWork(course.subject.slug, unit.unitNumber).map((work) => <WrittenExample key={work.id} work={work} />)}
+          <DefensePanel subject={course.subject} courseDefense={getCourseDefense(course.subject.slug)} unitDefense={getUnitDefense(course.subject.slug, unit.unitNumber)} compact />
           <section className="packet-sources"><h3>Sources for this lesson</h3><ul>{sourceIds.map((id) => { const source = getSource(id); return <li key={id}><a href={source.url}>{source.title}</a> · {source.publisher}</li>; })}</ul></section>
         </article>;
       })}

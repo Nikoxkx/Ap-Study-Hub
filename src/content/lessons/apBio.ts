@@ -17,7 +17,7 @@ export const apBioLessons: Lesson[] = [
       section("Water’s polarity explains its behavior", ["cb-bio-ced", "openstax-biology"], `
 Water’s oxygen atom attracts shared electrons more strongly than its hydrogen atoms, producing partial charges and a bent polar molecule. Hydrogen bonds form among molecules, creating cohesion and contributing to surface tension. Adhesion to other polar or charged surfaces helps water move through narrow xylem vessels. These properties are emergent: a single water molecule does not have surface tension, but a network of interacting molecules does.
 
-Hydrogen bonding also gives water a relatively high specific heat and heat of vaporization. Energy must disrupt many interactions before temperature rises or molecules escape as vapor. Organisms therefore buffer temperature changes and can cool through evaporation. Ice floats because the solid’s ordered hydrogen-bond lattice spaces molecules farther apart than in liquid water. Floating ice insulates aquatic environments, but “all solids are less dense” is not a general rule.
+Hydrogen bonding also gives water a relatively high specific heat and heat of vaporization. Energy must disrupt many interactions before temperature rises or molecules escape as vapor. Organizms therefore buffer temperature changes and can cool through evaporation. Ice floats because the solid’s ordered hydrogen-bond lattice spaces molecules farther apart than in liquid water. Floating ice insulates aquatic environments, but “all solids are less dense” is not a general rule.
 `),
       section("Carbon skeletons and functional groups", ["cb-bio-ced", "openstax-biology"], `
 Carbon’s four valence electrons allow four covalent bonds and diverse chains, branches, and rings. The geometry of a carbon skeleton influences how a molecule fits other structures, while attached functional groups change reactivity, polarity, and acidity. Hydroxyl groups tend to increase polarity; carboxyl groups can donate hydrogen ions; amino groups can accept them; phosphate groups participate in energy transfer and nucleic-acid backbones.
@@ -174,7 +174,7 @@ For microscopy or transport questions, propose a mechanism that matches all obse
   {
     unitNumber: 3,
     title: "Unit 3 · Cellular energetics",
-    description: "Trace energy through enzymes, ATP, photosynthesis, and respiration, and evaluate how organisms regulate and investigate these pathways.",
+    description: "Trace energy through enzymes, ATP, photosynthesis, and respiration, and evaluate how organizms regulate and investigate these pathways.",
     examWeight: "12–16% of multiple-choice weighting",
     objectives: [
       "Explain enzyme activity and regulation through structure, energy, and feedback.",
@@ -190,7 +190,7 @@ Temperature and pH affect molecular motion and protein interactions. Moderate wa
       section("ATP couples energy-releasing and energy-requiring work", ["cb-bio-ced", "openstax-biology"], `
 ATP stores usable free energy in its chemical structure and transfers phosphate groups through coupled reactions. Hydrolysis to ADP and inorganic phosphate releases free energy that can drive transport, movement, and biosynthesis when the reactions are properly coupled. ATP is not a long-term energy warehouse; cells continuously regenerate it from ADP using energy from organic molecules or light.
 
-Energy transformations are inefficient, with some energy dispersed as heat, consistent with thermodynamics. Organisms remain ordered by taking in energy and matter and exporting waste and heat; they do not violate the second law. In diagrams, distinguish energy flow from carbon atoms. Carbon cycles among molecules and reservoirs, while usable energy must be continually supplied.
+Energy transformations are inefficient, with some energy dispersed as heat, consistent with thermodynamics. Organizms remain ordered by taking in energy and matter and exporting waste and heat; they do not violate the second law. In diagrams, distinguish energy flow from carbon atoms. Carbon cycles among molecules and reservoirs, while usable energy must be continually supplied.
 `),
       section("Photosynthesis: capturing and storing energy", ["cb-bio-ced", "openstax-biology"], `
 In chloroplasts, light-dependent reactions occur in thylakoid membranes. Photosystems absorb light, energize electrons, split water, release oxygen, and generate a proton gradient. The electron transport chain powers proton movement, and ATP synthase produces ATP through chemiosmosis. NADP⁺ accepts electrons and protons to form NADPH. Oxygen comes from water, not carbon dioxide—a common misconception worth correcting with isotope evidence.
@@ -205,7 +205,7 @@ Without oxygen, many cells regenerate NAD⁺ through fermentation so glycolysis 
       section("Regulation and metabolic investigations", ["cb-bio-ced", "cb-bio-labs", "cb-bio-frq"], `
 Feedback inhibition can conserve resources when a pathway’s end product inhibits an earlier enzyme. Allosteric regulation changes protein activity through binding away from the active site, while competitive inhibition directly competes for that site. Noncompetitive inhibition generally lowers effective enzyme capacity rather than being overcome simply by adding substrate. Use rate graphs and inhibitor mechanisms together rather than memorizing one curve shape.
 
-Respirometers can estimate oxygen consumption, while floating leaf disks can estimate relative photosynthetic oxygen production under controlled conditions. Control temperature, light, organism mass, and starting material as appropriate. Rate should include time and often normalization by mass. If asked to graph, label axes with units and choose a scale that shows the data. A mechanism-based prediction before looking at the answer choices is often the fastest way to avoid distractors.
+Respirometers can estimate oxygen consumption, while floating leaf disks can estimate relative photosynthetic oxygen production under controlled conditions. Control temperature, light, organizm mass, and starting material as appropriate. Rate should include time and often normalization by mass. If asked to graph, label axes with units and choose a scale that shows the data. A mechanism-based prediction before looking at the answer choices is often the fastest way to avoid distractors.
 `),
     ],
     glossary: [
@@ -269,7 +269,7 @@ Respirometers can estimate oxygen consumption, while floating leaf disks can est
       section("Cells communicate across many distances", ["cb-bio-ced", "openstax-biology"], `
 Cell communication can involve direct contact, local signals, or long-distance hormones. Quorum sensing lets bacteria alter group behavior when signal concentration indicates population density. Plants and animals use diverse ligands to coordinate growth, metabolism, immunity, and development. A signal’s meaning depends on the receiving cell’s receptor and internal machinery, not only on the molecule itself.
 
-The same ligand can produce different responses in different cell types. Epinephrine may affect heart and liver cells differently because their receptors, relay proteins, and effector systems differ. This explains why multicellular organisms can coordinate many responses with a limited set of signals. In diagrams, distinguish the sending cell, signal, receptor, target cell, and response before predicting consequences.
+The same ligand can produce different responses in different cell types. Epinephrine may affect heart and liver cells differently because their receptors, relay proteins, and effector systems differ. This explains why multicellular organizms can coordinate many responses with a limited set of signals. In diagrams, distinguish the sending cell, signal, receptor, target cell, and response before predicting consequences.
 `),
       section("Signal transduction converts information into response", ["cb-bio-ced", "openstax-biology"], `
 Transduction typically involves reception, relay, and response. A ligand binding a membrane receptor can activate a G protein or kinase cascade, while lipid-soluble signals may bind intracellular receptors that influence transcription. Second messengers such as cyclic AMP or calcium ions spread information rapidly. Phosphorylation cascades amplify signals by allowing one activated protein to activate many downstream proteins.
@@ -289,14 +289,14 @@ Checkpoints monitor conditions such as cell size, DNA damage, and spindle attach
       section("Cancer, apoptosis, and evidence", ["cb-bio-ced", "cb-bio-frq", "cb-bio-labs"], `
 Cancer involves accumulated changes that disrupt regulation of division, survival, and genome maintenance. Proto-oncogenes normally promote appropriate growth; activating changes can convert them into oncogenes. Tumor-suppressor genes normally restrain division or support repair; loss of function can remove that restraint. One mutation is usually not the whole explanation. Metastasis adds the ability to invade and establish growth elsewhere.
 
-Apoptosis is programmed cell death used in development and damaged-cell removal, distinct from uncontrolled necrosis. Experiments may compare mitotic indices, kinase activity, or responses to drugs. If a treatment reduces the proportion of cells in mitosis, it may block a checkpoint or slow division, but additional evidence is needed to locate the target. Use official scoring samples to practice making each prediction and justification a separate, visible statement.
+Apoptosis is programd cell death used in development and damaged-cell removal, distinct from uncontrolled necrosis. Experiments may compare mitotic indices, kinase activity, or responses to drugs. If a treatment reduces the proportion of cells in mitosis, it may block a checkpoint or slow division, but additional evidence is needed to locate the target. Use official scoring samples to practice making each prediction and justification a separate, visible statement.
 `),
     ],
     glossary: [
       { term: "Ligand", definition: "A signaling molecule that binds specifically to a receptor." },
       { term: "Second messenger", definition: "An intracellular molecule that relays and often amplifies a signal after receptor activation." },
       { term: "Cyclin-dependent kinase", definition: "A kinase activated by cyclin binding that helps regulate cell-cycle transitions." },
-      { term: "Apoptosis", definition: "Regulated programmed cell death important in development and cellular quality control." },
+      { term: "Apoptosis", definition: "Regulated programd cell death important in development and cellular quality control." },
     ],
     examAlignment: {
       title: "Representations of signaling and regulation",
@@ -334,7 +334,7 @@ Apoptosis is programmed cell death used in development and damaged-cell removal,
         question: "At the \\(\\mathrm{G}_1\\) checkpoint, a cell with severely damaged DNA is most likely to",
         options: ["Enter mitosis immediately", "Arrest the cycle and attempt repair, or undergo apoptosis if repair fails", "Skip directly to cytokinesis", "Duplicate its chromosomes twice"],
         correctIndex: 1,
-        explanation: "Checkpoint proteins halt progression when DNA is damaged, allowing repair or triggering programmed cell death rather than passing mutations to daughter cells.",
+        explanation: "Checkpoint proteins halt progression when DNA is damaged, allowing repair or triggering programd cell death rather than passing mutations to daughter cells.",
         skill: "Cell cycle control",
       },
     ],
@@ -539,7 +539,7 @@ Fossils, biogeography, comparative anatomy, developmental patterns, and molecula
 A phylogenetic tree is a hypothesis about relationships. Nodes represent common ancestors, sister taxa share an immediate ancestor, and branch rotation at a node does not change relationships. A trait present in an outgroup and descendants can help infer ancestral states. The tree’s tips are not ranked from primitive to advanced, and an ancestor is not necessarily one of the living species shown.
 `),
       section("Speciation, extinction, and continuing change", ["cb-bio-ced", "cb-bio-exam", "cb-bio-frq"], `
-Speciation occurs when gene pools diverge and reproductive isolation reduces gene flow. Allopatric speciation involves geographic separation; sympatric speciation occurs without it through mechanisms such as polyploidy or disruptive ecological and mating divergence. Prezygotic barriers prevent mating or fertilization, while postzygotic barriers reduce hybrid viability or fertility. The biological species concept is useful but not universal for asexual organisms or fossils.
+Speciation occurs when gene pools diverge and reproductive isolation reduces gene flow. Allopatric speciation involves geographic separation; sympatric speciation occurs without it through mechanisms such as polyploidy or disruptive ecological and mating divergence. Prezygotic barriers prevent mating or fertilization, while postzygotic barriers reduce hybrid viability or fertility. The biological species concept is useful but not universal for asexual organizms or fossils.
 
 Extinction removes lineages and can open ecological opportunities, while adaptive radiation produces rapid diversification from a common ancestor. Evolution continues in pathogens, pests, crops, and wild populations. In free response, connect evidence to the mechanism requested rather than offering “survival of the fittest” as a universal explanation. If data show no allele-frequency change, consider whether the environment, time scale, or measured locus limits your inference.
 `),
@@ -594,7 +594,7 @@ Extinction removes lineages and can open ecological opportunities, while adaptiv
   {
     unitNumber: 8,
     title: "Unit 8 · Ecology",
-    description: "Connect organismal responses, energy flow, population dynamics, community interactions, biodiversity, and human disruption across ecological scales.",
+    description: "Connect organizmal responses, energy flow, population dynamics, community interactions, biodiversity, and human disruption across ecological scales.",
     examWeight: "10–15% of multiple-choice weighting",
     objectives: [
       "Explain how behavior and physiology respond to environmental variation.",
@@ -602,13 +602,13 @@ Extinction removes lineages and can open ecological opportunities, while adaptiv
       "Evaluate human impacts and conservation strategies using ecological evidence.",
     ],
     sections: [
-      section("Organisms respond to environments", ["cb-bio-ced", "openstax-biology"], `
+      section("Organizms respond to environments", ["cb-bio-ced", "openstax-biology"], `
 Behavior and physiology reflect both inherited programs and environmental input. Phototropism directs plant growth toward light, while animal taxis and migration change location in response to stimuli. Photoperiod can regulate flowering or reproduction, and communication signals coordinate mating, alarm, and cooperation. A behavior’s immediate mechanism differs from its evolutionary function; both questions may be asked in an ecological scenario.
 
 Responses involve tradeoffs because energy and time are limited. Defending a territory may improve access to resources while increasing injury risk and energy expenditure. Physiological acclimation can help an individual tolerate change, but limits remain. Avoid claiming every observed behavior is optimal or perfectly adapted. Historical constraints, changing environments, and competing demands shape ecological outcomes.
 `),
       section("Energy flow and primary productivity", ["cb-bio-ced", "openstax-biology", "cb-bio-labs"], `
-Primary producers capture energy through photosynthesis or chemosynthesis. Gross primary productivity is total captured energy; net primary productivity is what remains after producers’ respiration. Only a fraction transfers between trophic levels because organisms use energy for metabolism, lose heat, and leave material unconsumed or undigested. The familiar approximate 10% transfer is a rough pattern, not a universal constant.
+Primary producers capture energy through photosynthesis or chemosynthesis. Gross primary productivity is total captured energy; net primary productivity is what remains after producers’ respiration. Only a fraction transfers between trophic levels because organizms use energy for metabolism, lose heat, and leave material unconsumed or undigested. The familiar approximate 10% transfer is a rough pattern, not a universal constant.
 
 Energy pyramids represent flow through trophic levels, while biomass pyramids represent standing stock and can occasionally invert in aquatic systems with rapid producer turnover. Food webs are more realistic than isolated chains because consumers often occupy multiple trophic levels. When calculating energy availability, identify whether values are gross, net, ingested, assimilated, or respired before applying an efficiency estimate.
 `),

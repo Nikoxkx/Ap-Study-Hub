@@ -1,4 +1,5 @@
 import { getCatalog } from "./catalog";
+import { writtenWork } from "@/content/written-work";
 import { slugify, toPlainText } from "./markdown";
 import { unitVideos } from "./video-lessons";
 import { getSubject, type SubjectSlug } from "./subjects";
@@ -91,6 +92,22 @@ function buildIndex(): SearchDoc[] {
           weight: 2.2,
         });
       });
+
+      writtenWork
+        .filter((work) => work.courseSlug === subject.slug && work.unitNumber === unit.unitNumber)
+        .forEach((work) => {
+          docs.push({
+            id: `defense:${subject.slug}:${unit.unitNumber}`,
+            kind: "unit",
+            title: `Defend lesson ${unit.unitNumber} out loud`,
+            context: unit.title,
+            body: [work.prompt, work.because, work.trap, work.say.join(" "), work.plan.join(" ")].join(" "),
+            href: `${base}/defense#unit-${unit.unitNumber}`,
+            subject: subject.slug,
+            subjectLabel: subject.familiar,
+            weight: 2.3,
+          });
+        });
 
       unit.keyTerms.forEach((term) => {
         docs.push({

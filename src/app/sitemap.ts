@@ -13,7 +13,7 @@ import { absoluteUrl, site } from "@/lib/site";
  * `lastModified` is the date the *content* was last worked on, not the build
  * time. Stamping the same fresh timestamp on all 48 URLs every deploy is worse
  * than useless: after two or three deploys a crawler learns the field is noise
- * and stops using it to prioritise. Course pages carry that course's `revised`
+ * and stops using it to prioritize. Course pages carry that course's `revised`
  * date; the policy pages carry the date they were last reviewed.
  */
 
@@ -57,6 +57,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     if (course.units.length) {
       pages.push(
         { url: absoluteUrl(`${base}/notes`), lastModified, changeFrequency: "monthly", priority: 0.85 },
+        { url: absoluteUrl(`${base}/defense`), lastModified, changeFrequency: "monthly", priority: 0.8 },
         { url: absoluteUrl(`${base}/videos`), lastModified, changeFrequency: "monthly", priority: 0.75 },
       );
     }

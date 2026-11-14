@@ -167,7 +167,7 @@ function inferQuestionUnit(
   }
   if (bestScore > 0) return best;
 
-  // History units are labelled with date ranges; a question that names a year
+  // History units are labeled with date ranges; a question that names a year
   // belongs to the unit whose range contains it.
   const years = [...haystack.matchAll(/\b(1[5-9]\d{2}|20\d{2})\b/g)].map((match) => Number(match[1]));
   if (years.length) {
@@ -362,7 +362,7 @@ export function getCourse(slug: SubjectSlug | string): CourseBundle | null {
   };
 }
 
-/** Every course, in catalogue order, with counts resolved. Used on the home page. */
+/** Every course, in catalog order, with counts resolved. Used on the home page. */
 export function getCatalog(): CourseBundle[] {
   return subjects
     .map((s) => getCourse(s.slug))

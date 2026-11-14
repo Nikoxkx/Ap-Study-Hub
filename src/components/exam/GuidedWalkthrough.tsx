@@ -38,7 +38,7 @@ const TRAPS: { match: RegExp; trap: string }[] = [
   { match: /federalism|institution|constitution/i, trap: "The trap is naming the right principle for the wrong level of government. Identify the actor before the concept." },
   { match: /required|document|case/i, trap: "The trap is a case name with another case's holding. Say the holding before you answer." },
   { match: /experiment|variable|control/i, trap: "The trap is a control that is really a constant, or a design with no comparison group." },
-  { match: /evolution|selection|allele/i, trap: "The trap is teleology: 'the organism adapted in order to survive'. Selection acts on variation, not on intention." },
+  { match: /evolution|selection|allele/i, trap: "The trap is teleology: 'the organizm adapted in order to survive'. Selection acts on variation, not on intention." },
   { match: /energy|efficiency|trophic/i, trap: "The trap is using the wrong trophic level as the denominator, or forgetting to convert units." },
   { match: /policy|solution|management/i, trap: "The trap is a proposal with no mechanism. Say what the intervention changes and why that matters." },
 ];
@@ -141,7 +141,7 @@ function QuestionWalk({
       {steps ? (
         <ol className="walk-steps">
           <li>
-            <strong>Read the stem for its task.</strong> Underline the verb — describe, explain, analyse,
+            <strong>Read the stem for its task.</strong> Underline the verb — describe, explain, analyze,
             identify. Answering a different verb is the most common lost point.
           </li>
           <li>

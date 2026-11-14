@@ -111,6 +111,7 @@ export default async function CourseLayout({
           practice: counts.questions > 0,
           essays: counts.essays > 0,
           exam: Boolean(course.interim),
+          defense: counts.units > 0,
           resources: counts.resources > 0,
         }}
       />

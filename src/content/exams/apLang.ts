@@ -10,7 +10,7 @@ import type { ExamQuestion, Stimulus } from "./types";
  * same task the May exam sets: read a piece of prose and account for how it
  * works.
  *
- * Every passage is an original piece written for this site in a recognisable
+ * Every passage is an original piece written for this site in a recognizable
  * register — a school-board address, a clinical memoir, an op-ed, a science
  * essay, and an 1891 public letter. Each carries an attribution saying so. None
  * is a reproduction of a real text, and no question is a released College Board
@@ -79,16 +79,16 @@ const set1 = build("lang-set1-address", [
     q: "The speaker opens by naming what the audience expects in order to",
     options: [
       "establish common ground before making a request the audience may resist",
-      "apologise for the length of the remarks that follow",
+      "apologize for the length of the remarks that follow",
       "distance himself from other students who have addressed the board",
       "concede that the proposal has no chance of passing",
     ],
     correct: 0,
     explanation:
-      "The first two sentences meet the board where it already is — sceptical and braced for a familiar speech — and then use that shared expectation as the hinge for the argument. Conceding a point early is a way of buying the audience's attention for the claim that follows.",
+      "The first two sentences meet the board where it already is — skeptical and braced for a familiar speech — and then use that shared expectation as the hinge for the argument. Conceding a point early is a way of buying the audience's attention for the claim that follows.",
     why: [
       "Conceding the audience's likely objection, then turning it, is a standard opening move for a persuasive address.",
-      "The speaker never mentions length or apologises for speaking.",
+      "The speaker never mentions length or apologizes for speaking.",
       "He distinguishes his position from a stock student position, not from particular students.",
       "He treats passage as achievable — that is the point of ending on a specific ask.",
     ],
@@ -101,7 +101,7 @@ const set1 = build("lang-set1-address", [
       "prove that old buildings are more valuable than new ones",
       "make an abstract claim about names concrete by treating them as structures that enable action",
       "suggest that the building itself should be replaced",
-      "introduce a technical vocabulary the board will recognise",
+      "introduce a technical vocabulary the board will recognize",
     ],
     correct: 1,
     explanation:
@@ -179,13 +179,13 @@ const set1 = build("lang-set1-address", [
     q: "The distinction between a record and an endorsement is central because it",
     options: [
       "shows that the speaker has no interest in preserving historical documents",
-      "separates preserving history from honouring it, which answers the “erasing history” objection",
+      "separates preserving history from honoring it, which answers the “erasing history” objection",
       "proves that archives are unreliable sources of evidence",
       "suggests that the plaque should replace the archives",
     ],
     correct: 1,
     explanation:
-      "The objection claims renaming erases history. The speaker concedes that history should remain available and argues that a building's name performs a different act — endorsement. The distinction lets him keep the record while withdrawing the honour, and it sets up the plaque.",
+      "The objection claims renaming erases history. The speaker concedes that history should remain available and argues that a building's name performs a different act — endorsement. The distinction lets him keep the record while withdrawing the honor, and it sets up the plaque.",
     why: [
       "He insists the archives and yearbooks stay exactly where they are.",
       "This is the function of the distinction — it preserves the objection's value while defeating its conclusion.",
@@ -245,11 +245,11 @@ const set1 = build("lang-set1-address", [
     ],
     correct: 0,
     explanation:
-      "The movement is deliberate and visible: concede, analogise, define the harm, take the objections in order of strength, then ask for a vote and for teaching. The order is the argument — the strongest objection is answered last among those taken seriously, and the refusal is placed where it can close that sequence.",
+      "The movement is deliberate and visible: concede, analogize, define the harm, take the objections in order of strength, then ask for a vote and for teaching. The order is the argument — the strongest objection is answered last among those taken seriously, and the refusal is placed where it can close that sequence.",
     why: [
       "This matches the paragraph sequence exactly.",
       "The speech refers to history but never narrates it in order.",
-      "The appeals are organised by objection, not by intensity.",
+      "The appeals are organized by objection, not by intensity.",
       "The speaker does not refute the board's authority; he addresses it.",
     ],
     skill: "Structure",
@@ -263,7 +263,7 @@ const set1 = build("lang-set1-address", [
 
 const clinicMemoir = `The clinic opens at eight, which is a fiction the staff maintain for the benefit of the appointment book. By seven-forty there are eleven people in the corridor, and the chairs have been arranged the way Mrs. Okafor arranges them, in a shallow arc facing the door, so that everyone can see who arrives.
 
-I was twenty-three and had been hired to run the front desk, which in that building meant deciding, forty times a day, which of my neighbours would be seen and which would be asked to come back on Thursday. I had a laminated sheet of rules and the authority of a name badge, and for the first month I used both.
+I was twenty-three and had been hired to run the front desk, which in that building meant deciding, forty times a day, which of my neighbors would be seen and which would be asked to come back on Thursday. I had a laminated sheet of rules and the authority of a name badge, and for the first month I used both.
 
 The rule that mattered was triage, and triage is a word that hides a great deal. It sounds clinical, like a procedure with a flowchart. What it actually asks is that a person with a fever and no transportation weigh herself against a man with a cough and a car, and it asks this of a twenty-three-year-old who has never had a fever in her life.
 
@@ -271,7 +271,7 @@ Mrs. Okafor had been the desk for nineteen years before me and had opinions abou
 
 There is a particular shame in learning that your competence was borrowed. I had been proud of how quickly I could sort a waiting room; it turned out I had been sorting it correctly because a woman two chairs away was quietly amending my arithmetic. When she retired, the corridor did not change. The sheet did.
 
-I am not writing this to criticise the clinic, which was understaffed in ways no one at the desk could fix, or to praise Mrs. Okafor in the manner of a tribute, which she would have found embarrassing and slightly false. I am writing because I have since worked in three hospitals with better software and worse waiting rooms, and because the laminated sheet is still the most honest document I have ever been asked to follow. It said, in effect: these are the categories, and this is the order. It did not say what to do when the categories are wrong, which is the situation the desk is in from the moment the door opens.
+I am not writing this to criticize the clinic, which was understaffed in ways no one at the desk could fix, or to praise Mrs. Okafor in the manner of a tribute, which she would have found embarrassing and slightly false. I am writing because I have since worked in three hospitals with better software and worse waiting rooms, and because the laminated sheet is still the most honest document I have ever been asked to follow. It said, in effect: these are the categories, and this is the order. It did not say what to do when the categories are wrong, which is the situation the desk is in from the moment the door opens.
 
 What I learned there was not that rules are cruel. The rules were fine. What I learned was that a rule is a sentence written by someone who is not in the room, and that the person in the room has to decide, forty times a day, how to read it aloud.`;
 
@@ -291,7 +291,7 @@ const set2 = build("lang-set2-memoir", [
     options: [
       "explaining the clinic's appointment system in detail",
       "signalling a wry insider's view of an institution he or she knows intimately",
-      "criticising the staff for dishonesty",
+      "criticizing the staff for dishonesty",
       "introducing Mrs. Okafor as the central figure",
     ],
     correct: 1,
@@ -310,7 +310,7 @@ const set2 = build("lang-set2-memoir", [
     q: "The narrator says “triage is a word that hides a great deal” in order to",
     options: [
       "define a medical term for readers unfamiliar with it",
-      "expose the gap between a clinical label and the human judgement it conceals",
+      "expose the gap between a clinical label and the human judgment it conceals",
       "argue that the clinic should abandon triage",
       "show that the narrator had no training for the job",
     ],
@@ -336,7 +336,7 @@ const set2 = build("lang-set2-memoir", [
     ],
     correct: 1,
     explanation:
-      "The narrator explicitly moves from suspecting rule-breaking to understanding a different rule — one unwritten precisely because admitting it would reveal the clinic's dependence on her judgement.",
+      "The narrator explicitly moves from suspecting rule-breaking to understanding a different rule — one unwritten precisely because admitting it would reveal the clinic's dependence on her judgment.",
     why: [
       "The narrator's suspicion is corrected within the same paragraph.",
       "The passage calls it a rule that could not be written down.",
@@ -358,10 +358,10 @@ const set2 = build("lang-set2-memoir", [
     explanation:
       "The sentence turns outward from the corridor to a claim about competence itself, and the rest of the paragraph explains what was borrowed. That movement — scene, then reflection grounded in the scene — is the structural engine of the whole passage.",
     why: [
-      "It generalises from the narrator's experience, which is what the following paragraph unpacks.",
+      "It generalizes from the narrator's experience, which is what the following paragraph unpacks.",
       "Mrs. Okafor is credited, never blamed.",
       "The setting does not change; the reflection deepens.",
-      "The narrator was inexperienced, but the sentence is about borrowed judgement, not credentials.",
+      "The narrator was inexperienced, but the sentence is about borrowed judgment, not credentials.",
     ],
     skill: "Line of reasoning",
     unit: 3,
@@ -370,13 +370,13 @@ const set2 = build("lang-set2-memoir", [
     q: "The narrator's explanation of why the second rule was never written down reveals",
     options: [
       "the clinic's indifference to patients",
-      "an institutional reluctance to admit that its functioning depended on one person's judgement",
+      "an institutional reluctance to admit that its functioning depended on one person's judgment",
       "Mrs. Okafor's refusal to share her methods",
       "the narrator's resentment of Mrs. Okafor",
     ],
     correct: 1,
     explanation:
-      "Admitting the rule would mean admitting the clinic relied on knowledge it had never formalised. The sentence is about institutions and self-description, not about individual generosity.",
+      "Admitting the rule would mean admitting the clinic relied on knowledge it had never formalized. The sentence is about institutions and self-description, not about individual generosity.",
     why: [
       "The clinic is described as understaffed, not uncaring.",
       "The passage locates the reason in what the clinic would have had to admit.",
@@ -387,11 +387,11 @@ const set2 = build("lang-set2-memoir", [
     unit: 6,
   },
   {
-    q: "The sentence beginning “I am not writing this to criticise the clinic… or to praise Mrs. Okafor…” functions primarily to",
+    q: "The sentence beginning “I am not writing this to criticize the clinic… or to praise Mrs. Okafor…” functions primarily to",
     options: [
       "announce the memoir's purpose by ruling out two easier purposes",
       "suggest that the narrator disliked both the clinic and its manager",
-      "apologise for the length of the passage",
+      "apologize for the length of the passage",
       "introduce statistics about hospital staffing",
     ],
     correct: 0,
@@ -416,9 +416,9 @@ const set2 = build("lang-set2-memoir", [
     ],
     correct: 1,
     explanation:
-      "Honesty here means a document that admits what it is. The sheet names its categories and stops, whereas later software and procedures presumably implied judgements they could not make.",
+      "Honesty here means a document that admits what it is. The sheet names its categories and stops, whereas later software and procedures presumably implied judgments they could not make.",
     why: [
-      "The chair arrangement characterises Mrs. Okafor, not the document.",
+      "The chair arrangement characterizes Mrs. Okafor, not the document.",
       "This is the claim stated directly: categories and order, nothing more.",
       "The opening hour is the fiction the passage began by exposing.",
       "Later hospitals support the comparison but do not show what makes the sheet honest.",
@@ -458,7 +458,7 @@ const set2 = build("lang-set2-memoir", [
     explanation:
       "The narrator admits personal shame, credits a colleague, refuses both complaint and tribute, and maintains a dry irony throughout (“which is a fiction the staff maintain”). Sentiment is deliberately held at arm's length.",
     why: [
-      "The narrator explicitly declines to criticise the clinic.",
+      "The narrator explicitly declines to criticize the clinic.",
       "Self-criticism plus irony plus a refusal of sentiment matches every paragraph.",
       "The refusal to praise “in the manner of a tribute” rules out sentimentality.",
       "The vocabulary is clinical; the stance is not detached.",
@@ -476,13 +476,13 @@ const phoneOpEd = `Every few months a school district announces that it has solv
 
 Consider what a phone actually offers a fifteen-year-old in a classroom. It offers an interruption, but more precisely it offers an interruption with a reward attached: the possibility that someone is thinking about you. A locker and a book do not compete with that. A lecture usually does not either. So the phone wins, and it wins not because adolescents are weak-willed but because the phone was engineered, at enormous expense, by people who are very good at their jobs.
 
-This is why the prohibition approach produces the results it does. Districts that ban phones report fewer visible distractions and, in several well-publicised cases, modest gains in test scores. What they do not report is what happens at three-fifteen, when the pouch is opened and four hours of notifications arrive at once. A ban changes the location of the problem. It does not change the problem.
+This is why the prohibition approach produces the results it does. Districts that ban phones report fewer visible distractions and, in several well-publicized cases, modest gains in test scores. What they do not report is what happens at three-fifteen, when the pouch is opened and four hours of notifications arrive at once. A ban changes the location of the problem. It does not change the problem.
 
 The alternative is not permissiveness. It is instruction. A student who can describe the mechanism by which a feed is designed to hold her — the variable reward, the infinite scroll, the notification timed to arrive when she is most likely to look — has something a locked pouch cannot give her: a reason. Reasons outlast policies. Policies end when the principal retires.
 
 I can already hear the objection, because it is the same one I made for years: schools do not have time for another curriculum, and the science of attention is too abstract for a ninth-grader. The first half of that objection is fair. The second half is not. Students learn the Krebs cycle. They can learn that a slot machine and a notification share a design principle, and they can learn it in two class periods.
 
-What I am proposing is therefore smaller than a policy and harder than one. Two periods, once, in the first month of the year, taught by someone who can explain the design honestly and without moralising. Then the devices go in the pouch — not as the whole solution but as the second half of one.
+What I am proposing is therefore smaller than a policy and harder than one. Two periods, once, in the first month of the year, taught by someone who can explain the design honestly and without moralizing. Then the devices go in the pouch — not as the whole solution but as the second half of one.
 
 There is a version of this argument that ends in scolding, and I want to avoid it. The people who build these products are not villains, and the students who use them are not addicts. What is true is narrower and more useful: attention is now a designed environment, and nobody has taught the people living in it to read the architecture. That is a curriculum problem, and curriculum problems are the ones schools are actually good at.`;
 
@@ -509,7 +509,7 @@ const set3 = build("lang-set3-oped", [
     explanation:
       "The argument is explicitly two-part at the end: instruction first, restriction as the second half of one solution. The writer rejects both the pure ban and permissiveness.",
     why: [
-      "The ban is criticised for treating a symptom and relocating the problem.",
+      "The ban is criticized for treating a symptom and relocating the problem.",
       "Instruction plus the pouch is the proposal stated in the final third.",
       "Voluntariness is never proposed; the pouch remains.",
       "The writer says the policies are aimed at the wrong object, not that regulation is pointless.",
@@ -527,7 +527,7 @@ const set3 = build("lang-set3-oped", [
     ],
     correct: 1,
     explanation:
-      "The “when” clause does the work: it does not merely criticise the old approach, it substitutes a different object of attention. That substitution is the essay's thesis in miniature.",
+      "The “when” clause does the work: it does not merely criticize the old approach, it substitutes a different object of attention. That substitution is the essay's thesis in miniature.",
     why: [
       "No concession is made in this sentence; the concession appears later, about time.",
       "The sentence swaps one policy target for another — a reframing.",
@@ -541,13 +541,13 @@ const set3 = build("lang-set3-oped", [
     q: "The writer's account of what a phone offers — “an interruption with a reward attached” — is used to",
     options: [
       "prove that adolescents are less capable of self-control than adults",
-      "explain the behaviour through design rather than through character",
+      "explain the behavior through design rather than through character",
       "argue that phones should be banned from all public spaces",
-      "criticise the engineers who build phones",
+      "criticize the engineers who build phones",
     ],
     correct: 1,
     explanation:
-      "The passage explicitly rejects the willpower explanation (“not because adolescents are weak-willed but because the phone was engineered”). The mechanism replaces a moral judgement with a design explanation, which is what makes the curriculum proposal follow.",
+      "The passage explicitly rejects the willpower explanation (“not because adolescents are weak-willed but because the phone was engineered”). The mechanism replaces a moral judgment with a design explanation, which is what makes the curriculum proposal follow.",
     why: [
       "The writer says the opposite: the outcome is not a character defect.",
       "Design, not deficiency, is the stated cause.",
@@ -570,7 +570,7 @@ const set3 = build("lang-set3-oped", [
       "The sentence points to what the reported results leave out — the displaced rather than eliminated problem — which is an argument about the sufficiency of the evidence, not about its accuracy.",
     why: [
       "This concedes the policies' intent, not a limit in their evidence.",
-      "It names what the favourable reports omit, which is a claim about evidence.",
+      "It names what the favorable reports omit, which is a claim about evidence.",
       "It is a comparison about curriculum capacity.",
       "It is the essay's concluding formulation of the problem.",
     ],
@@ -598,7 +598,7 @@ const set3 = build("lang-set3-oped", [
     unit: 7,
   },
   {
-    q: "The phrase “taught by someone who can explain the design honestly and without moralising” reveals the writer's awareness that",
+    q: "The phrase “taught by someone who can explain the design honestly and without moralizing” reveals the writer's awareness that",
     options: [
       "teachers are generally dishonest about technology",
       "the argument's credibility depends on avoiding a scolding tone",
@@ -612,7 +612,7 @@ const set3 = build("lang-set3-oped", [
       "Nothing suggests teachers are dishonest.",
       "Tone is repeatedly treated as a condition of persuasiveness, and the closing paragraph repeats it.",
       "The teacher, not an outside expert, is specified.",
-      "The claim is about moralising as a tone, not about ethics as a subject.",
+      "The claim is about moralizing as a tone, not about ethics as a subject.",
     ],
     skill: "Tone",
     unit: 8,
@@ -627,7 +627,7 @@ const set3 = build("lang-set3-oped", [
     ],
     correct: 1,
     explanation:
-      "Refusing both caricatures is what allows the narrower claim about architecture and curriculum. It also protects the writer from the appearance of a moral panic, which is the cheapest way for a sceptical reader to dismiss the piece.",
+      "Refusing both caricatures is what allows the narrower claim about architecture and curriculum. It also protects the writer from the appearance of a moral panic, which is the cheapest way for a skeptical reader to dismiss the piece.",
     why: [
       "No new evidence is offered; the sentence removes two explanations.",
       "The sentence shifts blame from people to designed environments.",
@@ -641,13 +641,13 @@ const set3 = build("lang-set3-oped", [
     q: "Which of the following best describes the writer's use of evidence throughout?",
     options: [
       "Heavy reliance on named studies and statistics",
-      "Mostly illustrative and generalised, with a note that the districts and studies are illustrative",
+      "Mostly illustrative and generalized, with a note that the districts and studies are illustrative",
       "Personal anecdote only",
       "Direct quotation from school officials",
     ],
     correct: 1,
     explanation:
-      "The essay refers to “several well-publicised cases” without naming them, and its attribution states that the districts and studies are illustrative. A reader should notice that the argument rests on reasoning and register rather than on cited data.",
+      "The essay refers to “several well-publicized cases” without naming them, and its attribution states that the districts and studies are illustrative. A reader should notice that the argument rests on reasoning and register rather than on cited data.",
     why: [
       "No study is named and no figure is given.",
       "The references are general, and the passage's own attribution says so.",
@@ -683,17 +683,17 @@ const set3 = build("lang-set3-oped", [
 /* Set 4 · Science essay                                               */
 /* ------------------------------------------------------------------ */
 
-const treeEssay = `A city block with mature trees can be eight degrees cooler on a July afternoon than the block next to it, and the difference is not evenly distributed. The neighbourhoods with the fewest trees are, with remarkable consistency, the neighbourhoods where people were once prevented from buying houses. That sentence is doing two jobs at once: it is a description of a physical measurement and a description of a political history, and understanding urban heat requires holding both.
+const treeEssay = `A city block with mature trees can be eight degrees cooler on a July afternoon than the block next to it, and the difference is not evenly distributed. The neighborhoods with the fewest trees are, with remarkable consistency, the neighborhoods where people were once prevented from buying houses. That sentence is doing two jobs at once: it is a description of a physical measurement and a description of a political history, and understanding urban heat requires holding both.
 
 The mechanism is straightforward enough to state in a paragraph. Dark surfaces — asphalt, roofing, concrete — absorb solar energy and re-emit it as heat. A city replaces vegetated ground with those surfaces, and the result is the urban heat island: a metropolitan area several degrees warmer than its rural surroundings, with the difference largest at night, when the built environment releases the heat it stored all day. Trees interrupt every part of that sequence. Their canopy reflects and absorbs radiation before it reaches the pavement. Their leaves transpire, converting absorbed energy into latent heat as water evaporates, which cools the air rather than the surface. And their shade reduces the temperature of the surfaces themselves, so there is less heat stored for the evening release.
 
-If the mechanism is that clear, the policy should be equally clear, and it is not. Planting a tree is not the same as growing one. A sapling set into a square of compacted soil, unwatered and unshaded, will in most cities be dead within five years, and the tree that survives may be the wrong species for a street that will be hotter in twenty years than it is today. Municipal tree programmes fail for unglamorous reasons: they are funded for planting and not for maintenance, and the maintenance is where the canopy actually accumulates.
+If the mechanism is that clear, the policy should be equally clear, and it is not. Planting a tree is not the same as growing one. A sapling set into a square of compacted soil, unwatered and unshaded, will in most cities be dead within five years, and the tree that survives may be the wrong species for a street that will be hotter in twenty years than it is today. Municipal tree programs fail for unglamorous reasons: they are funded for planting and not for maintenance, and the maintenance is where the canopy actually accumulates.
 
 There is also a distributional problem that planting alone does not solve. Trees take decades to mature, and the residents most exposed to heat are usually the least able to wait. In the interim, the same block needs shade structures, cool roofing, drinking water, and access to air-conditioned space — interventions that are less photogenic than a planting day and considerably more effective in the short term. A serious heat plan therefore has two clocks: one measured in summers, for the people at risk now, and one measured in decades, for the canopy that will protect their grandchildren.
 
-None of this argues against planting. It argues against treating planting as the whole of the answer, which is what a photograph of a mayor with a shovel tends to suggest. The evidence that trees cool cities is strong and the evidence that tree planting programmes reliably produce trees is weaker than most announcements imply.
+None of this argues against planting. It argues against treating planting as the whole of the answer, which is what a photograph of a mayor with a shovel tends to suggest. The evidence that trees cool cities is strong and the evidence that tree planting programs reliably produce trees is weaker than most announcements imply.
 
-What would a genuinely evidence-based approach look like? It would fund maintenance at the same rate as planting, specify species against projected rather than current temperatures, measure canopy at ten and twenty years rather than counting saplings, and pair every planting programme with short-term cooling for the blocks that have the least shade today. That is more expensive and less photographable than the alternative. It is also the only version of the plan that survives its own second summer.`;
+What would a genuinely evidence-based approach look like? It would fund maintenance at the same rate as planting, specify species against projected rather than current temperatures, measure canopy at ten and twenty years rather than counting saplings, and pair every planting program with short-term cooling for the blocks that have the least shade today. That is more expensive and less photographable than the alternative. It is also the only version of the plan that survives its own second summer.`;
 
 export const apLangTreeEssay: Stimulus = {
   id: "lang-set4-trees",
@@ -712,7 +712,7 @@ const set4 = build("lang-set4-trees", [
       "reporting a measurement and identifying the social history that produced its distribution",
       "introducing the author's credentials and the essay's structure",
       "comparing two cities and two climates",
-      "summarising the essay before it begins",
+      "summarizing the essay before it begins",
     ],
     correct: 0,
     explanation:
@@ -721,13 +721,13 @@ const set4 = build("lang-set4-trees", [
       "This is what the paragraph itself claims the sentence does.",
       "No credentials appear, and structure is not the subject.",
       "The comparison is between adjacent blocks, not cities or climates.",
-      "The sentence introduces a tension rather than summarising the argument.",
+      "The sentence introduces a tension rather than summarizing the argument.",
     ],
     skill: "Reading comprehension",
     unit: 1,
   },
   {
-    q: "The second paragraph is mainly organised as",
+    q: "The second paragraph is mainly organized as",
     options: [
       "a counterargument followed by a rebuttal",
       "a causal sequence from absorption to release, with the tree's interventions mapped onto each stage",
@@ -739,7 +739,7 @@ const set4 = build("lang-set4-trees", [
       "The paragraph moves through mechanisms in order — absorb, re-emit, store, release — and then places three tree effects against that sequence. The structure mirrors the causal chain it describes.",
     why: [
       "No opposing position is raised in the paragraph.",
-      "Mechanism first, then interventions mapped stage by stage, is the organisation.",
+      "Mechanism first, then interventions mapped stage by stage, is the organization.",
       "The rural comparison is a single clause, not the structure.",
       "Recommendations are confined to the final paragraph.",
     ],
@@ -752,7 +752,7 @@ const set4 = build("lang-set4-trees", [
       "signal a shift from explanation to complication",
       "admit that the mechanism described earlier was wrong",
       "introduce the essay's conclusion",
-      "criticise policymakers personally",
+      "criticize policymakers personally",
     ],
     correct: 0,
     explanation:
@@ -796,7 +796,7 @@ const set4 = build("lang-set4-trees", [
     ],
     correct: 1,
     explanation:
-      "The sentence that follows spells it out: summers for people at risk now, decades for the canopy. The metaphor organises the essay's policy recommendation.",
+      "The sentence that follows spells it out: summers for people at risk now, decades for the canopy. The metaphor organizes the essay's policy recommendation.",
     why: [
       "Daily cycles are discussed earlier but are not what the clocks measure.",
       "This is the explanation given in the same paragraph.",
@@ -810,7 +810,7 @@ const set4 = build("lang-set4-trees", [
     q: "The writer's attitude toward “a photograph of a mayor with a shovel” is best described as",
     options: [
       "approving of the publicity it generates",
-      "sceptical of symbolic gestures that substitute for durable policy",
+      "skeptical of symbolic gestures that substitute for durable policy",
       "indifferent to local politics",
       "hostile toward the mayor personally",
     ],
@@ -830,13 +830,13 @@ const set4 = build("lang-set4-trees", [
     q: "Which statement about the essay's evidence is most accurate?",
     options: [
       "It cites named studies and precise measurements throughout.",
-      "It presents illustrative figures, a mechanistic explanation, and general claims about programme outcomes without citing named research.",
+      "It presents illustrative figures, a mechanistic explanation, and general claims about program outcomes without citing named research.",
       "It relies on a single interview with a city official.",
       "It is purely theoretical and offers no empirical claims.",
     ],
     correct: 1,
     explanation:
-      "The attribution concedes as much: the degrees and years are illustrative of published ranges. The argument's strength lies in mechanism and in the plausibility of its account of programme failure, not in cited data.",
+      "The attribution concedes as much: the degrees and years are illustrative of published ranges. The argument's strength lies in mechanism and in the plausibility of its account of program failure, not in cited data.",
     why: [
       "No study is named and no source is given.",
       "Illustrative figures, mechanism, and general claims is what the essay actually offers.",
@@ -870,7 +870,7 @@ const set4 = build("lang-set4-trees", [
     q: "The essay's concluding sentence — “It is also the only version of the plan that survives its own second summer” — achieves its effect by",
     options: [
       "using a concrete, slightly wry image to state a durability claim",
-      "summarising the four policy requirements",
+      "summarizing the four policy requirements",
       "introducing a new statistic",
       "appealing to the authority of the reader",
     ],
@@ -935,7 +935,7 @@ const set5 = build("lang-set5-letter", [
       "The objection is quoted in its own terms before being answered.",
       "The writer engages with the objection immediately.",
       "The letter ends by recommending the appropriation.",
-      "The returns are mentioned only to characterise the objection.",
+      "The returns are mentioned only to characterize the objection.",
     ],
     skill: "Rhetorical strategy",
     unit: 2,
@@ -954,7 +954,7 @@ const set5 = build("lang-set5-letter", [
     why: [
       "Private donation is not proposed anywhere.",
       "Permanence versus remedy is the stated distinction.",
-      "Charity is not criticised as inefficient; it is distinguished by purpose.",
+      "Charity is not criticized as inefficient; it is distinguished by purpose.",
       "Streets and lamps are offered as analogies, not as overspending.",
     ],
     skill: "Argumentation",
@@ -1006,7 +1006,7 @@ const set5 = build("lang-set5-letter", [
       "prove that novels are more valuable than serious books",
       "suggest that reading habits develop, which answers the fear of trivial reading",
       "show that the library's collection is inadequate",
-      "criticise the librarian's judgement",
+      "criticize the librarian's judgment",
     ],
     correct: 1,
     explanation:
@@ -1015,7 +1015,7 @@ const set5 = build("lang-set5-letter", [
       "The claim is developmental, not comparative in value.",
       "The trajectory from first book to later books is the point.",
       "Collection adequacy is not at issue.",
-      "The librarian's judgement is cited with approval (“with some pride”).",
+      "The librarian's judgment is cited with approval (“with some pride”).",
     ],
     skill: "Inference",
     unit: 3,
@@ -1095,7 +1095,7 @@ const set5 = build("lang-set5-letter", [
       "Pleasantness is never the argument, and the writer rejects the frame of generosity.",
       "Provision, objections answered, conclusion — the letter's three movements.",
       "No comparison with other towns is made.",
-      "The novel passage is a single paragraph and is explicitly not a defence.",
+      "The novel passage is a single paragraph and is explicitly not a defense.",
     ],
     skill: "Main claim",
     unit: 1,

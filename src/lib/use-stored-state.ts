@@ -25,7 +25,7 @@ import { useCallback, useSyncExternalStore } from "react";
  *
  * The one sharp edge is that `getSnapshot` must return a referentially stable
  * value or React re-renders forever, and `JSON.parse` returns a fresh object
- * every time. So parsed values are memoised against the exact raw string they
+ * every time. So parsed values are memoized against the exact raw string they
  * came from, in a module-level cache, and only reparsed when that string
  * changes.
  */
@@ -156,7 +156,7 @@ export function useStoredState<T>(
     },
     // `fallback` and `revive` are deliberately not dependencies. Callers pass
     // them as inline literals, so including them would rebuild the setter on
-    // every render and defeat the point of memoising it; the contract is that
+    // every render and defeat the point of memoizing it; the contract is that
     // both are fixed for the life of the hook.
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
     [key],

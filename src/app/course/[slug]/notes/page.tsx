@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!course) return {};
 
   const { subject, counts } = course;
-  const title = `${subject.familiar}, explained properly`;
-  const description = `${counts.units} curriculum-aligned ${subject.official} lessons with ${counts.paragraphs} substantive teaching paragraphs, glossaries, exam and rubric connections, and visible sources.`;
+  const title = `${subject.familiar}, explained by someone who sat it`;
+  const description = `${counts.units} ${subject.official} lessons written in plain English: ${counts.paragraphs} teaching paragraphs, one worked answer per lesson, a spoken defense for every unit, glossaries, rubric connections and sources you can check.`;
 
   return {
     title,
@@ -61,19 +61,44 @@ export default async function NotesPage({ params }: { params: Params }) {
         <div className="min-w-0 space-y-10">
           <GlassCard as="header" padding="lg">
             <p className="label mb-2">
-              {counts.units} deep lessons · {counts.paragraphs} teaching paragraphs · about{" "}
-              {counts.readingMinutes} minutes
+              {counts.units} lessons · {counts.paragraphs} paragraphs · about{" "}
+              {counts.readingMinutes} minutes of reading
             </p>
             <h2
               className="text-[clamp(1.6rem,1.3rem+1.2vw,2.25rem)] font-semibold"
               style={{ letterSpacing: "-0.025em" }}
             >
-              {subject.familiar}, one real lesson at a time
+              {subject.familiar}, one lesson at a time
             </h2>
             <p className="lede mt-3">
-              Every lesson has at least ten full teaching paragraphs, learning objectives, a
-              glossary, curriculum and scoring connections, and cited sources.
+              Read the lesson, copy one full answer, then say the defense out loud. That is the whole
+              loop, and it is the same for every unit.
             </p>
+
+            <div className="notes-howto">
+              <div>
+                <p className="label mb-1.5">Every lesson has the same four parts</p>
+                <ol className="notes-howto-list">
+                  <li><strong>Read it.</strong> Ten or more paragraphs, with the source for each section in the margin.</li>
+                  <li><strong>Write one like it.</strong> The question this unit is most likely to ask, a full answer, and why each sentence earns its mark.</li>
+                  <li><strong>Defend it.</strong> What to keep as evidence, the question that actually gets asked, and the words to answer with.</li>
+                  <li><strong>Check it.</strong> Glossary, rubric connections, and the practice set for this unit.</li>
+                </ol>
+              </div>
+              <div className="notes-paper-key">
+                <p className="label mb-1.5">Why the paper changes</p>
+                <p>
+                  <span className="paper-swatch paper-swatch-quad" aria-hidden="true" />
+                  <strong>Squared paper</strong> for anything with numbers in it. The grid keeps
+                  columns of working lined up, which is how you stop losing a minus sign halfway down.
+                </p>
+                <p>
+                  <span className="paper-swatch paper-swatch-ruled" aria-hidden="true" />
+                  <strong>Ruled paper</strong> for writing with no arithmetic in it — thesis lines,
+                  evidence, commentary, and the sentences you would say out loud.
+                </p>
+              </div>
+            </div>
           </GlassCard>
 
           {units.map((unit) => (
@@ -129,7 +154,7 @@ export default async function NotesPage({ params }: { params: Params }) {
               </div>
 
               {unit.lesson ? (
-                <LessonContent lesson={unit.lesson} courseSlug={subject.slug} />
+                <LessonContent lesson={unit.lesson} courseSlug={subject.slug} subject={subject} />
               ) : (
                 <div className="prose">
                   <Markdown source={unit.content} idPrefix={`u${unit.unitNumber}-`} />

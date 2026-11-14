@@ -5,7 +5,8 @@ import { subjects } from "@/lib/subjects";
 import { Breadcrumbs, SectionHead, ExternalLink } from "@/components/Furniture";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
-import { absoluteUrl, socialImages } from "@/lib/site";
+import { absoluteUrl, site, socialImages } from "@/lib/site";
+import { defenseScript, houseStyleSummary } from "@/content/humanize";
 
 export const metadata: Metadata = {
   title: "Study smarter for an AP exam — and make it count",
@@ -46,6 +47,10 @@ const method = [
   {
     heading: "Mark your own work honestly",
     body: "Get the published rubric, put it beside what you wrote, and be mean. Almost everyone awards themselves the evidence point for a quotation they never explained. If you cannot point at the sentence that earned a row, you did not earn it.",
+  },
+  {
+    heading: "Say it out loud before you write it",
+    body: "Explaining a step to yourself is one of the better-evidenced study moves there is, and it is the one almost nobody practices. Reading a worked answer and thinking \"yes, I follow that\" is not the same as producing the reason unaided — and a spoken answer cannot hide behind a fluent sentence. Every unit on this site comes with a defense: what to keep as evidence, the question that actually gets asked, and the words to answer with. Say them at your desk before an examiner says them for you.",
   },
   {
     heading: "Track what you get wrong, not what you cover",
@@ -135,7 +140,7 @@ const creditBands = [
   {
     score: "1–2",
     meaning: "No recommendation",
-    reality: "No credit anywhere. Scores can be withheld or cancelled if you would rather they were not sent.",
+    reality: "No credit anywhere. Scores can be withheld or canceled if you would rather they were not sent.",
   },
 ];
 
@@ -159,8 +164,8 @@ export default function GuidesPage() {
           </h1>
           <p className="lede mt-5">
             Course-specific advice lives on each course page. This is the part that does not change:
-            how to space the work, read a stimulus, and use the last two weeks to turn effort into a
-            score your college may reward.
+            how to space the work, how to read a stimulus, how to say your reasoning out loud, and how
+            to use the last two weeks so that the effort turns into a score.
           </p>
         </div>
 
@@ -314,6 +319,57 @@ export default function GuidesPage() {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className="mt-16" aria-labelledby="defense-heading">
+          <SectionHead folio="05" title="How to defend your work out loud" id="defense-heading">
+            Every course page now has a Defense tab, one entry per unit. This is the shape every
+            entry follows, and the three sentences that carry the whole thing.
+          </SectionHead>
+
+          <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
+            <article className="rule-top pt-4">
+              <h3 className="text-[1.0625rem] font-semibold">1. What you did, and why you started there</h3>
+              <p className="mt-2 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+                The first decision is the one that shows you had a method rather than a habit. On a
+                calculus question it is often the substitution that failed; in a history essay it is
+                the comparison you chose to build the argument on.
+              </p>
+            </article>
+            <article className="rule-top pt-4">
+              <h3 className="text-[1.0625rem] font-semibold">2. Why the step is allowed</h3>
+              <p className="mt-2 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+                Not "because that is the rule" and not "because my teacher said". Name the theorem,
+                the clause, the case, or the source. This is where a memorized answer runs out and a
+                real one does not.
+              </p>
+            </article>
+            <article className="rule-top pt-4">
+              <h3 className="text-[1.0625rem] font-semibold">3. Where your answer is weak</h3>
+              <p className="mt-2 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+                The sentence that earns the nod. Naming the assumption or the limit before anybody
+                asks reads as confidence, not as doubt. Every unit defense on this site ends here on
+                purpose, and every written example names the mistake a strong student makes.
+              </p>
+            </article>
+            <article className="rule-top pt-4">
+              <h3 className="text-[1.0625rem] font-semibold">If you freeze, borrow a sentence</h3>
+              <ul className="mt-2 space-y-1.5 text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+                {[...defenseScript.opener, ...defenseScript.middle.slice(0, 2)].map((line) => (
+                  <li key={line}>&ldquo;{line}&rdquo;</li>
+                ))}
+              </ul>
+            </article>
+          </div>
+
+          <p className="mt-8 max-w-[68ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+            {houseStyleSummary} If a page here reads as though it were written for a committee rather
+            than for you, that is a bug, and the{" "}
+            <a href={`${site.repo}/issues`} rel="noopener noreferrer" target="_blank" className="link-underlined">
+              issue tracker
+            </a>{" "}
+            is open.
+          </p>
         </section>
 
         <aside className="sunk mt-16 max-w-[62ch] p-5">

@@ -13,6 +13,7 @@ interface CourseTabsProps {
     practice: boolean;
     essays: boolean;
     exam: boolean;
+    defense: boolean;
     resources: boolean;
   };
 }
@@ -31,6 +32,7 @@ export function CourseTabs({ slug, available }: CourseTabsProps) {
     { value: `${base}/practice`, href: `${base}/practice`, label: "Practice", show: available.practice },
     { value: `${base}/essays`, href: `${base}/essays`, label: written.tab, show: available.essays },
     { value: `${base}/exam`, href: `${base}/exam`, label: "Interim exam", show: available.exam },
+    { value: `${base}/defense`, href: `${base}/defense`, label: "Defense", show: available.defense },
     { value: `${base}/resources`, href: `${base}/resources`, label: "Sources", show: available.resources },
   ].filter((tab) => tab.show);
 

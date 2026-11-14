@@ -127,12 +127,12 @@ export const unitVideos: UnitVideo[] = [
   // guidance, data-as-evidence, and a real presentation/defense example.
   video("ap-research", 1, "k-3G03VNBAg", "What is AP Research? Overview and Explanation", "AP Capstone Corner", "Course overview", "The gap, research question, and every section of the academic paper"),
   video("ap-research", 1, "vXRaFvknxFY", "How to Survive AP Research", "silvia", "Exam strategy", "Choosing a feasible topic and question from a student perspective"),
-  video("ap-research", 2, "eKIY-OjWlG0", "AP Research Method Explained: Correlational Analysis", "AP Capstone Corner", "Skill focus", "Matching a method to the research question and collecting usable data"),
-  video("ap-research", 2, "gRUW95_Xm74", "Using Data as Evidence in AP Research", "DataClassroom", "Skill focus", "Refining a question, collecting evidence, and analysing data"),
-  video("ap-research", 3, "4Oh7z8Mt3rY", "The Structure of the Literature Review", "Paul Henry", "Skill focus", "Organising prior research around themes, debates, and gaps"),
-  video("ap-research", 3, "zIYC6zG265E", "How to Write a Literature Review: 3-Minute Guide", "Scribbr", "Skill focus", "Search, evaluate, synthesise, outline, and write the review"),
+  video("ap-research", 2, "eKIY-OjWlG0", "AP Research Method Explained: Correlational Analyzis", "AP Capstone Corner", "Skill focus", "Matching a method to the research question and collecting usable data"),
+  video("ap-research", 2, "gRUW95_Xm74", "Using Data as Evidence in AP Research", "DataClassroom", "Skill focus", "Refining a question, collecting evidence, and analyzing data"),
+  video("ap-research", 3, "4Oh7z8Mt3rY", "The Structure of the Literature Review", "Paul Henry", "Skill focus", "Organizing prior research around themes, debates, and gaps"),
+  video("ap-research", 3, "zIYC6zG265E", "How to Write a Literature Review: 3-Minute Guide", "Scribbr", "Skill focus", "Search, evaluate, synthesize, outline, and write the review"),
   video("ap-research", 4, "3xpQcwizXOQ", "How to Write a Findings Section", "Qual Scholars", "Skill focus", "Presenting results and analysis without overstating conclusions"),
-  video("ap-research", 4, "GzC-3kwb9pI", "Research Chapters 4 & 5: Data, Analysis, and Conclusion", "DyeyzzonTeaches", "Skill focus", "Linking results, discussion, limitations, and recommendations"),
+  video("ap-research", 4, "GzC-3kwb9pI", "Research Chapters 4 & 5: Data, Analyzis, and Conclusion", "DyeyzzonTeaches", "Skill focus", "Linking results, discussion, limitations, and recommendations"),
   video("ap-research", 5, "zciazWHOwKQ", "AP Research Final Presentation and Oral Defense", "Tyler Brandt", "Worked example", "A complete presentation-and-defense example to critique"),
   video("ap-research", 5, "aKVB-Rxlpoc", "AP Research Oral Defense", "sheefra", "Worked example", "A second defense example for comparison and rehearsal"),
 
@@ -166,7 +166,7 @@ export const unitVideos: UnitVideo[] = [
   // rebuilt from Garden of English's AP Lit series, which is public, is taught
   // by a working AP Lit teacher, and works through released prompts.
   video("ap-lit", 1, "iEVk2L3zAP8", "WHAT Is AP Lit? (And Why You Should Take It!)", "Garden of English", "Course overview", "What the course asks of you, how it differs from AP Language, and what each exam section rewards"),
-  video("ap-lit", 1, "IDnaMvXLuFk", "Do THIS First When Writing ANY Prose Analysis (Question 2)", "Garden of English", "Exam strategy", "Breaking a prose prompt down before reading: title, author, genre, background, and the task verbs"),
+  video("ap-lit", 1, "IDnaMvXLuFk", "Do THIS First When Writing ANY Prose Analyzis (Question 2)", "Garden of English", "Exam strategy", "Breaking a prose prompt down before reading: title, author, genre, background, and the task verbs"),
   video("ap-lit", 2, "m14JmFz6UuM", "WAIT! Before You Read ANY Poem, Do THIS!", "Garden of English", "Exam strategy", "Four steps for reading a poetry prompt so the poem itself is easier to enter"),
   video("ap-lit", 2, "fbK72UkUCV4", "How to Analyze and Annotate ANY Poem", "Garden of English", "Skill focus", "A repeatable annotation routine for poetry under exam time limits"),
   video("ap-lit", 3, "seOSYb4eW6I", "How to Identify the LITERARY EFFECT (Q1, Q2 and Q3)", "Garden of English", "Skill focus", "Turning what you notice in a passage into an inference about character, conflict, mood, irony or theme"),

@@ -166,7 +166,7 @@ export function TimedPaper({
 
   /* The score report deliberately keeps the page behind it rendered: its stage
      is a heavy frosted wash (see exam-room.css), so page text shows through only
-     as blurred colour instead of being hidden like it is during the sitting. */
+     as blurred color instead of being hidden like it is during the sitting. */
   useEffect(() => {
     document.body.classList.toggle("exam-review-open", phase === "review");
     return () => document.body.classList.remove("exam-review-open");

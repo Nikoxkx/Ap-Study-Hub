@@ -79,8 +79,8 @@ export default async function StudioPage({
           <p className="label mb-2">Try it yourself</p>
           <h2>{course.subject.familiar}, in your own hands</h2>
           <p className="lede mt-3">
-            Interactive work connected to the same lessons, review schedule, and local progress
-            record. Scratch drafts sit on lined notebook paper.
+            This is the part where you do the work instead of reading about it. Everything here feeds the
+            same review schedule and the same progress record, and your drafts stay on this device.
           </p>
         </div>
         <div className="studio-hero-actions no-print items-start">

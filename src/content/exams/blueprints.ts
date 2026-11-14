@@ -6,7 +6,7 @@ import type { ExamBlueprint } from "./types";
  * Each blueprint copies the published structure of that course's exam: the
  * order of sections, the number of questions, the number of minutes, the
  * calculator rules, the break, and the section weights. Two things are ours,
- * and are labelled as ours everywhere they are shown: the items themselves
+ * and are labeled as ours everywhere they are shown: the items themselves
  * (original or public domain) and the composite cut scores used for the 1–5
  * estimate, which are published estimates rather than College Board
  * conversions.
@@ -150,7 +150,7 @@ export const examBlueprints: ExamBlueprint[] = [
     notes: [
       "Section I has five passage sets: two poetry, two prose fiction (drama may appear), and a fifth of either kind. The sets here follow that pattern.",
       "Section II gives you 120 minutes for three essays. Forty minutes each is the pacing that most students can hold.",
-      "This is the fully digital format: both sections are written on screen. Practise typing your essays.",
+      "This is the fully digital format: both sections are written on screen. Practice typing your essays.",
     ],
     sections: [
       {
@@ -379,7 +379,7 @@ export const examBlueprints: ExamBlueprint[] = [
     notes: [
       "The long free-response question is worth ten points and usually asks for a graph, a calculation, and an explanation.",
       "The two short questions are worth five points each.",
-      "Graphs must be labelled — axes, curves, and equilibrium — to earn points.",
+      "Graphs must be labeled — axes, curves, and equilibrium — to earn points.",
     ],
     sections: [
       {
@@ -425,7 +425,7 @@ export const examBlueprints: ExamBlueprint[] = [
     title: "AP Environmental Science · Interim Assessment",
     subtitle: "Full-length, in the official format",
     officialFormat:
-      "80 multiple-choice questions in 90 minutes, then 3 free-response questions in 70 minutes: design an investigation, analyse a problem, propose and justify a solution.",
+      "80 multiple-choice questions in 90 minutes, then 3 free-response questions in 70 minutes: design an investigation, analyze a problem, propose and justify a solution.",
     timedMinutes: 160,
     notes: [
       "The three free-response questions are worth nine or ten points each, in sub-parts.",
@@ -486,7 +486,7 @@ export const examBlueprints: ExamBlueprint[] = [
     sections: [
       {
         id: "part-a",
-        name: "Part A — Understanding and Analysing an Argument",
+        name: "Part A — Understanding and Analyzing an Argument",
         subtitle: "3 short answers · 30 minutes · 30% of the exam score",
         type: "frq",
         minutes: 30,
@@ -504,7 +504,7 @@ export const examBlueprints: ExamBlueprint[] = [
         weight: 70,
         frqIds: ["ap-seminar-part-b"],
         directions:
-          "Read the four sources. Write a logically organised, well-reasoned argument that presents your own perspective on the theme. Use at least two of the sources and attribute them clearly.",
+          "Read the four sources. Write a logically organized, well-reasoned argument that presents your own perspective on the theme. Use at least two of the sources and attribute them clearly.",
         summary: "One synthesis essay scored on the four-row analytic rubric.",
       },
     ],
@@ -521,14 +521,14 @@ export const examBlueprints: ExamBlueprint[] = [
     slug: "ap-research",
     id: "ap-research-interim",
     title: "AP Research · Portfolio Interim",
-    subtitle: "The paper and the defence, in the official proportions",
+    subtitle: "The paper and the defense, in the official proportions",
     officialFormat:
-      "AP Research has no sit-down exam. The academic paper is 75% of the score; the presentation and oral defence are 25%.",
+      "AP Research has no sit-down exam. The academic paper is 75% of the score; the presentation and oral defense are 25%.",
     timedMinutes: 120,
     notes: [
       "There is no May exam for AP Research, so this interim is not a timed exam simulation. It is a rehearsal of the two scored components.",
       "The paper section asks for one section of the paper at a time. Write the section the prompt names, not a whole paper.",
-      "The defence section asks you to answer the two questions a panel is most likely to ask, in writing.",
+      "The defense section asks you to answer the two questions a panel is most likely to ask, in writing.",
     ],
     sections: [
       {
@@ -543,15 +543,15 @@ export const examBlueprints: ExamBlueprint[] = [
         summary: "A single paper section scored on the four judging categories.",
       },
       {
-        id: "defence",
-        name: "Component 2 — Presentation and Oral Defence",
+        id: "defense",
+        name: "Component 2 — Presentation and Oral Defense",
         subtitle: "Script and answers · 30 minutes · 25% of the score",
         type: "frq",
         minutes: 30,
         weight: 25,
-        frqIds: ["ap-research-defence"],
-        directions: "Write the spoken script and answer both defence questions in full sentences.",
-        summary: "Presentation script and oral-defence answers.",
+        frqIds: ["ap-research-defense"],
+        directions: "Write the spoken script and answer both defense questions in full sentences.",
+        summary: "Presentation script and oral-defense answers.",
       },
     ],
     breaks: [],

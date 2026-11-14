@@ -133,7 +133,7 @@ export interface CoachGuide {
 
 export interface ExamFrq {
   id: string;
-  /** Short task label, e.g. "Poetry Analysis" or "Concept Application". */
+  /** Short task label, e.g. "Poetry Analyzis" or "Concept Application". */
   taskType: string;
   title: string;
   prompt: string;

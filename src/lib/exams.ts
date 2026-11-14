@@ -91,21 +91,21 @@ const legacyIds: Record<string, string[]> = {
 
 const legacyRubricByType: Record<string, Rubric> = {
   Synthesis: sixPointSynthesis,
-  "Rhetorical Analysis": sixPointRhetorical,
+  "Rhetorical Analyzis": sixPointRhetorical,
   Argument: sixPointArgument,
   DBQ: dbqRubric,
   LEQ: leqRubric,
-  "Part A Analysis": seminarPartARubric,
+  "Part A Analyzis": seminarPartARubric,
   "Part B Argument": seminarPartBRubric,
 };
 
 const legacyCoachByType: Record<string, CoachGuide> = {
   Synthesis: coachLibrary.synthesis(40),
-  "Rhetorical Analysis": coachLibrary.rhetorical(40),
+  "Rhetorical Analyzis": coachLibrary.rhetorical(40),
   Argument: coachLibrary.argument(40),
   DBQ: coachLibrary.dbq(60),
   LEQ: coachLibrary.dbq(40),
-  "Part A Analysis": coachLibrary.seminarA(30),
+  "Part A Analyzis": coachLibrary.seminarA(30),
   "Part B Argument": coachLibrary.seminarB(90),
 };
 
@@ -232,7 +232,7 @@ function bankQuestions(course: CourseBundle): ExamQuestion[] {
  * Even out the answer key.
  *
  * The authored banks were written course by course, and writers (like most
- * people) drift towards "B" when inventing options: across the ten papers the
+ * people) drift toward "B" when inventing options: across the ten papers the
  * correct answer was B roughly 60% of the time and D almost never. That makes a
  * practice paper gameable and it is nothing like a real key, which is roughly
  * uniform. Options are rotated, never reordered or edited, so each question's

@@ -43,6 +43,7 @@ Studying for several AP classes at once usually turns into eleven browser tabs �
 **AP Study Hub** puts the entire study loop for ten AP subjects inside one quiet, zero-account workspace:
 
 - **Complete cited lessons** — 75 full-length unit lessons (`750` cited prose paragraphs, learning objectives, worked examples, primary sources, and common mistakes).
+- **A written answer and a spoken defense for every unit** — one full-credit answer per lesson on the right paper (squared when there is arithmetic in it, ruled when there is not), the mistake a strong student makes on that question, and the words to say out loud when someone asks how you know.
 - **Cold-recall decks** — 568 active-recall flashcards (course decks + unit glossary terms) with keyboard flip, Fisher–Yates shuffle, and local spaced-review scheduling.
 - **Exam-register practice & timed writing** — 447 original multiple-choice questions that link wrong answers back to the exact lesson section, plus a full-length **interim assessment for every course** with the official section counts, clock, and breaks, and college-ruled scratch paper.
 - **Real rubric grading** — every written response is marked row by row against the published College Board rubric, with the sentences that earned or missed each point, grammar and spelling findings, and a study link for every question you missed.
@@ -68,6 +69,10 @@ Every count in the UI and metadata is computed at build time from `src/content/`
 | **AP Macroeconomics** (`ap-macro`) | Rising market graph | 6 | 60 | 54 | 39 | 1 essay · 1 interim | 6 |
 | **AP Environmental Science** (`ap-env`) | Leaf | 9 | 90 | 66 | 48 | 1 essay · 1 interim | 10 |
 | **Total** | **10 white RGBA icons** | **75** | **750** | **568** | **447** | **12 essays · 10 interims** | **94** |
+
+Every one of those 75 lessons also carries one **written answer** and one
+**spoken defense**, and every course has a `/defense` page collecting its units.
+That is 75 written answers and 85 defenses, checked by `validate:written`.
 
 ---
 
@@ -138,6 +143,88 @@ Sitting a paper takes over the screen instead of scrolling a page.
 
 Cut scores are not published by the College Board, so the 1–5 figure is an estimate from public scoring worksheets and is labelled as an estimate everywhere it appears.
 
+## Written answers and the spoken defense
+
+Plenty of students can write a decent essay and then freeze when an adult asks
+"how did you get there?" Plenty can also talk confidently about work they could
+not reproduce under a clock. Those are two different skills, so they are taught
+separately and then joined.
+
+Every one of the 75 lessons now ends with three things:
+
+1. **A written answer** to the question that lesson is most likely to be asked,
+   with the two decisions to make before writing a word, the answer itself, the
+   reason each sentence earns its mark, and the mistake a *strong* student makes
+   on that question. That last part matters: the usual "common mistakes" list is
+   written for a student who has not understood the unit, and the useful list is
+   written for one who has.
+2. **A spoken defense** of the same unit: what to keep as evidence, the question
+   that actually gets asked (the one a memorised answer cannot survive), and the
+   order in which to say the answer. The lines are written to be *said* — first
+   person, ordinary register, with the hesitations left in, because a defense is
+   not an essay read aloud.
+3. **A course-level defense**, at `/course/<slug>/defense`: the five sentence
+   frames that sound right in that subject and nowhere else, what a defense in
+   that subject is actually marked on, and every unit's defense in syllabus order.
+
+### Two papers, one rule
+
+The attached reference is a sheet of quadrille (squared) notebook paper with a
+red margin rule. It is now a real surface in `globals.css` (`.quad-paper`), and
+the rule for which paper appears where is deliberate:
+
+| Paper | Used for | Class |
+| :--- | :--- | :--- |
+| **Squared paper** | anything with arithmetic in it — worked solutions, calculations, graph-based work | `.quad-paper` |
+| **Ruled loose-leaf** | writing with no arithmetic in it — thesis lines, evidence, commentary, spoken lines | `.scratch-paper` |
+
+`usesMathematics()` in `src/content/written-work/types.ts` chooses which sheet appears, and
+`validate:written` checks that the choice agrees with the content rather than
+trusting the eye: a page with TeX in it must be squared paper, and a date range
+("1993–2020") must not be mistaken for a subtraction and force prose onto a grid.
+Both papers keep a fixed line height so type never drifts off the rules, and both
+stay white in night mode, because paper is white and a dark-mode sheet that turns
+grey is no longer a sheet of paper.
+
+### The language rules
+
+The copy was rewritten to a stated standard, kept in `src/content/humanize.ts`
+and shown to readers on `/guides` and every defense page:
+
+- **Plain words, short sentences, one idea per paragraph, the point first.** This
+  is the convergent advice of university teaching centres, the W3C COGA guidance
+  on cognitive accessibility and the GOV.UK style guide — and the register that
+  students actually read in an online lesson.
+- **Second person, present tense, active voice.** "You compare" beats "the
+  comparison is undertaken". Research on learning from text keeps finding a small
+  but reliable benefit when material addresses the reader directly.
+- **Hedge when the evidence hedges.** "This suggests", "the data are consistent
+  with". Overclaiming is the fastest way for a written answer to lose a point, so
+  the site does not model the habit it marks down.
+- **Sound like someone who sat the exam.** Admit the confusing parts; name the
+  mistake a strong student makes.
+
+The site copy was also brought into one register of English (US spellings
+throughout: *defense*, *analyze*, *labelled* → *labeled*, *metre* → *meter*),
+because a site that mixes two registers reads like a site assembled from two
+sources. British spellings do not disappear where a source title uses them.
+
+### What the pedagogy behind it is
+
+- **Worked examples followed by self-explanation.** The written answer is shown,
+  then the student is asked to produce the reasoning themselves. Prompted
+  self-explanation has a small-to-moderate, well-replicated effect on conceptual
+  and procedural knowledge in mathematics, and the effect is stronger when the
+  learner is given sentence frames rather than a bare "explain why".
+- **Retrieval before recognition.** The defense panel asks for the answer in the
+  mouth, not on the page, which is a retrieval task with no fluency illusion
+  attached — you can read a solution and feel you understand it, and you cannot
+  say a solution and merely feel it.
+- **Metacognitive honesty.** Every answer names its own weak joint. That is the
+  same move the published rubrics call sophistication, and it is teachable.
+
+---
+
 ## Quick Start & Verification
 
 Requires **Node.js 20+** and **pnpm 9+** (`corepack enable`).
@@ -159,6 +246,7 @@ corepack pnpm validate:exam-ui        # hub, walkthrough, and score report rende
 corepack pnpm validate:exam-flow      # clicks every paper from briefing to score report in jsdom
 corepack pnpm validate:scroll         # page lock: pins, nests, restores, cannot leak
 corepack pnpm validate:study          # 1,015 study items, KaTeX math, scheduling, backups, plans & calendar
+corepack pnpm validate:written        # 75 written answers + 85 defenses present, spoken lines speakable, paper choice correct
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 94 verified 11-char YouTube IDs, course/unit mapping & thumbnails
 corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
@@ -195,6 +283,7 @@ public/
 scripts/
   validate-lessons.ts           verifies lesson depth, citations, cards, and practice integrity
   validate-study.ts             verifies study catalog joins, KaTeX math, scheduling, backups, and exports
+  validate-written-work.tsx     verifies every lesson has a written answer and defense, renders both, checks the paper rule
   validate-videos.ts            verifies curated YouTube IDs and unit coverage
   validate-exam-flow.tsx        mounts the real exam room in jsdom and clicks every paper to the report
   validate-scroll-lock.ts       asserts the shared page lock nests and restores scroll position
@@ -202,6 +291,9 @@ scripts/
   build-social-image.mjs        renders 1200×630 social cards over bg-music-class.jpg via @resvg/resvg-js
 src/
   app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
+  content/written-work/         one written answer per lesson and one spoken defense per unit, for all ten courses
+  content/humanize.ts           the site's voice rules and the shared defense sentence starters
+  content/plain-language.ts     one plain-English gloss per interface term, plus the per-course defense task
     globals.css                 design tokens, light/dark surfaces, and every shared component
     exam-room.css               exam room shell: painted (not frosted) surface, hidden page behind
   components/

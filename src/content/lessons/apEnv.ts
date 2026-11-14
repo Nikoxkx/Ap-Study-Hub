@@ -15,7 +15,7 @@ export const apEnvLessons: Lesson[] = [
     ],
     sections: [
       section("Species interactions structure communities", ["cb-env-ced", "openstax-biology"], `
-Species in a community interact as competitors, predators and prey, mutualists, commensals, and parasites, and each relationship distributes energy and limits population sizes. Predation can keep prey populations below what resources alone would allow, while mutualisms such as pollination link the survival of species that never eat each other. The exam favors examples, so attach each interaction type to a concrete pair of organisms.
+Species in a community interact as competitors, predators and prey, mutualists, commensals, and parasites, and each relationship distributes energy and limits population sizes. Predation can keep prey populations below what resources alone would allow, while mutualisms such as pollination link the survival of species that never eat each other. The exam favors examples, so attach each interaction type to a concrete pair of organizms.
 
 When two species need the same limited resource, **competitive exclusion** can eliminate the weaker competitor locally. Species avoid that outcome through **resource partitioning**, dividing resources by time, space, or form, as when warbler species feed at different heights in the same tree. Partitioning is evidence of past competition that natural selection has softened into coexistence.
 `),
@@ -37,7 +37,7 @@ Only about ten percent of energy at one trophic level becomes biomass at the nex
       section("How Unit 1 is tested", ["cb-env-ced", "cb-env-exam", "cb-env-frq"], `
 Unit 1 questions pair definitions with data: a productivity table to rank biomes, a cycle diagram with one flux to identify, or a species-interaction scenario to classify. The calculation staple is trophic transfer: given producer energy and a transfer efficiency, compute what reaches a named consumer level, showing each ten-percent step rather than guessing a single jump.
 
-Free-response questions often open with a Unit 1 setup, an ecosystem described in a paragraph, before moving to pollution or policy in later parts. Underline the organisms, the interaction, and any cycle named in the prompt; the first points usually reward accurate identification before the question asks you to predict a change.
+Free-response questions often open with a Unit 1 setup, an ecosystem described in a paragraph, before moving to pollution or policy in later parts. Underline the organizms, the interaction, and any cycle named in the prompt; the first points usually reward accurate identification before the question asks you to predict a change.
 `),
     ],
     glossary: [
@@ -50,7 +50,7 @@ Free-response questions often open with a Unit 1 setup, an ecosystem described i
       title: "Ecosystem processes with named examples",
       description: "The opening unit supplies the cycle diagrams, biome logic, and energy arithmetic used across the exam.",
       criteria: [
-        "Attach every interaction type to a specific pair of organisms rather than defining it abstractly.",
+        "Attach every interaction type to a specific pair of organizms rather than defining it abstractly.",
         "Rank biomes by productivity using temperature, precipitation, and nutrient evidence.",
         "Show each trophic-transfer step when applying the 10% rule to a calculation.",
       ],
@@ -66,7 +66,7 @@ Free-response questions often open with a Unit 1 setup, an ecosystem described i
       },
       {
         question: "Which statement correctly distinguishes the nitrogen and phosphorus cycles?",
-        options: ["Phosphorus has a major atmospheric reservoir; nitrogen does not.", "Nitrogen must be fixed before most organisms can use it; phosphorus cycles mainly through rock, water, and sediments.", "Both cycles are driven by combustion of fossil fuels.", "Nitrogen is usually the limiting nutrient in oceans because it cannot be fixed."],
+        options: ["Phosphorus has a major atmospheric reservoir; nitrogen does not.", "Nitrogen must be fixed before most organizms can use it; phosphorus cycles mainly through rock, water, and sediments.", "Both cycles are driven by combustion of fossil fuels.", "Nitrogen is usually the limiting nutrient in oceans because it cannot be fixed."],
         correctIndex: 1,
         explanation: "Nitrogen gas is unusable until fixation converts it. Phosphorus lacks a significant gaseous phase and weathers from rock, often limiting freshwater systems.",
         skill: "Biogeochemical cycles",
@@ -188,7 +188,7 @@ A population grows exponentially when resources are unlimited: the growth rate s
 Populations can overshoot K when resource depletion lags behind reproduction, then crash below it, sometimes oscillating as predator and prey numbers chase each other with a time delay. Density-dependent factors, like disease and competition, intensify with crowding, while density-independent factors, like a flood or freeze, kill regardless of density. Classifying a stated limiting factor correctly is a perennial multiple-choice task.
 `),
       section("Life histories and survivorship", ["cb-env-ced", "openstax-biology"], `
-Species allocate reproduction along a spectrum. **r-selected** species, like insects and many fish, produce many small offspring with little care, exploiting unstable environments where most young die. **K-selected** species, like elephants and humans, produce few offspring with heavy investment, competing well near carrying capacity. Most species fall between the extremes, and exam questions ask you to place an organism from its described traits.
+Species allocate reproduction along a spectrum. **r-selected** species, like insects and many fish, produce many small offspring with little care, exploiting unstable environments where most young die. **K-selected** species, like elephants and humans, produce few offspring with heavy investment, competing well near carrying capacity. Most species fall between the extremes, and exam questions ask you to place an organizm from its described traits.
 
 Survivorship curves summarize the same trade-off. Type I species (humans) survive well until old age; Type II (many birds) face constant mortality risk; Type III (oysters, trees) lose most young early, with rare survivors living long. A curve's shape lets you infer parental care and reproductive strategy without being told either.
 `),
@@ -272,7 +272,7 @@ Earth's lithosphere is broken into plates moving over the ductile asthenosphere,
 **Transform boundaries** slide plates horizontally, storing and releasing strain as earthquakes without creating or destroying crust, as along the San Andreas Fault. The practical exam skill is locational: given a map or a description of volcanism, trench depth, or earthquake pattern, name the boundary type and the direction of movement that explains it.
 `),
       section("Soil: horizons, texture, and fertility", ["cb-env-ced", "epa-topics"], `
-Soil forms as parent rock weathers and organisms add organic matter, developing horizons: the organic O layer, topsoil A rich in humus and nutrients, a leached E in some forests, the mineral-accumulating B, weathered parent material C, and bedrock R. Erosion that strips the A horizon removes centuries of formation in a season, which is why soil is treated as effectively nonrenewable on human timescales.
+Soil forms as parent rock weathers and organizms add organic matter, developing horizons: the organic O layer, topsoil A rich in humus and nutrients, a leached E in some forests, the mineral-accumulating B, weathered parent material C, and bedrock R. Erosion that strips the A horizon removes centuries of formation in a season, which is why soil is treated as effectively nonrenewable on human timescales.
 
 Texture, the proportions of sand, silt, and clay, controls water holding, permeability, and nutrient retention. Sand drains fast and holds few nutrients; clay holds water and nutrients tightly but drains poorly and compacts; loam balances the three and farms best. The soil texture triangle is a guaranteed graph skill: plot percent sand against percent clay, read silt by difference, and name the texture class where the lines cross.
 `),
@@ -435,7 +435,7 @@ The unit's one calculation family is efficiency: water delivered versus water ap
     ],
     sections: [
       section("Fossil fuels: formation to combustion", ["cb-env-ced", "epa-topics"], `
-Coal, oil, and natural gas are the compressed, heated remains of ancient organisms, which is why their carbon returns to the atmosphere as carbon dioxide when burned. Coal forms from swamp plants and is graded by carbon content from lignite to anthracite. Oil and gas form from marine plankton buried under sediment and are extracted by drilling, increasingly with hydraulic fracturing that cracks shale with pressurized fluid.
+Coal, oil, and natural gas are the compressed, heated remains of ancient organizms, which is why their carbon returns to the atmosphere as carbon dioxide when burned. Coal forms from swamp plants and is graded by carbon content from lignite to anthracite. Oil and gas form from marine plankton buried under sediment and are extracted by drilling, increasingly with hydraulic fracturing that cracks shale with pressurized fluid.
 
 In a thermal power plant the chain is identical across fuels: burn fuel to boil water, spin a turbine with steam, and turn a generator. Only about thirty-five to forty percent of the fuel's energy becomes electricity; the rest leaves as waste heat, an efficiency ceiling the exam tests with input-output numbers. Natural gas burns cleaner than coal per unit of electricity, roughly half the carbon dioxide and far less sulfur and particulates, which explains its rise even as total fossil use persists.
 `),
@@ -605,10 +605,10 @@ Free-response air questions often ask for a health or ecosystem effect with the 
       section("Eutrophication and the oxygen sag", ["cb-env-ced", "epa-topics", "usgs-water"], `
 Excess nitrogen and phosphorus from fertilizer runoff, manure, and sewage trigger **eutrophication**: algae bloom, die, and feed decomposer bacteria whose respiration strips dissolved oxygen from the water. The result can be a hypoxic **dead zone** where fish and shellfish cannot survive, like the seasonal zone at the Mississippi River's mouth in the Gulf of Mexico. Cultural eutrophication is the same process accelerated by human nutrient loading.
 
-When biodegradable waste enters a stream, dissolved oxygen follows the **oxygen sag curve**: it dips downstream of the discharge as decomposition peaks, then recovers as reaeration and declining waste restore balance, assuming no further inputs. The biochemical oxygen demand (BOD) measures how much oxygen microbes need to break the waste down. Graph questions give the sag and ask where the discharge sits or which organism, oxygen-sensitive fish or sludge worms, dominates each zone.
+When biodegradable waste enters a stream, dissolved oxygen follows the **oxygen sag curve**: it dips downstream of the discharge as decomposition peaks, then recovers as reaeration and declining waste restore balance, assuming no further inputs. The biochemical oxygen demand (BOD) measures how much oxygen microbes need to break the waste down. Graph questions give the sag and ask where the discharge sits or which organizm, oxygen-sensitive fish or sludge worms, dominates each zone.
 `),
       section("Pathogens, sewage, and water treatment", ["cb-env-ced", "epa-topics"], `
-Waterborne pathogens, bacteria, viruses, and parasites from fecal contamination cause cholera, typhoid, hepatitis, and dysentery, and remain a leading killer where sanitation is absent. Because testing for every pathogen is impractical, water is screened for indicator organisms such as fecal coliform and E. coli; their presence signals likely fecal contamination. The Safe Drinking Water Act sets the standards this testing enforces.
+Waterborne pathogens, bacteria, viruses, and parasites from fecal contamination cause cholera, typhoid, hepatitis, and dysentery, and remain a leading killer where sanitation is absent. Because testing for every pathogen is impractical, water is screened for indicator organizms such as fecal coliform and E. coli; their presence signals likely fecal contamination. The Safe Drinking Water Act sets the standards this testing enforces.
 
 Sewage treatment proceeds in levels. **Primary treatment** physically screens and settles solids. **Secondary treatment** uses bacteria in aeration tanks to decompose dissolved organic matter, cutting BOD sharply. **Tertiary treatment** removes nutrients, nitrogen and phosphorus, and disinfects, targeting eutrophication and pathogens specifically. Septic systems do the first two jobs on site in a tank and drain field. Exam questions ask what a described stage removes and what passes through it untouched.
 `),
@@ -623,7 +623,7 @@ Municipal solid waste is mostly paper, food, yard trimmings, and plastics; only 
 Remediation cleans what containment missed. Bioremediation feeds microbes that digest oil or solvents; phytoremediation uses plants to extract metals into harvestable tissue; hazardous waste law (RCRA, and Superfund for abandoned sites) assigns cleanup responsibility. The exam's comparative question is always where the pollutant ends up: destroyed, stored, transferred, or merely diluted, and which option actually eliminates the hazard.
 `),
       section("How Unit 8 is tested", ["cb-env-ced", "cb-env-exam", "cb-env-frq"], `
-This unit feeds the analyze-a-problem free-response question: a described dead zone, contaminated well, or landfill, followed by 'identify the pollutant, explain the harm, propose and justify a solution.' Structure answers as a causal chain with a named organism or process at each link, and make the solution attack the chain's first link, nutrient input, rather than its last symptom.
+This unit feeds the analyze-a-problem free-response question: a described dead zone, contaminated well, or landfill, followed by 'identify the pollutant, explain the harm, propose and justify a solution.' Structure answers as a causal chain with a named organizm or process at each link, and make the solution attack the chain's first link, nutrient input, rather than its last symptom.
 
 Graph work centers on the oxygen sag curve and dissolved-oxygen data. Identify the discharge point at the sag's start, the minimum-oxygen zone where sensitive species vanish, and the recovery zone. If a question gives BOD values, higher BOD means greater oxygen demand and a deeper sag, never the reverse.
 `),

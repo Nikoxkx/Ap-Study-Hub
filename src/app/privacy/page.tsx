@@ -125,13 +125,13 @@ export default function PrivacyPage() {
           <Breadcrumbs trail={trail} />
           <p className="label mb-3">Last checked {formatDate(site.policyUpdated)}</p>
           <h1 className="text-[clamp(1.9rem,1.5rem+1.8vw,2.9rem)]" style={{ letterSpacing: "-0.028em" }}>
-            Your work stays yours. You choose what leaves.
+            Your work is yours. Here is everything that leaves this page.
           </h1>
           <p className="lede mt-5">
-            No account, no cookies, no analytics, no advertising, no trackers, and no fonts loaded
-            from someone else&rsquo;s server. Video players and Study Desk sync are opt-in; real
-            YouTube thumbnails are the one automatic third-party image. This page explains exactly
-            when a request can leave the site.
+            No account, no cookies, no analytics, no ads, no trackers, and no fonts fetched from
+            anyone else. Pressing play on a video and turning on sync are the only two things that
+            send anything anywhere, and both wait for you. The rest of this page is the exact list,
+            including the one image that loads on its own.
           </p>
         </div>
 
@@ -139,32 +139,32 @@ export default function PrivacyPage() {
           <SectionHead folio="01" title="What this site knows about you" id="collect-heading" />
           <div className="prose">
             <p>
-              Nothing by default. There is no account system, no contact form, no newsletter, no
-              comment section and no analytics product. I do not know how many people use this site,
-              which is occasionally frustrating and is still the correct trade.
+              Nothing, unless you do something. There is no account, no contact form, no newsletter,
+              no comment section, and no analytics product. I genuinely cannot see how many people
+              use this site. That is annoying for me and better for you, so it stays.
             </p>
             <p>
-              Pages are static files. Loading one requires no database query about you and creates
-              no record I can read. The first-party search API receives your query string, matches
-              it against an in-memory index, returns results, and writes nothing anywhere. The social
-              preview is a static image, not a tracking pixel.
+              Every page is a pre-built file. Loading one runs no query about you and leaves no
+              record I can read. Search is the one thing that sends your typing anywhere: it goes to
+              this site&rsquo;s own search route, gets matched against a list held in memory, and is
+              written down nowhere.
             </p>
             <p>
-              A video page automatically fetches the creator&rsquo;s real thumbnail image from
-              <code>i.ytimg.com</code> when the player appears. That is a static image, not a player
-              or script. Two further requests still require an explicit action: pressing play loads a
-              privacy-enhanced <code>youtube-nocookie.com</code> frame, and enabling sync in Advanced
-              sends your version-1 study state to the Supabase endpoint you configured, keyed by a
-              peppered hash of a code you hold. Neither the player nor sync is requested on page load.
+              A video page does fetch the real thumbnail from <code>i.ytimg.com</code>, because a grey
+              box is useless when you are deciding what to watch. It is one image, not a player and
+              not a script. Two other things need a real click: pressing play loads a
+              privacy-enhanced <code>youtube-nocookie.com</code> frame, and turning on sync in
+              Advanced sends your study state to the server you configured, filed under a scrambled
+              code that only you hold. Neither happens on page load.
             </p>
           </div>
         </section>
 
         <section className="mt-14" aria-labelledby="storage-heading">
           <SectionHead folio="02" title="What your browser keeps for you" id="storage-heading">
-            The localStorage keys below hold your own study state. They stay on your machine unless
-            you explicitly save a snapshot through Advanced → opt-in sync. Course and paper
-            placeholders are replaced by the relevant subject or activity ID.
+            These are the keys this site writes into your browser. They are plain text, they are
+            only yours, and they stay on this device unless you press something that sends a copy.
+            Anything in braces is replaced by the course or activity it belongs to.
           </SectionHead>
 
           <div className="table-scroll">
@@ -192,10 +192,10 @@ export default function PrivacyPage() {
           </div>
 
           <p className="mt-4 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            To clear them, clear site data for this domain in your browser settings, use Reset local
-            study data on the Study page, or open a private window. Offline course packs also use
-            this browser’s Cache Storage for pages and assets. Nothing on the site breaks without
-            local data — you just lose your place and saved work.
+            To wipe them, clear site data for this domain in your browser, press Reset local study
+            data on the Study page, or use a private window. Downloaded course packs live in this
+            browser&rsquo;s cache as well, and nothing breaks if you clear those — you lose your
+            place and your saved work, and the pages still load.
           </p>
         </section>
 
@@ -203,40 +203,39 @@ export default function PrivacyPage() {
           <SectionHead folio="03" title="Who else might hear from your browser" id="third-heading" />
           <div className="prose">
             <p>
-              The site loads no third-party scripts, fonts, analytics, tag managers, or social
-              widgets. Video pages do load the creator&rsquo;s real thumbnail from YouTube&rsquo;s
-              static image host automatically; it is an image, not a player or script. The embedded
-              video frame is still opt-in: until you press play, no YouTube player is requested.
-              After you press play, YouTube receives the request for the video and its own policy
-              applies. Use “Open on YouTube” if you prefer that boundary to be explicit.
+              There are no third-party scripts, fonts, analytics, tag managers, or social widgets on
+              any page. The thumbnail is the only automatic request to another company, and it is an
+              image fetched from YouTube&rsquo;s static host — the same one your browser makes for any
+              embedded video anywhere. Once you press play, YouTube sees the request and its own
+              policy takes over. If you would rather keep that boundary explicit, use “Open on
+              YouTube” and watch it there.
             </p>
             <p>
-              Written responses are the one place where your own words can leave the browser, and
-              only when you ask them to. Pressing <strong>Grade locally</strong> runs the rubric
-              analyser inside this page and sends nothing anywhere. Pressing <strong>Grade this
-              response</strong> sends the response, the printed prompt, and the published rubric rows
-              to <code>/api/grade</code> on this site; if you have added a model key, that route
-              forwards them to the provider you chose (OpenAI, Anthropic, or Google) using your key.
-              The route keeps no copy, writes no log line containing your text, and has no database.
-              Without a key it returns the same local analysis, computed on the server.
+              Your own writing is the only thing that could ever leave with your words in it, and it
+              only moves when you ask. <strong>Grade locally</strong> runs the whole rubric check in
+              the page and sends nothing. <strong>Grade this response</strong> sends the response, the
+              prompt, and the rubric rows to <code>/api/grade</code> on this site; if you have saved a
+              model key, that route passes them to the provider you picked (OpenAI, Anthropic, or
+              Google) and uses your key. The route keeps no copy, logs no line with your text in it,
+              and has no database. With no key, you get the same local marking, computed on the
+              server instead of in the tab.
             </p>
             <p>
-              Optional sync uses the Supabase edge function you configure in Advanced. The browser
-              sends only the sync code and the study-state snapshot; the function stores a peppered
-              hash of the code, never the code itself. No service-role key or pepper is present in
-              the website bundle. Delete remote removes that snapshot; it does not erase local data.
+              Optional sync uses the Supabase function you point it at from Advanced. Two things
+              travel: your sync code and your study state. The server keeps a salted hash of the
+              code, never the code, and the website bundle contains no service key and no salt.
+              Delete remote removes the snapshot on the server and touches nothing on your device.
             </p>
             <p>
-              A backup is created only when you choose Export backup; it downloads as a JSON file
-              on your device. Reports, video CSV, and the HTML report are also generated locally.
-              Restoring reads only the file you explicitly choose in the file picker.
+              A backup exists only if you press Export backup, and it arrives as a file on your own
+              disk. Reports, the video CSV, and the printable HTML report are all built in the tab.
+              Restoring reads one file: the one you pick.
             </p>
             <p>
-              There are outbound links to the College Board, reference archives, YouTube, a public
-              Google Sheet, Google Drive, Google Docs, Linear, and GitHub. Following one takes you to
-              a site with its own policy. Nothing about your local study record is passed in those
-              links. The site is hosted on Vercel, which like any host keeps short-lived operational
-              server logs containing IP addresses and user agents.
+              Some links leave: the College Board, archive.org, YouTube, one public Google Sheet,
+              Google Drive, Google Docs, Linear, and GitHub. Each has its own policy, and none of
+              them are handed anything about your progress. The site runs on Vercel, which — like any
+              host — keeps short-lived server logs with IP addresses and browser names in them.
             </p>
           </div>
         </section>
@@ -245,17 +244,16 @@ export default function PrivacyPage() {
           <SectionHead folio="04" title="Your choices, and younger students" id="rights-heading" />
           <div className="prose">
             <p>
-            Regimes like the GDPR and the CCPA give you rights of access, correction and erasure
-            over personal data a site holds about you. By default this site holds none, so there is
-            nothing to request beyond data in your own browser, which you can delete yourself. If
-            you enable optional sync, the remote snapshot is addressable only through the peppered
-            hash of your sync code; use that same code in Advanced → Delete remote to erase it.
+              Laws such as the GDPR and the CCPA give you the right to see, correct, and delete what a
+              site holds about you. This one holds nothing, so the only copy to delete is the one in
+              your own browser, and you can delete it without asking me. If you did turn on sync, the
+              saved snapshot is reachable only with your sync code — paste the same code into
+              Advanced → Delete remote and it is gone.
             </p>
             <p>
-              The audience here is largely high-school students, and some readers will be under 13.
-              That is precisely why there is no account system, no data collection and no
-              advertising: the compliant design for a site aimed at minors is not to collect
-              anything in the first place.
+              Most people here are in high school and some are under 13. That is the reason there is
+              no account, no collection, and no advertising. A site for minors should not be looking
+              for a lawful way to collect data; it should be designed so there is none.
             </p>
           </div>
         </section>
@@ -264,9 +262,9 @@ export default function PrivacyPage() {
           <SectionHead folio="05" title="If this ever changes" id="changes-heading" />
           <div className="prose">
             <p>
-              If the site ever starts collecting anything — it will not, but if it did — this page
-              changes first, with the date at the top updated and the change described here rather
-              than folded silently into a longer document. The{" "}
+              If collecting ever starts — it is not planned, but if it were — this page changes in
+              the same commit, with a new date at the top and the change spelled out here rather than
+              buried in a longer document. The{" "}
               <a href={`${site.repo}/commits/main/src/app/privacy/page.tsx`} target="_blank" rel="noopener noreferrer">
                 commit history for this page
               </a>{" "}

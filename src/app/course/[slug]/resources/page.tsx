@@ -74,8 +74,9 @@ export default async function ResourcesPage({ params }: { params: Params }) {
           {subject.familiar} sources you can check
         </h2>
         <p className="lede mt-3">
-          Short on purpose. Every link here was opened before it was listed, and anything that
-          turned into a paywall three clicks in is not here.
+          Deliberately short. Every link here was opened before it went up, and anything that turned into
+          a paywall three clicks in did not survive the cut. If a link rots, open an issue and it will be
+          fixed.
         </p>
       </GlassCard>
 

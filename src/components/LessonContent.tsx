@@ -8,13 +8,25 @@ import { WorkedPaper } from "@/components/WorkedPaper";
 import { ObjectiveTracker } from "@/components/ObjectiveTracker";
 import { UnitVideoPlayer } from "@/components/UnitVideoPlayer";
 import { getUnitVideos } from "@/lib/video-lessons";
+import { getCourseDefense, getUnitDefense, getWrittenWork } from "@/content/written-work";
+import { WrittenExample } from "@/components/WrittenExample";
+import { DefensePanel } from "@/components/DefensePanel";
+import type { Subject } from "@/lib/subjects";
 
 /**
  * Structured lesson body. Paragraphs stay separate instead of being collapsed
  * into one Markdown blob, and every teaching section carries a traceable source
  * reference into the lesson's bibliography.
  */
-export function LessonContent({ lesson, courseSlug }: { lesson: Lesson; courseSlug: string }) {
+export function LessonContent({
+  lesson,
+  courseSlug,
+  subject,
+}: {
+  lesson: Lesson;
+  courseSlug: string;
+  subject: Subject;
+}) {
   const sourceIds = [...new Set<SourceId>([
     ...lesson.sections.flatMap((section) => section.sources),
     ...lesson.examAlignment.sources,
@@ -91,13 +103,34 @@ export function LessonContent({ lesson, courseSlug }: { lesson: Lesson; courseSl
             Worked solution & scratch work
           </h4>
           <p className="mb-5 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            Cover the steps and try the problem first. Then compare both the notation and the reason for each line.
+            Cover the steps and try the problem first, then compare both the notation and the reason for each line.
+            The working is laid out on squared paper, because columns of algebra are easier to check when the
+            columns stay in line.
           </p>
           {getWorkedExamples(courseSlug, lesson.unitNumber).map((example) => (
             <WorkedPaper key={example.id} example={example} />
           ))}
         </section>
       ) : null}
+
+      {getWrittenWork(courseSlug, lesson.unitNumber).map((work) => (
+        <section key={work.id} aria-labelledby={`unit-${lesson.unitNumber}-written`} className="mb-12 rule-top pt-6">
+          <h4 id={`unit-${lesson.unitNumber}-written`} className="mb-2 text-[1.125rem]">
+            Write one like this
+          </h4>
+          <p className="mb-2 max-w-[66ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+            The question this unit is most likely to ask, a full answer, and the reason each sentence earns
+            its mark. Cover the answer, make the two decisions, then compare.
+          </p>
+          <WrittenExample work={work} />
+        </section>
+      ))}
+
+      <DefensePanel
+        subject={subject}
+        courseDefense={getCourseDefense(courseSlug)}
+        unitDefense={getUnitDefense(courseSlug, lesson.unitNumber)}
+      />
 
       <section aria-labelledby={`unit-${lesson.unitNumber}-glossary`} className="mb-10 rule-top pt-6">
         <h4 id={`unit-${lesson.unitNumber}-glossary`} className="mb-4 text-[1.125rem]">

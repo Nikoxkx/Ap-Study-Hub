@@ -81,7 +81,7 @@ export function FocusSession({ courses, items, reviewItems, selectedCourse, now 
           <div className="mt-5 flex flex-wrap gap-3"><Link href={`/course/${course.slug}/notes#unit-${unit.unitNumber}`} target="_blank" className="link-underlined">Open lesson in a new tab ↗</Link><button type="button" className="btn btn-solid btn-sm" onClick={() => setStep(2)}>Continue to apply</button></div>
         </div> : null}
         {step === 2 ? <div className="focus-apply">
-          <p className="label">Use it somewhere new</p><h3>Make something, don’t just recognise it</h3><p>Use a new tab so this timer keeps running. Return when you have a draft, graph, conclusion, or set of answers to inspect.</p>
+          <p className="label">Use it somewhere new</p><h3>Make something, don’t just recognize it</h3><p>Use a new tab so this timer keeps running. Return when you have a draft, graph, conclusion, or set of answers to inspect.</p>
           <div className="focus-apply-links"><Link href={`/course/${course.slug}/studio?tab=lab`} target="_blank">Interactive lab ↗<span>Change a parameter, annotate evidence, or defend a conclusion.</span></Link><Link href={`/course/${course.slug}/studio?tab=writing`} target="_blank">Writing studio ↗<span>Produce a timed response and compare it with the criteria.</span></Link><Link href={`/course/${course.slug}/practice`} target="_blank">Practice ↗<span>Work from the course bank of {practiceCount} questions.</span></Link></div>
           <button type="button" className="btn btn-solid btn-sm mt-5" onClick={finish}>Finish & record session</button>
         </div> : null}

@@ -55,8 +55,9 @@ export default async function CourseVideosPage({ params }: { params: Params }) {
           See {course.subject.familiar} come together, unit by unit
         </h2>
         <p className="lede mt-3">
-          Each verified video sits beside the lesson it supports. The real YouTube thumbnail appears
-          automatically; the privacy-enhanced player loads only after you press play.
+          One teacher per unit, chosen because they explain it well, not because they rank first. Nothing
+          loads from YouTube until you press play, and the thumbnail is the only thing that arrives before
+          that.
         </p>
         <p className="mt-4 text-[0.8125rem]" style={{ color: "var(--ink-faint)" }}>
           Prefer to read first? The same videos are embedded inside each{" "}

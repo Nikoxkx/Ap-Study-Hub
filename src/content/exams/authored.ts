@@ -58,7 +58,7 @@ export const apushSaqStimuli: Stimulus[] = [
     title: "Source · Platform of the Progressive Party (1912), excerpt",
     kind: "document",
     attribution: "Constructed excerpt in the register of the 1912 Progressive platform, written for practice.",
-    text: `The movement of the people for a genuine democracy has begun. We stand for the direct primary, for the initiative and referendum, and for the recall of elected officers, because government must answer to the citizens it serves rather than to the machine politicians who have purchased it. We demand an eight-hour day, a living wage, and the abolition of child labour, for the welfare of the nation depends upon the welfare of its workers. We demand the conservation of natural resources, which the great corporations have consumed without accounting.`,
+    text: `The movement of the people for a genuine democracy has begun. We stand for the direct primary, for the initiative and referendum, and for the recall of elected officers, because government must answer to the citizens it serves rather than to the machine politicians who have purchased it. We demand an eight-hour day, a living wage, and the abolition of child labor, for the welfare of the nation depends upon the welfare of its workers. We demand the conservation of natural resources, which the great corporations have consumed without accounting.`,
   },
 ];
 
@@ -93,7 +93,7 @@ export const apushFrqs: ExamFrq[] = [
     },
     modelPath: [
       "(a) The platform supports the initiative and referendum, which would let citizens propose and approve laws directly.",
-      "(b) Industrialisation and the power of urban political machines convinced reformers that ordinary voters had lost control of government.",
+      "(b) Industrialization and the power of urban political machines convinced reformers that ordinary voters had lost control of government.",
       "(c) Some critics argued that direct democracy weakened representative institutions and allowed majorities to act on prejudiced impulses.",
     ],
   },
@@ -102,7 +102,7 @@ export const apushFrqs: ExamFrq[] = [
     taskType: "Short Answer · Comparison",
     title: "Question 2 · Responses to economic insecurity",
     prompt:
-      "(a) Briefly describe one similarity between the New Deal and the Great Society.\n(b) Briefly explain one difference between the goals or methods of the two programmes.\n(c) Briefly explain one reason the difference you identified mattered for Americans.",
+      "(a) Briefly describe one similarity between the New Deal and the Great Society.\n(b) Briefly explain one difference between the goals or methods of the two programs.\n(c) Briefly explain one reason the difference you identified mattered for Americans.",
     minutes: 13,
     rubricId: "saq-three",
     rubric: saqRubric,
@@ -110,24 +110,24 @@ export const apushFrqs: ExamFrq[] = [
     coach: {
       task: "A comparison question: one similarity, one difference, and one consequence of the difference.",
       timeline: [
-        { label: "Plan the two programmes", minutes: 3, detail: "List two features of each before writing." },
+        { label: "Plan the two programs", minutes: 3, detail: "List two features of each before writing." },
         { label: "Write (a)–(c)", minutes: 8, detail: "One similarity, one real difference, one consequence." },
         { label: "Check", minutes: 2, detail: "The difference must be genuine, not a restatement of the similarity." },
       ],
       steps: [
         { title: "Compare the same feature", detail: "Do not compare New Deal jobs with Medicare. Choose one axis: scope, beneficiary, or method." },
-        { title: "Make the difference specific", detail: "Federal role, universal versus targeted, or rights-based versus programme-based." },
-        { title: "Explain the consequence", detail: "Say why it mattered, e.g. durability, polarisation, or coverage." },
+        { title: "Make the difference specific", detail: "Federal role, universal versus targeted, or rights-based versus program-based." },
+        { title: "Explain the consequence", detail: "Say why it mattered, e.g. durability, polarization, or coverage." },
       ],
-      evidence: ["Name at least one specific programme from each era.", "Use accurate dates."],
+      evidence: ["Name at least one specific program from each era.", "Use accurate dates."],
       argument: ["Comparison must be on a shared axis.", "Consequence needs a because."],
       frames: ["Both ___ and ___ sought to ___.", "Unlike ___, ___ relied on ___ rather than ___.", "This mattered because ___."],
       pitfalls: ["Two similarities and no difference.", "Vague 'both helped people'."],
     },
     modelPath: [
-      "(a) Both expanded the federal government's responsibility for individual economic security, through jobs and insurance programmes.",
-      "(b) The New Deal focused on relief and recovery through universal programmes such as Social Security, while the Great Society targeted poverty through education and health programmes such as Medicare and Head Start.",
-      "(c) Because the Great Society's programmes were targeted, they were more vulnerable to claims that they benefited a subset of Americans, which shaped later political conflict over the welfare state.",
+      "(a) Both expanded the federal government's responsibility for individual economic security, through jobs and insurance programs.",
+      "(b) The New Deal focused on relief and recovery through universal programs such as Social Security, while the Great Society targeted poverty through education and health programs such as Medicare and Head Start.",
+      "(c) Because the Great Society's programs were targeted, they were more vulnerable to claims that they benefited a subset of Americans, which shaped later political conflict over the welfare state.",
     ],
   },
   {
@@ -150,7 +150,7 @@ export const apushFrqs: ExamFrq[] = [
       steps: [
         { title: "Choose one change with a date", detail: "Wartime employment, clerical work, or the marriage bar." },
         { title: "Choose one continuity", detail: "Pay differentials, domestic responsibility, or occupational segregation." },
-        { title: "Explain the effect", detail: "On family structure, unionisation, or post-war policy." },
+        { title: "Explain the effect", detail: "On family structure, unionization, or post-war policy." },
       ],
       evidence: ["Use specific occupations, laws, or years.", "Do not stray past 1945."],
       argument: ["Change and continuity can coexist; say so explicitly."],
@@ -159,7 +159,7 @@ export const apushFrqs: ExamFrq[] = [
     },
     modelPath: [
       "(a) The number of married women in clerical and industrial employment rose sharply, especially during the First World War and again after 1941.",
-      "(b) Women continued to earn less than men in comparable work and remained primarily responsible for unpaid domestic labour.",
+      "(b) Women continued to earn less than men in comparable work and remained primarily responsible for unpaid domestic labor.",
       "(c) Wartime employment strengthened arguments for equal pay and helped build the case that later produced state equal-pay laws.",
     ],
   },
@@ -242,7 +242,7 @@ export const govFrqs: ExamFrq[] = [
   },
   {
     id: "ap-gov-quant",
-    taskType: "Quantitative Analysis",
+    taskType: "Quantitative Analyzis",
     title: "Question 2 · Quantitative analysis",
     prompt:
       "Use the figure to answer all four parts.\n\n(a) Identify the trend in trust in the federal government between 1964 and 2020.\n(b) Explain one political reason for the trend you identified.\n(c) Explain how the turnout data relate to a linkage institution.\n(d) Draw a conclusion about the implications of these data for representative democracy.",
@@ -261,7 +261,7 @@ export const govFrqs: ExamFrq[] = [
       steps: [
         { title: "Quote the number", detail: "77% to 20% is a decline of 57 points, not 'a big drop'." },
         { title: "Explain with a political mechanism", detail: "Vietnam, Watergate, divided government, media change — pick one and show the link." },
-        { title: "Connect turnout to linkage", detail: "Parties, elections, interest groups, or media mobilise voters." },
+        { title: "Connect turnout to linkage", detail: "Parties, elections, interest groups, or media mobilize voters." },
         { title: "Conclude for representation", detail: "Unequal turnout by age shapes whose preferences politicians respond to." },
       ],
       evidence: ["At least two specific figures.", "One named linkage institution."],
@@ -271,8 +271,8 @@ export const govFrqs: ExamFrq[] = [
     },
     modelPath: [
       "(a) Trust declined substantially, from 77% in 1964 to 20% in 2020, with a partial recovery around 2000.",
-      "(b) Sustained conflict over Vietnam and Watergate, followed by polarised and often divided government, gave citizens reasons to doubt that government acts competently or honestly.",
-      "(c) Turnout increases with age, from 51% among 18–29-year-olds to 74% among those 65 and older, which means parties and campaigns have an incentive to mobilise older voters.",
+      "(b) Sustained conflict over Vietnam and Watergate, followed by polarized and often divided government, gave citizens reasons to doubt that government acts competently or honestly.",
+      "(c) Turnout increases with age, from 51% among 18–29-year-olds to 74% among those 65 and older, which means parties and campaigns have an incentive to mobilize older voters.",
       "(d) If the least trusting and youngest citizens vote least, representatives may respond to older, more engaged constituencies, weakening the claim that elections transmit all preferences equally.",
     ],
   },
@@ -307,9 +307,9 @@ export const govFrqs: ExamFrq[] = [
     },
     modelPath: [
       "(a) The Court held that the Second Amendment right to keep and bear arms is fundamental and applies to the states through the Fourteenth Amendment.",
-      "(b) In District of Columbia v. Heller (2008), the Court held that the Second Amendment protects an individual right to possess a firearm for lawful purposes such as self-defence in the home.",
+      "(b) In District of Columbia v. Heller (2008), the Court held that the Second Amendment protects an individual right to possess a firearm for lawful purposes such as self-defense in the home.",
       "(c) Both cases treat the right as individual rather than collective, but Heller rested on the Second Amendment directly while McDonald relied on the incorporation doctrine.",
-      "(d) A licensing requirement would likely be analysed as a regulation rather than a prohibition, and would be upheld if it does not unreasonably burden the core right of self-defence in the home.",
+      "(d) A licensing requirement would likely be analyzed as a regulation rather than a prohibition, and would be upheld if it does not unreasonably burden the core right of self-defense in the home.",
     ],
   },
   {
@@ -317,7 +317,7 @@ export const govFrqs: ExamFrq[] = [
     taskType: "Argument Essay",
     title: "Question 4 · Argument essay",
     prompt:
-      "The Electoral College has been defended as a protector of federalism and small states, and criticised as a violation of political equality.\n\nDevelop an argument that explains whether the Electoral College should be retained, reformed, or abolished.\n\nIn your essay:\n• Articulate a defensible claim or thesis that responds to the prompt.\n• Use at least two pieces of accurate and relevant evidence.\n• Use reasoning to explain why your evidence supports your claim.\n• Respond to an opposing or alternative perspective.",
+      "The Electoral College has been defended as a protector of federalism and small states, and criticized as a violation of political equality.\n\nDevelop an argument that explains whether the Electoral College should be retained, reformed, or abolished.\n\nIn your essay:\n• Articulate a defensible claim or thesis that responds to the prompt.\n• Use at least two pieces of accurate and relevant evidence.\n• Use reasoning to explain why your evidence supports your claim.\n• Respond to an opposing or alternative perspective.",
     minutes: 40,
     rubricId: "gov-argument-six",
     rubric: govArgumentRubric,
@@ -371,7 +371,7 @@ export const bioFrqs: ExamFrq[] = [
       [
         { label: "(a) Independent variable", points: 1, expect: "definition", note: "Temperature named as the manipulated variable", full: "Identifies temperature as the independent variable.", zero: "No variable identified, or the dependent variable named instead." },
         { label: "(b) Trend", points: 2, expect: "numeric-work", note: "Both directions of the trend described with values", full: "Describes the increase from 0.21 to 0.74 mL O₂/g/h between 10 °C and 25 °C and the slight decline at 30 °C.", zero: "No trend, or only one direction." },
-        { label: "(c) Enzyme mediation", points: 2, expect: "justification", note: "A causal chain linking temperature to enzyme activity and rate", full: "Explains that rising temperature increases enzyme–substrate collisions up to an optimum, and that the decline at 30 °C reflects denaturation, which shows the reactions are enzyme-catalysed.", zero: "States that respiration increased without explaining the enzymatic mechanism." },
+        { label: "(c) Enzyme mediation", points: 2, expect: "justification", note: "A causal chain linking temperature to enzyme activity and rate", full: "Explains that rising temperature increases enzyme–substrate collisions up to an optimum, and that the decline at 30 °C reflects denaturation, which shows the reactions are enzyme-catalyzed.", zero: "States that respiration increased without explaining the enzymatic mechanism." },
         { label: "(d) Percent increase", points: 2, expect: "numeric-work", note: "Correct setup ((0.74−0.21)/0.21 × 100) and answer", full: "Shows (0.74 − 0.21) ÷ 0.21 × 100 = 252% (accept 252.4%).", zero: "No calculation, or percent change computed from the wrong base." },
         { label: "(e) Prediction at 45 °C", points: 2, expect: "justification", note: "A specific prediction plus a denaturation reason", full: "Predicts a value well below 0.69, approaching zero, because proteins denature at high temperature and enzymes lose their active shape.", zero: "A prediction with no biological justification, or a prediction that consumption will keep rising." },
       ],
@@ -392,7 +392,7 @@ export const bioFrqs: ExamFrq[] = [
       ],
       evidence: ["Reference specific values from the prompt.", "Use precise terms: optimum, denaturation, active site."],
       argument: ["Every explain needs a because.", "Predictions require a mechanism."],
-      frames: ["As temperature rises from ___ to ___, oxygen consumption ___.", "This suggests the reactions are catalysed by enzymes because ___.", "At 45 °C, consumption would be ___ because ___."],
+      frames: ["As temperature rises from ___ to ___, oxygen consumption ___.", "This suggests the reactions are catalyzed by enzymes because ___.", "At 45 °C, consumption would be ___ because ___."],
       pitfalls: ["Restating the prompt.", "Percent change calculated as a simple difference.", "Teleological explanation."],
     },
     modelPath: ["(a) Temperature.", "(b) Consumption rises from 0.21 at 10 °C to a maximum of 0.74 at 25 °C, then falls slightly to 0.69 at 30 °C.", "(c) The rise and the subsequent fall fit enzyme kinetics: collisions increase with temperature, then enzymes denature past the optimum.", "(d) (0.74 − 0.21)/0.21 × 100 = 252%.", "(e) Near zero, because most respiratory enzymes would be denatured at 45 °C."],
@@ -402,7 +402,7 @@ export const bioFrqs: ExamFrq[] = [
     taskType: "Long Free Response",
     title: "Question 2 · Allele frequencies in a population",
     prompt:
-      "In a population of 1,000 beetles, a single gene controls colour. The dominant allele B (brown) has a frequency of 0.7 and the recessive allele b (green) has a frequency of 0.3. The population is at Hardy–Weinberg equilibrium.\n\n(a) Calculate the expected frequency of heterozygous individuals. Show your work.\n(b) Calculate the expected number of green beetles in the population.\n(c) Explain why the allele frequencies would change if brown beetles were preferentially eaten by birds.\n(d) Describe how the population could reach a new equilibrium if the birds were removed after several generations.\n(e) Justify whether the original Hardy–Weinberg assumptions are realistic in this population.",
+      "In a population of 1,000 beetles, a single gene controls color. The dominant allele B (brown) has a frequency of 0.7 and the recessive allele b (green) has a frequency of 0.3. The population is at Hardy–Weinberg equilibrium.\n\n(a) Calculate the expected frequency of heterozygous individuals. Show your work.\n(b) Calculate the expected number of green beetles in the population.\n(c) Explain why the allele frequencies would change if brown beetles were preferentially eaten by birds.\n(d) Describe how the population could reach a new equilibrium if the birds were removed after several generations.\n(e) Justify whether the original Hardy–Weinberg assumptions are realistic in this population.",
     minutes: 20,
     rubricId: "bio-long-2",
     rubric: partsRubric(
@@ -558,7 +558,7 @@ export const bioFrqs: ExamFrq[] = [
     taskType: "Short Free Response",
     title: "Question 6 · Natural selection",
     prompt:
-      "(a) Describe the role of variation in natural selection.\n(b) Explain how a change in the environment can change allele frequencies in a population within a few generations.\n(c) Justify whether an individual organism can evolve during its lifetime.",
+      "(a) Describe the role of variation in natural selection.\n(b) Explain how a change in the environment can change allele frequencies in a population within a few generations.\n(c) Justify whether an individual organizm can evolve during its lifetime.",
     minutes: 10,
     rubricId: "bio-short-4",
     rubric: partsRubric(
@@ -587,7 +587,7 @@ export const bioFrqs: ExamFrq[] = [
       evidence: ["Use the phrase 'differential reproductive success'.", "Name acclimation in part (c)."],
       argument: ["One point per part; no essay structure needed."],
       frames: ["Heritable variation matters because ___.", "If ___ changes, ___ have higher fitness, so ___ increases.", "An individual cannot evolve because ___; it can only ___."],
-      pitfalls: ["'Organisms adapt in order to survive' — teleology.", "Confusing individual change with evolution."],
+      pitfalls: ["'Organizms adapt in order to survive' — teleology.", "Confusing individual change with evolution."],
     },
     modelPath: ["(a) Heritable variation produces phenotypic differences on which selection can act.", "(b) A changed environment alters which phenotypes reproduce most successfully, so the alleles associated with those phenotypes increase over generations.", "(c) Individuals cannot evolve; evolution is a change in population allele frequencies, and individual change within a lifetime is acclimation."],
   },
@@ -606,7 +606,7 @@ export const calcFrqs: ExamFrq[] = [
     taskType: "Free Response · Calculator",
     title: "Question 1 · Rate and accumulation",
     prompt:
-      "Water flows into a tank at a rate modelled by R(t) = 20 + 5 sin(t²/4) litres per hour for 0 ≤ t ≤ 6, where t is measured in hours.\n\n(a) How much water enters the tank during the first 3 hours? Show the integral and evaluate it.\n(b) Find R′(2). Using correct units, interpret this value in the context of the problem.\n(c) Is the rate of flow increasing or decreasing at t = 5? Justify your answer.",
+      "Water flows into a tank at a rate modeled by R(t) = 20 + 5 sin(t²/4) litres per hour for 0 ≤ t ≤ 6, where t is measured in hours.\n\n(a) How much water enters the tank during the first 3 hours? Show the integral and evaluate it.\n(b) Find R′(2). Using correct units, interpret this value in the context of the problem.\n(c) Is the rate of flow increasing or decreasing at t = 5? Justify your answer.",
     minutes: 15,
     rubricId: "calc-frq-1",
     rubric: calcRubric("calc-frq-1", "Rate and accumulation · 9-point rubric", [
@@ -651,7 +651,7 @@ export const calcFrqs: ExamFrq[] = [
       { label: "(b) Method", points: 3, expect: "numeric-work", note: "Correct separation and integration", full: "Separates 1/(P(1 − P/5000)) dP = 0.4 dt and integrates to obtain the logistic solution.", zero: "No separation or an invalid integration." },
       { label: "(b) Value", points: 2, expect: "final-answer", note: "Correct evaluation at t = 10", full: "Obtains P(10) ≈ 1,073 (accept 1,060–1,086).", zero: "No value, or an answer inconsistent with the method." },
       { label: "(c) Maximum growth", points: 1, expect: "justification", note: "Half the carrying capacity identified", full: "States that growth is fastest at P = 2,500.", zero: "No value." },
-      { label: "(c) Justification", points: 1, expect: "line-of-reasoning", note: "Reason from the derivative's behaviour", full: "Justifies from the quadratic dP/dt being maximised at P = 2,500 (or from an inflection point of P).", zero: "No reasoning." },
+      { label: "(c) Justification", points: 1, expect: "line-of-reasoning", note: "Reason from the derivative's behavior", full: "Justifies from the quadratic dP/dt being maximized at P = 2,500 (or from an inflection point of P).", zero: "No reasoning." },
     ]),
     points: 9,
     coach: {
@@ -665,11 +665,11 @@ export const calcFrqs: ExamFrq[] = [
         { title: "Find K from the factor (1 − P/K)", detail: "K is the value at which the growth factor vanishes." },
         { title: "Separate cleanly", detail: "Partial fractions give the logistic form; do not skip the constant." },
         { title: "Use the initial condition", detail: "Solve for the constant before evaluating at t = 10." },
-        { title: "Maximise the rate", detail: "dP/dt is a downward parabola in P, maximised at K/2." },
+        { title: "Maximize the rate", detail: "dP/dt is a downward parabola in P, maximized at K/2." },
       ],
       evidence: ["Show the separation step.", "State the initial condition substitution."],
       argument: ["Model interpretation is worth points on its own."],
-      frames: ["K = ___, the value at which ___.", "After separating and integrating, ___, so C = ___.", "Since dP/dt = ___, it is maximised when ___."],
+      frames: ["K = ___, the value at which ___.", "After separating and integrating, ___, so C = ___.", "Since dP/dt = ___, it is maximized when ___."],
       pitfalls: ["Treating a logistic model as exponential.", "Forgetting the constant of integration.", "Giving the maximum growth in the wrong units."],
     },
     modelPath: ["(a) K = 5,000; the growth rate tends to zero as the population approaches it.", "(b) Separating gives the logistic solution; with P(0) = 200, P(10) ≈ 1,073.", "(c) dP/dt as a function of P is a downward parabola with maximum at P = 2,500."],
@@ -696,7 +696,7 @@ export const calcFrqs: ExamFrq[] = [
         { label: "Differentiate", minutes: 5, detail: "Differentiate every term, remembering the product rule for 4xy." },
         { label: "Evaluate", minutes: 4, detail: "Substitute the point; write point-slope." },
         { label: "Solve for horizontal", minutes: 4, detail: "Numerator zero, then use the original equation." },
-        { label: "Recognise the limit", minutes: 2, detail: "The difference quotient is the definition of f′." },
+        { label: "Recognize the limit", minutes: 2, detail: "The difference quotient is the definition of f′." },
       ],
       steps: [
         { title: "Differentiate both sides", detail: "Every y term gains a dy/dx factor." },
@@ -753,13 +753,13 @@ export const calcFrqs: ExamFrq[] = [
     taskType: "Free Response · No Calculator",
     title: "Question 5 · Particle motion",
     prompt:
-      "A particle moves along the x-axis with velocity v(t) = t² − 6t + 8 for 0 ≤ t ≤ 5, where t is in seconds and v is in metres per second. At t = 0 the particle is at x = 3.\n\n(a) Find all times in (0, 5) when the particle is at rest.\n(b) Find the total distance travelled by the particle on 0 ≤ t ≤ 5.\n(c) Find the acceleration at t = 1 and describe the particle's motion at that instant.\n(d) Find the position of the particle at t = 5.",
+      "A particle moves along the x-axis with velocity v(t) = t² − 6t + 8 for 0 ≤ t ≤ 5, where t is in seconds and v is in meters per second. At t = 0 the particle is at x = 3.\n\n(a) Find all times in (0, 5) when the particle is at rest.\n(b) Find the total distance traveled by the particle on 0 ≤ t ≤ 5.\n(c) Find the acceleration at t = 1 and describe the particle's motion at that instant.\n(d) Find the position of the particle at t = 5.",
     minutes: 15,
     rubricId: "calc-frq-5",
     rubric: calcRubric("calc-frq-5", "Particle motion · 9-point rubric", [
       { label: "(a) Rest times", points: 2, expect: "numeric-work", note: "Correct roots of the velocity", full: "Solves t² − 6t + 8 = 0 to obtain t = 2 and t = 4.", zero: "Wrong or missing roots." },
       { label: "(b) Distance setup", points: 2, expect: "numeric-work", note: "Absolute value or interval split", full: "Writes ∫₀⁵ |v(t)| dt, splitting at t = 2 and t = 4.", zero: "Integrates velocity without absolute value." },
-      { label: "(b) Distance value", points: 1, expect: "final-answer", note: "Evaluated distance", full: "Evaluates to 13 metres (accept 13.0).", zero: "No value." },
+      { label: "(b) Distance value", points: 1, expect: "final-answer", note: "Evaluated distance", full: "Evaluates to 13 meters (accept 13.0).", zero: "No value." },
       { label: "(c) Acceleration", points: 1, expect: "numeric-work", note: "a(1) computed", full: "a(t) = 2t − 6, so a(1) = −4 m/s².", zero: "No acceleration computed." },
       { label: "(c) Description", points: 1, expect: "justification", note: "Interpretation of signs", full: "States that at t = 1 the velocity is positive and the acceleration negative, so the particle is moving right and slowing down.", zero: "No interpretation." },
       { label: "(d) Position", points: 2, expect: "numeric-work", note: "Integral of velocity plus the initial condition", full: "x(5) = 3 + ∫₀⁵ v(t) dt = 3 + 20/3 = 29/3.", zero: "No accumulation or initial condition included." },
@@ -835,7 +835,7 @@ export const macroFrqs: ExamFrq[] = [
     taskType: "Long Free Response",
     title: "Question 1 · Recessionary gap and fiscal policy",
     prompt:
-      "Assume the United States economy is in short-run equilibrium below full employment. The marginal propensity to consume is 0.8.\n\n(a) Draw a correctly labelled aggregate demand–aggregate supply graph showing the current equilibrium, labelling the recessionary gap.\n(b) Calculate the minimum change in government spending needed to close the gap if the gap is $200 billion. Show your work.\n(c) Explain how the spending change you calculated affects the loanable funds market and real interest rates.\n(d) Suppose instead the government cuts taxes by $200 billion. Calculate the change in aggregate demand this produces, and explain why a $200 billion tax cut has a different effect from a $200 billion increase in government spending.",
+      "Assume the United States economy is in short-run equilibrium below full employment. The marginal propensity to consume is 0.8.\n\n(a) Draw a correctly labeled aggregate demand–aggregate supply graph showing the current equilibrium, labelling the recessionary gap.\n(b) Calculate the minimum change in government spending needed to close the gap if the gap is $200 billion. Show your work.\n(c) Explain how the spending change you calculated affects the loanable funds market and real interest rates.\n(d) Suppose instead the government cuts taxes by $200 billion. Calculate the change in aggregate demand this produces, and explain why a $200 billion tax cut has a different effect from a $200 billion increase in government spending.",
     minutes: 30,
     rubricId: "macro-frq-1",
     rubric: partsRubric(
@@ -843,7 +843,7 @@ export const macroFrqs: ExamFrq[] = [
       "Fiscal policy · 10-point rubric",
       "Task-specific rows written to AP Macroeconomics free-response conventions.",
       [
-        { label: "(a) AD–AS graph", points: 3, expect: "graph-labels", note: "Axes, AD, SRAS, LRAS, equilibrium, and the gap labelled", full: "Draws labelled price level and real GDP axes, downward-sloping AD, upward-sloping SRAS, vertical LRAS, and marks the equilibrium below LRAS with the gap identified.", zero: "Unlabelled graph, or no gap shown." },
+        { label: "(a) AD–AS graph", points: 3, expect: "graph-labels", note: "Axes, AD, SRAS, LRAS, equilibrium, and the gap labeled", full: "Draws labeled price level and real GDP axes, downward-sloping AD, upward-sloping SRAS, vertical LRAS, and marks the equilibrium below LRAS with the gap identified.", zero: "Unlabeled graph, or no gap shown." },
         { label: "(b) Multiplier", points: 2, expect: "numeric-work", note: "1/(1 − MPC) computed", full: "Calculates 1/(1 − 0.8) = 5.", zero: "No multiplier or an inverted formula." },
         { label: "(b) Spending change", points: 1, expect: "final-answer", note: "Gap divided by the multiplier with direction", full: "States an increase of $40 billion.", zero: "No value or the wrong direction." },
         { label: "(c) Loanable funds", points: 2, expect: "line-of-reasoning", note: "Demand shift, interest rate effect, crowding out", full: "Explains that government borrowing increases demand for loanable funds, raising the real interest rate and reducing private investment.", zero: "No mechanism or no interest-rate effect." },
@@ -865,7 +865,7 @@ export const macroFrqs: ExamFrq[] = [
         { title: "Trace crowding out", detail: "Borrowing → demand for loanable funds → real interest rate → investment." },
         { title: "Compare multipliers", detail: "The tax multiplier is smaller than the spending multiplier because some of a tax cut is saved." },
       ],
-      evidence: ["Every graph needs labelled axes and a marked new equilibrium.", "Every number needs units: billions of dollars."],
+      evidence: ["Every graph needs labeled axes and a marked new equilibrium.", "Every number needs units: billions of dollars."],
       argument: ["Explain the mechanism, not just the direction of the shift."],
       frames: ["The spending multiplier is 1/(1 − MPC) = ___.", "A $___ billion increase in government spending shifts AD right by ___.", "Government borrowing shifts ___ to the ___, raising ___."],
       pitfalls: ["Shifting SRAS for a demand policy.", "Forgetting to label the gap.", "Treating the tax multiplier as equal to the spending multiplier."],
@@ -877,7 +877,7 @@ export const macroFrqs: ExamFrq[] = [
     taskType: "Short Free Response",
     title: "Question 2 · Monetary policy",
     prompt:
-      "Assume the economy is operating above full employment and the central bank uses open-market operations.\n\n(a) Draw a correctly labelled money market graph and show the effect of the central bank's action.\n(b) Explain how the change in the nominal interest rate affects investment and aggregate demand.\n(c) Explain one limitation of monetary policy in this situation.",
+      "Assume the economy is operating above full employment and the central bank uses open-market operations.\n\n(a) Draw a correctly labeled money market graph and show the effect of the central bank's action.\n(b) Explain how the change in the nominal interest rate affects investment and aggregate demand.\n(c) Explain one limitation of monetary policy in this situation.",
     minutes: 15,
     rubricId: "macro-frq-2",
     rubric: partsRubric(
@@ -885,7 +885,7 @@ export const macroFrqs: ExamFrq[] = [
       "Monetary policy · 5-point rubric",
       "Task-specific rows written to AP Macroeconomics free-response conventions.",
       [
-        { label: "(a) Money market graph", points: 2, expect: "graph-labels", note: "Nominal rate axis, MS shift, new equilibrium", full: "Draws a vertical money supply curve shifting left, with the nominal interest rate rising to a new equilibrium.", zero: "Unlabelled or unshifted graph." },
+        { label: "(a) Money market graph", points: 2, expect: "graph-labels", note: "Nominal rate axis, MS shift, new equilibrium", full: "Draws a vertical money supply curve shifting left, with the nominal interest rate rising to a new equilibrium.", zero: "Unlabeled or unshifted graph." },
         { label: "(b) Transmission", points: 2, expect: "line-of-reasoning", note: "Interest rate to investment to AD", full: "Explains that a higher interest rate reduces investment, which reduces aggregate demand and closes the inflationary gap.", zero: "No transmission mechanism." },
         { label: "(c) Limitation", points: 1, expect: "qualification", note: "A named limit with a reason", full: "Explains a limitation such as lags, the liquidity trap, or the inability to target a specific sector.", zero: "No limitation or no reason." },
       ],
@@ -915,7 +915,7 @@ export const macroFrqs: ExamFrq[] = [
     taskType: "Short Free Response",
     title: "Question 3 · Foreign exchange",
     prompt:
-      "Real interest rates in the United States rise relative to those in the euro area.\n\n(a) Draw a correctly labelled foreign exchange market for dollars, showing the effect on the exchange rate.\n(b) Explain how the change in the dollar's value affects net exports.\n(c) Explain how the change in net exports feeds back into aggregate demand and the price level.",
+      "Real interest rates in the United States rise relative to those in the euro area.\n\n(a) Draw a correctly labeled foreign exchange market for dollars, showing the effect on the exchange rate.\n(b) Explain how the change in the dollar's value affects net exports.\n(c) Explain how the change in net exports feeds back into aggregate demand and the price level.",
     minutes: 15,
     rubricId: "macro-frq-3",
     rubric: partsRubric(
@@ -923,7 +923,7 @@ export const macroFrqs: ExamFrq[] = [
       "Foreign exchange · 5-point rubric",
       "Task-specific rows written to AP Macroeconomics free-response conventions.",
       [
-        { label: "(a) Forex graph", points: 2, expect: "graph-labels", note: "Dollar demand shift and appreciation", full: "Draws the price of dollars in euros against quantity, shifting demand for dollars right and showing an appreciated exchange rate.", zero: "Unlabelled graph or no shift." },
+        { label: "(a) Forex graph", points: 2, expect: "graph-labels", note: "Dollar demand shift and appreciation", full: "Draws the price of dollars in euros against quantity, shifting demand for dollars right and showing an appreciated exchange rate.", zero: "Unlabeled graph or no shift." },
         { label: "(b) Net exports", points: 2, expect: "line-of-reasoning", note: "Appreciation makes exports dearer and imports cheaper", full: "Explains that an appreciated dollar raises the foreign price of US exports and lowers the domestic price of imports, reducing net exports.", zero: "Direction with no reasoning." },
         { label: "(c) Feedback", points: 1, expect: "justification", note: "AD shifts left with a price-level consequence", full: "Explains that falling net exports shift aggregate demand left, lowering real output and the price level.", zero: "No feedback described." },
       ],
@@ -997,8 +997,8 @@ export const envFrqs: ExamFrq[] = [
   },
   {
     id: "ap-env-frq-2",
-    taskType: "Problem Analysis",
-    title: "Question 2 · Analyse an environmental problem",
+    taskType: "Problem Analyzis",
+    title: "Question 2 · Analyze an environmental problem",
     prompt:
       "A region generates 4,800 GWh of electricity per year from a mix of coal (60%), natural gas (25%), and wind (15%). Coal emits about 1,000 g CO₂ per kWh and natural gas about 450 g CO₂ per kWh.\n\n(a) Calculate the annual CO₂ emissions from coal generation in million tonnes. Show your work.\n(b) Calculate the CO₂ intensity of the region's electricity mix in g CO₂ per kWh.\n(c) Describe one environmental impact of coal combustion other than CO₂, and explain its mechanism.\n(d) Describe one reason the region might not immediately replace coal with wind, and one policy that could address it.",
     minutes: 23,
@@ -1016,7 +1016,7 @@ export const envFrqs: ExamFrq[] = [
     ),
     points: 9,
     coach: {
-      task: "Quantitative energy analysis, a pollution mechanism, and a policy judgement.",
+      task: "Quantitative energy analysis, a pollution mechanism, and a policy judgment.",
       timeline: [
         { label: "Convert units", minutes: 6, detail: "GWh to kWh, grams to tonnes." },
         { label: "Calculate", minutes: 8, detail: "Weighted average for intensity." },
@@ -1048,7 +1048,7 @@ export const envFrqs: ExamFrq[] = [
       "Waste management · 9-point rubric",
       "Task-specific rows written to AP Environmental Science free-response conventions.",
       [
-        { label: "(a) Per-capita waste", points: 3, expect: "numeric-work", note: "Annual total divided by population, in kg", full: "1,100 t/day × 365 = 401,500 t/year = 4.015 × 10⁸ kg; ÷ 900,000 = about 446 kg per person per year.", zero: "No conversion to kilograms or no annualisation." },
+        { label: "(a) Per-capita waste", points: 3, expect: "numeric-work", note: "Annual total divided by population, in kg", full: "1,100 t/day × 365 = 401,500 t/year = 4.015 × 10⁸ kg; ÷ 900,000 = about 446 kg per person per year.", zero: "No conversion to kilograms or no annualization." },
         { label: "(b) Problem", points: 2, expect: "justification", note: "A named problem with a mechanism", full: "Explains that anaerobic decomposition produces methane, a potent greenhouse gas, and that leachate can contaminate groundwater.", zero: "A problem named without a mechanism." },
         { label: "(c) Strategy with two reasons", points: 2, expect: "justification", note: "Environmental and economic justification", full: "Proposes source separation and composting, reducing methane and landfill tipping costs while producing soil amendment.", zero: "Only one reason, or no mechanism." },
         { label: "(d) Limitation and mitigation", points: 2, expect: "qualification", note: "A real limitation plus a mitigation", full: "Notes contamination in compost streams or participation rates, and proposes education, collection design, or contamination standards.", zero: "No limitation or no mitigation." },
@@ -1068,10 +1068,10 @@ export const envFrqs: ExamFrq[] = [
         { title: "Justify with two currencies", detail: "One environmental reason and one economic reason." },
         { title: "Name the limitation honestly", detail: "A proposal with a limitation is stronger than a perfect-sounding one." },
       ],
-      evidence: ["Show the annualisation step.", "Give units for the per-capita figure."],
+      evidence: ["Show the annualization step.", "Give units for the per-capita figure."],
       argument: ["Every 'justify' needs a because; every limitation needs a mitigation."],
       frames: ["1,100 t/day × 365 = ___ t/year = ___ kg/year.", "Landfilled waste produces ___ through ___.", "This strategy is justified because it ___ and it ___.", "Its main limitation is ___, which could be mitigated by ___."],
-      pitfalls: ["Omitting the 365-day annualisation.", "Giving only an environmental reason.", "A limitation with no mitigation."],
+      pitfalls: ["Omitting the 365-day annualization.", "Giving only an environmental reason.", "A limitation with no mitigation."],
     },
     modelPath: ["(a) 1,100 × 365 = 401,500 t = 4.015 × 10⁸ kg; ÷ 900,000 ≈ 446 kg per person per year.", "(b) Anaerobic decomposition releases methane; leachate can carry contaminants into groundwater.", "(c) Source separation and composting reduce methane and tipping fees while producing a soil amendment.", "(d) Contamination of compost streams is a limitation; separate collection and contamination standards mitigate it."],
   },
@@ -1111,22 +1111,22 @@ export const researchFrqs: ExamFrq[] = [
       evidence: ["Cite sources and your own data.", "Give sample sizes and instruments."],
       argument: ["Method → evidence → interpretation → limitation → next question.", "Distinguish finding from hope."],
       frames: ["This study used ___ in order to ___, because ___.", "The results suggest ___, although ___ limits the inference.", "A follow-up study could isolate ___ by ___."],
-      pitfalls: ["Reporting results without interpretation.", "Overgeneralising beyond the sample.", "Limitations omitted or tacked on."],
+      pitfalls: ["Reporting results without interpretation.", "Overgeneralizing beyond the sample.", "Limitations omitted or tacked on."],
     },
     modelPath: ["State the research question and purpose.", "Describe the method and justify each choice.", "Report the analysis and interpret it against the question.", "State limitations as limits on inference, then the conclusion."],
   },
   {
-    id: "ap-research-defence",
-    taskType: "Presentation and Oral Defence",
-    title: "Component 2 · Presentation script and defence",
+    id: "ap-research-defense",
+    taskType: "Presentation and Oral Defense",
+    title: "Component 2 · Presentation script and defense",
     prompt:
-      "Write the script for a six-minute presentation of your research, then answer both defence questions in full sentences:\n\nQuestion 1: What was the most significant limitation of your method, and how did it shape your conclusions?\nQuestion 2: How does your project connect to a larger conversation in the field, and what would you study next?",
+      "Write the script for a six-minute presentation of your research, then answer both defense questions in full sentences:\n\nQuestion 1: What was the most significant limitation of your method, and how did it shape your conclusions?\nQuestion 2: How does your project connect to a larger conversation in the field, and what would you study next?",
     minutes: 30,
     rubricId: "research-paper",
     rubric: researchPaperRubric,
     points: 24,
     coach: {
-      task: "Write a spoken script that a panel can follow, then answer the two defence questions with the specificity of the paper.",
+      task: "Write a spoken script that a panel can follow, then answer the two defense questions with the specificity of the paper.",
       timeline: [
         { label: "Plan the arc", minutes: 8, detail: "Question, gap, method, finding, limitation, next step." },
         { label: "Write the script", minutes: 12, detail: "Speakable sentences; define terms; signpost the argument." },
@@ -1135,14 +1135,14 @@ export const researchFrqs: ExamFrq[] = [
       steps: [
         { title: "Open with the question, not the topic", detail: "The panel needs your question in the first thirty seconds." },
         { title: "Name the contribution", detail: "What does your project add that the sources did not?" },
-        { title: "Answer defence questions directly", detail: "First sentence answers; the rest justifies." },
+        { title: "Answer defense questions directly", detail: "First sentence answers; the rest justifies." },
       ],
       evidence: ["Give one number or finding in the script.", "Refer to sources by author."],
       argument: ["Every spoken paragraph needs a claim and a reason."],
       frames: ["My research asked whether ___.", "The most significant limitation was ___, which means ___.", "This connects to ___ because ___."],
-      pitfalls: ["Reading a paper aloud instead of presenting.", "A defence answer that never states a limitation."],
+      pitfalls: ["Reading a paper aloud instead of presenting.", "A defense answer that never states a limitation."],
     },
-    modelPath: ["Script: question, gap, method, finding, limitation, implication.", "Defence 1: name the limitation and its effect on the conclusion.", "Defence 2: name the scholarly conversation and the next study."],
+    modelPath: ["Script: question, gap, method, finding, limitation, implication.", "Defense 1: name the limitation and its effect on the conclusion.", "Defense 2: name the scholarly conversation and the next study."],
   },
 ];
 

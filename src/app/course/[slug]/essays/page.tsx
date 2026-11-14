@@ -61,8 +61,9 @@ export default async function EssaysPage({ params }: { params: Params }) {
           {subject.familiar} {written.tab}, marked so you can see why
         </h2>
         <p className="lede mt-3">
-          A high-scoring response is a set of decisions, each of which earned a specific point. The
-          margin tells you which decision earned which.
+          A high-scoring answer is not a wall of good writing. It is a series of decisions, and each one
+          earned a specific point. The notes in the margin say which decision earned which, and the
+          marked-up version shows the sentences that did not.
         </p>
       </GlassCard>
 

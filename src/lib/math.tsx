@@ -85,8 +85,21 @@ function replaceRoots(value: string): string {
   return output;
 }
 
+/** Text inside \text{...} is prose, not notation: units, words, abbreviations. */
+const TEXT_BLOCK = /\\text\{[^{}]*\}/g;
+
 export function normalizeMath(source: string): string {
   let value = source.trim();
+
+  // Protect the contents of \text{...} first. Without this, "min" in
+  // \text{min}^{-1} becomes \min, "cm/s" is turned into a fraction, and a unit
+  // that was perfectly correct fails to compile — KaTeX then throws and the
+  // reader gets raw TeX in a lesson. Restored at the end, untouched.
+  const literalText: string[] = [];
+  value = value.replace(TEXT_BLOCK, (match) => {
+    literalText.push(match);
+    return `@@TEXT${literalText.length - 1}@@`;
+  });
 
   value = replaceRoots(value);
   value = replaceScripts(value)
@@ -138,7 +151,8 @@ export function normalizeMath(source: string): string {
   value = value.replace(fraction, "\\frac{$1}{$2}");
   value = value.replace(fraction, "\\frac{$1}{$2}");
 
-  return value.replace(/[ \t]+/g, " ").trim();
+  value = value.replace(/[ \t]+/g, " ").trim();
+  return value.replace(/@@TEXT(\d+)@@/g, (_, index: string) => literalText[Number(index)] ?? "");
 }
 
 export function mathHtml(source: string, displayMode = false): string {

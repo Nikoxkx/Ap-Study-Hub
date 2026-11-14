@@ -37,7 +37,7 @@ const measures = [
   },
   {
     heading: "Contrast checked, not assumed",
-    body: "Body text sits at roughly 16:1 against the page. Every subject colour, every muted caption tone and both theme variants were measured against WCAG AA at the size they are actually used, including the accent red on both light and dark backgrounds.",
+    body: "Body text sits at roughly 16:1 against the page. Every subject color, every muted caption tone and both theme variants were measured against WCAG AA at the size they are actually used, including the accent red on both light and dark backgrounds.",
   },
   {
     heading: "Motion is optional",
@@ -79,7 +79,7 @@ const known = [
   {
     problem: "Long tables scroll sideways",
     detail:
-      "The exam calendar and the coverage table scroll horizontally below about 640px rather than reflowing into stacked rows. The scroll container is keyboard focusable and labelled, so it is reachable, but a reflowed layout would be better.",
+      "The exam calendar and the coverage table scroll horizontally below about 640px rather than reflowing into stacked rows. The scroll container is keyboard focusable and labeled, so it is reachable, but a reflowed layout would be better.",
     status: "Planned",
   },
   {

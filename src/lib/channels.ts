@@ -130,8 +130,8 @@ export function channelUrl(channel: Channel): string {
 }
 
 /**
- * Search inside one channel. YouTube honours this URL shape, which means the
- * link keeps working even when the channel reorganises its playlists.
+ * Search inside one channel. YouTube honors this URL shape, which means the
+ * link keeps working even when the channel reorganizes its playlists.
  */
 export function channelSearchUrl(channel: Channel, query: string): string {
   return `https://www.youtube.com/@${channel.handle}/search?query=${encodeURIComponent(query)}`;

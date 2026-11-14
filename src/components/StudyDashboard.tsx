@@ -531,7 +531,7 @@ export function StudyDashboard({
                   <li>
                     <strong>A score, with its arithmetic.</strong> Multiple-choice and written points
                     are combined at the published weights, then shown against estimated cut scores —
-                    labelled as an estimate, because only the College Board sets the real ones.
+                    labeled as an estimate, because only the College Board sets the real ones.
                   </li>
                   <li>
                     <strong>Every response, with its lesson.</strong> Each question is listed with what

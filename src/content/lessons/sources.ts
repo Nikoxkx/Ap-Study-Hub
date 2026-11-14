@@ -414,7 +414,7 @@ export const lessonSources = {
   "bea-gdp": {
     id: "bea-gdp",
     title: "Gross Domestic Product",
-    publisher: "U.S. Bureau of Economic Analysis",
+    publisher: "U.S. Bureau of Economic Analyzis",
     url: "https://www.bea.gov/data/gdp/gross-domestic-product",
     kind: "Primary source",
     description: "Official U.S. GDP estimates, components, and methods from the agency that produces them.",

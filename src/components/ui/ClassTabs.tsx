@@ -17,7 +17,7 @@ export interface ClassTabOption {
   title?: string;
   /** Per-option classes (e.g. `subject-accent subject-accent-tab` for a course accent outline). */
   className?: string;
-  /** Per-option inline custom properties (e.g. subjectVars(subject) accent colours). */
+  /** Per-option inline custom properties (e.g. subjectVars(subject) accent colors). */
   style?: React.CSSProperties;
 }
 

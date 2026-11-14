@@ -110,7 +110,7 @@ const contentAreas = [
     type: "Assessment grading",
     where: "src/lib/grading/*, /api/grade",
     ai: "Rubric row scoring, evidence and commentary detection, grammar and spelling findings, and the written feedback you read after a paper",
-    human: "Rubrics copied from the published College Board descriptors; every score shows the sentences it was based on and which row it missed; the local analyser is the default, model grading is opt-in with your own key, and the estimate is labelled as an estimate because cut scores are not published",
+    human: "Rubrics copied from the published College Board descriptors; every score shows the sentences it was based on and which row it missed; the local analyzer is the default, model grading is opt-in with your own key, and the estimate is labeled as an estimate because cut scores are not published",
   },
   {
     type: "Resources",
@@ -121,7 +121,7 @@ const contentAreas = [
   {
     type: "Docs",
     where: "README.md, about, guides, privacy, accessibility",
-    ai: "Drafted catalogue table, build/security notes, study method guides",
+    ai: "Drafted catalog table, build/security notes, study method guides",
     human: "Rewrote voice to personal, added 11-tabs story, verified 3 localStorage keys, listed known defects",
   },
 ];
@@ -184,7 +184,7 @@ export default function AiDisclosurePage() {
               <li>
                 <strong>No chatbot, and no AI by default:</strong> there is no assistant, no
                 generated hint stream, and no training on your work. Written responses are marked
-                offline by a measured analyser that ships with the site
+                offline by a measured analyzer that ships with the site
                 (<code style={{ fontFamily: "var(--font-mono)", fontSize: "0.85em" }}>src/lib/grading</code>) —
                 it counts rubric signals in your own sentences and never calls a network.
               </li>
@@ -317,7 +317,7 @@ export default function AiDisclosurePage() {
               },
               {
                 h: "No chatbot, and grading you can inspect",
-                p: "There is no chat interface and no conversation history. Assessment grading is either the measured analyser in src/lib/grading (deterministic, runs in your browser or on this site's own route) or a model call you enable with your own provider key. Every score shows the row it came from and the sentences it was based on, so you can disagree with it.",
+                p: "There is no chat interface and no conversation history. Assessment grading is either the measured analyzer in src/lib/grading (deterministic, runs in your browser or on this site's own route) or a model call you enable with your own provider key. Every score shows the row it came from and the sentences it was based on, so you can disagree with it.",
               },
               {
                 h: "No College Board endorsement",

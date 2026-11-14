@@ -1,11 +1,11 @@
 /**
  * Subject registry.
  *
- * Before this file existed the same colour lookup table was copy-pasted into six
+ * Before this file existed the same color lookup table was copy-pasted into six
  * components, each with a slightly different set of keys, and three of them
  * silently fell back to blue for four of the seven courses. One table, one place.
  *
- * Light-mode colours are drawn from bookbinding cloth swatches rather than a
+ * Light-mode colors are drawn from bookbinding cloth swatches rather than a
  * framework palette, so nothing here is `blue-600`. The dark washes are strictly
  * neutral greys: night mode never lays a blue, green, or purple cast over the
  * page. Each `-lit` variant is hand-checked to clear 4.5:1 on the dark paper.
@@ -65,7 +65,7 @@ export const subjects: Subject[] = [
     summary:
       "Nine chronological periods from 1491 to the present, weighted toward the essay half of the exam.",
     intro:
-      "APUSH is less about memorising dates than about arguing with them. The exam gives you a DBQ, a long essay and 55 multiple-choice questions built on stimulus material, so the unit notes below are organised the way the rubric reads: context, evidence, then complexity.",
+      "APUSH is less about memorizing dates than about arguing with them. The exam gives you a DBQ, a long essay and 55 multiple-choice questions built on stimulus material, so the unit notes below are organized the way the rubric reads: context, evidence, then complexity.",
     exam: { date: "2027-05-07", window: "morning" },
     ink: "#9c3b2e",
     lit: "#e59283",
@@ -196,9 +196,9 @@ export const subjects: Subject[] = [
     familiar: "AP Research",
     official: "AP Research",
     summary:
-      "One 4,000–5,000 word paper, a presentation and an oral defence. There is no May exam.",
+      "One 4,000–5,000 word paper, a presentation and an oral defense. There is no May exam.",
     intro:
-      "AP Research has no sit-down exam at all. The whole grade is the academic paper (75%), the presentation and the oral defence (25%), all due to the College Board digital portfolio at the end of April. Everything below is about the paper.",
+      "AP Research has no sit-down exam at all. The whole grade is the academic paper (75%), the presentation and the oral defense (25%), all due to the College Board digital portfolio at the end of April. Everything below is about the paper.",
     exam: { date: "2027-04-30", window: "deadline" },
     ink: "#57534a",
     lit: "#bdb5a7",
@@ -272,7 +272,7 @@ export function isFrqSubject(slug: string): boolean {
 }
 
 export interface WrittenWorkCopy {
-  /** Tab and heading label, capitalised: "Essays" or "FRQs". */
+  /** Tab and heading label, capitalized: "Essays" or "FRQs". */
   tab: string;
   /** Lowercase singular for running prose: "essay" or "FRQ". */
   singular: string;

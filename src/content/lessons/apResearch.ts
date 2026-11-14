@@ -266,7 +266,7 @@ In the discussion section later, return to these sources. Explain whether your f
       "Develop conclusions that integrate evidence, literature, limitations, and implications.",
     ],
     sections: [
-      section("Analysis is a series of inspectable decisions", ["cb-research-ced", "purdue-methods"], `
+      section("Analyzis is a series of inspectable decisions", ["cb-research-ced", "purdue-methods"], `
 Raw responses, images, texts, and measurements do not become findings until you apply an analytical process. For quantitative work, this may involve cleaning data, defining variables, calculating descriptive statistics, visualizing distributions, and fitting an appropriate model. For qualitative work, it may involve transcription, initial coding, theme development, comparison, and memo writing. Record decisions so another reader can understand how evidence changed form.
 
 Do not let software replace judgment. Check impossible values, missingness, outliers, and coding consistency. If you exclude a case, state the criterion before looking at whether it helps your preferred result. If you collapse categories or revise a coding scheme, explain why. Transparency is more persuasive than claiming the analysis was “objective” without showing its steps.

@@ -9,7 +9,7 @@ import { cache } from "react";
  * "days until the exam" separately. Two calls a millisecond apart can land on
  * opposite sides of midnight and print different numbers on the same screen.
  *
- * `cache()` memoises per request, so every component in one render sees the
+ * `cache()` memoizes per request, so every component in one render sees the
  * same instant. On a statically generated page that instant is build time,
  * which is the correct semantics for a number baked into HTML.
  */

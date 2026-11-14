@@ -39,7 +39,7 @@ const sixPointAnalytic = (kind: "literary" | "rhetorical" | "argument" | "synthe
     kind === "literary"
       ? "Responds to the prompt with a thesis that presents a defensible interpretation of the passage or work."
       : kind === "rhetorical"
-        ? "Responds to the prompt with a thesis that analyzes the writer's rhetorical choices rather than summarising the passage."
+        ? "Responds to the prompt with a thesis that analyzes the writer's rhetorical choices rather than summarizing the passage."
         : kind === "synthesis"
           ? "Responds to the prompt with a defensible thesis that takes a position and is supported by at least three of the sources."
           : "Responds to the prompt with a defensible thesis that takes a clear position on the issue.";
@@ -134,7 +134,7 @@ export const dbqRubric = rubric(
     row("sourcing", "Sourcing and Situation", 1, [1, 0], [
       { points: 1, text: "Explains how or why the point of view, purpose, historical situation, or audience of at least two documents is relevant to the argument." },
       { points: 0, text: "Documents are quoted without attention to who wrote them, when, or why." },
-    ], [{ type: "sourcing", min: 2, note: "Two documents analysed for point of view, purpose, situation, or audience" }]),
+    ], [{ type: "sourcing", min: 2, note: "Two documents analyzed for point of view, purpose, situation, or audience" }]),
     row("complexity", "Complexity", 1, [1, 0], [
       { points: 1, text: "Demonstrates a complex understanding: nuance, contradictory evidence, continuity and change, or connections across periods." },
       { points: 0, text: "One-dimensional argument." },
@@ -160,7 +160,7 @@ export const leqRubric = rubric(
       { points: 1, text: "Supports the argument with one specific example." },
       { points: 0, text: "No specific evidence." },
     ], [{ type: "outside-evidence", min: 2, note: "Two or more specific historical examples" }]),
-    row("reasoning", "Analysis and Reasoning", 2, [2, 1, 0], [
+    row("reasoning", "Analyzis and Reasoning", 2, [2, 1, 0], [
       { points: 2, text: "Uses historical reasoning (causation, comparison, or continuity and change) to structure the argument, and demonstrates complexity." },
       { points: 1, text: "Uses historical reasoning inconsistently, or explains significance without a complex understanding." },
       { points: 0, text: "Narrative with no historical reasoning." },
@@ -201,7 +201,7 @@ export const govConceptRubric = rubric(
   "AP U.S. Government and Politics concept-application scoring guidelines.",
   [
     row("a", "Part (a) · Describe", 1, [1, 0], [
-      { points: 1, text: "Accurately describes the political principle, institution, or behaviour the prompt names." },
+      { points: 1, text: "Accurately describes the political principle, institution, or behavior the prompt names." },
       { points: 0, text: "Inaccurate or simply repeats the prompt." },
     ], [{ type: "definition", min: 1, note: "A definition or description in your own words" }]),
     row("b", "Part (b) · Explain the scenario", 1, [1, 0], [
@@ -217,7 +217,7 @@ export const govConceptRubric = rubric(
 
 export const govQuantRubric = rubric(
   "gov-quant-four",
-  "Quantitative Analysis · 4-point rubric",
+  "Quantitative Analyzis · 4-point rubric",
   "AP U.S. Government and Politics quantitative-analysis scoring guidelines.",
   [
     row("a", "Part (a) · Read the data", 1, [1, 0], [
@@ -318,12 +318,12 @@ export const seminarPartARubric = rubric(
     ]),
     row("evidence", "Evaluate the evidence", 6, [6, 4, 2, 0], [
       { points: 6, text: "Evaluates the effectiveness of the evidence: relevance, sufficiency, credibility, and what it cannot establish." },
-      { points: 4, text: "Evaluates some evidence, with a general judgement about others." },
+      { points: 4, text: "Evaluates some evidence, with a general judgment about others." },
       { points: 2, text: "Describes the evidence without judging it." },
       { points: 0, text: "No evaluation of evidence." },
     ], [
       { type: "quotation", min: 2, note: "Named pieces of evidence under evaluation" },
-      { type: "qualification", min: 1, note: "A limit, bias, or credibility judgement" },
+      { type: "qualification", min: 1, note: "A limit, bias, or credibility judgment" },
     ]),
   ],
 );
@@ -340,10 +340,10 @@ export const seminarPartBRubric = rubric(
       { points: 0, text: "No perspective." },
     ], [{ type: "thesis", note: "A stated perspective that answers the theme" }]),
     row("reasoning", "Establish reasoning", 6, [6, 4, 2, 0], [
-      { points: 6, text: "Well-organised argument with a logical progression of claims, each connected to the perspective." },
+      { points: 6, text: "Well-organized argument with a logical progression of claims, each connected to the perspective." },
       { points: 4, text: "Logical progression with at least one gap or undeveloped claim." },
       { points: 2, text: "Claims are listed with weak or missing connections." },
-      { points: 0, text: "No discernible organisation." },
+      { points: 0, text: "No discernible organization." },
     ], [{ type: "line-of-reasoning", min: 3, note: "Three or more explicit claim-to-claim links" }]),
     row("evidence", "Select and use evidence", 6, [6, 4, 2, 0], [
       { points: 6, text: "Selects relevant evidence from at least two sources, integrates it, and explains how it supports each claim." },
@@ -384,7 +384,7 @@ export const researchPaperRubric = rubric(
       { points: 2, text: "Method named but not described." },
       { points: 0, text: "No method." },
     ], [{ type: "experimental-design", min: 2, note: "Design terms: participants, instruments, analysis, limitations" }]),
-    row("analysis", "Analysis and evaluation", 6, [6, 4, 2, 0], [
+    row("analysis", "Analyzis and evaluation", 6, [6, 4, 2, 0], [
       { points: 6, text: "Interprets results against the question, evaluates evidence quality, and addresses alternative explanations." },
       { points: 4, text: "Interprets results but does not evaluate their strength." },
       { points: 2, text: "Reports results without interpretation." },
@@ -395,7 +395,7 @@ export const researchPaperRubric = rubric(
     ]),
     row("conclusion", "Conclusion and implications", 6, [6, 4, 2, 0], [
       { points: 6, text: "Answers the question, states the significance and limits of the findings, and identifies a next step." },
-      { points: 4, text: "Answers the question but generalises beyond the evidence or omits limits." },
+      { points: 4, text: "Answers the question but generalizes beyond the evidence or omits limits." },
       { points: 2, text: "Restates the introduction." },
       { points: 0, text: "No conclusion." },
     ], [
@@ -443,7 +443,7 @@ const literaryCoach = (minutes: number): CoachGuide => ({
     "What looks like ___ is better understood as ___, because ___.",
   ],
   pitfalls: [
-    "Summarising the passage instead of interpreting it.",
+    "Summarizing the passage instead of interpreting it.",
     "Naming a device ('the poet uses imagery') without explaining its effect.",
     "Block quotations that carry no commentary.",
     "A thesis that lists three devices instead of making one claim.",
@@ -452,7 +452,7 @@ const literaryCoach = (minutes: number): CoachGuide => ({
 
 const rhetoricalCoach = (minutes: number): CoachGuide => ({
   task:
-    "Analyse how a writer's rhetorical choices — audience, purpose, structure, diction, syntax, evidence — work to achieve a purpose. You are analysing the writing, not agreeing with the argument.",
+    "Analyze how a writer's rhetorical choices — audience, purpose, structure, diction, syntax, evidence — work to achieve a purpose. You are analyzing the writing, not agreeing with the argument.",
   timeline: [
     { label: "Read for the rhetorical situation", minutes: Math.round(minutes * 0.12), detail: "Who speaks, to whom, at what moment, and what do they want the audience to do or believe?" },
     { label: "Choose two or three choices", minutes: Math.round(minutes * 0.1), detail: "Pick choices that do different work: one structural, one at the level of diction or syntax, one in evidence or tone." },
@@ -483,7 +483,7 @@ const rhetoricalCoach = (minutes: number): CoachGuide => ({
   ],
   pitfalls: [
     "Listing rhetorical devices with definitions instead of effects.",
-    "Agreeing or disagreeing with the argument instead of analysing it.",
+    "Agreeing or disagreeing with the argument instead of analyzing it.",
     "Ignoring the audience.",
     "Treating tone as a label ('the tone is critical') with no evidence of how it is built.",
   ],
@@ -528,7 +528,7 @@ const argumentCoach = (minutes: number): CoachGuide => ({
 
 const synthesisCoach = (minutes: number): CoachGuide => ({
   task:
-    "Write an argument that takes a position and uses at least three of the provided sources. The sources are material for your argument, not a puzzle to summarise.",
+    "Write an argument that takes a position and uses at least three of the provided sources. The sources are material for your argument, not a puzzle to summarize.",
   timeline: [
     { label: "Read sources for tension", minutes: Math.round(minutes * 0.22), detail: "Annotate each source's claim in six words, and mark where two sources disagree." },
     { label: "Take a position", minutes: Math.round(minutes * 0.08), detail: "Choose a position that the sources make arguable, not obvious." },
@@ -536,7 +536,7 @@ const synthesisCoach = (minutes: number): CoachGuide => ({
     { label: "Revise", minutes: Math.round(minutes * 0.15), detail: "Check every source letter is doing work, not decoration." },
   ],
   steps: [
-    { title: "Summarise each source in one line", detail: "If you cannot, you cannot use it well. Write the line in the margin." },
+    { title: "Summarize each source in one line", detail: "If you cannot, you cannot use it well. Write the line in the margin." },
     { title: "Find the disagreement", detail: "The best synthesis thesis lives where two sources pull apart." },
     { title: "Decide what your position adds", detail: "Your thesis should not be any single source's thesis." },
     { title: "Put sources in conversation", detail: "Source B's data qualifies Source A's claim; Source D's anecdote shows what Source C's model misses." },
@@ -547,7 +547,7 @@ const synthesisCoach = (minutes: number): CoachGuide => ({
     "Use a source against its own grain where useful (a budget office's numbers arguing against its own recommendation).",
   ],
   argument: [
-    "Organise by claim, not by source order.",
+    "Organize by claim, not by source order.",
     "One paragraph can hold two sources in disagreement; that is often the strongest paragraph.",
     "Address the strongest source that opposes you.",
   ],
@@ -595,7 +595,7 @@ const dbqCoach = (minutes: number): CoachGuide => ({
     "The limit of this argument is ___, which the documents reveal but do not resolve.",
   ],
   pitfalls: [
-    "Summarising documents in order.",
+    "Summarizing documents in order.",
     "Quoting documents without saying who wrote them.",
     "A thesis that restates the prompt.",
     "No outside evidence.",
@@ -654,7 +654,7 @@ const calcCoach = (minutes: number): CoachGuide => ({
     { title: "Write what you are given and what is asked", detail: "Define variables; state the theorem or definition you will use." },
     { title: "Show the setup line", detail: "An unevaluated integral or derivative expression earns setup points even if arithmetic slips." },
     { title: "Justify in words", detail: "'f is increasing because f′ > 0 on (a, b)' earns the justification point; the inequality alone often does not." },
-    { title: "Answer in context", detail: "Use units and interpret: 'the particle is 12 metres left of the origin at t = 3'." },
+    { title: "Answer in context", detail: "Use units and interpret: 'the particle is 12 meters left of the origin at t = 3'." },
     { title: "Check the calculator parts", detail: "Round to three decimals and say so; an unrounded answer can lose the point." },
   ],
   evidence: ["Every derivative or integral you use should be visible.", "For a table question, state the difference quotient or Riemann sum explicitly."],
@@ -668,7 +668,7 @@ const bioCoach = (minutes: number): CoachGuide => ({
     "Answer each part with the biological mechanism and the evidence that supports it. Free-response points are awarded for explaining why, not for restating the question.",
   timeline: [
     { label: "Read and label", minutes: Math.max(1, Math.round(minutes * 0.15)), detail: "Mark each part and what it asks: identify, explain, predict, justify, calculate." },
-    { label: "Plan the mechanism", minutes: Math.round(minutes * 0.2), detail: "Name the process, the molecules or organisms involved, and the direction of change." },
+    { label: "Plan the mechanism", minutes: Math.round(minutes * 0.2), detail: "Name the process, the molecules or organizms involved, and the direction of change." },
     { label: "Write", minutes: Math.round(minutes * 0.5), detail: "One short paragraph per part; include the data or graph reference the prompt provides." },
     { label: "Check", minutes: Math.round(minutes * 0.15), detail: "Units, significance, and whether each 'explain' has a causal chain." },
   ],
@@ -687,15 +687,15 @@ const bioCoach = (minutes: number): CoachGuide => ({
 
 const macroCoach = (minutes: number): CoachGuide => ({
   task:
-    "Free response in AP Macro is graph-first. A correctly labelled, correctly shifted graph earns more than a paragraph of prose.",
+    "Free response in AP Macro is graph-first. A correctly labeled, correctly shifted graph earns more than a paragraph of prose.",
   timeline: [
     { label: "Read and label parts", minutes: Math.max(1, Math.round(minutes * 0.15)), detail: "Mark every part that says 'draw', 'show', 'calculate', or 'explain'." },
     { label: "Draw and label graphs", minutes: Math.round(minutes * 0.35), detail: "Axes, curves, equilibrium, and any shift arrows with initial and new labels." },
     { label: "Calculate and explain", minutes: Math.round(minutes * 0.35), detail: "Show the formula, the substitution, and one sentence of interpretation." },
-    { label: "Check", minutes: Math.round(minutes * 0.15), detail: "Every graph has labelled axes and curves; every number has units." },
+    { label: "Check", minutes: Math.round(minutes * 0.15), detail: "Every graph has labeled axes and curves; every number has units." },
   ],
   steps: [
-    { title: "Label before you shift", detail: "A graph without labelled axes and curves usually earns nothing." },
+    { title: "Label before you shift", detail: "A graph without labeled axes and curves usually earns nothing." },
     { title: "Use arrows and initial/new labels", detail: "AD₁ → AD₂ with a direction arrow, plus the new equilibrium marked." },
     { title: "Show the multiplier arithmetic", detail: "Write 1/(1−MPC) before computing, then the policy size." },
     { title: "Answer in the language of the model", detail: "Say which curve shifts, in which direction, and why." },
@@ -729,7 +729,7 @@ const envCoach = (minutes: number): CoachGuide => ({
 
 const seminarACoach = (minutes: number): CoachGuide => ({
   task:
-    "Analyse one source's argument in three short answers: identify it, explain its line of reasoning, and evaluate its evidence. Be surgical and quote briefly.",
+    "Analyze one source's argument in three short answers: identify it, explain its line of reasoning, and evaluate its evidence. Be surgical and quote briefly.",
   timeline: [
     { label: "Read and annotate", minutes: Math.max(2, Math.round(minutes * 0.2)), detail: "Mark the thesis, each claim, the evidence types, and the conclusion." },
     { label: "Answer A1–A3", minutes: Math.round(minutes * 0.7), detail: "One paragraph each; explain rather than list." },
@@ -741,9 +741,9 @@ const seminarACoach = (minutes: number): CoachGuide => ({
     { title: "Judge the evidence on four axes", detail: "Relevance, sufficiency, credibility, and what it fails to establish." },
   ],
   evidence: ["Quote four to eight words at most.", "Name the type of evidence (case study, statistic, anecdote, expert testimony)."],
-  argument: ["A2 is about connection, not summary.", "A3 needs a judgement plus a reason."],
+  argument: ["A2 is about connection, not summary.", "A3 needs a judgment plus a reason."],
   frames: ["The author argues that ___ because ___.", "The second claim depends on the first in that ___.", "The evidence is credible in part, but as an anecdote it cannot establish ___."],
-  pitfalls: ["Describing instead of evaluating.", "Ignoring the author's conclusion.", "Listing evidence without a judgement."],
+  pitfalls: ["Describing instead of evaluating.", "Ignoring the author's conclusion.", "Listing evidence without a judgment."],
 });
 
 const seminarBCoach = (minutes: number): CoachGuide => ({
@@ -757,7 +757,7 @@ const seminarBCoach = (minutes: number): CoachGuide => ({
   ],
   steps: [
     { title: "Find the theme", detail: "What is the shared question the four sources answer differently?" },
-    { title: "Take a position the sources do not take", detail: "A perspective that synthesises or rejects parts of several sources." },
+    { title: "Take a position the sources do not take", detail: "A perspective that synthesizes or rejects parts of several sources." },
     { title: "Explain each piece of evidence", detail: "Quote or paraphrase, then say how it supports the claim." },
     { title: "Address the strongest counter-perspective", detail: "Use a source that disagrees with you and answer it." },
   ],
@@ -785,7 +785,7 @@ const researchCoach = (minutes: number): CoachGuide => ({
   evidence: ["Cite sources and your own data explicitly.", "State sample sizes, instruments, and analytic procedures."],
   argument: ["Method → evidence → interpretation → limitation → next question.", "Distinguish what you found from what you hope it means."],
   frames: ["This study used ___ in order to ___, because ___.", "The results suggest ___, although ___ limits the inference.", "A follow-up study could isolate ___ by ___."],
-  pitfalls: ["Reporting results without interpretation.", "Overgeneralising beyond the sample.", "Missing limitations."],
+  pitfalls: ["Reporting results without interpretation.", "Overgeneralizing beyond the sample.", "Missing limitations."],
 });
 
 /* ------------------------------------------------------------------ */
@@ -875,7 +875,7 @@ export const mcqStrategies: Record<string, { title: string; steps: string[]; tim
     title: "Environmental science multiple choice",
     timing: "About 65 seconds per question; 80 in 90 minutes.",
     steps: [
-      "Identify the system level: organism, population, ecosystem, global.",
+      "Identify the system level: organizm, population, ecosystem, global.",
       "For data questions, read units and axis labels before estimating.",
       "Convert units early; many distractors are unit errors.",
       "For policy or management questions, choose the option that addresses the mechanism, not the symptom.",

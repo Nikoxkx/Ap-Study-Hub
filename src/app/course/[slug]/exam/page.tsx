@@ -65,7 +65,7 @@ export default async function ExamPage({ params }: { params: Params }) {
           </p>
         </div>
         <h2 className="text-[clamp(1.55rem,1.3rem+1.2vw,2.25rem)] font-semibold" style={{ letterSpacing: "-0.025em" }}>
-          The whole exam, in the official format
+          Sit the whole paper, on the clock
         </h2>
         <p className="lede mt-3 max-w-[70ch]">
           {assessment.blueprint.officialFormat}

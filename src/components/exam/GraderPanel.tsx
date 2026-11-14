@@ -8,7 +8,7 @@ import type { GradeResult } from "@/lib/grading/grade";
 /**
  * Rubric grader panel.
  *
- * Two methods, labelled on screen:
+ * Two methods, labeled on screen:
  *   - "Rubric analysis" runs in the browser over the measured features of the
  *     response (no network, no key).
  *   - "AI reader" posts the response and the resolved rubric to /api/grade. It
@@ -275,8 +275,8 @@ export function GraderPanel({
             <h4 className="label">How this was marked</h4>
             <p>
               {grade.method === "ai"
-                ? "A language model was given the four rubric rows, the prompt, the passage, and your response, and asked to award each row's points with quoted evidence and to list real mechanics errors. Borderline judgements are pushed to the lower value."
-                : "Measured against the rubric rows: thesis detection, quotation and citation counts, commentary-to-evidence ratio, explicit reasoning links, and the named mechanics rules. No measurement reads for meaning the way a human reader does, so use the row-by-row evidence to check the judgement yourself."}
+                ? "A language model was given the four rubric rows, the prompt, the passage, and your response, and asked to award each row's points with quoted evidence and to list real mechanics errors. Borderline judgments are pushed to the lower value."
+                : "Measured against the rubric rows: thesis detection, quotation and citation counts, commentary-to-evidence ratio, explicit reasoning links, and the named mechanics rules. No measurement reads for meaning the way a human reader does, so use the row-by-row evidence to check the judgment yourself."}
             </p>
             <p className="grader-fine">
               Either way this is practice marking, not an official score. The AP reader in May is the authority.

@@ -131,7 +131,7 @@ Were toward Eternity –`,
     note: "Read the passage carefully before answering the questions that follow.",
     text: `It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.
 
-However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.
+However little known the feelings or views of such a man may be on his first entering a neighborhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.
 
 "My dear Mr. Bennet," said his lady to him one day, "have you heard that Netherfield Park is let at last?"
 
@@ -232,7 +232,7 @@ You tell me of our future that you plann'd:
 Only remember me; you understand
 It will be late to counsel then or pray.
 Yet if you should forget me for a while
-And afterwards remember, do not grieve:
+And afterward remember, do not grieve:
 For if the darkness and corruption leave
 A vestige of the thoughts that once I had,
 Better by far you should forget and smile
@@ -297,7 +297,7 @@ export const apLitQuestions: ExamQuestion[] = [
       ],
       correct: 1,
       explanation:
-        "The phrase completes the image of boughs that 'shake against the cold' and 'where late the sweet birds sang'. The choir is a metaphor for the branches, not a literal reference to church music, though the religious resonance colours the line.",
+        "The phrase completes the image of boughs that 'shake against the cold' and 'where late the sweet birds sang'. The choir is a metaphor for the branches, not a literal reference to church music, though the religious resonance colors the line.",
       skill: "Figurative language",
       unit: 2,
     },
@@ -313,14 +313,14 @@ export const apLitQuestions: ExamQuestion[] = [
     {
       q: "The repetition of 'In me thou see'st' in lines 5 and 9 chiefly serves to",
       options: [
-        "emphasise the speaker's self-absorption at the expense of the listener",
+        "emphasize the speaker's self-absorption at the expense of the listener",
         "structure the poem as parallel meditations while insisting that the beloved look at him",
         "imply that the beloved is imagining the speaker's decline",
         "signal that the poem's argument has begun to contradict itself",
       ],
       correct: 1,
       explanation:
-        "The repeated clause is anaphora: it builds the three-part structure and keeps the second person ('thou') active. The poem's argument depends on the beloved recognising the decline, so self-absorption is the wrong reading.",
+        "The repeated clause is anaphora: it builds the three-part structure and keeps the second person ('thou') active. The poem's argument depends on the beloved recognizing the decline, so self-absorption is the wrong reading.",
       skill: "Diction and syntax",
       unit: 2,
     },
@@ -348,7 +348,7 @@ export const apLitQuestions: ExamQuestion[] = [
       ],
       correct: 1,
       explanation:
-        "The speaker catalogues his decline with images rather than complaint, and the elegiac calm is what makes the couplet's warmth credible. There is no accusation of the beloved.",
+        "The speaker catalogs his decline with images rather than complaint, and the elegiac calm is what makes the couplet's warmth credible. There is no accusation of the beloved.",
       skill: "Tone and attitude",
       unit: 2,
     },
@@ -371,7 +371,7 @@ export const apLitQuestions: ExamQuestion[] = [
       options: [
         "the beloved pities the speaker's weakness",
         "the speaker has asked for reassurance",
-        "what must be lost is recognised as precious",
+        "what must be lost is recognized as precious",
         "the beloved is frightened of being alone",
       ],
       correct: 2,
@@ -381,7 +381,7 @@ export const apLitQuestions: ExamQuestion[] = [
       unit: 2,
     },
     {
-      q: "The syntax of the poem is characterised by",
+      q: "The syntax of the poem is characterized by",
       options: [
         "short paratactic clauses with almost no subordination",
         "long periodic sentences whose main claims arrive late",
@@ -425,7 +425,7 @@ export const apLitQuestions: ExamQuestion[] = [
   ]),
   ...toQuestions("lit-dickinson-death", [
     {
-      q: "Death, in the first stanza, is characterised as",
+      q: "Death, in the first stanza, is characterized as",
       options: [
         "a violent abductor",
         "a courteous gentleman caller",
@@ -435,7 +435,7 @@ export const apLitQuestions: ExamQuestion[] = [
       correct: 1,
       explanation:
         "'He kindly stopped for me' and 'His Civility' cast Death as a polite escort; the carriage and the caller's patience belong to courtship, not kidnapping.",
-      skill: "Characterisation and personification",
+      skill: "Characterization and personification",
       unit: 8,
     },
     {
@@ -469,7 +469,7 @@ export const apLitQuestions: ExamQuestion[] = [
     {
       q: "The three 'We passed' clauses in stanza three",
       options: [
-        "catalogue stages of life — childhood, maturity, and the setting sun — in a measured processional rhythm",
+        "catalog stages of life — childhood, maturity, and the setting sun — in a measured processional rhythm",
         "describe a single afternoon in chronological order",
         "show that the speaker is losing her memory",
         "introduce the poem's only natural imagery",
@@ -565,7 +565,7 @@ export const apLitQuestions: ExamQuestion[] = [
         "a courtship that ends in marriage",
         "the journey from life into eternity",
         "a journey the speaker takes to escape grief",
-        "the soul's judgement before God",
+        "the soul's judgment before God",
       ],
       correct: 1,
       explanation:
@@ -580,12 +580,12 @@ export const apLitQuestions: ExamQuestion[] = [
       options: [
         "a universal-sounding maxim that the rest of the passage quietly contradicts",
         "a quotation from an unnamed philosopher",
-        "an anecdote about a neighbouring family",
+        "an anecdote about a neighboring family",
         "direct address to the reader",
       ],
       correct: 0,
       explanation:
-        "The sentence announces a 'truth universally acknowledged' which is in fact a statement about what neighbourhood families want. The narrator's irony is in the gap between the claim and its source.",
+        "The sentence announces a 'truth universally acknowledged' which is in fact a statement about what neighborhood families want. The narrator's irony is in the gap between the claim and its source.",
       skill: "Irony",
       unit: 1,
     },
@@ -614,11 +614,11 @@ export const apLitQuestions: ExamQuestion[] = [
       correct: 1,
       explanation:
         "'You want to tell me, and I have no objection to hearing it' is characteristic: he withholds reaction and lets his wife perform, which the narrator finds amusing.",
-      skill: "Characterisation through dialogue",
+      skill: "Characterization through dialogue",
       unit: 1,
     },
     {
-      q: "Mrs. Bennet's speech is characterised by",
+      q: "Mrs. Bennet's speech is characterized by",
       options: [
         "measured argument and qualification",
         "exclamations, rapid shifts, and impatient rhetorical questions",
@@ -628,7 +628,7 @@ export const apLitQuestions: ExamQuestion[] = [
       correct: 1,
       explanation:
         "'Oh! single, my dear, to be sure!' and 'how can you be so tiresome!' show the exclamatory, impatient register that the narrator reports without comment.",
-      skill: "Diction and characterisation",
+      skill: "Diction and characterization",
       unit: 1,
     },
     {
@@ -641,7 +641,7 @@ export const apLitQuestions: ExamQuestion[] = [
       ],
       correct: 0,
       explanation:
-        "The legal register ('rightful property') turns a young man into an object to be claimed, which exposes the market logic behind the neighbourhood's interest.",
+        "The legal register ('rightful property') turns a young man into an object to be claimed, which exposes the market logic behind the neighborhood's interest.",
       skill: "Irony and diction",
       unit: 1,
     },
@@ -655,7 +655,7 @@ export const apLitQuestions: ExamQuestion[] = [
       ],
       correct: 1,
       explanation:
-        "The narrator reports both characters' minds ('This was invitation enough') and comments on them. There is no 'I' among the characters, but the narrator's judgement is audible.",
+        "The narrator reports both characters' minds ('This was invitation enough') and comments on them. There is no 'I' among the characters, but the narrator's judgment is audible.",
       skill: "Point of view",
       unit: 1,
     },
@@ -664,17 +664,17 @@ export const apLitQuestions: ExamQuestion[] = [
       options: [
         "express genuine curiosity about Bingley's plans",
         "pretend to take his wife's assumption literally so that it sounds absurd",
-        "criticise the entailment of the estate",
+        "criticize the entailment of the estate",
         "reveal that he has already met Bingley",
       ],
       correct: 1,
       explanation:
         "By asking whether marrying one of the daughters is Bingley's 'design', he holds the inference up to the light. The joke is at his wife's expense, and she notices — 'Design! nonsense'.",
-      skill: "Irony and characterisation",
+      skill: "Irony and characterization",
       unit: 1,
     },
     {
-      q: "The passage's humour depends most on",
+      q: "The passage's humor depends most on",
       options: [
         "slapstick stage business",
         "the reader's awareness of a gap between what is said and what the narrator thinks",
@@ -683,7 +683,7 @@ export const apLitQuestions: ExamQuestion[] = [
       ],
       correct: 1,
       explanation:
-        "Austen's irony is stable: the narrator's judgement is available to a reader who notices the inflated maxim and the deflating replies, even though no character states it.",
+        "Austen's irony is stable: the narrator's judgment is available to a reader who notices the inflated maxim and the deflating replies, even though no character states it.",
       skill: "Irony",
       unit: 1,
     },
@@ -704,7 +704,7 @@ export const apLitQuestions: ExamQuestion[] = [
     {
       q: "The narrator's description of Mrs. Bennet as 'impatient' after her exclamation is an example of",
       options: [
-        "free indirect discourse that lends the narrator's judgement",
+        "free indirect discourse that lends the narrator's judgment",
         "a stage direction",
         "Mrs. Bennet's own reported speech",
         "an objective report with no evaluation",
@@ -762,7 +762,7 @@ export const apLitQuestions: ExamQuestion[] = [
     {
       q: "The narrator notes that she 'did not hear the story as many women have heard the same' in order to",
       options: [
-        "criticise her for insufficient grief",
+        "criticize her for insufficient grief",
         "signal that her response will differ from the expected one",
         "show that she did not understand the news",
         "establish the story's religious frame",
@@ -811,7 +811,7 @@ export const apLitQuestions: ExamQuestion[] = [
       ],
       correct: 0,
       explanation:
-        "Every detail is alive and forward-looking while the house contains a reported death, which prepares the reader for the feeling she is about to recognise but cannot yet name.",
+        "Every detail is alive and forward-looking while the house contains a reported death, which prepares the reader for the feeling she is about to recognize but cannot yet name.",
       skill: "Imagery and contrast",
       unit: 4,
     },
@@ -825,7 +825,7 @@ export const apLitQuestions: ExamQuestion[] = [
       ],
       correct: 1,
       explanation:
-        "The narration stays at the surface of her body and attention — what she sees, feels, and refuses to name — which is why the later realisation arrives as a discovery rather than a statement.",
+        "The narration stays at the surface of her body and attention — what she sees, feels, and refuses to name — which is why the later realization arrives as a discovery rather than a statement.",
       skill: "Point of view",
       unit: 4,
     },
@@ -875,7 +875,7 @@ export const apLitQuestions: ExamQuestion[] = [
       q: "The detail that Richards 'had only taken the time to assure himself of its truth by a second telegram' is included to",
       options: [
         "show that the report of the death is reliable",
-        "criticise the telegraph system",
+        "criticize the telegraph system",
         "reveal Richards's romantic interest in Louise",
         "establish the story's historical period",
       ],
@@ -921,7 +921,7 @@ export const apLitQuestions: ExamQuestion[] = [
         "we would leap into eternal life",
         "we would risk or gamble away the afterlife",
         "we would skip over our remaining years",
-        "we would escape judgement",
+        "we would escape judgment",
       ],
       correct: 1,
       explanation:
@@ -1017,14 +1017,14 @@ export const apLitQuestions: ExamQuestion[] = [
       q: "'I have no spur / To prick the sides of my intent, but only / Vaulting ambition' reveals that Macbeth",
       options: [
         "believes his ambition is a sufficient reason to kill",
-        "recognises that ambition is the only motive he has, and that it is not a good one",
+        "recognizes that ambition is the only motive he has, and that it is not a good one",
         "has decided not to kill Duncan",
         "is afraid of being discovered",
       ],
       correct: 1,
       explanation:
         "'Only' is the operative word: stripped of every other justification, he finds ambition alone, and the metaphor then tells him it destroys itself. He knows and proceeds.",
-      skill: "Characterisation",
+      skill: "Characterization",
       unit: 3,
     },
     {
@@ -1080,7 +1080,7 @@ const literaryCoach = (minutes: number) => ({
     "What looks like ___ is better understood as ___, because ___.",
   ],
   pitfalls: [
-    "Summarising the passage instead of interpreting it.",
+    "Summarizing the passage instead of interpreting it.",
     "Naming a device without explaining its effect.",
     "Block quotations with no commentary.",
     "A thesis that lists three devices instead of making one claim.",
@@ -1090,7 +1090,7 @@ const literaryCoach = (minutes: number) => ({
 export const apLitFrqs: ExamFrq[] = [
   {
     id: "ap-lit-poetry",
-    taskType: "Poetry Analysis",
+    taskType: "Poetry Analyzis",
     title: "Question 1 · Poetry analysis",
     prompt:
       "The following poem, 'Remember' by Christina Rossetti, is a sonnet in which a speaker addresses a loved one. Read the poem carefully. Then, in a well-written essay, analyze how Rossetti's use of point of view, imagery, and structure conveys the speaker's complex attitude toward being remembered.",
@@ -1111,7 +1111,7 @@ export const apLitFrqs: ExamFrq[] = [
   },
   {
     id: "ap-lit-prose",
-    taskType: "Prose Fiction Analysis",
+    taskType: "Prose Fiction Analyzis",
     title: "Question 2 · Prose fiction analysis",
     prompt:
       "The following is the opening of Charlotte Perkins Gilman's 1892 story 'The Yellow Wallpaper'. Read the passage carefully. Then, in a well-written essay, analyze how Gilman uses narrative voice, repetition, and imagery to establish the narrator's relation to the authority around her.",
@@ -1125,8 +1125,8 @@ export const apLitFrqs: ExamFrq[] = [
     modelPath: [
       "Thesis: the narrator's rational, confiding voice is itself evidence of the pressure she is under; her repeated 'what is one to do?' shows a mind circling an authority it cannot name directly.",
       "Body 1 — narrative voice: first person, present tense, and the aside in parentheses ('this is dead paper') create intimacy and a confession addressed to no one who can answer.",
-      "Body 2 — repetition: 'personally', 'one', 'queer' recur, and the pronoun 'one' absorbs her own agency, showing how the medical judgement has colonised her grammar.",
-      "Body 3 — imagery: the gothic house that is 'haunted' and 'let so cheaply' externalises her suspicion and her confinement.",
+      "Body 2 — repetition: 'personally', 'one', 'queer' recur, and the pronoun 'one' absorbs her own agency, showing how the medical judgment has colonized her grammar.",
+      "Body 3 — imagery: the gothic house that is 'haunted' and 'let so cheaply' externalizes her suspicion and her confinement.",
       "Sophistication: the narrator writes what she cannot say aloud, so the diary is both symptom and protest; her irony about John's 'high standing' is the only resistance available to her.",
     ],
   },
@@ -1148,7 +1148,7 @@ export const apLitFrqs: ExamFrq[] = [
       "Body 1 — establish the truth and who is excluded from it, with a specific scene.",
       "Body 2 — show how the concealment shapes language: what characters say instead, and to whom.",
       "Body 3 — show the cost at the climax; the moment the truth surfaces is the moment the work's argument becomes visible.",
-      "Sophistication: consider whether the concealment protects anyone, complicating a simple judgement about honesty.",
+      "Sophistication: consider whether the concealment protects anyone, complicating a simple judgment about honesty.",
     ],
   },
 ];

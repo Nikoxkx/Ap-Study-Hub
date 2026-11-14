@@ -9,7 +9,7 @@
  * one is configured.
  *
  * Two design rules:
- *   - Every judgement must be explainable in one sentence, quoting the student.
+ *   - Every judgment must be explainable in one sentence, quoting the student.
  *   - Nothing may reward length. A long vague essay and a short precise one
  *     must not score the same, and the longer one must not score higher by
  *     default.
@@ -266,7 +266,7 @@ export function analyzeWriting(
     text,
     /\b(context|era|period|century|decade|years (?:before|after|later)|historically|after the|before the|during the|background)\b/gi,
   );
-  // Dated framing ("between 1840 and 1860") contextualises as surely as the
+  // Dated framing ("between 1840 and 1860") contextualizes as surely as the
   // word "context" does, so a span of years counts as a contextual move.
   const datedFraming = [
     ...text.matchAll(/\bbetween\s+1[5-9]\d{2}\s+and\s+(?:1[5-9]\d{2}|20\d{2})\b/gi),
@@ -285,16 +285,16 @@ export function analyzeWriting(
     for (const letter of group[1].matchAll(/\b([A-F])\b/g)) sourceMatches.add(letter[1].toUpperCase());
   }
 
-  // Sourcing: a sentence that both names a document and analyses who wrote it,
+  // Sourcing: a sentence that both names a document and analyzes who wrote it,
   // for whom, when, or why. Naming a document is not sourcing it.
   const sourcingMoves: string[] = [];
   for (const sentence of sentences) {
     const namesDocument = /\b(?:source|document|doc\.)\s+[A-F]\b/i.test(sentence.text);
-    const analysesSource =
+    const analyzesSource =
       /\b(author|writer|speaker|publisher|published|delivered|written|addressed|audience|purpose|point of view|perspective|occasion|in the (?:speech|letter|report)|as a (?:senator|president|congressman|historian|journalist|activist|slave|merchant|general))\b/i.test(
         sentence.text,
       );
-    if (namesDocument && analysesSource) sourcingMoves.push(sentence.text.slice(0, 150));
+    if (namesDocument && analyzesSource) sourcingMoves.push(sentence.text.slice(0, 150));
   }
 
   // Specific outside facts: dates, statistics, and proper nouns that are not
@@ -314,8 +314,8 @@ export function analyzeWriting(
       if (!/^[A-Z]/.test(word) || STOP_CAPITALS.has(word)) continue;
       if (sourceText.includes(word.toLowerCase())) continue;
       const next = words[index + 1] ?? "";
-      // A capitalised phrase ("Kansas-Nebraska Act", "Republican Party") is a
-      // named development. A single capitalised adjective ("Civil", "Northern")
+      // A capitalized phrase ("Kansas-Nebraska Act", "Republican Party") is a
+      // named development. A single capitalized adjective ("Civil", "Northern")
       // is not, unless it is long enough to be a name in its own right
       // ("Reconstruction", "Antietam").
       if (/^[A-Z]/.test(next) && !STOP_CAPITALS.has(next)) {
@@ -340,7 +340,7 @@ export function analyzeWriting(
     /(∫|\bd[A-Za-z]\s*\/\s*d[A-Za-z]\b|\bdy\/dx\b|\bdP\/dt\b|\bv\(t\)|\blim\b|\bdx\b|\bdt\b)/g,
   );
   const mathExpressions = equations + calculusNotation;
-  const unitsFound = uniqueMatch(text, /\b(kg|g|mg|mL|L|km|cm|m\/s|m\/s²|kWh|MW|GW|J|kJ|N|mol|M|%|°C|ppm|ppb|tonnes?|billion|million|trillion|litres?|meters?|metres?|hours?|seconds?|years?)\b/gi, 8);
+  const unitsFound = uniqueMatch(text, /\b(kg|g|mg|mL|L|km|cm|m\/s|m\/s²|kWh|MW|GW|J|kJ|N|mol|M|%|°C|ppm|ppb|tonnes?|billion|million|trillion|litres?|meters?|meters?|hours?|seconds?|years?)\b/gi, 8);
   const justificationMoves = countMatches(text, /\b(because|since|therefore|thus|as a result|which means|so that|explains?|justif(?:y|ies)|due to)\b/gi);
   const experimentalDesignTerms = uniqueMatch(
     text,
@@ -430,7 +430,7 @@ export function analyzeWriting(
  * question, or merely describe.
  */
 function findThesis(paragraphs: string[], sentences: Sentence[]): { sentence: string | null; reason: string } {
-  if (!sentences.length) return { sentence: null, reason: "There is no text to analyse yet." };
+  if (!sentences.length) return { sentence: null, reason: "There is no text to analyze yet." };
   const announcement =
     /^(in this essay|this essay will|i will|i am going to|the purpose of this essay|i think|i believe|i feel|in my opinion|to me,)/i;
   const mereEvaluation =
@@ -598,17 +598,17 @@ function checkMechanics(
 ): MechanicsIssue[] {
   const issues: MechanicsIssue[] = [];
 
-  // 1. Sentence-initial capitalisation.
+  // 1. Sentence-initial capitalization.
   for (const sentence of sentences) {
     const trimmed = sentence.text.trim();
     if (!trimmed) continue;
     const first = trimmed[0];
     if (/[a-z]/.test(first)) {
       issues.push({
-        rule: "capitalisation",
+        rule: "capitalization",
         message: "A sentence begins with a lowercase letter.",
         snippet: trimmed.slice(0, 60),
-        suggestion: `Capitalise “${first.toUpperCase()}”.`,
+        suggestion: `Capitalize “${first.toUpperCase()}”.`,
         severity: "error",
       });
     }
@@ -618,7 +618,7 @@ function checkMechanics(
   for (const match of text.matchAll(/(^|[^A-Za-z])i([^A-Za-z']|$)/g)) {
     issues.push({
       rule: "pronoun",
-      message: "The pronoun 'I' is capitalised in English.",
+      message: "The pronoun 'I' is capitalized in English.",
       snippet: snippetOf(text, match.index ?? 0),
       suggestion: "Write 'I'.",
       severity: "error",

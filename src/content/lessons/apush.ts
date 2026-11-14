@@ -41,7 +41,7 @@ For May 2027 AP History short-answer questions, expect source material and use i
 `),
     ],
     glossary: [
-      { term: "Columbian Exchange", definition: "The transatlantic movement of organisms, people, goods, and ideas after 1492, including both agricultural transformation and catastrophic epidemic disease." },
+      { term: "Columbian Exchange", definition: "The transatlantic movement of organizms, people, goods, and ideas after 1492, including both agricultural transformation and catastrophic epidemic disease." },
       { term: "Encomienda", definition: "A Spanish colonial grant of Indigenous tribute or labor to a colonist, justified through claims of protection and Christian instruction." },
       { term: "Mississippian", definition: "A network of Native North American cultures known for maize agriculture, mound building, hierarchical polities, and centers such as Cahokia." },
       { term: "Historical agency", definition: "The capacity of historical actors to make choices and pursue goals within constraints, including under colonial rule." },

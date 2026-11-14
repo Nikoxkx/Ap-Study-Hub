@@ -22,17 +22,22 @@ const faqs = [
   {
     question: "Do I need an account to use AP Study Hub?",
     answer:
-      "No. There is no sign-up, no email capture, and no paywall. Nothing on the site is gated, and no page requires JavaScript to read.",
+      "No. No sign-up, no email capture, no paywall. Every page is readable with JavaScript off, and your progress stays in your own browser.",
   },
   {
     question: "Is AP Study Hub affiliated with the College Board?",
     answer:
-      "No. It is an independent site written by a student. AP and Advanced Placement are registered trademarks of the College Board, which has not reviewed or endorsed anything here.",
+      "No. It is an independent site, written by a student. AP and Advanced Placement are College Board trademarks; the College Board has not reviewed or endorsed anything here.",
   },
   {
     question: "Are these real AP exam questions?",
     answer:
-      "No. Practice questions here are original and labeled as such. Released College Board questions are linked from each course's resources page rather than reproduced.",
+      "No, and they say so on the page. Everything is written for this site. Where official released questions exist, the resources page points you at them instead of copying them.",
+  },
+  {
+    question: "Who writes this, and how do I know it is right?",
+    answer:
+      "One student, named on the about page, who has sat or is sitting all ten courses. Every teaching section names its source, every source links out, and the AI disclosure says exactly where a drafting tool was used and how it was checked. Where something is uncertain, the page says it is uncertain.",
   },
   {
     question: "Which AP courses are covered?",
@@ -43,34 +48,34 @@ const faqs = [
 
 const studySurfaces = [
   {
-    name: "Deep Lessons",
+    name: "Lessons that explain",
     badge: "10+ paragraphs",
-    body: "Curriculum-aligned lessons with learning objectives, glossaries, rubric connections, and section-level citations.",
+    body: "Learning objectives, a glossary, the rubric connection, and a source for every section — not a summary sheet with the hard parts removed.",
   },
   {
-    name: "Recall Cards",
-    badge: "Fisher–Yates",
-    body: "Term on the front, the explanation you must produce cold on the back — keyboard-driven and saved locally.",
+    name: "Written answers",
+    badge: "One per unit",
+    body: "A full answer to the question this unit is most likely to ask, on squared paper if there is arithmetic in it and ruled paper if there is not.",
   },
   {
-    name: "Original Practice",
-    badge: "Reasoned feedback",
-    body: "Multiple-choice sets with option-level explanations and a direct route back to the exact teaching section.",
+    name: "Spoken defenses",
+    badge: "How to say it",
+    body: "What to keep as evidence, the question that actually gets asked, and the sentences to answer with. For every unit of every course.",
   },
   {
-    name: "Marked Essays & FRQs",
-    badge: "Rubric rows",
-    body: "Full sample responses broken out point by point: thesis, evidence, commentary, and complexity.",
+    name: "Recall cards",
+    badge: "One question",
+    body: "Question on the front, explanation on the back. Shuffled, keyboard-driven, and scheduled so the ones you miss come back sooner.",
   },
   {
-    name: "Full-Length Interim Exams",
-    badge: "Exam room",
-    body: "A full-screen paper for every course: passage beside question, official clock and break, printable answer sheet, and a rubric-marked report on every response.",
+    name: "Practice with reasons",
+    badge: "Not just a letter",
+    body: "Every wrong choice explains why it is wrong and links to the paragraph that fixes it, so you end up reading rather than scoring.",
   },
   {
-    name: "Verified Unit Videos",
-    badge: "Privacy-first",
-    body: "Real YouTube thumbnails for every unit across all ten courses, with opt-in privacy-enhanced players.",
+    name: "Full-length papers",
+    badge: "Real clock",
+    body: "The whole paper in the published format, with a break, an answer sheet you can print, and a rubric-marked report on every response.",
   },
 ];
 
@@ -96,17 +101,18 @@ export default function HomePage() {
             className="canvas-heading text-[clamp(2.25rem,1.5rem+3.4vw,4.25rem)] font-semibold"
             style={{ letterSpacing: "-0.032em", lineHeight: 1.04 }}
           >
-            Learn ten AP subjects deeply — on a quieter kind of study hub.
+            Ten AP courses, explained the way a friend would explain them.
           </h1>
 
           <p className="canvas-subtext mt-6 max-w-2xl text-[clamp(1.05rem,0.96rem+0.45vw,1.25rem)] leading-relaxed">
-            {totals.units} lessons and {totals.paragraphs} teaching paragraphs explain the why
-            behind every unit. Recall cards, original practice, marked essays and FRQs, and unit
-            videos help you earn a score your college may accept for credit — with zero accounts or paywalls.
+            {totals.units} lessons that say why something is true instead of asking you to memorize it.
+            Every unit comes with a full answer you can copy the shape of, a defense you can say out loud,
+            and practice that tells you which paragraph to reread when you miss. No account, no paywall,
+            no tracking.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Link href="#catalogue" className="btn">
+            <Link href="#catalog" className="btn">
               Find your course
             </Link>
             <Link href="/study" className="btn">
@@ -198,18 +204,18 @@ export default function HomePage() {
       </section>
 
       {/* ── 01 · Centered Section Heading + 3-Column Glass Course Cards ─── */}
-      <section id="catalogue" className="wrap py-14 md:py-20" aria-labelledby="catalogue-heading">
+      <section id="catalog" className="wrap py-14 md:py-20" aria-labelledby="catalog-heading">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <p className="label mb-2">01 · Ten AP Courses</p>
           <h2
-            id="catalogue-heading"
+            id="catalog-heading"
             className="canvas-heading text-[clamp(1.85rem,1.4rem+1.8vw,2.75rem)] font-semibold"
           >
-            Built for students who would rather understand than cram.
+            For people who would rather understand it than cram it.
           </h2>
           <p className="canvas-subtext mt-3 text-[1rem]">
-            Every course gives you curriculum-ordered lessons, recall cards, original practice,
-            curated unit videos, and cited sources.
+            Ten courses, in curriculum order, each with the same five things: the lesson, a written
+            answer, a spoken defense, recall cards, and practice with a reason attached to every choice.
           </p>
         </div>
 
@@ -296,26 +302,27 @@ export default function HomePage() {
               id="anatomy-heading"
               className="text-[clamp(1.75rem,1.35rem+1.5vw,2.45rem)] font-semibold"
             >
-              Revision stops being eleven open browser tabs.
+              Six tabs became one page that knows what you already got wrong.
             </h2>
             <p className="mt-4 text-[0.95rem] leading-relaxed" style={{ color: "var(--ink-soft)" }}>
-              Six study surfaces work together in the order you actually use them. Every mode has
-              its own bookmarkable URL and feeds your local review schedule without tracking you.
+              The pieces talk to each other. Miss a question and it goes into your review queue; finish a
+              paper and the weak units land there too. Nothing leaves your browser, and each mode has its
+              own URL you can bookmark.
             </p>
 
             <ul className="mt-6 space-y-3.5 text-[0.9rem]">
               {[
                 {
-                  title: "Lessons written to explain",
-                  detail: "Ten-plus developed paragraphs per unit with dated curriculum citations.",
+                  title: "Lessons written to explain, not to cover",
+                  detail: "Ten or more paragraphs per unit, each section carrying the source it came from and the date it was checked.",
                 },
                 {
-                  title: "Spaced retrieval & mistake notebook",
-                  detail: "Missed cards and practice items resurface automatically on your Study Desk.",
+                  title: "A written answer and a spoken defense per unit",
+                  detail: "See a full-credit answer on squared or ruled paper, then the words to say when someone asks how you know.",
                 },
                 {
-                  title: "Lined notebook scratch work",
-                  detail: "Work out Calculus steps, FRQ outlines, and synthesis matrices in place.",
+                  title: "A mistake notebook that does something",
+                  detail: "Every miss comes back with why it was wrong and the exact paragraph that fixes it.",
                 },
               ].map((row) => (
                 <li key={row.title} className="flex items-start gap-3">
@@ -508,7 +515,7 @@ export default function HomePage() {
             id="faq-heading"
             className="canvas-heading text-[clamp(1.75rem,1.35rem+1.5vw,2.4rem)] font-semibold"
           >
-            Questions you might be asking
+            Things people ask before they trust a free site
           </h2>
         </div>
 

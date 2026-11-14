@@ -5,7 +5,8 @@
  *
  * Run: pnpm validate:presentation
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { join } from "node:path";
 import { inflateSync } from "node:zlib";
 
 const errors = [];
@@ -16,6 +17,11 @@ const isNeutralHex = (hex) => {
     && value.slice(2, 4).toLowerCase() === value.slice(4, 6).toLowerCase();
 };
 const fail = (message) => errors.push(message);
+const readTree = (dir) =>
+  readdirSync(dir).flatMap((entry) => {
+    const path = join(dir, entry);
+    return statSync(path).isDirectory() ? readTree(path) : [path];
+  });
 
 const css = read("src/app/globals.css");
 const subjects = read("src/lib/subjects.ts");
@@ -231,9 +237,72 @@ for (const path of ["public/og-image.png", "public/social-preview.png"]) {
   if (width !== 1200 || height !== 630) fail(`${path} is ${width}×${height}, expected 1200×630`);
 }
 
+// ── The two papers -----------------------------------------------------------
+// The notes promise a specific thing: squared paper for anything with numbers
+// in it, ruled paper for anything without. Both papers have to exist, both have
+// to be defined once, and the reference photograph's grid has to survive in the
+// CSS as something other than a decoration.
+const quadRules = css.match(/\.quad-paper \{([\s\S]*?)\n\}/)?.[1] ?? "";
+if (!quadRules) fail("globals.css has no .quad-paper block, so math examples have no squared paper to sit on");
+for (const token of ["--quad-square", "--quad-rule", "--quad-margin", "repeating-linear-gradient"]) {
+  if (!quadRules.includes(token)) fail(`.quad-paper is missing ${token}`);
+}
+if (!css.includes(".dark .quad-paper")) fail("quad paper has no night-mode rule, so it will be recoloured by the theme");
+const writtenExample = read("src/components/WrittenExample.tsx");
+if (!writtenExample.includes('math ? "quad-paper" : "scratch-paper"')) {
+  fail("WrittenExample no longer chooses its paper from whether the answer contains arithmetic");
+}
+if (!read("src/components/WorkedPaper.tsx").includes("worked-paper quad-paper")) {
+  fail("WorkedPaper is not using squared paper");
+}
+const writtenCss = css.match(/\.written-paper \{([\s\S]*?)\n\}/)?.[1] ?? "";
+if (!writtenCss.includes("--written-line-height")) {
+  fail("written paper does not pin one line height, so the type will drift off the rules");
+}
+
+// 5. The site writes American English, because a page that says "defence" in
+//    one heading and "defense" in the next reads like it was assembled from two
+//    sites. Source titles are exempt, and so are the code comments that describe
+//    CSS (colour is a CSS word).
+const prose = ["src/app", "src/content", "src/components", "src/lib"]
+  .flatMap((dir) => readTree(dir))
+  .filter((file) => /\.(tsx?|md)$/.test(file))
+  .map((file) => [file, read(file)])
+  .filter(([file]) => !file.includes("wordlist"));
+const british = [
+  ["defence", "defense"],
+  ["colour", "color"],
+  ["behaviour", "behavior"],
+  ["centre", "center"],
+  ["metre", "meter"],
+  ["licence", "license"],
+  ["labelled", "labeled"],
+  ["practise", "practice"],
+  ["organise", "organize"],
+  ["recognise", "recognize"],
+  ["summarise", "summarize"],
+  ["analysed", "analyzed"],
+  ["analyses ", "analyzes "],
+  ["judgement", "judgment"],
+  ["whilst", "while"],
+  ["amongst", "among"],
+  ["learnt", "learned"],
+  ["cancelled", "canceled"],
+  ["travelled", "traveled"],
+];
+for (const [file, text] of prose) {
+  for (const [uk, us] of british) {
+    // Skip the line if it is a quoted source title or an already-correct word.
+    const pattern = new RegExp(`\\b${uk.trim()}\\b`, "i");
+    const line = text.split("\n").find((row) => pattern.test(row) && !row.includes(`"${uk}`));
+    if (line) fail(`${file} uses "${uk}" — write "${us}" (line: ${line.trim().slice(0, 80)})`);
+  }
+}
+
+
 if (errors.length) {
   console.error(`Presentation validation failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Exam room print sheet, neutral night mode, subject symbols, real video thumbnails, and static social preview are intact.");
+console.log("✓ Exam room print sheet, neutral night mode, subject symbols, real video thumbnails, static social preview, and both papers are intact.");

@@ -7,7 +7,7 @@
  * small, closed set of tags.
  *
  * Because the draft goes into `localStorage` and is later rendered as HTML, it
- * is sanitised on the way in *and* on the way out: only the tags below survive,
+ * is sanitized on the way in *and* on the way out: only the tags below survive,
  * with no attributes at all. That keeps a stored draft from ever being a way to
  * inject a script into the report page, even if the browser profile is shared.
  */
@@ -38,10 +38,10 @@ export function richTextWordCount(html: string): number {
 }
 
 /**
- * Sanitise a stored draft.
+ * Sanitize a stored draft.
  *
  * Rather than parse with a DOM (which is unavailable during server rendering),
- * the string is tokenised: tags are kept only if they are on the allowlist and
+ * the string is tokenized: tags are kept only if they are on the allowlist and
  * carry no attributes, and every other angle bracket is escaped. Text content
  * is left alone because it cannot become markup once `<` is escaped.
  */

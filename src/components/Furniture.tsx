@@ -92,13 +92,13 @@ export function Stat({
   label: string;
   tone?: "ink" | "subject" | "mark";
 }) {
-  const colour =
+  const color =
     tone === "subject" ? "var(--subject-ink)" : tone === "mark" ? "var(--mark)" : "var(--ink)";
   return (
     <div>
       <div
         className="stat-value text-[1.5rem] leading-none"
-        style={{ fontFamily: "var(--font-display)", fontWeight: 600, color: colour }}
+        style={{ fontFamily: "var(--font-display)", fontWeight: 600, color: color }}
       >
         {value}
       </div>

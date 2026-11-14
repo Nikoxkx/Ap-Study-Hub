@@ -25,7 +25,7 @@ export function JsonLd({ schema }: { schema: Schema | Schema[] }) {
         <script
           key={index}
           type="application/ld+json"
-          // Serialised by JSON.stringify, and `<` is escaped so a stray closing
+          // Serialized by JSON.stringify, and `<` is escaped so a stray closing
           // tag inside content cannot break out of the script element.
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(item).replace(/</g, "\\u003c"),
@@ -132,14 +132,14 @@ export function faqSchema(entries: { question: string; answer: string }[]): Sche
   };
 }
 
-/** The catalogue as an ItemList, matching the order courses appear on the home page. */
+/** The catalog as an ItemList, matching the order courses appear on the home page. */
 export function catalogSchema(): Schema {
   const catalog = getCatalog();
   const totals = getTotals();
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `${site.name} course catalogue`,
+    name: `${site.name} course catalog`,
     numberOfItems: totals.courses,
     itemListOrder: "https://schema.org/ItemListOrderAscending",
     itemListElement: catalog.map((course, index) => ({

@@ -56,7 +56,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       label: "Read the why",
       count: counts.units,
       unit: counts.units === 1 ? "lesson" : "lessons",
-      body: "Real explanations, not a glossary. Every lesson shows its sources.",
+      body: "The why, in plain English, with one full written answer and one spoken defense per lesson.",
       show: counts.units > 0,
     },
     {
@@ -64,7 +64,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       label: "Watch a teacher",
       count: getCourseVideos(subject.slug).length,
       unit: "videos",
-      body: "Real YouTube thumbnails and a player beside every unit.",
+      body: "Someone else explaining it, when the page is not landing. One per unit.",
       show: getCourseVideos(subject.slug).length > 0,
     },
     {
@@ -72,7 +72,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       label: "Make it stick",
       count: counts.flashcards,
       unit: "cards",
-      body: "Find the holes in your memory, then drill just those.",
+      body: "Question on the front, answer on the back. The ones you miss come back tomorrow.",
       show: counts.flashcards > 0,
     },
     {
@@ -80,7 +80,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       label: "Try it yourself",
       count: counts.questions,
       unit: "questions",
-      body: "Get it wrong here, with an explanation, rather than on exam day.",
+      body: "Get it wrong here, where a wrong answer tells you which paragraph to reread.",
       show: counts.questions > 0,
     },
     {
@@ -88,7 +88,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       label: "See it marked",
       count: counts.essays,
       unit: counts.essays === 1 ? "sample" : "samples",
-      body: "See exactly which sentence earned which point.",
+      body: "Marked against the real rubric, sentence by sentence, including what did not earn a point.",
       show: counts.essays > 0,
     },
     {
@@ -96,15 +96,23 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       label: "Sit the interim",
       count: course.interim?.minutes ?? 0,
       unit: "minutes",
-      body: "The whole exam in the official format, then the same paper taught step by step.",
+      body: "The whole paper on the clock, then the same paper taught question by question.",
       show: Boolean(course.interim),
+    },
+    {
+      href: `${base}/defense`,
+      label: "Defend it out loud",
+      count: counts.units,
+      unit: "defenses",
+      body: "What to keep as evidence, the question that actually gets asked, and the words to answer with.",
+      show: counts.units > 0,
     },
     {
       href: `${base}/resources`,
       label: "Check the source",
       count: counts.resources,
       unit: "links",
-      body: "Official material, archives, and teachers worth learning from.",
+      body: "The official framework, the scoring documents, and a short list of teachers worth your time.",
       show: counts.resources > 0,
     },
   ].filter((mode) => mode.show);
@@ -123,8 +131,8 @@ export default async function CourseOverviewPage({ params }: { params: Params })
               Start where you are
             </h2>
             <p className="canvas-subtext mt-2 text-[0.95rem]">
-              Pick the way you learn best. Read the notes then practise, or watch the unit video
-              and drill the recall cards.
+              Read the lesson, copy one full answer, then say the defense out loud. If you only have ten
+              minutes, do the recall cards. Which one you pick matters less than doing one properly.
             </p>
           </div>
           <DownloadButton href={`${base}/print`} internal>
@@ -159,10 +167,65 @@ export default async function CourseOverviewPage({ params }: { params: Params })
         </ul>
       </section>
 
+      {/* Written work and the spoken defense: the part every course has and
+          most revision sites do not. */}
+      <GlassCard as="section" padding="lg">
+        <p className="label mb-1.5">02 · Written work and defense</p>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10">
+          <div>
+            <h2 className="text-[1.6rem] font-semibold">Every unit has an answer, and a defense of it</h2>
+            <p className="mt-2 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+              Each lesson now ends with the question it is most likely to ask, a full-credit answer, and
+              the words to say out loud when a teacher asks how you got there. The answer sits on squared
+              paper if there is arithmetic in it and ruled paper if there is not, because you will copy it
+              onto one of those two.
+            </p>
+            <ul className="mt-4 space-y-2 text-[0.9rem]" style={{ color: "var(--ink-soft)" }}>
+              {[
+                "A written example per lesson, with the reason each sentence earns its mark.",
+                "The mistake a strong student makes on that question — the useful one, not only the obvious one.",
+                "A spoken defense per unit: what to keep as evidence, the question that gets asked, and the order to answer in.",
+              ].map((line) => (
+                <li key={line} className="flex gap-2.5">
+                  <span aria-hidden="true" style={{ color: "var(--mark)" }}>→</span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href={`${base}/defense`} className="btn btn-sm">
+                Open the {subject.familiar} defenses
+              </Link>
+              <Link href={`${base}/notes`} className="link-underlined self-center text-[0.875rem] font-semibold">
+                Or read a lesson →
+              </Link>
+            </div>
+          </div>
+          <aside className="sunk p-5">
+            <p className="label mb-2">What a defense sounds like</p>
+            <ol className="space-y-2.5 text-[0.875rem]" style={{ color: "var(--ink-soft)" }}>
+              {[
+                "\u201cThe first thing I did was check whether direct substitution worked, because that decides the method.\u201d",
+                "\u201cThen I factored, which is legal here because the limit never reaches the hole.\u201d",
+                "\u201cMy check was the power rule, and it agreed, so the algebra is probably right.\u201d",
+                "\u201cThe weak part is that I assumed the interval was closed, and I should have said so.\u201d",
+              ].map((line, index) => (
+                <li key={line} className="flex gap-2.5">
+                  <span className="shrink-0 text-[0.6875rem]" style={{ fontFamily: "var(--font-mono)", color: "var(--mark)" }}>
+                    {index + 1}
+                  </span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ol>
+          </aside>
+        </div>
+      </GlassCard>
+
       {/* Unit index */}
       {units.length > 0 ? (
         <GlassCard as="section" padding="lg" aria-labelledby="units-heading">
-          <p className="label mb-1.5">02 · Official Sequence</p>
+          <p className="label mb-1.5">03 · Official Sequence</p>
           <h2 id="units-heading" className="text-[1.6rem] font-semibold">
             Your route through the units
           </h2>
@@ -220,7 +283,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
       {tips.length > 0 ? (
         <section aria-labelledby="tips-heading">
           <div className="mb-6">
-            <p className="label mb-1.5">03 · Practical Advice</p>
+            <p className="label mb-1.5">04 · Practical Advice</p>
             <h2
               id="tips-heading"
               className="canvas-heading text-[1.6rem] font-semibold"

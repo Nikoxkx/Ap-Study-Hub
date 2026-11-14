@@ -1,19 +1,23 @@
 import type { WorkedExample } from "@/content/worked";
 import { InlineMathText, Math } from "@/lib/math";
 
-/** Ruled scratch work: the notation and the reason for a step stay side by side. */
+/**
+ * Squared-paper scratch work: the notation and the reason for each step stay
+ * side by side, because "I divided here" is only a checkable claim if the line
+ * it refers to is still visible next to it.
+ */
 export function WorkedPaper({ example, defaultOpen = false }: { example: WorkedExample; defaultOpen?: boolean }) {
   return (
     <details className="worked-wrap" open={defaultOpen}>
       <summary className="worked-summary">
         <span>
-          <span className="label mb-1 block">Worked on paper · original example</span>
+          <span className="label mb-1 block">Squared paper · original example</span>
           <span className="text-[1.0625rem] font-semibold">{example.title}</span>
         </span>
         <span className="label shrink-0">Show steps</span>
       </summary>
 
-      <article className="worked-paper scratch-paper" aria-label={`Worked solution: ${example.title}`}>
+      <article className="worked-paper quad-paper" aria-label={`Worked solution: ${example.title}`}>
         <header className="worked-problem">
           <p className="label mb-2">Problem</p>
           <p><InlineMathText>{example.problem}</InlineMathText></p>
@@ -36,7 +40,7 @@ export function WorkedPaper({ example, defaultOpen = false }: { example: WorkedE
           <Math block>{example.answer}</Math>
         </div>
         <p className="worked-check">
-          <span className="label mr-2">Check / interpretation</span>
+          <span className="label mr-2">Check</span>
           <InlineMathText>{example.check}</InlineMathText>
         </p>
       </article>

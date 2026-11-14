@@ -51,8 +51,9 @@ export default async function CardsPage({ params }: { params: Params }) {
             {subject.familiar} recall cards
           </h2>
           <p className="lede mt-3">
-            Lesson glossaries feed this deck automatically alongside the original course cards.
-            Front is the prompt, back is a definition worth producing cold.
+            One question on the front, the answer on the back. Not multiple choice, not a list with the
+            definition printed beside the term — you have to produce it before you turn the card over.
+            Your progress stays on this device.
           </p>
         </GlassCard>
 

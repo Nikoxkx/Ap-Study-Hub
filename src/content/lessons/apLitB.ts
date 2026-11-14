@@ -11,7 +11,7 @@ export const apLitLessonsB: Lesson[] = [
     examWeight: "Longer Fiction or Drama · 15–18% of multiple-choice passage weight across Units 3, 6, and 9",
     objectives: [
       "Identify evidence that a narrator's account is partial or self-serving.",
-      "Explain how dramatic irony shapes an audience's judgement of a character.",
+      "Explain how dramatic irony shapes an audience's judgment of a character.",
       "Distinguish the narrator's perspective from the implied perspective of the work.",
     ],
     sections: [
@@ -21,12 +21,12 @@ A narrator who insists on being reasonable may be making an argument about thems
 Unreliability is not the same as lying. A narrator may be sincere, limited, self-deceived, or selective, and each version produces a different reading of the work. Say which kind you are arguing for, and support it with two moments where the account strains against itself. That specificity is what distinguishes an interpretation from the suspicion that nobody in a book can be trusted.
 `),
       section("Dramatic irony as structure", ["cb-ap-lit-ced", "folger-shakespeare"], `
-Dramatic irony places the audience ahead of a character. In drama this is often literal — the audience hears a soliloquy and then watches a companion receive the polished version. In prose, the equivalent is a narrative comment the focal character does not hear. The effect is judgement: the audience is invited to interpret behaviour that the character is still explaining to themselves.
+Dramatic irony places the audience ahead of a character. In drama this is often literal — the audience hears a soliloquy and then watches a companion receive the polished version. In prose, the equivalent is a narrative comment the focal character does not hear. The effect is judgment: the audience is invited to interpret behavior that the character is still explaining to themselves.
 
-The strongest irony is structural rather than local. A character who has been deceived throughout a play does not merely deliver one ironic line at the end; every earlier scene becomes retrospective evidence once the audience learns what was withheld. When you write about irony, show the structure: what the audience knows, when they learn it, and what the earlier scenes look like afterwards.
+The strongest irony is structural rather than local. A character who has been deceived throughout a play does not merely deliver one ironic line at the end; every earlier scene becomes retrospective evidence once the audience learns what was withheld. When you write about irony, show the structure: what the audience knows, when they learn it, and what the earlier scenes look like afterward.
 `),
       section("The implied author is not the narrator", ["cb-ap-lit-ced", "poetry-foundation-terms"], `
-The implied author is the intelligence the work as a whole projects — its arrangement, its ironies, its judgements. The narrator is one device inside that design. Confusing the two produces the commonest error in student essays: treating a character's opinion as the book's opinion. A novel can be narrated by a snob and still be a critique of snobbery, and the difference is visible in what the structure rewards and punishes.
+The implied author is the intelligence the work as a whole projects — its arrangement, its ironies, its judgments. The narrator is one device inside that design. Confusing the two produces the commonest error in student essays: treating a character's opinion as the book's opinion. A novel can be narrated by a snob and still be a critique of snobbery, and the difference is visible in what the structure rewards and punishes.
 
 Use the arrangement as evidence. Which scenes are placed next to each other? Whose account is contradicted by a later chapter? What does the final paragraph allow the reader to see that the narrator cannot? These structural facts let you make claims about the work's argument rather than about its narrator's opinions.
 `),
@@ -54,7 +54,7 @@ During the draft, keep the ratio of quotation to commentary visible on the page.
       criteria: [
         "Name the kind of unreliability you are arguing for and cite two moments that support it.",
         "Explain irony through structure: what the audience knows, and when.",
-        "Distinguish the narrator's judgement from the implied author's.",
+        "Distinguish the narrator's judgment from the implied author's.",
       ],
       sources: ["cb-ap-lit-ced", "cb-ap-lit-frq"],
     },
@@ -100,10 +100,10 @@ During the draft, keep the ratio of quotation to commentary visible on the page.
       section("Endings are arguments", ["cb-ap-lit-ced", "gutenberg-literature"], `
 The last sentence of a story tells the reader how to weigh everything before it. A return to an opening image can make the intervening action feel like a loop; a sudden shift in register can make the previous calm look like denial. When an ending is ambiguous, the ambiguity is usually a claim about the unresolvability of the situation rather than a failure of nerve.
 
-Read the ending twice: once as a continuation and once as a verdict. Then choose which reading the details support. In a story about a woman who has just recognised freedom, an ending that returns her to a staircase and a heart condition is not only a plot twist; it makes the recognition and its cancellation simultaneous. That is an argument about how much a moment of insight can change.
+Read the ending twice: once as a continuation and once as a verdict. Then choose which reading the details support. In a story about a woman who has just recognized freedom, an ending that returns her to a staircase and a heart condition is not only a plot twist; it makes the recognition and its cancellation simultaneous. That is an argument about how much a moment of insight can change.
 `),
       section("Competing readings, held together", ["cb-ap-lit-ced", "cb-ap-lit-frq"], `
-A sophisticated reading does not pretend that ambiguity is agreement. It states the strongest alternative and explains why the evidence favours one reading, or why the text deliberately refuses to choose. The sophistication row on the rubric rewards the first and, more rarely, the second.
+A sophisticated reading does not pretend that ambiguity is agreement. It states the strongest alternative and explains why the evidence favors one reading, or why the text deliberately refuses to choose. The sophistication row on the rubric rewards the first and, more rarely, the second.
 
 Use the same evidence for both readings and show that it discriminates. If an image of spring can support both renewal and indifference, explain which the surrounding verbs support. The reader is judging whether your reasoning can survive the other reading, not whether you noticed that another reading exists.
 `),
@@ -115,10 +115,10 @@ A practical test: could your evidence support the opposite claim just as easily?
       section("Close reading at speed", ["cb-ap-lit-ced", "poetry-foundation-terms"], `
 Under exam conditions, annotation should be minimal: the shift, the speaker, the repeated word, the final image. Four marks are enough to write three body paragraphs. Readers do not reward decoration; they reward a line of reasoning that can be followed.
 
-Practise on a single paragraph rather than a whole story. Give yourself eight minutes, produce one thesis and two body paragraphs, then check whether each paragraph contains more explanation than quotation. This is the smallest useful unit of practice, and it improves faster than rereading whole anthologies.
+Practice on a single paragraph rather than a whole story. Give yourself eight minutes, produce one thesis and two body paragraphs, then check whether each paragraph contains more explanation than quotation. This is the smallest useful unit of practice, and it improves faster than rereading whole anthologies.
 `),
       section("From passage to whole work", ["cb-ap-lit-ced", "gutenberg-literature"], `
-Short passages on the exam are excerpts, and the best answers remember that. A moment of cruelty in a novel may be framed by later regret; a moment of tenderness may be ironised by the next chapter. You cannot use what is not printed, but you can avoid claims that the passage does not support.
+Short passages on the exam are excerpts, and the best answers remember that. A moment of cruelty in a novel may be framed by later regret; a moment of tenderness may be ironized by the next chapter. You cannot use what is not printed, but you can avoid claims that the passage does not support.
 
 Write about the passage you have, then add one sentence connecting it to the kind of whole work it implies. That sentence belongs in a conclusion or in a qualification, and it is often what lifts an essay from competent to sophisticated.
 `),
@@ -127,22 +127,22 @@ Write about the passage you have, then add one sentence connecting it to the kin
       { term: "Reframing", definition: "A later moment that changes how earlier material is understood without altering its words." },
       { term: "Discriminating evidence", definition: "A detail whose function supports one reading better than its rival." },
       { term: "Open ending", definition: "A conclusion that leaves the outcome unresolved in a way the text has prepared." },
-      { term: "Epiphany", definition: "A moment of sudden understanding that may or may not change a character's behaviour." },
+      { term: "Epiphany", definition: "A moment of sudden understanding that may or may not change a character's behavior." },
       { term: "Register", definition: "The level and manner of language a text uses, such as formal, colloquial, or liturgical." },
     ],
     examAlignment: {
       title: "Prose fiction analysis, third pass",
       description: "The hardest prose passages on the exam reward discrimination between readings, not recognition of devices.",
       criteria: [
-        "Explain how the ending reframes the passage rather than summarising the twist.",
-        "Use evidence that favours one reading over its rival.",
+        "Explain how the ending reframes the passage rather than summarizing the twist.",
+        "Use evidence that favors one reading over its rival.",
         "Concede an alternative reading and answer it in one sentence.",
       ],
       sources: ["cb-ap-lit-ced", "cb-ap-lit-frq"],
     },
     practice: [
       {
-        question: "A story ends by returning to the staircase where it began, after the protagonist has recognised her freedom. What is the most defensible claim about the ending?",
+        question: "A story ends by returning to the staircase where it began, after the protagonist has recognized her freedom. What is the most defensible claim about the ending?",
         options: [
           "The return shows that nothing has changed, so the recognition was meaningless.",
           "The return makes the recognition and its cancellation simultaneous, so the story argues about how much insight can alter a life.",
@@ -176,7 +176,7 @@ Write about the passage you have, then add one sentence connecting it to the kin
     objectives: [
       "Explain how an allusion changes a poem's available meanings.",
       "Compare two poems' arguments about a shared subject.",
-      "Analyse a poem's use of a received form as an argument rather than a container.",
+      "Analyze a poem's use of a received form as an argument rather than a container.",
     ],
     sections: [
       section("Allusion is a compression", ["cb-ap-lit-ced", "poetry-foundation-terms"], `
@@ -264,7 +264,7 @@ On the exam, comparative questions appear mainly in multiple choice, but the ski
       section("Choose the work that fits the question", ["cb-ap-lit-ced", "cb-ap-lit-frq"], `
 Question 3 offers a concept — a character's relation to an unacknowledged truth, the function of a minor character, the significance of a journey — and asks you to select a work. The best work is not the most famous one; it is the one you can support with two or three specific scenes. A single accurately remembered scene outranks a vague acquaintance with a masterpiece.
 
-Prepare four or five works across genres in advance. For each, memorise three moments, one recurring image, and one sentence about the ending. That preparation covers almost any prompt, and it prevents the improvisation that produces plot summary.
+Prepare four or five works across genres in advance. For each, memorize three moments, one recurring image, and one sentence about the ending. That preparation covers almost any prompt, and it prevents the improvisation that produces plot summary.
 `),
       section("Context, used sparingly", ["cb-ap-lit-ced", "gutenberg-literature"], `
 Historical context can sharpen an interpretation, but it cannot substitute for reading. A paragraph about Victorian marriage law is useful only if the next sentence shows what the novel does with it. The exam rubric rewards evidence and commentary, not background knowledge.
@@ -279,7 +279,7 @@ Place the thesis at the start, then treat each body paragraph as evidence for on
       section("Complexity without hedging", ["cb-ap-lit-ced", "cb-ap-lit-frq"], `
 The sophistication row rewards a genuine complication: an alternative interpretation addressed, a tension named, a limit acknowledged. It does not reward uncertainty. "The novel could mean many things" is not complexity; "the novel presents the door as both escape and trap, which means freedom in the book is inseparable from surveillance" is.
 
-Practise the move with one sentence per essay: "The strongest objection to this reading is ___, but the evidence of ___ suggests otherwise." That sentence is worth more than a page of additional summary, because it shows a reader that your reading has been tested rather than asserted, and that you know which part of it is most vulnerable.
+Practice the move with one sentence per essay: "The strongest objection to this reading is ___, but the evidence of ___ suggests otherwise." That sentence is worth more than a page of additional summary, because it shows a reader that your reading has been tested rather than asserted, and that you know which part of it is most vulnerable.
 `),
       section("The last ten minutes", ["cb-ap-lit-ced", "cb-ap-lit-exam"], `
 In the final ten minutes of the free-response section, do not add a new argument. Check three things: the thesis answers the prompt's verb, every body paragraph contains commentary that explains evidence, and the conclusion says something the introduction did not. Then fix the first sentence that sounds like plot summary.
@@ -311,7 +311,7 @@ Mechanics matter less than reasoning on this exam, but a sentence that cannot be
           "Remembering the minor character's full name and family history.",
           "Knowing two scenes in which the minor character's presence changes how the protagonist acts.",
           "Knowing the year the work was published.",
-          "Being able to summarise the entire plot.",
+          "Being able to summarize the entire plot.",
         ],
         correctIndex: 1,
         explanation: "The essay is scored on evidence and commentary, so scenes that show the character's function are worth more than biographical detail or plot recall.",

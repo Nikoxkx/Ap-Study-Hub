@@ -212,7 +212,7 @@ export const workedExamples: WorkedExample[] = [
       { math: String.raw`E_2=0.10(1{,}000)=100,\qquad E_3=0.10(100)=10`, note: "Repeat for secondary and tertiary consumers; do not take 10% of the original every time." },
     ],
     String.raw`\boxed{1{,}000,\ 100,\ 10\,\text{kcal, respectively}}`,
-    "The 10% rule is a rough model, not a fixed law. Actual transfer varies with organisms, ecosystems, assimilation, and measurement boundaries."),
+    "The 10% rule is a rough model, not a fixed law. Actual transfer varies with organizms, ecosystems, assimilation, and measurement boundaries."),
 ];
 
 export function getWorkedExamples(courseSlug: SubjectSlug | string, unitNumber?: number): WorkedExample[] {

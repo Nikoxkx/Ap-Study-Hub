@@ -13,7 +13,7 @@ import { writtenWorkCopy } from "@/lib/subjects";
  * published rubric rows — the descriptors the AP reader in May will use — and
  * the student awards each row themselves, recording why. The only automatic
  * part is a word count and a short checklist of things readers look for, which
- * is there to make an honest judgement easier, not to replace it.
+ * is there to make an honest judgment easier, not to replace it.
  *
  * Marks are saved per course and task, so a re-read a week later starts from the
  * previous decision rather than from a blank form.
@@ -200,8 +200,8 @@ export function RubricSelfScore({
             : "Nothing marked yet. Work top-down: a thesis is worth one point or none, and the evidence rows are decided by what the commentary explains, not by how much is quoted."}
         </p>
         <p className="selfscore-fine">
-          The AP reader awards these rows in May. This panel exists so you practise reading your own writing the
-          way that reader will, not so a machine can replace the judgement.
+          The AP reader awards these rows in May. This panel exists so you practice reading your own writing the
+          way that reader will, not so a machine can replace the judgment.
         </p>
       </div>
     </div>
