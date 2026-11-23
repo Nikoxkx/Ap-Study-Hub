@@ -202,7 +202,7 @@
      label voice is light enough to hold its own — all still strictly neutral. */
   --ink: #f7f7f7;
   --ink-soft: #dddddd;
-  --ink-faint: #c6c6c6;
+  --ink-faint: #e2e2e2;
   --rule: rgba(255, 255, 255, 0.14);
   --rule-strong: rgba(255, 255, 255, 0.3);
   --mark: #ededed;
@@ -238,15 +238,22 @@
 .lede {
   text-shadow:
     0 1px 10px rgba(255, 255, 255, 0.92),
-    0 0 2px rgba(255, 255, 255, 0.9);
+    0 0 1px rgba(255, 255, 255, 0.95);
 }
 
 .dark .label,
 .dark .folio,
 .dark .lede {
+  /* The rim is 1px, not 3px: mono caps are 11px, and a 3px black glow bled into
+     the strokes until grey letters read as dark ones. The wide 10px shadow still
+     separates the word from a busy painting without touching the glyph. */
   text-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.92),
-    0 0 3px rgba(0, 0, 0, 0.9);
+    0 1px 10px rgba(0, 0, 0, 0.92),
+    0 0 1px rgba(0, 0, 0, 0.95);
+}
+
+.dark .label {
+  font-weight: 600;
 }
 
 /* Each AP class keeps its own accent (from src/lib/subjects.ts): `ink` on light
@@ -2217,10 +2224,10 @@ main :has(:fullscreen) {
 }
 
 .dark .canvas-subtext {
-  color: #f0f0f0;
+  color: #f7f7f7;
   text-shadow:
     0 2px 18px rgba(0, 0, 0, 0.96),
-    0 0 3px rgba(0, 0, 0, 0.98);
+    0 0 1px rgba(0, 0, 0, 0.98);
 }
 
 /* ---- Legibility over the wallpaper --------------------------------------

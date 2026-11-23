@@ -374,7 +374,15 @@ if (onInkDark === null || onInkDark > 0.15) {
 const darkInk = lum(tokenIn(darkBlock, "--ink"));
 if (darkInk === null || darkInk < 0.88) fail("night --ink is no longer near-white");
 const darkFaint = lum(tokenIn(darkBlock, "--ink-faint"));
-if (darkFaint === null || darkFaint < 0.5) fail("night --ink-faint is too dim to read over the wallpaper");
+if (darkFaint === null || darkFaint < 0.7) fail("night --ink-faint is too dim to read over the wallpaper");
+// 11px mono caps cannot survive a wide dark glow: the night rim has to stay hairline.
+const darkLabelHalo = css.match(/\.dark \.label,\s*\n\.dark \.folio,[\s\S]*?\{([^}]*)\}/)?.[1] ?? "";
+if (/0 0 (?:[3-9]|\d{2,})px/.test(darkLabelHalo)) {
+  fail("the night label halo is wider than the glyph, so the letters read as dark smears");
+}
+if (!/font-weight:\s*600/.test(css.match(/\.dark \.label \{([^}]*)\}/)?.[1] ?? "")) {
+  fail("night labels are not weighted up, so hairline mono caps disappear over the painting");
+}
 
 // The exact screenshot bug: a pressed segment filled with ink must not inherit
 // the accent colour, or the label vanishes at night.
