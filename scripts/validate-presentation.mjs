@@ -405,6 +405,62 @@ if (!/color:\s*var\(--ink-soft\)/.test(workedReason)) {
   fail("worked-solution explanations are not using the ink scale, so night mode can hide them");
 }
 
+// The surface ladder: one number from clear glass to solid paper, with a floor
+// in each palette below which the text would stop clearing contrast.
+const prefsSource = read("src/lib/site-prefs.ts");
+const themeSource = read("src/lib/prefs-theme.ts");
+const appearanceSource = read("src/components/settings/AppearancePanel.tsx");
+for (const id of ["clear", "semi", "frosted", "solid", "paper"]) {
+  if (!new RegExp(`id: "${id}"`).test(prefsSource)) {
+    fail(`the surface ladder is missing the "${id}" stop`);
+  }
+}
+if (!/export const SURFACE_STOPS[\s\S]*?value: 0,[\s\S]*?value: 100,/.test(prefsSource)) {
+  fail("the surface ladder does not run from 0 (clear) to 100 (paper)");
+}
+const floors = themeSource.match(/const SURFACE_FLOOR = \{ light: ([\d.]+), dark: ([\d.]+) \}/);
+if (!floors) fail("the surface ladder has no per-palette legibility floor");
+else {
+  const lightFloor = Number(floors[1]);
+  const darkFloor = Number(floors[2]);
+  // Contrast of the shipped inks over each painting's worst patch at the floor
+  // alpha; anything under 4.5 would make "Clear" a trap rather than a choice.
+  const over = (paper, alpha, behind) =>
+    paper.map((channel, i) => alpha * channel + (1 - alpha) * behind[i]);
+  const contrast = (a, b) => {
+    const lum = (rgb) =>
+      0.2126 * channel(rgb[0]) + 0.7152 * channel(rgb[1]) + 0.0722 * channel(rgb[2]);
+    const channel = (value) => {
+      const c = value / 255;
+      return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    };
+    const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+    return (hi + 0.05) / (lo + 0.05);
+  };
+  const dayWorst = contrast(over([226, 226, 226], lightFloor, [57, 36, 45]), [11, 11, 11]);
+  const nightWorst = contrast(over([18, 18, 18], darkFloor, [225, 235, 250]), [247, 247, 247]);
+  if (dayWorst < 4.5) fail(`clear day glass drops body text to ${dayWorst.toFixed(2)}:1`);
+  if (nightWorst < 4.5) fail(`clear night glass drops body text to ${nightWorst.toFixed(2)}:1`);
+}
+if (!/surfaceAlpha\(appearance\.surface/.test(themeSource)) {
+  fail("the generated stylesheet ignores the surface setting");
+}
+if (!/--surface-blur/.test(themeSource) || !/--glass-bg/.test(themeSource)) {
+  fail("the surface setting is not wired to the panel tokens");
+}
+if (!/surface: surfaceStopOf\(prefs\.appearance\.surface\)/.test(themeSource)) {
+  fail("the surface stop is not published as a data attribute");
+}
+if (!/label="Panel surface"/.test(appearanceSource) || !/label="Panel opacity"/.test(appearanceSource)) {
+  fail("Settings → Appearance does not expose the surface ladder");
+}
+if (!/SURFACE_STOPS\.map/.test(appearanceSource)) {
+  fail("the surface presets are not rendered from the shared ladder");
+}
+if (!/--label-halo/.test(css) || !/var\(--surface-blur/.test(css)) {
+  fail("the glass rules do not consume the surface blur token");
+}
+
 // Feedback states must be chromatic and must set their own text colour.
 for (const [selector, token] of [
   [".adaptive-quiz-option.is-correct", "--answer-correct"],
@@ -432,4 +488,4 @@ if (errors.length) {
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, and the optional account layer are intact.");
+console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, the surface ladder, and the optional account layer are intact.");

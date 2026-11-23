@@ -21,6 +21,7 @@ import {
   HOME_MODULE_ORDER,
   readableInk,
   sanitizeCustomCss,
+  surfaceStopOf,
   type SitePrefs,
 } from "./site-prefs";
 
@@ -67,6 +68,36 @@ function washOf(value: string, theme: "light" | "dark"): string {
   return rgba([r, g, b], theme === "light" ? 0.34 : 0.32);
 }
 
+
+/**
+ * The thinnest a panel may get in each palette.
+ *
+ * Sampled from the shipped paintings: the darkest patch is a shadowed wall near
+ * #39242d, the brightest is sunlit plaster near #e1ebfa.
+ *
+ *   light 0.44 → ink #0b0b0b over the dark patch lands at ~4.7:1
+ *   dark  0.56 → ink #f7f7f7 over the bright patch lands at ~4.6:1
+ *
+ * Those are the shipped glass values themselves: the site has always sat on the
+ * legibility floor. The ladder therefore runs *up* from there — 0 is the look
+ * the site ships with, 100 is a solid page — which is the honest range. There is
+ * no "fully transparent" stop because text over bare painting does not pass.
+ */
+const SURFACE_FLOOR = { light: 0.44, dark: 0.56 } as const;
+
+/** Map the 0–100 ladder onto a real panel alpha for one palette. */
+export function surfaceAlpha(percent: number, theme: "light" | "dark"): number {
+  const turns = Math.min(1, Math.max(0, percent / 100));
+  const floor = SURFACE_FLOOR[theme];
+  return Number((floor + (1 - floor) * Math.pow(turns, 1.6)).toFixed(3));
+}
+
+/** Thinner panels blur harder, so the painting softens instead of getting busy. */
+export function surfaceBlur(percent: number): number {
+  const turns = Math.min(1, Math.max(0, percent / 100));
+  return Number((16 - 10 * turns).toFixed(1));
+}
+
 export interface PrefsAttributes {
   motion: string;
   density: string;
@@ -76,6 +107,7 @@ export interface PrefsAttributes {
   wide: string;
   header: string;
   scale: string;
+  surface: string;
 }
 
 /** Values the provider writes to `document.documentElement.dataset`. */
@@ -85,10 +117,11 @@ export function prefsAttributes(prefs: SitePrefs): PrefsAttributes {
     density: prefs.appearance.density,
     wallpaperFit: prefs.appearance.wallpaperFit,
     wallpaper: prefs.appearance.showWallpaper ? "on" : "off",
-    glass: prefs.appearance.glassOpacity < 0.75 ? "thin" : "solid",
+    glass: prefs.appearance.surface < 55 ? "thin" : "solid",
     wide: prefs.layout.wideContent ? "on" : "off",
     header: prefs.layout.headerAutoHide ? "auto" : "pinned",
     scale: String(prefs.appearance.fontScale),
+    surface: surfaceStopOf(prefs.appearance.surface),
   };
 }
 
@@ -141,10 +174,21 @@ export function buildPrefsCss(prefs: SitePrefs): string {
   for (const palette of palettes) {
     const glassBase = palette.base.glass;
     const tint = appearance.glassTint ? hexToRgbArray(appearance.glassTint) : [glassBase[0], glassBase[1], glassBase[2]];
-    const glassAlpha = Math.min(
-      0.92,
-      Math.max(0.1, glassBase[3] * appearance.glassOpacity),
-    );
+    const glassAlpha = surfaceAlpha(appearance.surface, palette.theme);
+    const blur = surfaceBlur(appearance.surface);
+    const isNight = palette.theme === "dark";
+    // Night paper is the same material as the night panels, so it follows the
+    // ladder too. Day paper is deliberately transparent by default (the glass
+    // carries the day colour), so it is only pinned at the opaque end.
+    // The paper tokens were tuned separately from the glass, so each keeps its
+    // shipped value as its own floor and only moves up with the ladder. `lift`
+    // is 0 at the bottom stop and 1 at Paper, which lets every token keep the
+    // exact colour it shipped with until the visitor actually asks for more.
+    const floor = SURFACE_FLOOR[palette.theme];
+    const lift = floor >= 1 ? 0 : Math.max(0, (glassAlpha - floor) / (1 - floor));
+    const paperAlpha = isNight ? Math.max(0.66, glassAlpha) : lift >= 1 ? 1 : 0;
+    const paperRaisedAlpha = (isNight ? 0.58 : 0.26) + ((isNight ? 0.42 : 0.34) * lift);
+    const paperSunkAlpha = (isNight ? 0.62 : 0.18) + ((isNight ? 0.38 : 0.32) * lift);
     const radius = appearance.radius;
     lines.push(
       `${palette.selector} {`,
@@ -156,6 +200,16 @@ export function buildPrefsCss(prefs: SitePrefs): string {
       `  --aps-highlight: ${palette.highlight};`,
       `  --aps-highlight-wash: ${washOf(palette.highlight, palette.theme)};`,
       `  --glass-bg: ${rgba([tint[0], tint[1], tint[2]], glassAlpha)};`,
+      `  --surface-blur: ${blur}px;`,
+      isNight
+        ? `  --paper: ${rgba([15, 15, 15], paperAlpha)};`
+        : `  --paper: ${paperAlpha >= 1 ? "#ffffff" : "transparent"};`,
+      isNight
+        ? `  --paper-raised: ${rgba([28, 28, 28], paperRaisedAlpha)};`
+        : `  --paper-raised: ${rgba([255, 255, 255], Math.min(0.6, paperRaisedAlpha))};`,
+      isNight
+        ? `  --paper-sunk: ${rgba([8, 8, 8], paperSunkAlpha)};`
+        : `  --paper-sunk: ${rgba([255, 255, 255], Math.min(0.5, paperSunkAlpha))};`,
       `  --radius-edge: ${Number((8 * radius).toFixed(1))}px;`,
       `  --radius-cut: ${Number((17 * radius).toFixed(1))}px;`,
       `  --font-display: ${FONT_STACKS[appearance.displayFont]};`,
@@ -185,6 +239,12 @@ export function buildPrefsCss(prefs: SitePrefs): string {
     "  animation-iteration-count: 1 !important;",
     "}",
     `html[data-density="compact"] .wrap { --measure: 74ch; }`,
+    // Paper is a printed page, not glass: drop the blur as well as the alpha.
+    `html[data-surface="paper"] :is(.glass-box, .sheet, .sheet-tabbed) { backdrop-filter: none; -webkit-backdrop-filter: none; }`,
+    // The ladder's top half is dense enough to take a heavier panel border
+    // without it reading as a white outline on white.
+    `html[data-surface="solid"] :is(.glass-box, .sheet, .sheet-tabbed),`,
+    `html[data-surface="paper"] :is(.glass-box, .sheet, .sheet-tabbed) { border-color: var(--rule); }`,
     `html[data-wallpaper="off"] .page-wallpaper { display: none; }`,
     `html[data-wide="on"] .wrap { max-width: 82rem; }`,
     // A pinned masthead keeps the auto-hide component mounted but overrides the

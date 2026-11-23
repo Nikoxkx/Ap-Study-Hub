@@ -82,7 +82,8 @@ export interface SitePrefs {
     displayFont: "serif" | "sans" | "mono" | "hand";
     uiFont: "sans" | "serif" | "mono" | "hand";
     motion: "full" | "reduced" | "off";
-    glassOpacity: number;
+    /** 0–100 on the surface ladder: how much paper covers the painting. */
+    surface: number;
     density: "comfortable" | "compact";
     showWallpaper: boolean;
   };
@@ -128,6 +129,40 @@ export interface SitePrefs {
   };
 }
 
+/**
+ * The panel "surface" ladder, from clear glass to a solid sheet of paper.
+ *
+ * One number (0–100) drives the whole ladder: it sets the alpha of every frosted
+ * panel, how much blur the panel applies, and — at the clear end — how strongly
+ * the label halos come forward. The stops below are only named waypoints on that
+ * number; the slider between them is continuous, so nothing is limited to four
+ * or five values.
+ *
+ * The two palettes get different floors (see `surfaceAlpha` in prefs-theme):
+ * white paper thins to 0.38 before dark ink stops clearing 4.5:1 over the
+ * painting, while a night panel has to stay denser because the painting behind
+ * it is lighter than the text.
+ */
+export const SURFACE_STOPS = [
+  { id: "clear", label: "Clear", value: 0, note: "The shipped glass — the thinnest veil that still passes contrast" },
+  { id: "semi", label: "Semi", value: 30, note: "A little more paper; the painting quiets down" },
+  { id: "frosted", label: "Frosted", value: 60, note: "Dense glass — clear separation from the painting" },
+  { id: "solid", label: "Solid", value: 85, note: "Almost opaque; only a tint of the painting survives" },
+  { id: "paper", label: "Paper", value: 100, note: "Fully opaque, no blur — a plain printed page" },
+] as const;
+
+export type SurfaceStop = (typeof SURFACE_STOPS)[number];
+export type SurfaceStopId = SurfaceStop["id"];
+
+/** The stop a stored number is closest to, for highlighting the preset row. */
+export function surfaceStopOf(value: number): SurfaceStopId {
+  let best: SurfaceStop = SURFACE_STOPS[0];
+  for (const stop of SURFACE_STOPS) {
+    if (Math.abs(stop.value - value) < Math.abs(best.value - value)) best = stop;
+  }
+  return best.id;
+}
+
 export const HOME_MODULE_ORDER: string[] = HOME_MODULES.map((module) => module.id);
 
 export const DEFAULT_PREFS: SitePrefs = {
@@ -149,7 +184,7 @@ export const DEFAULT_PREFS: SitePrefs = {
     displayFont: "serif",
     uiFont: "sans",
     motion: "full",
-    glassOpacity: 1,
+    surface: 0,
     density: "comfortable",
     showWallpaper: true,
   },
@@ -440,7 +475,16 @@ export function revivePrefs(value: unknown): SitePrefs {
       displayFont: choice(appearance.displayFont, ["serif", "sans", "mono", "hand"] as const, "serif"),
       uiFont: choice(appearance.uiFont, ["sans", "serif", "mono", "hand"] as const, "sans"),
       motion: choice(appearance.motion, ["full", "reduced", "off"] as const, "full"),
-      glassOpacity: clampNumber(appearance.glassOpacity, 0.25, 1.6, 1),
+      // Older records stored a 0.25–1.6 multiplier; rescale it onto the ladder
+      // so a returning visitor keeps roughly the glass they had.
+      surface: clampNumber(
+        typeof appearance.surface === "number"
+          ? appearance.surface
+          : Number(appearance.glassOpacity) * 22,
+        0,
+        100,
+        0,
+      ),
       density: choice(appearance.density, ["comfortable", "compact"] as const, "comfortable"),
       showWallpaper: flag(appearance.showWallpaper, true),
     },

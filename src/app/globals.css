@@ -170,6 +170,11 @@
   --subject-ink: #141414;
   --subject-tint: rgba(255, 255, 255, 0.32);
   --glass-bg: rgba(226, 226, 226, 0.44);
+  /* The colour of the halo behind small bare type. It is the paper's own tone at
+     near-full alpha, so the glow reads as the page lifting, not as a shadow. */
+  --label-halo: rgba(255, 255, 255, 0.95);
+  /* Panel blur is a preference (Settings → Appearance → Surface). */
+  --surface-blur: 16px;
   --glass-border: rgba(255, 255, 255, 0.92);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.22);
@@ -212,7 +217,8 @@
   --warn: #d9d9d9;
   --warn-wash: rgba(217, 217, 217, 0.14);
   --subject-tint: var(--color-subject-wash-dark, rgba(255, 255, 255, 0.08));
-  --glass-bg: rgba(18, 18, 18, 0.55);
+  --glass-bg: rgba(18, 18, 18, 0.56);
+  --label-halo: rgba(0, 0, 0, 0.95);
   --glass-border: rgba(255, 255, 255, 0.32);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.48);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.48);
@@ -237,8 +243,8 @@
 .folio,
 .lede {
   text-shadow:
-    0 1px 10px rgba(255, 255, 255, 0.92),
-    0 0 1px rgba(255, 255, 255, 0.95);
+    0 1px 10px var(--label-halo),
+    0 0 1px var(--label-halo);
 }
 
 .dark .label,
@@ -248,8 +254,8 @@
      the strokes until grey letters read as dark ones. The wide 10px shadow still
      separates the word from a busy painting without touching the glyph. */
   text-shadow:
-    0 1px 10px rgba(0, 0, 0, 0.92),
-    0 0 1px rgba(0, 0, 0, 0.95);
+    0 1px 10px var(--label-halo),
+    0 0 1px var(--label-halo);
 }
 
 .dark .label {
@@ -475,8 +481,8 @@ table,
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(16px) saturate(118%);
-  -webkit-backdrop-filter: blur(16px) saturate(118%);
+  backdrop-filter: blur(var(--surface-blur, 16px)) saturate(118%);
+  -webkit-backdrop-filter: blur(var(--surface-blur, 16px)) saturate(118%);
   border-radius: 17px;
   color: var(--ink);
 }
@@ -2211,8 +2217,8 @@ main :has(:fullscreen) {
 .dark .canvas-heading {
   color: #ffffff;
   text-shadow:
-    0 2px 24px rgba(0, 0, 0, 0.95),
-    0 0 4px rgba(0, 0, 0, 0.98);
+    0 2px 24px var(--label-halo),
+    0 0 4px var(--label-halo);
 }
 
 .canvas-subtext {
@@ -2226,8 +2232,8 @@ main :has(:fullscreen) {
 .dark .canvas-subtext {
   color: #f7f7f7;
   text-shadow:
-    0 2px 18px rgba(0, 0, 0, 0.96),
-    0 0 1px rgba(0, 0, 0, 0.98);
+    0 2px 18px var(--label-halo),
+    0 0 1px var(--label-halo);
 }
 
 /* ---- Legibility over the wallpaper --------------------------------------

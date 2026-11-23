@@ -7,6 +7,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePrefs } from "@/lib/use-prefs";
+import { SURFACE_STOPS, surfaceStopOf } from "@/lib/site-prefs";
 import { useThemeChoice } from "@/lib/theme";
 import { WALLPAPERS } from "@/lib/prefs-theme";
 import { putAsset, deleteAsset, getAssetUrl, MAX_ASSET_BYTES } from "@/lib/custom-assets";
@@ -260,19 +261,54 @@ export function AppearancePanel() {
             onChange={(value) => update((draft) => { draft.appearance.glassTint = value; })}
           />
         </Row>
-        <Row label="Glass opacity" hint="Lower is more transparent — the painting shows through more.">
-          <Slider
-            min={0.25}
-            max={1.6}
-            step={0.05}
-            value={appearance.glassOpacity}
-            onChange={(value) => update((draft) => { draft.appearance.glassOpacity = value; })}
-            format={(value) => `${Math.round(value * 100)}%`}
-          />
-        </Row>
         <Note>
           Pick any colour you like: if it would fall below 4.5:1 against the panels, it is nudged along
           its own lightness axis — same hue, readable result — rather than rejected.
+        </Note>
+      </Panel>
+
+      <Panel
+        title="Surface"
+        description="How much paper sits between you and the painting. The same ladder works in both themes — at night the stops read as smoked glass, because the paper itself is dark."
+      >
+        <Row
+          label="Material"
+          hint={
+            SURFACE_STOPS.find((stop) => stop.id === surfaceStopOf(appearance.surface))?.note ??
+            "Waypoints on the ladder below."
+          }
+        >
+          <Segmented
+            label="Panel surface"
+            value={surfaceStopOf(appearance.surface)}
+            onChange={(value) =>
+              update((draft) => {
+                const stop = SURFACE_STOPS.find((entry) => entry.id === value);
+                if (stop) draft.appearance.surface = stop.value;
+              })
+            }
+            options={SURFACE_STOPS.map((stop) => ({ value: stop.id, label: stop.label }))}
+          />
+        </Row>
+        <Row
+          label="Panel opacity"
+          hint="Continuous: the five stops above are only landmarks. 0% is the shipped glass — the thinnest veil that still passes contrast — and 100% is a solid sheet."
+        >
+          <Slider
+            min={0}
+            max={100}
+            step={1}
+            value={appearance.surface}
+            onChange={(value) => update((draft) => { draft.appearance.surface = value; })}
+            format={(value) => `${Math.round(value)}%`}
+          />
+        </Row>
+        <Note>
+          Nothing here can make the site unreadable. Each palette has a floor — 44% paper by day, 56%
+          at night — measured against the darkest and lightest patches of the four paintings; below
+          it, ink stops clearing 4.5:1, so the slider starts there instead of letting you break the
+          page. Going up costs you the painting and buys separation; Paper drops the blur entirely
+          and prints the site on a solid sheet.
         </Note>
       </Panel>
 

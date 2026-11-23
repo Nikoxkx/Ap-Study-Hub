@@ -15,7 +15,7 @@ import { AccountPanel } from "./AccountPanel";
 import type { PanelProps } from "./types";
 
 const TABS = [
-  { id: "appearance", label: "Appearance", note: "Theme, wallpaper, colours, type" },
+  { id: "appearance", label: "Appearance", note: "Theme, wallpaper, surface, colours, type" },
   { id: "layout", label: "Layout", note: "Sections, order, headings" },
   { id: "content", label: "Text & elements", note: "Hero, footer, custom blocks" },
   { id: "sources", label: "Sources", note: "Your links, filed by course" },
