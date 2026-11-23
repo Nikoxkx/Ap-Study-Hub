@@ -645,6 +645,25 @@ if (!/error_description/.test(authErrorsSource)) {
 }
 
 const signInPanelSource = read("src/components/account/SignInPanel.tsx");
+// The Google button must exist even where the provider does not: a control that
+// vanishes reads as "this site has no Google login", which is how it was
+// reported twice.
+if (!/Continue with Google/.test(signInPanelSource)) fail("the login panel lost the Google button");
+if (!/Not switched on for this deployment yet/.test(signInPanelSource)) {
+  fail("the login panel no longer explains an inactive Google button");
+}
+if (!/aria-disabled=\{googleOff \|\| busy\}/.test(signInPanelSource)) {
+  fail("an inactive Google button is not announced as inactive");
+}
+if (!/CopyValue/.test(signInPanelSource)) {
+  fail("the owner's setup steps lost the copy-to-clipboard values");
+}
+if (!/AuthApiError|auth-errors/.test(signInPanelSource) && !/friendlyAuthError/.test(read("src/lib/use-auth.tsx"))) {
+  fail("sign-in errors are printed raw again");
+}
+if (!/serverAuthProviders/.test(read("src/app/login/page.tsx"))) {
+  fail("/login does not read the enabled providers on the server, so the first paint cannot know");
+}
 if (/and the code signs you in here/.test(signInPanelSource)) {
   fail("the sign-in steps promise a code again — the default template carries only a link");
 }

@@ -91,7 +91,7 @@ user (`avatars/<uid>/avatar.<ext>`), 2 MB limit, and only PNG/JPEG/WebP/GIF — 
 | Provider | State | What the window does |
 | --- | --- | --- |
 | Email — one-time link, plus a code when the template carries `{{ .Token }}` | **On** — but delivery is the built-in testing sender until step 3 is done (2 messages/hour, project team only) | The form is always rendered; the message carries a link, and a code too once the template is pasted |
-| Google — OAuth 2.0 | **Off pending client ID/secret** (step 2 above) | The button is not rendered; a short setup card appears in its place |
+| Google — OAuth 2.0 | **Off pending client ID/secret** (step 2 above) | The button is still on the page, visibly inactive; clicking it opens the four fields to paste, with copy buttons |
 | Phone — SMS | **Off** (no SMS provider) | No phone tab is shown |
 
 The interface asks Supabase which providers exist, so this table is the only place the truth has to

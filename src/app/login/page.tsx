@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LoginClient } from "@/components/account/LoginClient";
 import { absoluteUrl, socialImages } from "@/lib/site";
+import { serverAuthProviders } from "@/lib/auth-providers-server";
 
 export const metadata: Metadata = {
   title: "Sign in — optional account",
@@ -39,5 +40,9 @@ export default async function LoginPage({
     .replaceAll("+", " ")
     .slice(0, 300);
 
-  return <LoginClient next={next} providerError={error} />;
+  // Asked here, not in the browser, so the first paint already knows whether
+  // Google is available on this deployment.
+  const providers = await serverAuthProviders();
+
+  return <LoginClient next={next} providerError={error} providers={providers} />;
 }
