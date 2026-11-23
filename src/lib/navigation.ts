@@ -1,5 +1,6 @@
 import type { CommandItem } from "@/components/CommandPalette";
 import { getCatalog } from "./catalog";
+import { ACCOUNTS_ENABLED } from "./accounts";
 
 /** Navigation is derived from the same catalog as the pages it addresses. */
 export function getNavigationCommands(): CommandItem[] {
@@ -14,8 +15,14 @@ export function getNavigationCommands(): CommandItem[] {
     { id: "videos", title: "Unit video library", context: "Curated videos for every unit of ten AP courses", href: "/videos", kind: "Video" },
     { id: "integrations", title: "Integrations & press kit", context: "Public registry, editorial brief, roadmap, and social card", href: "/integrations", kind: "Site" },
     { id: "guides", title: "Study guides", context: "How to read, retrieve, write, and rehearse", href: "/guides", kind: "Study" },
-    { id: "login", title: "Sign in (optional)", context: "Google in one tap, or a one-time code — no password", href: "/login", kind: "Site" },
-    { id: "account", title: "Account (optional)", context: "Photo, name, and the five counts that sync", href: "/account", kind: "Site" },
+    // Accounts are paused (`src/lib/accounts.ts`); with them off there is
+    // nothing to search for, so neither entry exists.
+    ...(ACCOUNTS_ENABLED
+      ? ([
+          { id: "login", title: "Sign in (optional)", context: "Google in one tap, or a one-time code — no password", href: "/login", kind: "Site" as const },
+          { id: "account", title: "Account (optional)", context: "Photo, name, and the five counts that sync", href: "/account", kind: "Site" as const },
+        ] satisfies CommandItem[])
+      : []),
     { id: "settings", title: "Settings", context: "Wallpaper, colour, type, layout, sources, and privacy", href: "/settings", kind: "Site" },
     { id: "settings-sources", title: "Add your own sources", context: "File a link under the course it belongs to", href: "/settings?tab=sources", kind: "Site" },
     { id: "settings-adaptive", title: "See what the site knows", context: "The local adaptive profile, in full", href: "/settings?tab=adaptive", kind: "Site" },

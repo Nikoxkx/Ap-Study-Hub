@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import { LoginClient } from "@/components/account/LoginClient";
 import { absoluteUrl, socialImages } from "@/lib/site";
 import { serverAuthProviders } from "@/lib/auth-providers-server";
+import { ACCOUNTS_ENABLED } from "@/lib/accounts";
+import { AccountsPaused } from "@/components/account/AccountsPaused";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = ACCOUNTS_ENABLED
+  ? {
   title: "Sign in — optional account",
   description:
     "Sign in with Google in one tap, or with a one-time code by email. No password exists on AP Study Hub, and every lesson works without an account.",
@@ -16,7 +19,14 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", images: socialImages },
   robots: { index: true, follow: true },
-};
+    }
+  : {
+      title: "Accounts are paused · AP Study Hub",
+      description:
+        "Signing in is switched off for now. Every lesson, question, paper, video, and printable on AP Study Hub works without an account.",
+      // Nothing here for a crawler to keep: the page cannot sign anyone in.
+      robots: { index: false, follow: false },
+    };
 
 export default async function LoginPage({
   searchParams,
@@ -27,6 +37,8 @@ export default async function LoginPage({
     error_description?: string | string[];
   }>;
 }) {
+  if (!ACCOUNTS_ENABLED) return <AccountsPaused />;
+
   const params = await searchParams;
   const first = (value: string | string[] | undefined) =>
     Array.isArray(value) ? value[0] : value;

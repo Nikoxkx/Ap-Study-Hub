@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ACCOUNTS_ENABLED } from "@/lib/accounts";
 import { Breadcrumbs, SectionHead } from "@/components/Furniture";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { site, absoluteUrl, formatDate, socialImages } from "@/lib/site";
@@ -32,11 +33,18 @@ const storageKeys = [
     what: "Whether you chose light, dark, or system.",
     when: "Written when you use the theme control in the header. Absent until then.",
   },
-  {
-    key: "sb-{project-ref}-auth-token",
-    what: "Your optional account session: an access token and a refresh token issued by Supabase after a one-time code. Written only if you sign in on /account, and removed when you sign out.",
-    when: "Written at sign-in. Not a cookie, and not present for anyone who never signs in.",
-  },
+  // The Supabase session token used to be listed here. Accounts are paused, the
+  // key is never written, and a table of things this site keeps should not name
+  // something it cannot keep.
+  ...(ACCOUNTS_ENABLED
+    ? [
+        {
+          key: "sb-{project-ref}-auth-token",
+          what: "Your optional account session: an access token and a refresh token issued by Supabase after a one-time code. Written only if you sign in on /account, and removed when you sign out.",
+          when: "Written at sign-in. Not a cookie, and not present for anyone who never signs in.",
+        },
+      ]
+    : []),
   {
     key: "aps.prefs.v1",
     what: "Your settings: wallpaper, colours, type, density, home-page order and headings, hero copy, custom blocks, and the adaptive switches.",
@@ -149,8 +157,19 @@ export default function PrivacyPage() {
           </h1>
           <p className="lede mt-5">
             No cookies, no analytics, no advertising, no trackers, and no fonts loaded from someone
-            else&rsquo;s server. An account is optional: it exists only if you create one, it is
-            passwordless, and nothing on the site is behind it. Video players, Study Desk sync, and
+            else&rsquo;s server.{" "}
+            {ACCOUNTS_ENABLED ? (
+              <>
+                An account is optional: it exists only if you create one, it is passwordless, and
+                nothing on the site is behind it.
+              </>
+            ) : (
+              <>
+                Signing in is switched off for now, so nothing here asks you to identify yourself and
+                no session token exists to describe.
+              </>
+            )}{" "}
+            Video players, Study Desk sync, and
             an uploaded background video are all opt-in; real YouTube thumbnails are the one
             automatic third-party image. This page explains exactly when a request can leave the
             site, and every permission the site can ask your browser for.
@@ -162,10 +181,22 @@ export default function PrivacyPage() {
           <div className="prose">
             <p>
               Nothing by default. There is no contact form, no newsletter, no comment section and no
-              analytics product. An account is available and entirely optional: signed out, every
-              lesson, card, question, paper, and video works, and nothing on the site is gated behind
-              sign-in. If you do create one, the only things that can reach Supabase are the four
-              counts described in section 03, a display name you type, and a photo you choose.
+              analytics product.{" "}
+              {ACCOUNTS_ENABLED ? (
+                <>
+                  An account is available and entirely optional: signed out, every lesson, card,
+                  question, paper, and video works, and nothing on the site is gated behind sign-in.
+                  If you do create one, the only things that can reach Supabase are the four counts
+                  described in section 03, a display name you type, and a photo you choose.
+                </>
+              ) : (
+                <>
+                  Signing in is switched off, so no identity, name, photo, or count of yours can
+                  leave this browser. Every lesson, card, question, paper, and video works, and
+                  nothing on the site is gated behind an account because there is no account to
+                  gate it with.
+                </>
+              )}
             </p>
             <p>
               Pages are static files. Loading one requires no database query about you and creates
@@ -224,6 +255,14 @@ export default function PrivacyPage() {
             </table>
           </div>
 
+          {!ACCOUNTS_ENABLED ? (
+            <p className="mt-4 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+              One key that older versions of this page listed is deliberately absent: the Supabase
+              session token. Signing in is switched off, so no token is issued, stored, or refreshed,
+              and <code>localStorage</code> contains only the rows above.
+            </p>
+          ) : null}
+
           <p className="mt-4 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
             Uploaded wallpapers, background videos, and block images live in the browser&rsquo;s
             IndexedDB database <code>aps-assets</code> (object store <code>assets</code>), not in the
@@ -250,17 +289,30 @@ export default function PrivacyPage() {
           <SectionHead folio="02b" title="Every permission this site can ask for" id="permissions-heading" />
           <div className="prose">
             <p>
-              One, and it is optional. On{" "}
-              <Link href="/account" className="link-underlined" style={{ color: "var(--ink)" }}>
-                /account
-              </Link>{" "}
-              there is a button that calls <code>navigator.storage.persist()</code>, which asks the
-              browser to stop evicting this origin&rsquo;s data to free space. Accept it and an
-              uploaded wallpaper or a year of study state is much less likely to disappear; decline it
-              and everything still works exactly the same until the disk fills or you clear site data.
-              Chrome and Firefox usually answer from a heuristic without showing anything at all;
-              Safari answers no for every site that is not added to the Home Screen, and the card says
-              so rather than pretending otherwise.
+              {ACCOUNTS_ENABLED ? (
+                <>
+                  One, and it is optional. On{" "}
+                  <Link href="/account" className="link-underlined" style={{ color: "var(--ink)" }}>
+                    /account
+                  </Link>{" "}
+                  there is a button that calls <code>navigator.storage.persist()</code>, which asks
+                  the browser to stop evicting this origin&rsquo;s data to free space. Accept it and
+                  an uploaded wallpaper or a year of study state is much less likely to disappear;
+                  decline it and everything still works exactly the same until the disk fills or you
+                  clear site data. Chrome and Firefox usually answer from a heuristic without showing
+                  anything at all; Safari answers no for every site that is not added to the Home
+                  Screen, and the card says so rather than pretending otherwise.
+                </>
+              ) : (
+                <>
+                  None today. The only prompt this site ever offered was{" "}
+                  <code>navigator.storage.persist()</code>, the request to stop the browser evicting
+                  this origin&rsquo;s data, and it lived on the account page, which is switched off.
+                  Until it returns, treat this browser&rsquo;s storage as evictable: export anything
+                  you would miss (Settings → Privacy &amp; data). Adding the site to your Home Screen
+                  or bookmarks makes no difference to that.
+                </>
+              )}
             </p>
             <p>
               Nothing else is requested. There is no camera, microphone, geolocation, notification,
@@ -275,11 +327,13 @@ export default function PrivacyPage() {
               on. The switch in Settings → Appearance does the same thing deliberately; the volume
               slider next to it only ever changes that one video.
             </p>
-            <p>
-              Google access is a separate consent, stored in your Google account rather than in your
-              browser. It is covered in section 03, and it can be revoked at Google → Security →
-              Third-party apps without affecting anything you have saved here.
-            </p>
+            {ACCOUNTS_ENABLED ? (
+              <p>
+                Google access is a separate consent, stored in your Google account rather than in your
+                browser. It is covered in section 03, and it can be revoked at Google → Security →
+                Third-party apps without affecting anything you have saved here.
+              </p>
+            ) : null}
           </div>
         </section>
 
@@ -304,24 +358,36 @@ export default function PrivacyPage() {
               The route keeps no copy, writes no log line containing your text, and has no database.
               Without a key it returns the same local analysis, computed on the server.
             </p>
-            <p>
-              Signing in is optional and is the only feature that talks to a second server. The window
-              is <code>/login</code>. If this deployment has Supabase configured, it can send you a
-              one-time code by email or text, or hand you to Google&rsquo;s own sign-in screen; either
-              route creates a session in this browser. Choosing Google sends Google the fact that you
-              are signing in here and asks for exactly three scopes — <code>openid</code>,
-              <code>email</code>, and <code>profile</code> — so what comes back is your name, address,
-              and photo. No Drive, Gmail, Calendar, or Contacts scope is requested, no refresh token
-              is issued, and nothing is ever written to your Google account. Supabase stores that
-              identity, and you can revoke it from your Google account at any time. From then on
-              Supabase holds
-              a display name, a photo you chose, and five coarse counts (cards reviewed, practice
-              answered, focus minutes, streak, last active) — only when you press{" "}
-              <strong>Save today&rsquo;s counts</strong>. No lesson, answer, draft, essay, or search is
-              ever sent. There is no password field anywhere in this app, so there is no password to
-              lose. Delete the cloud copy removes those rows and photos; it does not touch this
-              browser.
-            </p>
+            {ACCOUNTS_ENABLED ? (
+              <p>
+                Signing in is optional and is the only feature that talks to a second server. The
+                window is <code>/login</code>. If this deployment has Supabase configured, it can send
+                you a one-time code by email or text, or hand you to Google&rsquo;s own sign-in screen;
+                either route creates a session in this browser. Choosing Google sends Google the fact
+                that you are signing in here and asks for exactly three scopes —{" "}
+                <code>openid</code>, <code>email</code>, and <code>profile</code> — so what comes back
+                is your name, address, and photo. No Drive, Gmail, Calendar, or Contacts scope is
+                requested, no refresh token is issued, and nothing is ever written to your Google
+                account. Supabase stores that identity, and you can revoke it from your Google account
+                at any time. From then on Supabase holds a display name, a photo you chose, and five
+                coarse counts (cards reviewed, practice answered, focus minutes, streak, last active)
+                — only when you press <strong>Save today&rsquo;s counts</strong>. No lesson, answer,
+                draft, essay, or search is ever sent. There is no password field anywhere in this app,
+                so there is no password to lose. Delete the cloud copy removes those rows and photos;
+                it does not touch this browser.
+              </p>
+            ) : (
+              <p>
+                Signing in is switched off for now, so this site has exactly one other server it can
+                talk to on purpose: the grader below. No account is created, no identity is stored
+                anywhere but in this browser, and no token is issued — a visitor who opens{" "}
+                <code>/login</code> or <code>/account</code> is told that accounts are paused and
+                pointed back at the lessons. When the account returns, this section will describe it
+                again before it appears: the plan was, and is, three Google scopes (
+                <code>openid</code>, <code>email</code>, <code>profile</code>), no Drive or Gmail
+                access, no password, and five coarse counts saved only when you press a button.
+              </p>
+            )}
             <p>
               Scanning a link is the one other action that reaches the network, and it never happens
               on its own. Pressing <strong>Scan link</strong> in Settings → Sources sends the URL you
@@ -404,10 +470,15 @@ export default function PrivacyPage() {
           <Link href="/settings?tab=privacy" className="link-underlined" style={{ color: "var(--ink)" }}>
             the controls themselves
           </Link>
-          ,{" "}
-          <Link href="/account" className="link-underlined" style={{ color: "var(--ink)" }}>
-            the optional account
-          </Link>{" "}
+          {" "}
+          {ACCOUNTS_ENABLED ? (
+            <>
+              ,{" "}
+              <Link href="/account" className="link-underlined" style={{ color: "var(--ink)" }}>
+                the optional account
+              </Link>{" "}
+            </>
+          ) : null}
           and{" "}
           <Link href="/about" className="link-underlined" style={{ color: "var(--ink)" }}>
             how the content is made

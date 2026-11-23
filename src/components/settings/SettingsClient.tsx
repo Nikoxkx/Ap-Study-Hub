@@ -13,6 +13,7 @@ import { PrivacyPanel } from "./PrivacyPanel";
 import { AdvancedPanel } from "./AdvancedPanel";
 import { AccountPanel } from "./AccountPanel";
 import type { PanelProps } from "./types";
+import { ACCOUNTS_ENABLED } from "@/lib/accounts";
 
 const TABS = [
   { id: "appearance", label: "Appearance", note: "Theme, wallpaper, surface, colours, type" },
@@ -27,8 +28,15 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
+/**
+ * Accounts are paused (`src/lib/accounts.ts`). The tab is dropped rather than
+ * disabled: a greyed "Account" row is still a promise, and there is nothing
+ * behind it to promise.
+ */
+const VISIBLE_TABS = TABS.filter((tab) => ACCOUNTS_ENABLED || tab.id !== "account");
+
 function isTab(value: string | null): value is TabId {
-  return TABS.some((tab) => tab.id === value);
+  return VISIBLE_TABS.some((tab) => tab.id === value);
 }
 
 function subscribeNothing() {
@@ -134,7 +142,7 @@ export function SettingsClient({ subjects, totals }: Omit<PanelProps, "prefs" | 
 
       <div className="settings-layout">
         <nav className="settings-tabs" aria-label="Settings sections">
-          {TABS.map((entry) => (
+          {VISIBLE_TABS.map((entry) => (
             <button
               key={entry.id}
               type="button"
@@ -148,7 +156,7 @@ export function SettingsClient({ subjects, totals }: Omit<PanelProps, "prefs" | 
           ))}
         </nav>
 
-        <div className="settings-panels" role="tabpanel" aria-label={TABS.find((entry) => entry.id === tab)?.label}>
+        <div className="settings-panels" role="tabpanel" aria-label={VISIBLE_TABS.find((entry) => entry.id === tab)?.label}>
           {panels[tab]}
         </div>
       </div>

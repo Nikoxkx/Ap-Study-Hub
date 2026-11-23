@@ -1,5 +1,12 @@
 # Optional accounts
 
+> **Paused on the site right now.** `src/lib/accounts.ts` sets `ACCOUNTS_ENABLED = false`, so no page
+> offers a sign-in: the links are out of the navigation, footer, palette, and Settings, `/login` and
+> `/account` explain the pause and are `noindex`, the sitemap omits them, and `AuthProvider` neither
+> reads a session nor fetches `/auth/v1/settings`. Everything below still describes the account as it
+> is built — it is the checklist for the day the constant is flipped back to `true`. `pnpm
+> validate:accounts` fails the build if a surface starts offering sign-in while the switch is off.
+
 The site is local-first and stays that way. Accounts are a convenience, not a gate: with no
 configuration there is no sign-in, no upload, and no server call, and every lesson, card, question,
 paper, and video still works.

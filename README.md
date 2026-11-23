@@ -123,6 +123,14 @@ Three rules hold it together:
 
 ## Optional accounts (Supabase)
 
+**Accounts are currently switched off.** `src/lib/accounts.ts` holds one constant, `ACCOUNTS_ENABLED`,
+and it is `false`: the navigation, footer, command palette, and Settings drop every account link, the
+sitemap leaves `/login` and `/account` out, both pages are `noindex` and show a short "accounts are
+paused" notice, `AuthProvider` reads no session and requests `/auth/v1/settings` nowhere, and the
+privacy page stops describing a session token that cannot be written. `pnpm validate:accounts` fails
+the build if any surface drifts back. Flip the constant to `true` to bring all of it back — nothing
+was deleted, and the provider code below is untouched.
+
 `/account` is the only place the site can talk to a second server, and it is off unless a deployment
 configures it. Everything — every lesson, card, question, paper, and video — works signed out.
 
@@ -151,7 +159,8 @@ configures it. Everything — every lesson, card, question, paper, and video —
   both tables, the `avatars` bucket, email sign-in, and the two public env vars set in Vercel. Phone
   sign-in is the one thing waiting on an SMS provider; `SUPABASE_AUTH.md` has the details.
 - **Graceful when absent.** With no `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
-  `/account` says so, Settings → Account shows `off`, and nothing else changes. The schema,
+  `/account` says so and nothing else changes. (While `ACCOUNTS_ENABLED` is `false` the pages are
+  paused for everyone, configured or not.) The schema,
   bucket, and step-by-step setup live in `SUPABASE_AUTH.md` and
   `supabase/migrations/20261122120000_create_profiles_and_stats.sql`.
 
