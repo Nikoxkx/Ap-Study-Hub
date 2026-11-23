@@ -173,10 +173,15 @@
   --glass-border: rgba(255, 255, 255, 0.92);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.22);
-  /* Solid foreground for text sitting on an ink/accent fill. The paper
-     tokens are surfaces, so in night mode they carry alpha and cannot be
-     reused as a text colour. */
-  --on-accent: var(--paper-raised);
+  /* Foreground for text on a filled control.
+     `--on-ink` is paired with `--ink`, `--mark` and `--subject-ink` — three
+     fills that *invert* between themes: near-black in day, near-white at
+     night. The text on them therefore has to invert too, which is why this is
+     a token pair and not a hardcoded white. (It used to be a 26%-white paper
+     value, which was illegible on ink in day mode and invisible on a light
+     fill at night.) */
+  --on-ink: #ffffff;
+  --on-accent: #ffffff;
 }
 
 /* Night mode keeps its original deep-neutral surfaces. The values stay strictly
@@ -191,9 +196,13 @@
   --paper: rgba(15, 15, 15, 0.66);
   --paper-raised: rgba(28, 28, 28, 0.58);
   --paper-sunk: rgba(8, 8, 8, 0.62);
-  --ink: #ededed;
-  --ink-soft: #c4c4c4;
-  --ink-faint: #9a9a9a;
+  /* Night text is lifted deliberately: the wallpaper is still visible behind
+     every frosted panel, and the old #9a9a9a label voice read as grey mush on
+     a lit photograph. Ink is near-white, secondary text is light, and the
+     label voice is light enough to hold its own — all still strictly neutral. */
+  --ink: #f7f7f7;
+  --ink-soft: #dddddd;
+  --ink-faint: #c6c6c6;
   --rule: rgba(255, 255, 255, 0.14);
   --rule-strong: rgba(255, 255, 255, 0.3);
   --mark: #ededed;
@@ -207,7 +216,9 @@
   --glass-border: rgba(255, 255, 255, 0.32);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.48);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.48);
-  --on-accent: #f4f4f4;
+  /* Ink is pale at night, so anything sitting on it must be dark. */
+  --on-ink: #101010;
+  --on-accent: #101010;
 }
 
 /* No page-wide veil in either theme.
@@ -376,7 +387,7 @@ table,
   top: -4rem;
   z-index: 100;
   background: var(--ink);
-  color: var(--on-accent);
+  color: var(--on-ink);
   padding: 0.625rem 1rem;
   border-radius: var(--radius-cut);
   font-size: 0.875rem;
@@ -631,7 +642,7 @@ table,
 .dark .tag-subject {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.35);
-  color: #ededed;
+  color: var(--ink);
 }
 
 /* Underline that grows from the left on hover — one motion idiom, used
@@ -1067,7 +1078,7 @@ main,
 
 .objective-level:last-child { border-right: 0; }
 .objective-level:hover { background: var(--paper-sunk); color: var(--ink); }
-.objective-level[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
+.objective-level[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-ink); }
 
 /* Math notebook paper for scratch work & worked solutions -------------------
    The surface is the graph paper students actually use in a math notebook:
@@ -1401,7 +1412,7 @@ textarea.scratch-paper {
 .segmented { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--rule-strong); border-radius: var(--radius-cut); overflow: hidden; }
 .segmented button { flex: 1 1 auto; min-height: 2.35rem; padding: 0.45rem 0.65rem; border: 0; border-right: 1px solid var(--rule); background: var(--paper-raised); color: var(--ink-soft); font-size: 0.6875rem; cursor: pointer; }
 .segmented button:last-child { border-right: 0; }
-.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--on-accent); }
+.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
 .lab-slider > span { display: flex; justify-content: space-between; gap: 0.75rem; color: var(--ink-soft); font-size: 0.75rem; }
 .lab-slider output { color: var(--ink); font-family: var(--font-mono); }
 .lab-slider input { width: 100%; margin-top: 0.5rem; accent-color: var(--subject-ink); }
@@ -1492,7 +1503,7 @@ textarea.scratch-paper {
 .criterion-buttons { display: flex; border: 1px solid var(--rule); border-radius: var(--radius-cut); overflow: hidden; }
 .criterion-buttons button { padding: 0.45rem 0.6rem; border: 0; border-right: 1px solid var(--rule); background: transparent; color: var(--ink-faint); font-size: 0.6875rem; cursor: pointer; }
 .criterion-buttons button:last-child { border-right: 0; }
-.criterion-buttons button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
+.criterion-buttons button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-ink); }
 .exemplar-comparison { padding-top: 1.5rem; border-top: 2px solid var(--ink); }
 .exemplar-comparison > div:first-child > p:last-child { max-width: 65ch; margin-top: 0.5rem; color: var(--ink-soft); font-size: 0.8125rem; }
 .comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
@@ -1532,7 +1543,7 @@ textarea.scratch-paper {
 .study-tabs { display: flex; overflow-x: auto; margin-bottom: 2rem; border-block: 1px solid var(--rule); }
 .study-tabs button { display: inline-flex; align-items: center; gap: 0.4rem; flex: 0 0 auto; min-height: 2.85rem; padding: 0.65rem 0.9rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--ink-soft); font-size: 0.8125rem; cursor: pointer; }
 .study-tabs button[aria-pressed="true"] { border-color: var(--subject-ink); color: var(--ink); font-weight: 650; }
-.study-tabs button span { display: grid; place-items: center; min-width: 1.25rem; height: 1.25rem; border-radius: 999px; background: var(--mark); color: var(--on-accent); font-family: var(--font-mono); font-size: 0.625rem; }
+.study-tabs button span { display: grid; place-items: center; min-width: 1.25rem; height: 1.25rem; border-radius: 999px; background: var(--mark); color: var(--on-ink); font-family: var(--font-mono); font-size: 0.625rem; }
 .study-loading { padding: 3rem; border: 1px solid var(--rule); color: var(--ink-soft); text-align: center; }
 .panel-heading { display: flex; align-items: start; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.5rem; }
 .panel-heading h2 { margin-top: 0.3rem; font-size: clamp(1.5rem, 1.25rem + 0.8vw, 2rem); }
@@ -1598,7 +1609,7 @@ textarea.scratch-paper {
 .weekday-picker { display: flex; margin-top: 0.5rem; }
 .weekday-picker button { flex: 1; min-width: 2rem; min-height: 2.25rem; padding: 0.35rem; border: 1px solid var(--rule-strong); border-right: 0; background: var(--paper-raised); color: var(--ink-faint); font-size: 0.625rem; cursor: pointer; }
 .weekday-picker button:last-child { border-right: 1px solid var(--rule-strong); }
-.weekday-picker button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
+.weekday-picker button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-ink); }
 .deadline-note strong { display: block; margin-top: 0.25rem; font-family: var(--font-display); font-size: 1.5rem; }
 .deadline-note p { color: var(--ink-faint); font-size: 0.625rem; }
 .plan-days { display: grid; gap: 0.65rem; }
@@ -1982,7 +1993,7 @@ main :has(:fullscreen) {
 .packet-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
 .packet-unit-links { display: flex; flex: 1; flex-wrap: wrap; justify-content: center; gap: 0.35rem; }
 .packet-unit-links a { padding: 0.3rem 0.45rem; color: var(--ink-soft); font-size: 0.6875rem; text-decoration: none; }
-.packet-unit-links a[aria-current="page"] { background: var(--ink); color: var(--on-accent); }
+.packet-unit-links a[aria-current="page"] { background: var(--ink); color: var(--on-ink); }
 .packet-cover { padding: 2rem 0; border-block: 3px double var(--ink); }
 .packet-cover h1 { margin-top: 0.75rem; font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
 .packet-cover > p:not(.label):not(.packet-directions) { margin-top: 0.75rem; color: var(--ink-soft); font-size: 1.125rem; }
@@ -4922,7 +4933,7 @@ html.is-entering footer[data-site-footer] {
 }
 .exam-room-button:hover { background: var(--paper-sunk); }
 .exam-room-button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.exam-room-finish { background: var(--ink); border-color: var(--ink); color: var(--on-accent); }
+.exam-room-finish { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
 .exam-room-finish:hover { background: var(--ink-soft); }
 
 .exam-room-progress {
@@ -5079,7 +5090,7 @@ html.is-entering footer[data-site-footer] {
 }
 .exam-room-bubbles button[data-answered="true"] { background: var(--paper-sunk); color: var(--ink); border-color: var(--rule-strong); }
 .exam-room-bubbles button[data-flagged="true"] { box-shadow: inset 0 -2px 0 var(--mark); }
-.exam-room-bubbles button[data-active="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-accent); }
+.exam-room-bubbles button[data-active="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
 .exam-room-strip-actions { display: flex; align-items: center; gap: 0.9rem; font-size: 0.72rem; color: var(--ink-faint); }
 .exam-room-strip-link { color: var(--ink-soft); text-underline-offset: 2px; }
 .exam-room-strip-note { margin: 0; font-size: 0.76rem; color: var(--ink-soft); }
@@ -5711,10 +5722,9 @@ html.is-entering footer[data-site-footer] {
 .selfscore-scale button[data-chosen="true"] {
   background: var(--mark);
   border-color: var(--mark);
-  color: #fff;
+  color: var(--on-ink);
   font-weight: 600;
 }
-.dark .selfscore-scale button[data-chosen="true"] { color: #111; }
 
 .selfscore-descriptors { list-style: none; margin: 0.7rem 0 0; padding: 0; display: grid; gap: 0.35rem; }
 .selfscore-descriptors li {
@@ -6840,19 +6850,30 @@ html.is-entering footer[data-site-footer] {
   color: var(--ink);
 }
 
+/* Feedback is the one place colour carries meaning, so it is the one place the
+   palette is allowed to leave neutral. Each state sets its own text colour as
+   well as its fill: a green wash with the page's ink on top is readable in both
+   themes, whereas inheriting a colour and changing only the background is how
+   text disappears — which is exactly what a light fill plus night-mode ink did. */
 .adaptive-quiz-option.is-correct {
-  border-color: var(--ink);
-  background: var(--mark-wash);
+  border-color: var(--answer-correct);
+  background: var(--answer-correct-bg);
   color: var(--ink);
   font-weight: 600;
 }
 
+.adaptive-quiz-option.is-correct span { color: var(--answer-correct); }
+
 .adaptive-quiz-option.is-wrong {
-  border-color: var(--warn);
+  border-color: var(--answer-wrong);
+  background: var(--answer-wrong-bg);
   color: var(--ink);
+  font-weight: 600;
 }
 
-.adaptive-quiz-option.is-muted { opacity: 0.5; }
+.adaptive-quiz-option.is-wrong span { color: var(--answer-wrong); }
+
+.adaptive-quiz-option.is-muted { opacity: 0.55; }
 .adaptive-quiz-option:disabled { cursor: default; }
 
 .adaptive-quiz-explain {

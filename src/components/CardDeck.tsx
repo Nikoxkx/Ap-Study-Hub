@@ -299,11 +299,16 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
           type="button"
           onClick={() => mark("got")}
           className="btn btn-sm"
-          style={{
-            border: "1px solid var(--good)",
-            color: verdict === "got" ? "var(--on-accent)" : "var(--good)",
-            background: verdict === "got" ? "var(--good)" : "transparent",
-          }}
+          style={
+            verdict === "got"
+              ? {
+                  border: "1px solid var(--answer-correct)",
+                  color: "var(--answer-correct)",
+                  background: "var(--answer-correct-bg)",
+                  fontWeight: 600,
+                }
+              : { border: "1px solid var(--rule-strong)", color: "var(--ink-soft)", background: "transparent" }
+          }
         >
           Got it
         </button>
@@ -311,11 +316,16 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
           type="button"
           onClick={() => mark("again")}
           className="btn btn-sm"
-          style={{
-            border: "1px solid var(--mark)",
-            color: verdict === "again" ? "var(--on-accent)" : "var(--mark)",
-            background: verdict === "again" ? "var(--mark)" : "transparent",
-          }}
+          style={
+            verdict === "again"
+              ? {
+                  border: "1px solid var(--answer-wrong)",
+                  color: "var(--answer-wrong)",
+                  background: "var(--answer-wrong-bg)",
+                  fontWeight: 600,
+                }
+              : { border: "1px solid var(--rule-strong)", color: "var(--ink-soft)", background: "transparent" }
+          }
         >
           Again
         </button>

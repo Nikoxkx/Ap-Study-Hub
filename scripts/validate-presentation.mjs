@@ -347,9 +347,74 @@ if (!faintInk) {
 if (!/:root:not\(\.dark\) \.label,/.test(css)) fail("small labels lost their light-mode halo");
 if (!/Legibility over the wallpaper/.test(css)) fail("the legibility block was removed from globals.css");
 
+// 7. Night-mode text, and feedback that actually reads.
+//
+//    Two failures are easy to ship and hard to notice on a developer's own
+//    machine: text that inherits a colour while its background inverts (white on
+//    white the moment the theme flips), and "wrong answer" rendered in grey, so
+//    nothing distinguishes a mistake from a neutral option.
+const darkBlock = css.match(/\.dark \{([\s\S]*?)\n\}/)?.[1] ?? "";
+const rootBlock = css.match(/:root \{([\s\S]*?)\n\}/)?.[1] ?? "";
+const tokenIn = (blockText, name) =>
+  blockText.match(new RegExp(`${name.replaceAll("-", "\\-")}:\\s*([^;]+);`))?.[1]?.trim() ?? "";
+const lum = (value) => {
+  const hex = value.match(/#([0-9a-fA-F]{6})/)?.[1];
+  if (!hex) return null;
+  return luminance(`#${hex}`);
+};
+
+const onInkLight = lum(tokenIn(rootBlock, "--on-ink"));
+const onInkDark = lum(tokenIn(darkBlock, "--on-ink"));
+if (onInkLight === null || onInkLight < 0.85) {
+  fail("--on-ink is not white in day mode: text on a filled control would be dim");
+}
+if (onInkDark === null || onInkDark > 0.15) {
+  fail("--on-ink is not dark at night, so a filled control would render white-on-white");
+}
+const darkInk = lum(tokenIn(darkBlock, "--ink"));
+if (darkInk === null || darkInk < 0.88) fail("night --ink is no longer near-white");
+const darkFaint = lum(tokenIn(darkBlock, "--ink-faint"));
+if (darkFaint === null || darkFaint < 0.5) fail("night --ink-faint is too dim to read over the wallpaper");
+
+// The exact screenshot bug: a pressed segment filled with ink must not inherit
+// the accent colour, or the label vanishes at night.
+for (const selector of [
+  '.segmented button[aria-pressed="true"]',
+  '.exam-room-finish',
+  '.packet-unit-links a[aria-current="page"]',
+]) {
+  const rule = css.match(new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{([^}]*)\\}`))?.[1] ?? "";
+  if (!rule) fail(`missing rule for ${selector}`);
+  else if (!/color:\s*var\(--on-ink\)/.test(rule)) {
+    fail(`${selector} fills with ink but does not set color: var(--on-ink)`);
+  }
+}
+
+// Feedback states must be chromatic and must set their own text colour.
+for (const [selector, token] of [
+  [".adaptive-quiz-option.is-correct", "--answer-correct"],
+  [".adaptive-quiz-option.is-wrong", "--answer-wrong"],
+]) {
+  const rule = css.match(new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{([^}]*)\\}`))?.[1] ?? "";
+  if (!rule.includes(`var(${token}`)) fail(`${selector} does not use ${token}`);
+  if (!/\n\s+color:\s*var\(--ink\)/.test(rule)) fail(`${selector} does not set its own text colour`);
+}
+const isChromatic = (value) => {
+  const hex = value.match(/#([0-9a-fA-F]{6})/)?.[1];
+  if (!hex) return false;
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  return Math.max(r, g, b) - Math.min(r, g, b) > 24;
+};
+for (const token of ["--answer-correct", "--answer-wrong"]) {
+  const day = tokenIn(rootBlock, token) || css.match(new RegExp(`${token}:\\s*(#[0-9a-fA-F]{6})`))?.[1] || "";
+  const night = tokenIn(darkBlock, token) || "";
+  if (!isChromatic(day)) fail(`${token} is not a colour in day mode — a wrong answer would read as grey`);
+  if (night && !isChromatic(night)) fail(`${token} is not a colour at night`);
+}
+
 if (errors.length) {
   console.error(`Presentation validation failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, and the optional account layer are intact.");
+console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, and the optional account layer are intact.");
