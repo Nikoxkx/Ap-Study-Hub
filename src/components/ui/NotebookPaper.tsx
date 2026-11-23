@@ -1,10 +1,16 @@
 import React from "react";
 
 /**
- * Ruled notebook paper surface for scratch work, worked math steps, and drafts.
+ * Graph paper for scratch work, worked math steps, and drafts.
  *
- * Uses `#f1f1f1` paper with a `#ffb4b8` pink vertical margin rule at 50px–52px
- * and `#e1e1e1` horizontal rules every 30px.
+ * The surface is the math notebook paper students actually write on: `#ffffff`
+ * stock with a `16px` `#c2dbf1` grid, a `#ee4152` full-height margin rule two
+ * squares in, and clean unprinted edges — all drawn with CSS gradients (see
+ * `.scratch-paper` in `globals.css`) so it stays crisp at any zoom and costs no
+ * image request. Handwriting uses the `Kalam` face in `#2e4257` ink.
+ *
+ * The grid is shared by every scratch surface, math or not: the worked example
+ * under a lesson, the draft box in the FRQ studio, and the lab textareas.
  */
 interface NotebookPaperProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;

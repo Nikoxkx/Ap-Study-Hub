@@ -21,7 +21,7 @@
     "validate:content": "tsx scripts/validate-lessons.ts",
     "validate:study": "tsx scripts/validate-study.ts",
     "build:banners": "node assets/readme/build-banners.mjs",
-    "build:social": "node scripts/build-social-image.mjs",
+    "build:social": "tsx scripts/build-social-image.ts",
     "validate:videos": "tsx scripts/validate-videos.ts",
     "validate:presentation": "node scripts/validate-presentation.mjs",
     "export:videos": "tsx scripts/export-video-registry.ts",
