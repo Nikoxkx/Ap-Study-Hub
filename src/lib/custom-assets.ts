@@ -139,11 +139,18 @@ function looksLikeVideo(file: { name: string; type: string }): boolean {
 
 type Drawable = ImageBitmap | HTMLImageElement;
 
-async function decodeImage(blob: Blob): Promise<Drawable | null> {
+interface Decoded {
+  drawable: Drawable;
+  /** Frees the bitmap or the object URL the element was loaded from. */
+  release: () => void;
+}
+
+async function decodeImage(blob: Blob): Promise<Decoded | null> {
   // `createImageBitmap` is the fast path and applies EXIF orientation on iOS.
   if (typeof createImageBitmap === "function") {
     try {
-      return await createImageBitmap(blob, { imageOrientation: "from-image" });
+      const bitmap = await createImageBitmap(blob, { imageOrientation: "from-image" });
+      return { drawable: bitmap, release: () => bitmap.close() };
     } catch {
       // Fall through: Safari decodes HEIC in an <img> long before it will in a bitmap.
     }
@@ -155,8 +162,7 @@ async function decodeImage(blob: Blob): Promise<Drawable | null> {
     img.decoding = "sync";
     img.src = url;
     await img.decode();
-    // The caller draws from the element, so the URL must outlive this function.
-    return img;
+    return { drawable: img, release: () => URL.revokeObjectURL(url) };
   } catch {
     URL.revokeObjectURL(url);
     return null;
@@ -239,11 +245,11 @@ export async function prepareUpload(file: File): Promise<PrepareResult> {
 
   // Everything else — HEIC, AVIF, a 9 MB phone JPEG, a file with no type at all —
   // is decoded and re-encoded.
-  const drawable = await decodeImage(file);
-  if (!drawable) return { ok: false, reason: "undecodable" };
+  const decoded = await decodeImage(file);
+  if (!decoded) return { ok: false, reason: "undecodable" };
   try {
     for (const quality of [0.9, 0.82, 0.7]) {
-      const jpeg = await canvasToJpeg(drawable, quality);
+      const jpeg = await canvasToJpeg(decoded.drawable, quality);
       if (jpeg && jpeg.size > 0 && jpeg.size <= MAX_ASSET_BYTES) {
         return {
           ok: true,
@@ -259,7 +265,7 @@ export async function prepareUpload(file: File): Promise<PrepareResult> {
       }
     }
   } finally {
-    if ("close" in drawable && typeof drawable.close === "function") drawable.close();
+    decoded.release();
   }
   return { ok: false, reason: "too-large" };
 }

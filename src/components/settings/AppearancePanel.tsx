@@ -118,11 +118,10 @@ export function AppearancePanel() {
         draft.appearance.wallpaperSound = false;
       });
       if (result.converted) {
+        // The honest version of "it worked": the bytes on disk are not the
+        // bytes the phone handed over, and no server ever saw either.
         setVideoNote(
-          `Converted ${result.asset.type === "image/jpeg" ? "to JPEG" : ""} on this device so the browser can display it. Nothing was uploaded.`.replace(
-            "  ",
-            " ",
-          ),
+          "That format was converted to JPEG on this device so the browser can display it. Nothing left the phone or the computer.",
         );
       }
     } catch {
