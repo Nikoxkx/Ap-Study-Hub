@@ -10,7 +10,7 @@
   <br />
 
   <p>
-    <strong>Ten AP courses in one study hub — with 75 cited lessons, 568 recall cards, 447 original practice questions, ten full-length interim assessments, 93 unit videos, and loose-leaf scratch paper.</strong>
+    <strong>Ten AP courses in one study hub — with 75 cited lessons, 568 recall cards, 447 original practice questions, ten full-length interim assessments, 93 unit videos, and math graph-paper scratch space.</strong>
   </p>
 
   <p>
@@ -44,7 +44,7 @@ Studying for several AP classes at once usually turns into eleven browser tabs �
 
 - **Complete cited lessons** — 75 full-length unit lessons (`750` cited prose paragraphs, learning objectives, worked examples, primary sources, and common mistakes).
 - **Cold-recall decks** — 568 active-recall flashcards (course decks + unit glossary terms) with keyboard flip, Fisher–Yates shuffle, and local spaced-review scheduling.
-- **Exam-register practice & timed writing** — 447 original multiple-choice questions that link wrong answers back to the exact lesson section, plus a full-length **interim assessment for every course** with the official section counts, clock, and breaks, and college-ruled scratch paper.
+- **Exam-register practice & timed writing** — 447 original multiple-choice questions that link wrong answers back to the exact lesson section, plus a full-length **interim assessment for every course** with the official section counts, clock, and breaks, and light-blue graph paper for showing work.
 - **Real rubric grading** — every written response is marked row by row against the published College Board rubric, with the sentences that earned or missed each point, grammar and spelling findings, and a study link for every question you missed.
 
 There are **no accounts, no paywalls, no ad scripts, and no analytics trackers**. Progress, due cards, missed questions, and timed drafts live locally in `localStorage` on your own device and can be exported to JSON or Markdown at any time.
@@ -199,7 +199,7 @@ scripts/
   validate-exam-flow.tsx        mounts the real exam room in jsdom and clicks every paper to the report
   validate-scroll-lock.ts       asserts the shared page lock nests and restores scroll position
   validate-presentation.mjs     neutral dark tokens, SubjectMark icons decoded to real pixel colour, CSP, OG PNGs
-  build-social-image.mjs        renders 1200×630 social cards over bg-music-class.jpg via @resvg/resvg-js
+  build-social-image.ts         renders the 1200×630 link preview: graph-paper sheet + 10 course marks via @resvg/resvg-js
 src/
   app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
     globals.css                 design tokens, light/dark surfaces, and every shared component
@@ -229,7 +229,7 @@ src/
       BanterLoader.tsx          9-box kinetic geometric symbol
       LoadingSpinner.tsx        universal 3-circle + 3-shadow bouncing loader
       ThemeSwitch.tsx           compact Sun / Moon / Clouds / Stars theme switch
-      NotebookPaper.tsx         reusable college-ruled loose-leaf scratch paper sheet
+      NotebookPaper.tsx         reusable math graph-paper sheet (16px blue grid, red margin rule)
       ScrollEffects.tsx         60fps exponential-lerp bidirectional viewport-edge fade controller
   content/                      typed curriculum, 75 deep lessons, 10 exam blueprints, sources, and unit videos
   lib/                          catalog aggregator, weighted search index, local store, and JSON-LD schema

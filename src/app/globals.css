@@ -1057,70 +1057,107 @@ main,
 .objective-level:hover { background: var(--paper-sunk); color: var(--ink); }
 .objective-level[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
 
-/* Notebook paper for scratch work & worked solutions ----------------------- */
+/* Math notebook paper for scratch work & worked solutions -------------------
+   The surface is the graph paper students actually use in a math notebook:
+   16px light blue squares on white, a red margin rule two squares in from the
+   left, and a clean unprinted edge. Every rule is a CSS gradient, so the paper
+   is crisp at any zoom and costs no image request.
+
+   Squares are 16px and the written line rhythm is 32px, so each handwritten
+   line lands on every second rule; the horizontal grid is nudged 7px down so
+   the first Kalam baseline (about 87.4px from the top) sits on a rule.
+
+   Layer order matters: backgrounds paint first-on-top, so the red rule is
+   listed first (it survives the unprinted bands), the white edge bands come
+   next (they mask the grid near the paper edge), and the grid is painted
+   underneath. The whole stack lives in `--scratch-sheet` because lab inputs
+   also carry `.field`, whose background shorthand would otherwise reset the
+   paper in night mode. */
 .scratch-paper {
+  --scratch-grid: 16px;
   --scratch-line: 32px;
   --scratch-margin-x: 64px;
+  --scratch-head: 64px;
+  --scratch-foot: 32px;
+  --scratch-edge: 16px;
   --scratch-bg: #ffffff;
-  --scratch-rule: #b8cee5;
-  --scratch-margin: #de7c7b;
-  --scratch-ink: #30455a;
+  --scratch-rule: #c2dbf1;
+  --scratch-margin: #ee4152;
+  --scratch-ink: #2e4257;
+  --scratch-sheet:
+    linear-gradient(
+      90deg,
+      transparent calc(var(--scratch-margin-x) - 1px),
+      var(--scratch-margin) calc(var(--scratch-margin-x) - 1px),
+      var(--scratch-margin) calc(var(--scratch-margin-x) + 1px),
+      transparent calc(var(--scratch-margin-x) + 1px)
+    ),
+    linear-gradient(
+      to bottom,
+      #ffffff 0,
+      #ffffff var(--scratch-head),
+      transparent var(--scratch-head)
+    ),
+    linear-gradient(to top, #ffffff 0, #ffffff var(--scratch-foot), transparent var(--scratch-foot)),
+    linear-gradient(
+      90deg,
+      #ffffff 0,
+      #ffffff var(--scratch-edge),
+      transparent var(--scratch-edge),
+      transparent calc(100% - var(--scratch-edge)),
+      #ffffff calc(100% - var(--scratch-edge)),
+      #ffffff 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--scratch-rule) 0px,
+      var(--scratch-rule) 1px,
+      transparent 1px,
+      transparent var(--scratch-grid)
+    ),
+    repeating-linear-gradient(
+      180deg,
+      var(--scratch-rule) 0px,
+      var(--scratch-rule) 1px,
+      transparent 1px,
+      transparent var(--scratch-grid)
+    );
   position: relative;
   color: var(--scratch-ink);
   color-scheme: light;
   border: 1px solid rgba(180, 190, 204, 0.72);
   border-radius: 3px;
   background-color: #ffffff;
-  background-image:
-    linear-gradient(
-      90deg,
-      transparent var(--scratch-margin-x),
-      var(--scratch-margin) var(--scratch-margin-x),
-      var(--scratch-margin) calc(var(--scratch-margin-x) + 1.5px),
-      transparent calc(var(--scratch-margin-x) + 1.5px)
-    ),
-    linear-gradient(to bottom, #ffffff 0px, #ffffff 60px, transparent 60px),
-    linear-gradient(to top, #ffffff 0px, #ffffff 34px, transparent 34px),
-    linear-gradient(
-      90deg,
-      #ffffff 0px,
-      #ffffff 20px,
-      transparent 20px,
-      transparent calc(100% - 20px),
-      #ffffff calc(100% - 20px),
-      #ffffff 100%
-    ),
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 31px,
-      var(--scratch-rule) 31px,
-      var(--scratch-rule) 32px
-    );
-  background-position: 0 0, 0 0, 0 0, 0 0, 0 26px;
+  background-image: var(--scratch-sheet);
+  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 calc(var(--scratch-head) + 7px);
   background-attachment: local;
-  padding: 66px 30px 40px calc(var(--scratch-margin-x) + 16px);
+  backdrop-filter: none;
+  padding: calc(var(--scratch-head) + 2px) 30px calc(var(--scratch-foot) + 16px)
+    calc(var(--scratch-margin-x) + 16px);
   font-family: var(--font-hand);
   font-weight: 300;
   font-size: 20.5px;
-  line-height: 32px;
+  line-height: var(--scratch-line);
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.08),
     0 10px 28px rgba(0, 0, 0, 0.14);
 }
 
+/* Paper stays paper in night mode; only the drop shadow deepens. */
 .dark .scratch-paper {
   --scratch-bg: #ffffff;
-  --scratch-rule: #b8cee5;
-  --scratch-margin: #de7c7b;
-  --scratch-ink: #30455a;
-  color: #30455a;
+  --scratch-rule: #c2dbf1;
+  --scratch-margin: #ee4152;
+  --scratch-ink: #2e4257;
+  color: #2e4257;
   background-color: #ffffff;
+  background-image: var(--scratch-sheet);
   border-color: rgba(255, 255, 255, 0.55);
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
 }
 
-select.scratch-paper {
+select.scratch-paper,
+.dark select.scratch-paper {
   background-image: none;
   padding: 0.5rem 0.75rem;
   font-family: var(--font-ui);
@@ -1999,7 +2036,7 @@ main :has(:fullscreen) {
   .objective-row { grid-template-columns: 1.5rem minmax(0, 1fr); }
   .objective-levels { grid-column: 2; width: 100%; }
   .objective-level { flex: 1; padding-inline: 0.25rem; }
-  .scratch-paper { --scratch-margin-x: 2.4rem; padding-left: calc(var(--scratch-margin-x) + 0.6rem); padding-inline-end: 0.85rem; }
+  .scratch-paper { --scratch-margin-x: 2rem; --scratch-head: 3rem; padding-left: calc(var(--scratch-margin-x) + 0.75rem); padding-inline-end: 0.85rem; }
   .worked-step { grid-template-columns: 1.5rem minmax(0, 1fr); }
   .worked-reason { grid-column: 2; padding: 0; border-left: 0; }
   .course-lab-header { flex-direction: column; gap: 0.75rem; }
