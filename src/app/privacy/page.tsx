@@ -259,9 +259,12 @@ export default function PrivacyPage() {
               Without a key it returns the same local analysis, computed on the server.
             </p>
             <p>
-              Signing in is optional and is the only feature that talks to a second server. If this
-              deployment has Supabase configured, <code>/account</code> can send you a one-time code by
-              email or text; entering it creates a session in this browser. From then on Supabase holds
+              Signing in is optional and is the only feature that talks to a second server. The window
+              is <code>/login</code>. If this deployment has Supabase configured, it can send you a
+              one-time code by email or text, or hand you to Google&rsquo;s own sign-in screen; either
+              route creates a session in this browser. Choosing Google sends Google the fact that you
+              are signing in here, and returns your name, address, and photo — nothing else is
+              requested, and no other Google service is touched. From then on Supabase holds
               a display name, a photo you chose, and five coarse counts (cards reviewed, practice
               answered, focus minutes, streak, last active) — only when you press{" "}
               <strong>Save today&rsquo;s counts</strong>. No lesson, answer, draft, essay, or search is

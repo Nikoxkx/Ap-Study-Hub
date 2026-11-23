@@ -14,7 +14,9 @@ import {
   AVATAR_BUCKET,
   MAX_AVATAR_BYTES,
   getSupabase,
+  loadAuthProviders,
   supabaseConfigured,
+  type AuthProviders,
 } from "./supabase";
 import { checkAssetCandidate, verifyAssetBytes } from "./custom-assets";
 
@@ -75,6 +77,10 @@ interface AuthContextValue {
   profile: AccountProfile | null;
   cloudStats: CloudStats | null;
   requestCode: (kind: ContactKind, value: string) => Promise<AuthResult>;
+  /** Which methods the Supabase project has switched on (email, phone, Google). */
+  providers: AuthProviders;
+  /** Start the Google OAuth round trip. Resolves with an error message on failure. */
+  signInWithGoogle: (next?: string) => Promise<AuthResult>;
   verifyCode: (kind: ContactKind, value: string, token: string) => Promise<AuthResult>;
   signOut: () => Promise<void>;
   saveProfile: (displayName: string) => Promise<AuthResult>;
@@ -129,6 +135,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<AccountProfile | null>(null);
   const [cloudStats, setCloudStats] = useState<CloudStats | null>(null);
+  // Starts as "email only, unknown" so the first paint never flashes a Google
+  // button that this project cannot honour; the real answer arrives from
+  // `/auth/v1/settings` a moment later.
+  const [providers, setProviders] = useState<AuthProviders>({
+    email: supabaseConfigured,
+    phone: false,
+    google: false,
+    known: !supabaseConfigured,
+  });
 
   const userId = session?.user?.id ?? null;
   const contact = contactFor(session);
@@ -214,6 +229,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       clearTimeout(timer);
     };
   }, [userId, load]);
+
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let alive = true;
+    void loadAuthProviders().then((next) => {
+      if (alive) setProviders(next);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  /**
+   * Google sign-in.
+   *
+   * Supabase runs the OAuth dance and returns to `redirectTo`, where the client
+   * (PKCE, detectSessionInUrl) finishes the exchange. `next` is carried through
+   * as a query value so the login page can put the visitor back where they
+   * started. There is no password anywhere in this flow either.
+   */
+  const signInWithGoogle = useCallback(
+    async (next?: string): Promise<AuthResult> => {
+      if (!client) return { ok: false, message: "Sign-in is not configured on this deployment." };
+      if (!providers.google) {
+        return {
+          ok: false,
+          message: "Google sign-in is not switched on for this project yet.",
+        };
+      }
+      try {
+        const origin = typeof window === "undefined" ? "" : window.location.origin;
+        const target = new URL(`${origin}/login`);
+        if (next && next.startsWith("/") && !next.startsWith("//")) target.searchParams.set("next", next);
+        const { error } = await client.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: target.toString(),
+            queryParams: { prompt: "select_account" },
+          },
+        });
+        if (error) return { ok: false, message: error.message };
+        // The browser is navigating away; nothing after this runs in practice.
+        return { ok: true, message: "Opening Google…" };
+      } catch (error) {
+        return { ok: false, message: messageOf(error, "Google sign-in could not start.") };
+      }
+    },
+    [client, providers.google],
+  );
 
   const requestCode = useCallback(
     async (kind: ContactKind, value: string): Promise<AuthResult> => {
@@ -432,6 +496,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       profile,
       cloudStats,
       requestCode,
+      providers,
+      signInWithGoogle,
       verifyCode,
       signOut,
       saveProfile,
@@ -449,6 +515,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       profile,
       cloudStats,
       requestCode,
+      providers,
+      signInWithGoogle,
       verifyCode,
       signOut,
       saveProfile,

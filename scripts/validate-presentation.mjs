@@ -326,6 +326,55 @@ if ((migration.match(/auth\.uid\(\)/g) ?? []).length < 6) fail("account policies
 if (!migration.includes("'avatars'")) fail("account migration does not create the avatars bucket");
 if (!migration.includes("file_size_limit")) fail("avatar bucket lost its size limit");
 
+// Google sign-in, the /login window, and the messages that go with it.
+const loginPage = read("src/app/login/page.tsx");
+const loginClient = read("src/components/account/LoginClient.tsx");
+const signInPanel = read("src/components/account/SignInPanel.tsx");
+const sitemap = read("src/app/sitemap.ts");
+const navSource = read("src/lib/navigation.ts");
+
+if (!loginPage.includes('canonical: "/login"')) fail("/login lost its canonical metadata");
+if (!loginPage.includes("providerError")) fail("/login does not surface an OAuth refusal");
+if (!/searchParams/.test(loginPage) || !/startsWith\("\/"\)/.test(loginPage)) {
+  fail("/login does not sanitise its ?next= destination");
+}
+if (!navSource.includes('href: "/login"')) fail("the command palette has no sign-in entry");
+if (!sitemap.includes('absoluteUrl("/login")')) fail("/login is missing from the sitemap");
+
+// The button exists only where the provider does: capability comes from Supabase.
+if (!/auth\/v1\/settings/.test(supabaseLib)) fail("provider capability is not read from Supabase");
+if (!/external\.google/.test(supabaseLib)) fail("Google is not among the detected providers");
+if (!/signInWithOAuth\(\{[\s\S]*provider: "google"/.test(authLib)) {
+  fail("the Google OAuth call is missing or points at another provider");
+}
+if (!/redirectTo/.test(authLib) || !/\/login/.test(authLib)) {
+  fail("Google does not return to /login, so the session would land on the wrong page");
+}
+if (!signInPanel.includes("providers.google")) fail("the panel does not gate the Google button on the provider");
+if (!/providers\.phone/.test(signInPanel)) fail("the phone tab is not gated on the SMS provider");
+if (/password/i.test(signInPanel.replace(/no password|No password|password exists/gi, ""))) {
+  fail("the sign-in panel mentions a password that this site does not have");
+}
+
+// The emails and texts have to tell the reader what to do, and carry both routes.
+const magicLink = read("supabase/templates/magic-link.html");
+const confirmation = read("supabase/templates/confirmation.html");
+const sms = read("supabase/templates/sms-code.txt");
+for (const [name, template] of [
+  ["magic-link", magicLink],
+  ["confirmation", confirmation],
+]) {
+  if (!template.includes("{{ .Token }}")) fail(`${name} email does not include the code`);
+  if (!template.includes("{{ .ConfirmationURL }}")) fail(`${name} email does not include the link`);
+  if (!/<ol/.test(template)) fail(`${name} email does not spell out the steps`);
+}
+if (!/\{\{ \.Code \}\}/.test(sms)) fail("the SMS template does not include the code");
+if (!/expires/i.test(sms)) fail("the SMS template does not say when the code stops working");
+const authDoc = read("SUPABASE_AUTH.md");
+if (!/auth\/v1\/callback/.test(authDoc)) fail("SUPABASE_AUTH.md does not give the OAuth redirect URI");
+if (!/Providers → Google|Providers →\s*Google/.test(authDoc)) fail("SUPABASE_AUTH.md does not say where the client goes");
+if (!/supabase\/templates\//.test(authDoc)) fail("SUPABASE_AUTH.md does not point at the message templates");
+
 // Small mono labels have to hold up over a photograph seen through glass. The
 // light faint ink is asserted against the page's own surface colour, and the
 // halo rule is asserted so a future reset of the ink cannot quietly undo it.
@@ -494,4 +543,4 @@ if (errors.length) {
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, the surface ladder, and the optional account layer are intact.");
+console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, the surface ladder, the Google sign-in window, and the optional account layer are intact.");

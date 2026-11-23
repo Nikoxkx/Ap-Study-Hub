@@ -1,0 +1,39 @@
+<h2>Sign in to AP Study Hub</h2>
+
+<p>
+  Tap the button to sign in on this device, or type the code into the window you left open. Both do
+  exactly the same thing.
+</p>
+
+<p
+  style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:28px;letter-spacing:6px;font-weight:700;margin:18px 0"
+>
+  {{ .Token }}
+</p>
+
+<p>
+  <a
+    href="{{ .ConfirmationURL }}"
+    style="display:inline-block;background:#0f0f0f;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:600"
+    >Sign in to AP Study Hub</a
+  >
+</p>
+
+<ol style="padding-left:18px;line-height:1.6">
+  <li><strong>If you tapped the button:</strong> nothing else is needed — the site opens signed in.</li>
+  <li>
+    <strong>If you copied the code:</strong> go back to the sign-in window, type the eight digits, and
+    press <em>Sign in</em>.
+  </li>
+  <li>
+    <strong>It only works once</strong>, and it expires an hour after it was sent. If you need
+    another, press <em>Send again</em> in the window — the site tells you when the limit resets.
+  </li>
+</ol>
+
+<p style="color:#555;font-size:13px;line-height:1.55">
+  This message was sent because someone entered {{ .Email }} on
+  <a href="https://ap-study-hub-five.vercel.app/login">ap-study-hub-five.vercel.app/login</a>. If that
+  was not you, ignore it — nothing happens without the code or the link, and no account is created
+  until one of them is used.
+</p>

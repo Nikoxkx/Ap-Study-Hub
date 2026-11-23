@@ -100,6 +100,7 @@ Each of the ten courses has a monochrome symbol on a transparent canvas: a flag,
 
 `/settings` makes the site configurable without a backend, and without letting a saved preference break a page. Seven panels, no save button: every control writes through one validated record (`aps.prefs.v1`), so the page you are looking at *is* the saved state.
 
+- **Sign-in window** — `/login`, one tap with Google when the project has a Google OAuth client, otherwise a one-time code by email; no password exists, and the window is never required to study.
 - **Appearance** — wallpaper (the four shipped paintings, route default, or your own upload), fit, blur, dimming; light and night ink, accent, highlight, glass tint; a **surface ladder** from clear glass to solid paper (five named stops plus a continuous 0–100 slider, with a per-palette contrast floor so the panels can never thin past readable); display/UI fonts, size, line height; radius, motion, density.
 - **Layout** — reorder, hide, and rename every home-page section. Order is applied with CSS `order` and hiding with `display`, so no section is unmounted and nothing keeps state it should not.
 - **Text & elements** — hero badge/title/subtitle, footer note, and up to twelve custom blocks (text, image, link), placed on the home page or under one specific course.

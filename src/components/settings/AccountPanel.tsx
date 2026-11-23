@@ -50,9 +50,9 @@ export function AccountPanel() {
         description="You are not signed in — which changes nothing about the site."
         aside={<span className="pref-badge">signed out</span>}
       >
-        <Row label="Sign in" hint="Email or phone, one-time code, no password.">
-          <Link href="/account" className="btn">
-            Open the account page
+        <Row label="Sign in" hint="Google in one tap, or a one-time code. No password exists.">
+          <Link href="/login" className="btn">
+            Open the sign-in window
           </Link>
         </Row>
         <Note>

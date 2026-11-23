@@ -4,8 +4,9 @@ The site is local-first and stays that way. Accounts are a convenience, not a ga
 configuration there is no sign-in, no upload, and no server call, and every lesson, card, question,
 paper, and video still works.
 
-Sign-in is a **one-time code** sent by email or text. There is no password field anywhere in the
-app, so there is no password to reuse, leak, or type into a lookalike page.
+Sign-in is **Google in one tap**, or a **one-time code** by email or text. There is no password field
+anywhere in the app, so there is no password to reuse, leak, or type into a lookalike page. The
+window is `/login` (also reachable from `/account`, the header, and the command palette).
 
 ## What an account holds
 
@@ -28,13 +29,38 @@ user (`avatars/<uid>/avatar.<ext>`), 2 MB limit, and only PNG/JPEG/WebP/GIF — 
    (`supabase db push`) or paste it into the dashboard's SQL editor. It creates both tables, enables
    Row Level Security, adds own-row-only policies, creates the `avatars` bucket and its policies, and
    adds the `updated_at` triggers.
-2. **Enable the providers you want** in Authentication → Providers:
-   - **Email** — enabled by default. For the smoothest experience, edit the *Magic Link* template to
-     show `{{ .Token }}` as well as the link; the site accepts the six-digit code.
-   - **Phone** — requires an SMS provider (Twilio, MessageBird, Vonage, or Textlocal) configured in
-     Authentication → Providers → Phone. Without one, the phone tab will return a provider error and
-     the site will show it verbatim; email keeps working.
-3. **Set the two public values** in Vercel → Settings → Environment Variables (and in `.env.local`
+2. **Add Google** (the one-tap route) — this is the only step that needs a secret, and it takes about
+   three minutes:
+   1. Google Cloud Console → **APIs & Services → OAuth consent screen** → *External*; set the app
+      name (`AP Study Hub`), the support email, and the developer contact. Publishing status can stay
+      *Testing* while you add yourself under **Test users**; publish it when other students should be
+      able to sign in.
+   2. **Credentials → Create credentials → OAuth client ID → Web application.**
+      - Authorised JavaScript origin: `https://ap-study-hub-five.vercel.app`
+      - Authorised redirect URI: `https://zgkpflrddkrqldjeocsk.supabase.co/auth/v1/callback`
+   3. Copy the **client ID** and **client secret** into Supabase → **Authentication → Providers →
+      Google**, enable it, save.
+   4. Nothing to redeploy. The login window reads `/auth/v1/settings` at runtime, so the Google
+      button appears the moment the provider is on — and disappears again if it is switched off.
+3. **Paste the email templates** so the message tells the reader exactly what to do. Authentication →
+   Email Templates, replace the body with the files in `supabase/templates/`:
+   - **Magic Link** → `supabase/templates/magic-link.html`
+   - **Confirm signup** → `supabase/templates/confirmation.html`
+   - Suggested subjects: *“Your AP Study Hub sign-in code and link”* /
+     *“Confirm your email for AP Study Hub”*.
+
+   Both templates print `{{ .Token }}` **and** the `{{ .ConfirmationURL }}` button, because either
+   route works in the app: the button returns signed in, the code finishes the flow in the window
+   that is already open. `mailer_otp_length` for this project is **8**; the form accepts 4–10 digits,
+   so a future change to 6 or 10 does not need a code change. Codes last an hour
+   (`mailer_otp_exp = 3600`).
+4. **Phone/SMS (optional).** Phone sign-in needs a paid SMS provider — Supabase supports Twilio,
+   MessageBird, Vonage, and Textlocal. Add the credentials under Authentication → Providers → Phone,
+   turn the provider on, and set the message to `supabase/templates/sms-code.txt`. Two project
+   settings are worth changing at the same time: `sms_otp_exp` (default **60 seconds**, which is
+   short for a text that may arrive late — 300–600 is kinder) and `sms_max_frequency`. Until a
+   provider is configured, the window does not offer a phone tab at all; it does not pretend.
+5. **Set the two public values** in Vercel → Settings → Environment Variables (and in `.env.local`
    for local work), then redeploy:
    ```text
    NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
@@ -42,8 +68,20 @@ user (`avatars/<uid>/avatar.<ext>`), 2 MB limit, and only PNG/JPEG/WebP/GIF — 
    ```
    The anon key is public by design — Row Level Security is what protects the rows. **Never** put a
    service-role key in a `NEXT_PUBLIC_` variable.
-4. **Add your origins** in Authentication → URL Configuration: site URL plus
-   `https://<your-domain>/account` in the redirect allow-list.
+6. **Add your origins** in Authentication → URL Configuration: the site URL plus
+   `https://<your-domain>/login` and `https://<your-domain>/account` in the redirect allow-list.
+   Google returns to the project's `/auth/v1/callback`, which then forwards to `/login`.
+
+## What this deployment has switched on
+
+| Provider | State | What the window does |
+| --- | --- | --- |
+| Email — one-time code or magic link | **On** (8-digit codes, 1-hour expiry) | Primary fallback under the Google button |
+| Google — OAuth 2.0 | **Off pending client ID/secret** (step 2 above) | The button is not rendered; a short setup card appears in its place |
+| Phone — SMS | **Off** (no SMS provider) | No phone tab is shown |
+
+The interface asks Supabase which providers exist, so this table is the only place the truth has to
+be written down — the code does not hard-code it.
 
 ## Security model
 

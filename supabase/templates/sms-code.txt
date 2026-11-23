@@ -1,0 +1,1 @@
+AP Study Hub: {{ .Code }} is your sign-in code. Type it in the sign-in window you left open; it works once and expires shortly. Not you? Ignore this text.
