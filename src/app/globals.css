@@ -113,9 +113,13 @@
   --color-paper: transparent;
   --color-paper-raised: rgba(255, 255, 255, 0.28);
   --color-paper-sunk: rgba(255, 255, 255, 0.18);
-  --color-ink: #0f0f0f;
-  --color-ink-soft: #242424;
-  --color-ink-faint: #3d3d3d;
+  --color-ink: #0b0b0b;
+  --color-ink-soft: #171717;
+  /* Faint ink is the small mono label voice — eyebrows, stat captions, hints.
+     It used to sit at #3d3d3d, which is legible on flat paper and vanishes over
+     a photograph seen through glass. It is now a near-black; the halo rules
+     below do the rest. */
+  --color-ink-faint: #1f1f1f;
   --color-rule: rgba(255, 255, 255, 0.65);
   --color-rule-strong: rgba(0, 0, 0, 0.22);
   --color-mark: #0f0f0f;
@@ -166,13 +170,23 @@
   --subject-ink: #141414;
   --subject-tint: rgba(255, 255, 255, 0.32);
   --glass-bg: rgba(226, 226, 226, 0.44);
+  /* The colour of the halo behind small bare type. It is the paper's own tone at
+     near-full alpha, so the glow reads as the page lifting, not as a shadow. */
+  --label-halo: rgba(255, 255, 255, 0.95);
+  /* Panel blur is a preference (Settings → Appearance → Surface). */
+  --surface-blur: 16px;
   --glass-border: rgba(255, 255, 255, 0.92);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.22);
-  /* Solid foreground for text sitting on an ink/accent fill. The paper
-     tokens are surfaces, so in night mode they carry alpha and cannot be
-     reused as a text colour. */
-  --on-accent: var(--paper-raised);
+  /* Foreground for text on a filled control.
+     `--on-ink` is paired with `--ink`, `--mark` and `--subject-ink` — three
+     fills that *invert* between themes: near-black in day, near-white at
+     night. The text on them therefore has to invert too, which is why this is
+     a token pair and not a hardcoded white. (It used to be a 26%-white paper
+     value, which was illegible on ink in day mode and invisible on a light
+     fill at night.) */
+  --on-ink: #ffffff;
+  --on-accent: #ffffff;
 }
 
 /* Night mode keeps its original deep-neutral surfaces. The values stay strictly
@@ -187,9 +201,13 @@
   --paper: rgba(15, 15, 15, 0.66);
   --paper-raised: rgba(28, 28, 28, 0.58);
   --paper-sunk: rgba(8, 8, 8, 0.62);
-  --ink: #ededed;
-  --ink-soft: #c4c4c4;
-  --ink-faint: #9a9a9a;
+  /* Night text is lifted deliberately: the wallpaper is still visible behind
+     every frosted panel, and the old #9a9a9a label voice read as grey mush on
+     a lit photograph. Ink is near-white, secondary text is light, and the
+     label voice is light enough to hold its own — all still strictly neutral. */
+  --ink: #f7f7f7;
+  --ink-soft: #dddddd;
+  --ink-faint: #e2e2e2;
   --rule: rgba(255, 255, 255, 0.14);
   --rule-strong: rgba(255, 255, 255, 0.3);
   --mark: #ededed;
@@ -199,11 +217,14 @@
   --warn: #d9d9d9;
   --warn-wash: rgba(217, 217, 217, 0.14);
   --subject-tint: var(--color-subject-wash-dark, rgba(255, 255, 255, 0.08));
-  --glass-bg: rgba(18, 18, 18, 0.55);
+  --glass-bg: rgba(18, 18, 18, 0.56);
+  --label-halo: rgba(0, 0, 0, 0.95);
   --glass-border: rgba(255, 255, 255, 0.32);
   --glass-shadow: 12px 17px 51px rgba(0, 0, 0, 0.48);
   --shadow-lift: 12px 17px 51px rgba(0, 0, 0, 0.48);
-  --on-accent: #f4f4f4;
+  /* Ink is pale at night, so anything sitting on it must be dark. */
+  --on-ink: #101010;
+  --on-accent: #101010;
 }
 
 /* No page-wide veil in either theme.
@@ -222,16 +243,23 @@
 .folio,
 .lede {
   text-shadow:
-    0 1px 10px rgba(255, 255, 255, 0.92),
-    0 0 2px rgba(255, 255, 255, 0.9);
+    0 1px 10px var(--label-halo),
+    0 0 1px var(--label-halo);
 }
 
 .dark .label,
 .dark .folio,
 .dark .lede {
+  /* The rim is 1px, not 3px: mono caps are 11px, and a 3px black glow bled into
+     the strokes until grey letters read as dark ones. The wide 10px shadow still
+     separates the word from a busy painting without touching the glyph. */
   text-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.92),
-    0 0 3px rgba(0, 0, 0, 0.9);
+    0 1px 10px var(--label-halo),
+    0 0 1px var(--label-halo);
+}
+
+.dark .label {
+  font-weight: 600;
 }
 
 /* Each AP class keeps its own accent (from src/lib/subjects.ts): `ink` on light
@@ -372,7 +400,7 @@ table,
   top: -4rem;
   z-index: 100;
   background: var(--ink);
-  color: var(--on-accent);
+  color: var(--on-ink);
   padding: 0.625rem 1rem;
   border-radius: var(--radius-cut);
   font-size: 0.875rem;
@@ -453,8 +481,8 @@ table,
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(16px) saturate(118%);
-  -webkit-backdrop-filter: blur(16px) saturate(118%);
+  backdrop-filter: blur(var(--surface-blur, 16px)) saturate(118%);
+  -webkit-backdrop-filter: blur(var(--surface-blur, 16px)) saturate(118%);
   border-radius: 17px;
   color: var(--ink);
 }
@@ -627,7 +655,7 @@ table,
 .dark .tag-subject {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.35);
-  color: #ededed;
+  color: var(--ink);
 }
 
 /* Underline that grows from the left on hover — one motion idiom, used
@@ -1063,7 +1091,7 @@ main,
 
 .objective-level:last-child { border-right: 0; }
 .objective-level:hover { background: var(--paper-sunk); color: var(--ink); }
-.objective-level[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
+.objective-level[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-ink); }
 
 /* Math notebook paper for scratch work & worked solutions -------------------
    The surface is the graph paper students actually use in a math notebook:
@@ -1291,7 +1319,9 @@ textarea.scratch-paper {
 .worked-reason {
   padding: 0 0 0 1rem;
   border-left: 1px solid var(--worked-line);
-  color: #57534a;
+  /* Was a fixed #57534a: near-invisible explanation text on the frosted night
+     panel. It follows the ink scale now, so the "why" line reads in both. */
+  color: var(--ink-soft);
   font-family: var(--font-ui);
   font-size: 0.8125rem;
   line-height: var(--scratch-line);
@@ -1397,7 +1427,7 @@ textarea.scratch-paper {
 .segmented { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--rule-strong); border-radius: var(--radius-cut); overflow: hidden; }
 .segmented button { flex: 1 1 auto; min-height: 2.35rem; padding: 0.45rem 0.65rem; border: 0; border-right: 1px solid var(--rule); background: var(--paper-raised); color: var(--ink-soft); font-size: 0.6875rem; cursor: pointer; }
 .segmented button:last-child { border-right: 0; }
-.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--on-accent); }
+.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
 .lab-slider > span { display: flex; justify-content: space-between; gap: 0.75rem; color: var(--ink-soft); font-size: 0.75rem; }
 .lab-slider output { color: var(--ink); font-family: var(--font-mono); }
 .lab-slider input { width: 100%; margin-top: 0.5rem; accent-color: var(--subject-ink); }
@@ -1488,7 +1518,7 @@ textarea.scratch-paper {
 .criterion-buttons { display: flex; border: 1px solid var(--rule); border-radius: var(--radius-cut); overflow: hidden; }
 .criterion-buttons button { padding: 0.45rem 0.6rem; border: 0; border-right: 1px solid var(--rule); background: transparent; color: var(--ink-faint); font-size: 0.6875rem; cursor: pointer; }
 .criterion-buttons button:last-child { border-right: 0; }
-.criterion-buttons button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
+.criterion-buttons button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-ink); }
 .exemplar-comparison { padding-top: 1.5rem; border-top: 2px solid var(--ink); }
 .exemplar-comparison > div:first-child > p:last-child { max-width: 65ch; margin-top: 0.5rem; color: var(--ink-soft); font-size: 0.8125rem; }
 .comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
@@ -1528,7 +1558,7 @@ textarea.scratch-paper {
 .study-tabs { display: flex; overflow-x: auto; margin-bottom: 2rem; border-block: 1px solid var(--rule); }
 .study-tabs button { display: inline-flex; align-items: center; gap: 0.4rem; flex: 0 0 auto; min-height: 2.85rem; padding: 0.65rem 0.9rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--ink-soft); font-size: 0.8125rem; cursor: pointer; }
 .study-tabs button[aria-pressed="true"] { border-color: var(--subject-ink); color: var(--ink); font-weight: 650; }
-.study-tabs button span { display: grid; place-items: center; min-width: 1.25rem; height: 1.25rem; border-radius: 999px; background: var(--mark); color: var(--on-accent); font-family: var(--font-mono); font-size: 0.625rem; }
+.study-tabs button span { display: grid; place-items: center; min-width: 1.25rem; height: 1.25rem; border-radius: 999px; background: var(--mark); color: var(--on-ink); font-family: var(--font-mono); font-size: 0.625rem; }
 .study-loading { padding: 3rem; border: 1px solid var(--rule); color: var(--ink-soft); text-align: center; }
 .panel-heading { display: flex; align-items: start; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.5rem; }
 .panel-heading h2 { margin-top: 0.3rem; font-size: clamp(1.5rem, 1.25rem + 0.8vw, 2rem); }
@@ -1594,7 +1624,7 @@ textarea.scratch-paper {
 .weekday-picker { display: flex; margin-top: 0.5rem; }
 .weekday-picker button { flex: 1; min-width: 2rem; min-height: 2.25rem; padding: 0.35rem; border: 1px solid var(--rule-strong); border-right: 0; background: var(--paper-raised); color: var(--ink-faint); font-size: 0.625rem; cursor: pointer; }
 .weekday-picker button:last-child { border-right: 1px solid var(--rule-strong); }
-.weekday-picker button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-accent); }
+.weekday-picker button[aria-pressed="true"] { background: var(--subject-ink); color: var(--on-ink); }
 .deadline-note strong { display: block; margin-top: 0.25rem; font-family: var(--font-display); font-size: 1.5rem; }
 .deadline-note p { color: var(--ink-faint); font-size: 0.625rem; }
 .plan-days { display: grid; gap: 0.65rem; }
@@ -1978,7 +2008,7 @@ main :has(:fullscreen) {
 .packet-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
 .packet-unit-links { display: flex; flex: 1; flex-wrap: wrap; justify-content: center; gap: 0.35rem; }
 .packet-unit-links a { padding: 0.3rem 0.45rem; color: var(--ink-soft); font-size: 0.6875rem; text-decoration: none; }
-.packet-unit-links a[aria-current="page"] { background: var(--ink); color: var(--on-accent); }
+.packet-unit-links a[aria-current="page"] { background: var(--ink); color: var(--on-ink); }
 .packet-cover { padding: 2rem 0; border-block: 3px double var(--ink); }
 .packet-cover h1 { margin-top: 0.75rem; font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
 .packet-cover > p:not(.label):not(.packet-directions) { margin-top: 0.75rem; color: var(--ink-soft); font-size: 1.125rem; }
@@ -2187,8 +2217,8 @@ main :has(:fullscreen) {
 .dark .canvas-heading {
   color: #ffffff;
   text-shadow:
-    0 2px 24px rgba(0, 0, 0, 0.95),
-    0 0 4px rgba(0, 0, 0, 0.98);
+    0 2px 24px var(--label-halo),
+    0 0 4px var(--label-halo);
 }
 
 .canvas-subtext {
@@ -2200,10 +2230,45 @@ main :has(:fullscreen) {
 }
 
 .dark .canvas-subtext {
-  color: #f0f0f0;
+  color: #f7f7f7;
   text-shadow:
-    0 2px 18px rgba(0, 0, 0, 0.96),
-    0 0 3px rgba(0, 0, 0, 0.98);
+    0 2px 18px var(--label-halo),
+    0 0 1px var(--label-halo);
+}
+
+/* ---- Legibility over the wallpaper --------------------------------------
+   Frosted panels are deliberately see-through, so the classroom painting is
+   still visible behind them — which means small type lands on a chalkboard, a
+   window, or forty desks. Every rule here is about that, and nothing else:
+
+   • small labels, folios and stat figures get a tight halo in the direction
+     that lifts them (white on paper, black at night), so they hold their edge
+     against whatever photograph is behind the glass;
+   • nothing here is a full-page filter, a wash, or an opaque panel. The
+     painting stays at its own brightness, as it must.
+
+   The halo is a text-shadow rather than a background because a background
+   would draw a box around every label and change the page's composition. */
+:root:not(.dark) .label,
+:root:not(.dark) .folio,
+:root:not(.dark) .stat-value,
+:root:not(.dark) .canvas-subtext {
+  text-shadow:
+    0 1px 14px rgba(255, 255, 255, 0.94),
+    0 0 2px rgba(255, 255, 255, 0.88);
+}
+
+.dark .label,
+.dark .folio,
+.dark .stat-value {
+  text-shadow:
+    0 1px 14px rgba(0, 0, 0, 0.92),
+    0 0 2px rgba(0, 0, 0, 0.88);
+}
+
+/* Tags are chips with their own surface; only their ink needs a nudge. */
+.tag {
+  font-weight: 500;
 }
 
 /* Convert all major app containers across every route into the Universal Glass Box */
@@ -4883,7 +4948,7 @@ html.is-entering footer[data-site-footer] {
 }
 .exam-room-button:hover { background: var(--paper-sunk); }
 .exam-room-button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.exam-room-finish { background: var(--ink); border-color: var(--ink); color: var(--on-accent); }
+.exam-room-finish { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
 .exam-room-finish:hover { background: var(--ink-soft); }
 
 .exam-room-progress {
@@ -5040,7 +5105,7 @@ html.is-entering footer[data-site-footer] {
 }
 .exam-room-bubbles button[data-answered="true"] { background: var(--paper-sunk); color: var(--ink); border-color: var(--rule-strong); }
 .exam-room-bubbles button[data-flagged="true"] { box-shadow: inset 0 -2px 0 var(--mark); }
-.exam-room-bubbles button[data-active="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-accent); }
+.exam-room-bubbles button[data-active="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
 .exam-room-strip-actions { display: flex; align-items: center; gap: 0.9rem; font-size: 0.72rem; color: var(--ink-faint); }
 .exam-room-strip-link { color: var(--ink-soft); text-underline-offset: 2px; }
 .exam-room-strip-note { margin: 0; font-size: 0.76rem; color: var(--ink-soft); }
@@ -5672,10 +5737,9 @@ html.is-entering footer[data-site-footer] {
 .selfscore-scale button[data-chosen="true"] {
   background: var(--mark);
   border-color: var(--mark);
-  color: #fff;
+  color: var(--on-ink);
   font-weight: 600;
 }
-.dark .selfscore-scale button[data-chosen="true"] { color: #111; }
 
 .selfscore-descriptors { list-style: none; margin: 0.7rem 0 0; padding: 0; display: grid; gap: 0.35rem; }
 .selfscore-descriptors li {
@@ -5842,3 +5906,1278 @@ html.is-entering footer[data-site-footer] {
 .stimulus-table tbody tr:last-child td { border-bottom: none; }
 .stimulus-table-note { margin-top: 0.4rem; font-size: 0.66rem; color: var(--ink-faint); }
 .exam-passage[data-has-table="true"] p:first-child { color: var(--ink-faint); font-size: 0.82rem; }
+
+/* ==========================================================================
+   Settings, personalisation, and the adaptive layer
+   --------------------------------------------------------------------------
+   Everything below belongs to /settings and the home-page pieces it controls.
+   The vocabulary is the site's own: glass surfaces for containers, a mono
+   eyebrow, hairline rules, and no colour of its own — every value is a token,
+   because two panels on this page *are* the token editor.
+   ========================================================================== */
+
+/* ---- The settings shell ------------------------------------------------ */
+
+.settings-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.settings-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+.settings-meta a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.settings-meta a:hover { color: var(--ink); }
+
+.settings-layout {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .settings-layout {
+    grid-template-columns: minmax(13.5rem, 15.5rem) minmax(0, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* A rail of sections, not tabs with an underline: each one carries its own
+   one-line description, so you can tell where a control lives without
+   opening every tab. */
+.settings-tabs {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.5rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-cut);
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(16px) saturate(118%);
+  -webkit-backdrop-filter: blur(16px) saturate(118%);
+}
+
+@media (min-width: 1024px) {
+  .settings-tabs {
+    position: sticky;
+    top: 5.5rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .settings-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+}
+
+.settings-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  width: 100%;
+  flex: 0 0 auto;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-edge);
+  background: transparent;
+  color: var(--ink-soft);
+  text-align: left;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-snap), color 160ms var(--ease-snap),
+    border-color 160ms var(--ease-snap);
+}
+
+@media (max-width: 1023px) {
+  .settings-tab {
+    width: auto;
+    min-width: 9.5rem;
+  }
+}
+
+.settings-tab small {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.settings-tab:hover {
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+
+.settings-tab.is-active {
+  background: var(--paper-raised);
+  border-color: var(--rule-strong);
+  color: var(--ink);
+}
+
+.settings-tab.is-active small { color: var(--ink-soft); }
+
+.settings-tab:focus-visible,
+.pref-mini:focus-visible,
+.pref-switch input:focus-visible + .pref-switch-track,
+.wallpaper-tile:focus-visible,
+.adaptive-quiz-option:focus-visible,
+.settings-tab:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.settings-panels {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+/* ---- Panels and rows --------------------------------------------------- */
+
+.settings-panel {
+  padding: 1.35rem clamp(1rem, 2.4vw, 1.75rem);
+}
+
+.settings-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.settings-panel-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.settings-panel-note {
+  margin-top: 0.25rem;
+  max-width: 62ch;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.settings-panel-body {
+  display: grid;
+  gap: 0.15rem;
+  padding-top: 0.35rem;
+}
+
+.settings-row {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.settings-row:last-child { border-bottom: 0; }
+
+@media (min-width: 640px) {
+  .settings-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.settings-row-label label {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.settings-row-label p {
+  margin-top: 0.2rem;
+  max-width: 54ch;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ink-faint);
+}
+
+.settings-row-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: flex-start;
+}
+
+@media (min-width: 640px) {
+  .settings-row-control { justify-content: flex-end; }
+}
+
+/* Notes are prose, so they get a left rule rather than a box. The warn tone is
+   not red: red on this palette reads as an error, and most of these are
+   information you asked for. */
+.settings-note {
+  margin-top: 0.85rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--rule-strong);
+  max-width: 68ch;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.settings-note code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 4px;
+  background: var(--mark-wash);
+}
+
+.settings-note-warn {
+  border-left-color: var(--ink);
+  background: var(--mark-wash);
+  padding: 0.55rem 0.75rem;
+  border-radius: 0 var(--radius-edge) var(--radius-edge) 0;
+  color: var(--ink);
+}
+
+.settings-note-good { border-left-color: var(--good); }
+
+.settings-error {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.settings-error::before { content: "! "; font-family: var(--font-mono); }
+
+.pref-count {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.pref-badge {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  vertical-align: 0.1em;
+}
+
+/* ---- Controls ---------------------------------------------------------- */
+
+.pref-mini {
+  padding: 0.28rem 0.6rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 150ms var(--ease-snap), border-color 150ms var(--ease-snap);
+}
+
+.pref-mini:hover:not(:disabled) { border-color: var(--ink); }
+
+.pref-mini:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* A switch drawn over a real checkbox. The input keeps its native semantics and
+   its keyboard behaviour; only its appearance is replaced. */
+.pref-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pref-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: inherit;
+}
+
+.pref-switch-track {
+  display: inline-flex;
+  align-items: center;
+  width: 2.6rem;
+  height: 1.45rem;
+  padding: 0.15rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--paper-sunk);
+  transition: background-color 180ms var(--ease-snap), border-color 180ms var(--ease-snap);
+}
+
+.pref-switch-thumb {
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+  transition: transform 180ms var(--ease-settle);
+}
+
+.pref-switch input:checked + .pref-switch-track {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.pref-switch input:checked + .pref-switch-track .pref-switch-thumb {
+  transform: translateX(1.15rem);
+  background: var(--on-accent);
+}
+
+.dark .pref-switch input:checked + .pref-switch-track .pref-switch-thumb {
+  background: #101010;
+}
+
+.pref-switch.is-disabled { opacity: 0.45; cursor: not-allowed; }
+
+.pref-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 12rem;
+}
+
+.pref-slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
+.pref-slider output {
+  min-width: 4.5ch;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.pref-color {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.pref-color input[type="color"] {
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-edge);
+  background: transparent;
+  cursor: pointer;
+}
+
+.pref-color input[type="color"]::-webkit-color-swatch-wrapper { padding: 0.15rem; }
+.pref-color input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 5px; }
+.pref-color input[type="color"]::-moz-color-swatch { border: 0; border-radius: 5px; }
+
+.pref-color-hex {
+  width: 8.2ch;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: lowercase;
+}
+
+.btn-danger {
+  color: var(--ink);
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-strong);
+  box-shadow: none;
+}
+
+.btn-danger:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--paper-raised);
+  border-color: var(--warn);
+}
+
+/* ---- Appearance: wallpaper picker ------------------------------------- */
+
+.wallpaper-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  padding: 0.35rem 0 0.6rem;
+}
+
+.wallpaper-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.4rem 0.4rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  text-align: left;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 160ms var(--ease-snap), transform 160ms var(--ease-settle);
+}
+
+.wallpaper-tile:hover { border-color: var(--rule-strong); }
+.wallpaper-tile.is-selected { border-color: var(--ink); }
+
+.wallpaper-tile img,
+.wallpaper-tile .wallpaper-drop {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.3rem;
+  background: var(--paper-sunk);
+}
+
+.wallpaper-tile > span { padding-inline: 0.15rem; color: var(--ink); }
+
+.wallpaper-tile > small {
+  padding-inline: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--ink-faint);
+}
+
+.wallpaper-tile input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.wallpaper-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  border: 1px dashed var(--rule-strong);
+  color: var(--ink-faint);
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.wallpaper-drop small {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.02em;
+  padding-inline: 0.4rem;
+}
+
+/* ---- Layout: the module list ------------------------------------------ */
+
+.module-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+  padding-top: 0.55rem;
+}
+
+.module-row {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  transition: opacity 160ms var(--ease-snap);
+}
+
+.module-row.is-hidden { opacity: 0.55; }
+
+.module-row-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.module-row-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.module-row-note {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ink-faint);
+}
+
+.module-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.module-row-rename {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.module-row-rename label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.module-row-rename .field {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---- Content: block builder ------------------------------------------- */
+
+.block-builder {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.6rem 0 0.9rem;
+}
+
+.block-builder-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.block-builder-row .field { flex: 1 1 12rem; }
+
+.block-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.block-upload img {
+  width: 4rem;
+  height: 3rem;
+  object-fit: cover;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+
+.block-upload input[type="file"] {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+  max-width: 100%;
+}
+
+.block-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.block-list > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  border-top: 1px solid var(--rule);
+}
+
+.block-list-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.block-list-body {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--ink-faint);
+  overflow-wrap: anywhere;
+}
+
+.block-list-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+/* ---- Sources: form and grouped list ----------------------------------- */
+
+.source-form {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 0.6rem;
+}
+
+.source-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.source-form-row .field { flex: 1 1 11rem; min-width: 0; }
+.source-form-row .btn { padding: 0.55em 1.1em; font-size: 0.875rem; }
+
+.source-group { padding-top: 0.9rem; }
+
+.source-group-title {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.source-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.source-group li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.source-group li:last-child { border-bottom: 0; }
+
+.source-group a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.source-group li p {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--ink-faint);
+}
+
+/* ---- Adaptive panel: the profile -------------------------------------- */
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.5rem;
+  padding: 0.6rem 0 0.4rem;
+}
+
+.profile-stat {
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* A stat card is one big number and one small caption. */
+.profile-stat > span { display: block; }
+
+.profile-stat small {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.profile-line {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  padding-top: 0.35rem;
+}
+
+.affinity-list {
+  list-style: none;
+  margin: 0.4rem 0 0.6rem;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.affinity-list li {
+  display: grid;
+  grid-template-columns: minmax(6rem, 9rem) minmax(0, 1fr) 3.2rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.affinity-bar {
+  position: relative;
+  display: block;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--paper-sunk);
+  overflow: hidden;
+}
+
+.affinity-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  border-radius: inherit;
+}
+
+.affinity-value {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-faint);
+  text-align: right;
+}
+
+/* ---- Privacy & data ---------------------------------------------------- */
+
+.privacy-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.privacy-list li::marker { color: var(--ink-faint); }
+
+.privacy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.85rem;
+}
+
+/* ---- Home: adaptive strip --------------------------------------------- */
+
+.home-sections {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.adaptive-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.adaptive-badge {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+}
+
+.adaptive-badge a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.adaptive-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  align-items: stretch;
+}
+
+@media (min-width: 1100px) {
+  .adaptive-grid.has-spotlight {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+}
+
+.adaptive-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.adaptive-card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.adaptive-card-body {
+  margin-top: 0.4rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.adaptive-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+
+.adaptive-card-foot .btn {
+  padding: 0.5em 1.05em;
+  font-size: 0.85rem;
+}
+
+.adaptive-meta {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+}
+
+/* A spotlight is the only card that is time-limited, so it is the only one
+   that gets a heavier rule on its top edge. */
+.adaptive-card-spotlight {
+  border-top: 2px solid var(--ink);
+}
+
+.adaptive-quiz-question {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.adaptive-quiz-options {
+  list-style: none;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.adaptive-quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms var(--ease-snap), color 150ms var(--ease-snap),
+    background-color 150ms var(--ease-snap);
+}
+
+.adaptive-quiz-option span {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  padding-top: 0.15rem;
+}
+
+.adaptive-quiz-option:hover:not(:disabled) {
+  border-color: var(--rule-strong);
+  color: var(--ink);
+}
+
+/* Feedback is the one place colour carries meaning, so it is the one place the
+   palette is allowed to leave neutral. Each state sets its own text colour as
+   well as its fill: a green wash with the page's ink on top is readable in both
+   themes, whereas inheriting a colour and changing only the background is how
+   text disappears — which is exactly what a light fill plus night-mode ink did. */
+.adaptive-quiz-option.is-correct {
+  border-color: var(--answer-correct);
+  background: var(--answer-correct-bg);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.adaptive-quiz-option.is-correct span { color: var(--answer-correct); }
+
+.adaptive-quiz-option.is-wrong {
+  border-color: var(--answer-wrong);
+  background: var(--answer-wrong-bg);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.adaptive-quiz-option.is-wrong span { color: var(--answer-wrong); }
+
+.adaptive-quiz-option.is-muted { opacity: 0.55; }
+.adaptive-quiz-option:disabled { cursor: default; }
+
+.adaptive-quiz-explain {
+  margin-top: 0.65rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.adaptive-quiz-explain a {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.adaptive-countdown {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px dashed var(--rule-strong);
+  border-radius: var(--radius-cut);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.adaptive-countdown-number {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* ---- Custom blocks ---------------------------------------------------- */
+
+.custom-blocks {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  width: 100%;
+  max-width: 74rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+  padding-bottom: 1rem;
+}
+
+.custom-block {
+  padding: 1rem 1.15rem;
+}
+
+.custom-block-image {
+  display: block;
+  width: 100%;
+  max-height: 14rem;
+  object-fit: cover;
+  border-radius: var(--radius-edge);
+  margin-bottom: 0.6rem;
+}
+
+.custom-block-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.custom-block-body {
+  margin-top: 0.3rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.custom-block-link {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* ---- Wallpaper dimming layer ------------------------------------------ */
+
+.page-wallpaper-dim {
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+}
+
+/* ---- Print ------------------------------------------------------------- */
+
+@media print {
+  .settings-tabs,
+  .custom-blocks,
+  .adaptive-grid,
+  .wallpaper-grid { display: none !important; }
+}
+
+/* ==========================================================================
+   Account — the optional half of the site
+   --------------------------------------------------------------------------
+   Same vocabulary as the settings page. One extra rule matters: the sign-in
+   card is the only thing on this page that is a form, so it is the only place
+   with a stacked field layout.
+   ========================================================================== */
+
+.account-shell {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.account-form {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+  max-width: 32rem;
+}
+
+.account-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.account-form-row .field { flex: 1 1 14rem; min-width: 0; }
+
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.account-actions .btn { padding: 0.6em 1.3em; font-size: 0.9375rem; }
+
+.account-code {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  letter-spacing: 0.42em;
+  padding-block: 0.5rem;
+  text-align: center;
+  max-width: 12rem;
+}
+
+.account-profile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.account-profile-body { flex: 1 1 16rem; min-width: 0; }
+
+.account-avatar {
+  display: grid;
+  place-items: center;
+  width: 6rem;
+  height: 6rem;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-lift);
+  text-shadow: 0 1px 14px rgba(255, 255, 255, 0.4);
+}
+
+.account-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A file input needs a label that looks like a control, because the native
+   button is the one piece of browser chrome that ignores the design system. */
+.account-file {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.account-file input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.account-stats {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 720px) {
+  .account-stats { grid-template-columns: 1fr 1fr; }
+}
+
+.account-stat-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.account-stat-list > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.account-stat-list > div:last-child { border-bottom: 0; }
+
+.account-stat-list dt {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.account-stat-list dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.account-lessons {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.account-lessons > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+}
+
+.account-lesson-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.account-lesson-note {
+  margin-top: 0.1rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ink-faint);
+}
+
+.account-lesson-links {
+  display: flex;
+  gap: 0.35rem;
+}

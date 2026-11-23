@@ -96,6 +96,63 @@ Each of the ten courses has a monochrome symbol on a transparent canvas: a flag,
 - Core study state uses clean `aps:*` `localStorage` keys (`use-stored-state.ts` + `study-store.ts`) — zero cookies, zero telemetry, instant JSON backup/restore, `.apkg`-ready Anki TSV/CSV export, `.ics` exam calendar export, and Markdown portfolio export.
 - Optional student-supplied connectors (`/integrations`) support **GitHub Gist** cross-device sync and **Google Drive / Notion / Quizlet / Obsidian** import-export formats using tokens you control locally.
 
+## Settings, personalisation & the adaptive layer
+
+`/settings` makes the site configurable without a backend, and without letting a saved preference break a page. Seven panels, no save button: every control writes through one validated record (`aps.prefs.v1`), so the page you are looking at *is* the saved state.
+
+- **Appearance** — wallpaper (the four shipped paintings, route default, or your own upload), fit, blur, dimming; light and night ink, accent, highlight, glass tint; a **surface ladder** from clear glass to solid paper (five named stops plus a continuous 0–100 slider, with a per-palette contrast floor so the panels can never thin past readable); display/UI fonts, size, line height; radius, motion, density.
+- **Layout** — reorder, hide, and rename every home-page section. Order is applied with CSS `order` and hiding with `display`, so no section is unmounted and nothing keeps state it should not.
+- **Text & elements** — hero badge/title/subtitle, footer note, and up to twelve custom blocks (text, image, link), placed on the home page or under one specific course.
+- **Sources** — your own links, filed by course, shown in a clearly-labelled *your sources* group on that course's resources page. Optional **Scan link** fills the title and guesses the course through `/api/link-preview`.
+- **Adaptive** — what the site is allowed to learn, an intensity dial, display name, daily goal, target exam date, and the entire derived profile: signals, streak, days active, confidence, subject affinity, momentum, usual hour, recent searches.
+- **Privacy & data** — export a JSON copy, restore one, forget the adaptive profile, or clear everything.
+- **Advanced** — opt-in custom CSS and a full reset.
+
+Three rules hold it together:
+
+1. **Nothing can break the page.** Every stored value passes through `revivePrefs`, which clamps numbers, whitelists choices, re-validates URLs with `safeUrl`, and caps text; custom inks are contrast-corrected with `readableInk` against the surface they actually sit on. `/any-page?safe=1` ignores the stored record entirely if a custom stylesheet ever makes a page unreadable.
+2. **Nothing is sent anywhere.** Preferences, the adaptive event log (capped at 400 entries), your sources, and uploaded images (IndexedDB `aps-assets`) all stay in the browser. The adaptive profile is recomputed locally from counts; there is no account, no identifier, and no endpoint.
+3. **The server renders the same HTML for everyone.** The `<style>` block and `data-*` attributes are written after mount, so a visitor who has customised nothing downloads exactly the bytes they did before this existed.
+
+**The adaptive layer** is deliberately small: it counts eight kinds of action (search, video, card, practice, quiz, lesson, course, studio) with published weights and a 10-day half-life, and derives subject affinity, streaks, momentum, and confidence. From that it can offer a next step, one question a day (deterministic per day, so refreshing does not reshuffle the page), and a weekly spotlight gated on `limitedTime`. Every module is individually switchable, and the whole layer is off with one toggle. It also feeds the lightweight personalisation of the hero copy — which never overrides words you have written yourself.
+
+**`/api/link-preview`** is the only outbound request the site makes on your behalf, and only when you press the button: it reads a page's `<title>` and description, refuses non-http schemes and embedded credentials, resolves the hostname and rejects loopback/private/link-local/metadata addresses (re-checked on every redirect), caps the response at 512 KB, and times out after five seconds. The body is discarded.
+
+---
+
+## Optional accounts (Supabase)
+
+`/account` is the only place the site can talk to a second server, and it is off unless a deployment
+configures it. Everything — every lesson, card, question, paper, and video — works signed out.
+
+- **No password field, anywhere.** Sign-in is a one-time code by email or by phone (Supabase Auth).
+  A lookalike login page has nothing useful to steal, and there is no password for a student to
+  reuse.
+- **Two rows, five numbers.** `public.profiles` holds a display name and an avatar URL;
+  `public.study_stats` holds cards reviewed, practice answered, focus minutes, streak, last active,
+  and up to twelve `{ slug, score }` affinity pairs. No lesson ID, answer, draft, or search is ever
+  uploaded, and the counts are written only when you press **Save today's counts**.
+- **Yours to delete.** *Delete the cloud copy* removes the profile row, stats row, and photo;
+  *Forget everything* in Settings clears the local record. They are separate buttons because they
+  are separate things.
+- **RLS is the boundary.** The anon key is public by design; every policy is keyed to `auth.uid()`,
+  `anon` is revoked on both tables, and avatar writes are restricted to `avatars/<uid>/`.
+  `scripts/validate-presentation.mjs` fails the build if a service-role key, a password flow, or an
+  unprotected table appears in client code.
+- **Live on this deployment.** Project `ap-study-hub-accounts` (`zgkpflrddkrqldjeocsk`, us-east-1) has
+  both tables, the `avatars` bucket, email sign-in, and the two public env vars set in Vercel. Phone
+  sign-in is the one thing waiting on an SMS provider; `SUPABASE_AUTH.md` has the details.
+- **Graceful when absent.** With no `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+  `/account` says so, Settings → Account shows `off`, and nothing else changes. The schema,
+  bucket, and step-by-step setup live in `SUPABASE_AUTH.md` and
+  `supabase/migrations/20261122120000_create_profiles_and_stats.sql`.
+
+**Readability pass.** Small mono labels, folios, and stat figures sat at `#3d3d3d` — fine on flat
+paper, hard to read over a photograph seen through glass. Light ink-faint is now near-black, and
+every label voice gets a tight white halo (black at night). It is a `text-shadow`, not a wash: the
+wallpaper still shows at its own brightness, and `validate:presentation` asserts both the contrast
+ratio and the halo rule.
+
 ---
 
 ## The Interim Assessments
@@ -198,17 +255,23 @@ scripts/
   validate-videos.ts            verifies curated YouTube IDs and unit coverage
   validate-exam-flow.tsx        mounts the real exam room in jsdom and clicks every paper to the report
   validate-scroll-lock.ts       asserts the shared page lock nests and restores scroll position
-  validate-presentation.mjs     neutral dark tokens, SubjectMark icons decoded to real pixel colour, CSP, OG PNGs
+  validate-presentation.mjs     neutral dark tokens, SubjectMark icons, CSP, OG PNGs, and the validated settings/adaptive layer
   build-social-image.ts         renders the 1200×630 link preview: graph-paper sheet + 10 course marks via @resvg/resvg-js
+supabase/
+  migrations/                   RLS-enabled schema for optional accounts (see SUPABASE_AUTH.md)
 src/
   app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
-    globals.css                 design tokens, light/dark surfaces, and every shared component
+    globals.css                 design tokens, light/dark surfaces, every shared component, settings and account UI
     exam-room.css               exam room shell: painted (not frosted) surface, hidden page behind
   components/
     SiteHeader.tsx              single-row leveled header bar (Logo, TopClassBar, Jump to ⌘K, MobileNav)
     SiteHeaderShell.tsx         directional scroll-fade shell preserving fixed modal viewports
     TopClassBar.tsx             hover-reveal AP Courses bar + mobile touch sheet with white AP symbols
-    MobileNav.tsx               unified Menu popover (SiteSearch, Study Desk, links, ThemeSwitch)
+    MobileNav.tsx               unified Menu popover (SiteSearch, Study Desk, links, ThemeSwitch, Settings)
+    AdaptiveSignal.tsx          one-line page-opened signal for the local adaptive profile
+    settings/                   eight-panel /settings shell and its validated controls
+    account/AccountClient.tsx   optional sign-in, profile photo, local vs cloud stats
+    home/                       adaptive hero, for-you strip, renamable headings, custom blocks
     StudySystemVisual.tsx       interactive ten-course cold-recall card preview inside the homepage hero
     StudyDashboard.tsx          spacious local-first Study Desk with white AP course filter pills & 9 tabs
     SubjectMark.tsx             10 AP course symbols: ink in day, white on night glass, rose for AP Lit

@@ -14,6 +14,7 @@ import { getCourseLabs } from "@/content/labs";
 import { getStudioTasks } from "@/lib/studio-data";
 import { getStudyCourses } from "@/lib/study-data";
 import { absoluteUrl, socialImages } from "@/lib/site";
+import { AdaptiveSignal } from "@/components/AdaptiveSignal";
 
 export function generateStaticParams() {
   return getCatalog().map((course) => ({ slug: course.subject.slug }));
@@ -74,6 +75,7 @@ export default async function StudioPage({
 
   return (
     <div className="wrap space-y-8 py-8 md:py-12">
+      <AdaptiveSignal kind="studio" subject={course.subject.slug} />
       <GlassCard as="header" padding="lg" className="studio-hero !mb-0">
         <div>
           <p className="label mb-2">Try it yourself</p>

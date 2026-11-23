@@ -8,6 +8,7 @@ import { LessonContent } from "@/components/LessonContent";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { absoluteUrl, socialImages } from "@/lib/site";
 import { writtenWorkCopy } from "@/lib/subjects";
+import { AdaptiveSignal } from "@/components/AdaptiveSignal";
 
 type Params = Promise<{ slug: string }>;
 
@@ -45,6 +46,7 @@ export default async function NotesPage({ params }: { params: Params }) {
 
   return (
     <div className="wrap py-8 md:py-12">
+      <AdaptiveSignal kind="lesson" subject={subject.slug} />
       <div className="grid gap-8 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-10">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <GlassCard padding="sm">

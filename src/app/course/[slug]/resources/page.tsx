@@ -4,6 +4,7 @@ import { getCourse, getCatalog } from "@/lib/catalog";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
 import { ExternalLink } from "@/components/Furniture";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { UserSources } from "@/components/course/UserSources";
 import { absoluteUrl, socialImages } from "@/lib/site";
 
 type Params = Promise<{ slug: string }>;
@@ -78,6 +79,8 @@ export default async function ResourcesPage({ params }: { params: Params }) {
           turned into a paywall three clicks in is not here.
         </p>
       </GlassCard>
+
+      <UserSources slug={subject.slug} familiar={subject.familiar} />
 
       {orderedGroups.map((key, index) => (
         <GlassCard key={key} as="section" padding="lg" aria-labelledby={`group-${key}`}>

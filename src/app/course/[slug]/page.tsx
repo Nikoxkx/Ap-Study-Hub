@@ -9,6 +9,7 @@ import { DownloadButton } from "@/components/ui/DownloadButton";
 import { channelsFor, channelUrl, channelSearchUrl } from "@/lib/channels";
 import { getCourseVideos } from "@/lib/video-lessons";
 import { absoluteUrl, describe, socialImages } from "@/lib/site";
+import { AdaptiveSignal } from "@/components/AdaptiveSignal";
 
 type Params = Promise<{ slug: string }>;
 
@@ -111,6 +112,7 @@ export default async function CourseOverviewPage({ params }: { params: Params })
 
   return (
     <div className="wrap space-y-12 py-8 md:py-12">
+      <AdaptiveSignal kind="course" subject={course.subject.slug} />
       {/* Study modes grid + Quick Quad */}
       <section aria-labelledby="modes-heading">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-6">

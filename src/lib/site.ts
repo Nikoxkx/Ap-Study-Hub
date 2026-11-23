@@ -42,7 +42,7 @@ export const site = {
    * rather than inside those pages so a review updates one line, and so the
    * sitemap can report a `lastModified` for them that is not simply "today".
    */
-  policyUpdated: "2026-10-24",
+  policyUpdated: "2026-11-22",
 } as const;
 
 /**

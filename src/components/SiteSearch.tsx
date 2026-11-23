@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { track } from "@/lib/use-adaptive";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { kindLabels, type DocKind } from "@/lib/search";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -109,6 +110,7 @@ export function SiteSearch({ label = "Search AP Hub" }: { label?: string }) {
     } else if (event.key === "Enter" && active >= 0) {
       event.preventDefault();
       const hit = hits[active];
+      track.search(query.trim());
       setOpen(false);
       setQuery("");
       router.push(hit.href);

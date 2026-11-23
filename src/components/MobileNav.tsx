@@ -161,6 +161,8 @@ export function MobileNav() {
             { href: "/integrations", label: "Integrations" },
             { href: "/search", label: "Full Search" },
             { href: "/about", label: "About" },
+            { href: "/settings", label: "Settings" },
+            { href: "/account", label: "Account" },
             { href: "/ai-disclosure", label: "AI Disclosure" },
           ].map((item) => (
             <li key={item.href}>
