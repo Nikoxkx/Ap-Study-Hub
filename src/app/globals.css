@@ -1306,7 +1306,9 @@ textarea.scratch-paper {
 .worked-reason {
   padding: 0 0 0 1rem;
   border-left: 1px solid var(--worked-line);
-  color: #57534a;
+  /* Was a fixed #57534a: near-invisible explanation text on the frosted night
+     panel. It follows the ink scale now, so the "why" line reads in both. */
+  color: var(--ink-soft);
   font-family: var(--font-ui);
   font-size: 0.8125rem;
   line-height: var(--scratch-line);

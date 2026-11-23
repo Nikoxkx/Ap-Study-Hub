@@ -390,6 +390,13 @@ for (const selector of [
   }
 }
 
+// Explanation copy in worked solutions used to be a fixed dark grey, which
+// vanished on the night panel; it has to ride the ink scale.
+const workedReason = css.match(/\.worked-reason \{([^}]*)\}/)?.[1] ?? "";
+if (!/color:\s*var\(--ink-soft\)/.test(workedReason)) {
+  fail("worked-solution explanations are not using the ink scale, so night mode can hide them");
+}
+
 // Feedback states must be chromatic and must set their own text colour.
 for (const [selector, token] of [
   [".adaptive-quiz-option.is-correct", "--answer-correct"],
