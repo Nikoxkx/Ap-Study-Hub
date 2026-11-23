@@ -20,6 +20,7 @@ import {
 } from "./supabase";
 import { prepareUpload } from "./custom-assets";
 import { friendlyAuthError } from "./auth-errors";
+import { ACCOUNTS_ENABLED } from "@/lib/accounts";
 
 /**
  * Optional accounts.
@@ -134,8 +135,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // is a lookup, not a side effect. Without one, the status is decided before
   // any effect runs and nothing below can flash a spinner.
   const client = getSupabase();
+  // Accounts are paused (`src/lib/accounts.ts`): no session is read, no token
+  // is refreshed, and `/auth/v1/settings` is never fetched. The provider still
+  // exists so the tree keeps one shape; it just reports a settled signed-out
+  // state, which is the truth while there is no way to sign in.
   const [status, setStatus] = useState<AuthStatus>(() =>
-    supabaseConfigured ? "loading" : "unconfigured",
+    !ACCOUNTS_ENABLED ? "signed-out" : supabaseConfigured ? "loading" : "unconfigured",
   );
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<AccountProfile | null>(null);
@@ -154,7 +159,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const contact = contactFor(session);
 
   useEffect(() => {
-    if (!client) return;
+    if (!client || !ACCOUNTS_ENABLED) return;
     let alive = true;
 
     void client.auth
@@ -236,7 +241,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [userId, load]);
 
   useEffect(() => {
-    if (!supabaseConfigured) return;
+    if (!supabaseConfigured || !ACCOUNTS_ENABLED) return;
     let alive = true;
     void loadAuthProviders().then((next) => {
       if (alive) setProviders(next);
@@ -369,6 +374,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const saveProfile = useCallback(
     async (displayName: string): Promise<AuthResult> => {
+      if (!ACCOUNTS_ENABLED) return { ok: false, message: "Accounts are switched off for now." };
       if (!client || !userId) return { ok: false, message: "Sign in first." };
       const name = displayName.trim().slice(0, 60);
       try {
@@ -392,6 +398,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const uploadAvatar = useCallback(
     async (file: File): Promise<AuthResult> => {
+      if (!ACCOUNTS_ENABLED) return { ok: false, message: "Accounts are switched off for now." };
       if (!client || !userId) return { ok: false, message: "Sign in first." };
       // The same pipeline the wallpaper uses: an iPhone HEIC is decoded and
       // re-encoded as JPEG here, so the picker failing on Safari is not a thing
@@ -466,6 +473,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const pushStats = useCallback(
     async (stats: StatsPayload): Promise<AuthResult> => {
+      if (!ACCOUNTS_ENABLED) return { ok: false, message: "Accounts are switched off for now." };
       if (!client || !userId) return { ok: false, message: "Sign in first." };
       try {
         const payload = {

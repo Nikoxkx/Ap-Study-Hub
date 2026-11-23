@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { subjects, formatExamDate, subjectVars } from "@/lib/subjects";
 import { getTotals } from "@/lib/catalog";
+import { ACCOUNTS_ENABLED } from "@/lib/accounts";
 import { site } from "@/lib/site";
 import { SiteMark, SubjectMark } from "./SubjectMark";
 import { GlassCard } from "./ui/GlassCard";
@@ -24,8 +25,11 @@ const columns = [
       { href: "/accessibility", label: "Works for everyone" },
       { href: "/privacy", label: "Your privacy" },
       { href: "/settings", label: "Make it yours" },
-      { href: "/login", label: "Sign in (optional)" },
-      { href: "/account", label: "Optional account" },
+      // Accounts are paused (`src/lib/accounts.ts`), so the footer stops
+      // pointing at pages that only explain the pause.
+      ...(ACCOUNTS_ENABLED
+        ? [{ href: "/login", label: "Sign in (optional)" }, { href: "/account", label: "Optional account" }]
+        : []),
       { href: "/sitemap.xml", label: "All pages" },
       { href: site.repo, label: "See the code", external: true },
       { href: `${site.repo}/blob/main/AI_DISCLOSURE.md`, label: "AI_DISCLOSURE.md", external: true },

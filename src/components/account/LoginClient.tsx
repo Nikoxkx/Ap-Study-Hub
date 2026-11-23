@@ -16,7 +16,15 @@ import { clearAuthFragment } from "@/lib/auth-errors";
  * visitor who was heading somewhere specific lands there instead of on the
  * account page, and it forwards an OAuth failure back into the panel as text.
  */
-export function LoginClient({ next, providerError = "" }: { next?: string; providerError?: string }) {
+export function LoginClient({
+  next,
+  providerError = "",
+  providers,
+}: {
+  next?: string;
+  providerError?: string;
+  providers?: { email: boolean; phone: boolean; google: boolean; known: boolean };
+}) {
   const auth = useAuth();
   const router = useRouter();
 
@@ -49,9 +57,12 @@ export function LoginClient({ next, providerError = "" }: { next?: string; provi
 
         <AuthReturnNotice serverMessage={providerError} />
 
-        {auth.status === "loading" ? (
-          <p className="settings-note">Checking for a saved session…</p>
-        ) : auth.status === "signed-in" ? (
+        {/* The panel is rendered while the session is still being read rather
+            than behind a "checking…" line. Almost everyone who opens this page
+            is signed out, and an empty window for the first paint is what made
+            the Google button look missing. A visitor who turns out to be signed
+            in is redirected by the effect above within the same tick. */}
+        {auth.status === "signed-in" ? (
           <p className="settings-note settings-note-good" role="status">
             Signed in as {auth.maskedContact || "your account"}. Taking you to{" "}
             <Link href={target} className="link-underlined">
@@ -60,7 +71,7 @@ export function LoginClient({ next, providerError = "" }: { next?: string; provi
             …
           </p>
         ) : (
-          <SignInPanel next={target} variant="page" />
+          <SignInPanel next={target} variant="page" providersHint={providers} />
         )}
 
         <div className="login-foot">

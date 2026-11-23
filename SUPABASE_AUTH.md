@@ -1,5 +1,12 @@
 # Optional accounts
 
+> **Paused on the site right now.** `src/lib/accounts.ts` sets `ACCOUNTS_ENABLED = false`, so no page
+> offers a sign-in: the links are out of the navigation, footer, palette, and Settings, `/login` and
+> `/account` explain the pause and are `noindex`, the sitemap omits them, and `AuthProvider` neither
+> reads a session nor fetches `/auth/v1/settings`. Everything below still describes the account as it
+> is built — it is the checklist for the day the constant is flipped back to `true`. `pnpm
+> validate:accounts` fails the build if a surface starts offering sign-in while the switch is off.
+
 The site is local-first and stays that way. Accounts are a convenience, not a gate: with no
 configuration there is no sign-in, no upload, and no server call, and every lesson, card, question,
 paper, and video still works.
@@ -91,7 +98,7 @@ user (`avatars/<uid>/avatar.<ext>`), 2 MB limit, and only PNG/JPEG/WebP/GIF — 
 | Provider | State | What the window does |
 | --- | --- | --- |
 | Email — one-time link, plus a code when the template carries `{{ .Token }}` | **On** — but delivery is the built-in testing sender until step 3 is done (2 messages/hour, project team only) | The form is always rendered; the message carries a link, and a code too once the template is pasted |
-| Google — OAuth 2.0 | **Off pending client ID/secret** (step 2 above) | The button is not rendered; a short setup card appears in its place |
+| Google — OAuth 2.0 | **Off pending client ID/secret** (step 2 above) | The button is still on the page, visibly inactive; clicking it opens the four fields to paste, with copy buttons |
 | Phone — SMS | **Off** (no SMS provider) | No phone tab is shown |
 
 The interface asks Supabase which providers exist, so this table is the only place the truth has to

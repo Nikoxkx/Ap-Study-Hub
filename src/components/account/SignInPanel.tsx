@@ -17,7 +17,7 @@ import type { ContactKind } from "@/lib/use-auth";
  *
  *  1. **Google first.** If the project has the provider switched on, the Google
  *     button is the primary action and the email form is the fallback. If it is
- *     not switched on, the button is not rendered at all — no dead control —
+ *     not switched on, the button stays on the page, visibly inactive, and opens the steps
  *     and the owner gets a collapsible list of the exact steps instead.
  *  2. **Every step is described before it happens.** The visitor is told what
  *     the email will look like, how long the code lasts, and that the link alone
@@ -27,6 +27,38 @@ import type { ContactKind } from "@/lib/use-auth";
  */
 
 const RESEND_SECONDS = 45;
+
+/** The public values the owner has to paste into Google's console and Supabase. */
+const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").replace(/\/+$/, "");
+const PROJECT_REF = SUPABASE_URL.match(/^https:\/\/([a-z0-9]+)\.supabase\.co/)?.[1] ?? "";
+const SITE_ORIGIN = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ap-study-hub-five.vercel.app").replace(/\/+$/, "");
+const CALLBACK_URL = SUPABASE_URL ? `${SUPABASE_URL}/auth/v1/callback` : "";
+const SUPABASE_PROVIDERS_URL = PROJECT_REF
+  ? `https://supabase.com/dashboard/project/${PROJECT_REF}/auth/providers`
+  : "";
+
+function CopyValue({ label, value }: { label: string; value: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <span className="signin-copy">
+      <code>{value}</code>
+      <button
+        type="button"
+        className="pref-mini"
+        onClick={() => {
+          const clipboard = typeof navigator === "undefined" ? undefined : navigator.clipboard;
+          if (!clipboard) return;
+          void clipboard.writeText(value).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1600);
+          });
+        }}
+      >
+        {copied ? "Copied" : `Copy ${label}`}
+      </button>
+    </span>
+  );
+}
 
 function GoogleMark() {
   return (
@@ -54,13 +86,19 @@ function GoogleMark() {
 export function SignInPanel({
   next,
   variant = "inline",
+  providersHint,
 }: {
   /** A path to return to after sign-in; only same-site paths are honoured. */
   next?: string;
   variant?: "page" | "inline";
+  /** What the server already knows about this deployment's providers. */
+  providersHint?: { email: boolean; phone: boolean; google: boolean; known: boolean };
 }) {
   const auth = useAuth();
-  const { providers } = auth;
+  // The browser's answer wins once it arrives (it is the fresh one); the
+  // server's answer fills the first paint, so an inactive Google button never
+  // flashes on a deployment that has Google switched on.
+  const providers = auth.providers.known || !providersHint ? auth.providers : providersHint;
 
   const [kind, setKind] = useState<ContactKind>("email");
   const [value, setValue] = useState("");
@@ -70,9 +108,14 @@ export function SignInPanel({
   const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
   const [cooldown, setCooldown] = useState(0);
   const codeRef = useRef<HTMLInputElement | null>(null);
+  const setupRef = useRef<HTMLDetailsElement | null>(null);
 
   const phoneEnabled = providers.phone;
   const googleEnabled = providers.google;
+  // `known` is false until /auth/v1/settings answers. Treating that as "off"
+  // would flash an inactive button on every load, so only a confirmed answer
+  // changes the state.
+  const googleOff = providers.known && !googleEnabled;
   const emailEnabled = providers.email;
   const target = next && next.startsWith("/") && !next.startsWith("//") ? next : "/account";
 
@@ -153,59 +196,102 @@ export function SignInPanel({
 
   return (
     <div className={`signin-body${variant === "page" ? " signin-body-page" : ""}`}>
-      {googleEnabled ? (
-        <>
+      {auth.configured ? (
+        <div className={`signin-google${googleOff ? " is-off" : ""}`}>
           <button
             type="button"
-            className="google-button"
-            onClick={() => void google()}
-            disabled={busy}
+            className={`google-button${googleOff ? " is-off" : ""}`}
+            aria-disabled={googleOff || busy}
+            aria-describedby={googleOff ? "google-status" : undefined}
+            onClick={() => {
+              if (!googleOff) {
+                void google();
+                return;
+              }
+              // An inactive control that does nothing is the bug that made this
+              // look missing. It opens the instructions instead.
+              const details = setupRef.current;
+              if (!details) return;
+              details.open = true;
+              details.scrollIntoView({ block: "nearest", behavior: "smooth" });
+            }}
           >
             <GoogleMark />
-            <span>{busy ? "Opening Google…" : "Continue with Google"}</span>
+            <span>{googleEnabled ? (busy ? "Opening Google…" : "Continue with Google") : "Continue with Google"}</span>
           </button>
-          <p className="signin-fineprint">
-            Google asks for three scopes and nothing else: <code>openid</code>, <code>email</code>,
-            and <code>profile</code>. That is your name, address, and photo — no mail, no files, no
-            contacts, no calendar. Nothing is written to your Google account.
-          </p>
-        </>
-      ) : null}
 
-      {providers.known && !googleEnabled && (emailEnabled || phoneEnabled) ? (
-        <div className="signin-google-off">
-          <p className="signin-offline-title">Google sign-in is not switched on yet</p>
-          <p className="signin-fineprint">
-            This deployment is waiting for a Google OAuth client. Until it is added, use a one-time
-            code below — it works exactly the same way and takes ten seconds.
-          </p>
-          <details className="signin-setup">
-            <summary>How to switch Google on (owner, one time)</summary>
-            <ol>
-              <li>
-                Google Cloud Console → <strong>APIs &amp; Services → OAuth consent screen</strong>:
-                choose <em>External</em>, add your app name and support email, save.
-              </li>
-              <li>
-                <strong>Credentials → Create credentials → OAuth client ID → Web application.</strong>{" "}
-                Authorised JavaScript origin: <code>https://ap-study-hub-five.vercel.app</code>.
-                Authorised redirect URI:{" "}
-                <code>https://zgkpflrddkrqldjeocsk.supabase.co/auth/v1/callback</code>.
-              </li>
-              <li>
-                Copy the client ID and client secret into Supabase →{" "}
-                <strong>Authentication → Providers → Google</strong>, enable it, save.
-              </li>
-              <li>
-                Reload this page. The Google button appears by itself — the site reads the enabled
-                providers from Supabase, so there is nothing to redeploy.
-              </li>
-            </ol>
+          {googleOff ? (
+            <>
+              <p className="signin-fineprint" id="google-status">
+                <strong>Not switched on for this deployment yet.</strong> The button above starts
+                working the moment this project has a Google client — nothing here needs a redeploy.
+                The one-time link below works today.
+              </p>
+              <details className="signin-setup" ref={setupRef}>
+                <summary>Owner? Switch Google on — four fields, three minutes</summary>
+                <ol>
+                  <li>
+                    <a
+                      className="link-underlined"
+                      href="https://console.cloud.google.com/apis/credentials/consent"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      Google Cloud → OAuth consent screen
+                    </a>
+                    : choose <em>External</em>, name it <em>AP Study Hub</em>, add your support email,
+                    save. Publishing status may stay <em>Testing</em> while you add yourself under
+                    Test users.
+                  </li>
+                  <li>
+                    <a
+                      className="link-underlined"
+                      href="https://console.cloud.google.com/apis/credentials"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      Credentials → Create credentials → OAuth client ID → Web application
+                    </a>
+                    . Paste these two values exactly:
+                    <br />
+                    <CopyValue label="origin" value={SITE_ORIGIN} />
+                    <br />
+                    <CopyValue label="redirect URI" value={CALLBACK_URL} />
+                  </li>
+                  <li>
+                    {SUPABASE_PROVIDERS_URL ? (
+                      <a
+                        className="link-underlined"
+                        href={SUPABASE_PROVIDERS_URL}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        Supabase → Authentication → Providers → Google
+                      </a>
+                    ) : (
+                      <>Supabase → Authentication → Providers → Google</>
+                    )}
+                    : paste the client ID and client secret, enable, save.
+                  </li>
+                  <li>
+                    Reload this page. The button turns live by itself — the site reads the enabled
+                    providers from Supabase on every load.
+                  </li>
+                </ol>
+                <p className="signin-fineprint">
+                  The full walkthrough, including the email sender and the SMS notes, is in{" "}
+                  <code>SUPABASE_AUTH.md</code>. Verify from a terminal with{" "}
+                  <code>pnpm check:auth https://ap-study-hub-five.vercel.app</code>.
+                </p>
+              </details>
+            </>
+          ) : (
             <p className="signin-fineprint">
-              The full walkthrough, including the email and SMS templates, is in{" "}
-              <code>SUPABASE_AUTH.md</code> in the repository.
+              Google asks for three scopes and nothing else: <code>openid</code>, <code>email</code>,
+              and <code>profile</code>. That is your name, address, and photo — no mail, no files, no
+              contacts, no calendar. Nothing is written to your Google account.
             </p>
-          </details>
+          )}
         </div>
       ) : null}
 

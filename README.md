@@ -100,7 +100,7 @@ Each of the ten courses has a monochrome symbol on a transparent canvas: a flag,
 
 `/settings` makes the site configurable without a backend, and without letting a saved preference break a page. Seven panels, no save button: every control writes through one validated record (`aps.prefs.v1`), so the page you are looking at *is* the saved state.
 
-- **Sign-in window** — `/login`, one tap with Google when the project has a Google OAuth client, otherwise a one-time link by email; no password exists, and the window is never required to study. Google is asked for `openid email profile` and nothing else. The client runs the **implicit** flow on purpose: a PKCE verifier lives in one browser, so a magic link opened on a second device would fail. Refusals arrive in the URL fragment, which `src/lib/auth-errors.ts` reads and turns into a sentence with a next step, and a spent fragment is stripped from the address bar without losing `?next=`.
+- **Sign-in window** — `/login`, one tap with Google when the project has a Google OAuth client, otherwise a one-time link by email; no password exists, and the window is never required to study. Google is asked for `openid email profile` and nothing else. The Google button is on the page even on a deployment that has no Google client yet: it is visibly inactive, and clicking it opens the four values to paste, with copy buttons — a button that vanishes reads as "this site has no Google login", which is exactly how it was reported. `/login` reads the enabled providers on the **server** too, so the first paint already knows which button to draw. The client runs the **implicit** flow on purpose: a PKCE verifier lives in one browser, so a magic link opened on a second device would fail. Refusals arrive in the URL fragment, which `src/lib/auth-errors.ts` reads and turns into a sentence with a next step, and a spent fragment is stripped from the address bar without losing `?next=`.
 - **Appearance** — wallpaper (the four shipped paintings, route default, or **your own upload: a picture or a video**), fit, blur, dimming, and — when the video has an audio track — a sound switch plus a 0–100 volume slider. Uploads are decided by their leading bytes, not their name: an iPhone HEIC or AVIF is decoded and re-encoded as JPEG **on the device** and never uploaded, a video up to 12 MB is stored as it is, and a refusal prints the file name and the actual reason instead of doing nothing; light and night ink, accent, highlight, glass tint; a **surface ladder** from clear glass to solid paper (five named stops plus a continuous 0–100 slider, with a per-palette contrast floor so the panels can never thin past readable); display/UI fonts, size, line height; radius, motion, density.
 - **Layout** — reorder, hide, and rename every home-page section. Order is applied with CSS `order` and hiding with `display`, so no section is unmounted and nothing keeps state it should not.
 - **Text & elements** — hero badge/title/subtitle, footer note, and up to twelve custom blocks (text, image, link), placed on the home page or under one specific course.
@@ -122,6 +122,14 @@ Three rules hold it together:
 ---
 
 ## Optional accounts (Supabase)
+
+**Accounts are currently switched off.** `src/lib/accounts.ts` holds one constant, `ACCOUNTS_ENABLED`,
+and it is `false`: the navigation, footer, command palette, and Settings drop every account link, the
+sitemap leaves `/login` and `/account` out, both pages are `noindex` and show a short "accounts are
+paused" notice, `AuthProvider` reads no session and requests `/auth/v1/settings` nowhere, and the
+privacy page stops describing a session token that cannot be written. `pnpm validate:accounts` fails
+the build if any surface drifts back. Flip the constant to `true` to bring all of it back — nothing
+was deleted, and the provider code below is untouched.
 
 `/account` is the only place the site can talk to a second server, and it is off unless a deployment
 configures it. Everything — every lesson, card, question, paper, and video — works signed out.
@@ -151,7 +159,8 @@ configures it. Everything — every lesson, card, question, paper, and video —
   both tables, the `avatars` bucket, email sign-in, and the two public env vars set in Vercel. Phone
   sign-in is the one thing waiting on an SMS provider; `SUPABASE_AUTH.md` has the details.
 - **Graceful when absent.** With no `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
-  `/account` says so, Settings → Account shows `off`, and nothing else changes. The schema,
+  `/account` says so and nothing else changes. (While `ACCOUNTS_ENABLED` is `false` the pages are
+  paused for everyone, configured or not.) The schema,
   bucket, and step-by-step setup live in `SUPABASE_AUTH.md` and
   `supabase/migrations/20261122120000_create_profiles_and_stats.sql`.
 

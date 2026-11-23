@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ACCOUNTS_ENABLED } from "@/lib/accounts";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { subjects, subjectVars } from "@/lib/subjects";
@@ -162,8 +163,12 @@ export function MobileNav() {
             { href: "/search", label: "Full Search" },
             { href: "/about", label: "About" },
             { href: "/settings", label: "Settings" },
-            { href: "/login", label: "Sign in" },
-            { href: "/account", label: "Account" },
+            ...(ACCOUNTS_ENABLED
+              ? [
+                  { href: "/login", label: "Sign in" },
+                  { href: "/account", label: "Account" },
+                ]
+              : []),
             { href: "/ai-disclosure", label: "AI Disclosure" },
           ].map((item) => (
             <li key={item.href}>

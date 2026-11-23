@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { subjects } from "@/lib/subjects";
 import { getCourse } from "@/lib/catalog";
 import { absoluteUrl, site } from "@/lib/site";
+import { ACCOUNTS_ENABLED } from "@/lib/accounts";
 
 /**
  * Sitemap.
@@ -39,8 +40,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: absoluteUrl("/accessibility"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
     { url: absoluteUrl("/privacy"), lastModified: policy, changeFrequency: "yearly", priority: 0.3 },
     { url: absoluteUrl("/settings"), lastModified: isoDate(newestContent), changeFrequency: "monthly", priority: 0.5 },
-    { url: absoluteUrl("/login"), lastModified: isoDate(newestContent), changeFrequency: "monthly", priority: 0.4 },
-    { url: absoluteUrl("/account"), lastModified: isoDate(newestContent), changeFrequency: "monthly", priority: 0.4 },
+    // Accounts are paused: both pages are noindex and neither is offered in the
+    // navigation, so listing them here would only ask crawlers to read a notice.
+    ...(ACCOUNTS_ENABLED
+      ? [
+          { url: absoluteUrl("/login"), lastModified: isoDate(newestContent), changeFrequency: "monthly" as const, priority: 0.4 },
+          { url: absoluteUrl("/account"), lastModified: isoDate(newestContent), changeFrequency: "monthly" as const, priority: 0.4 },
+        ]
+      : []),
     { url: absoluteUrl("/ai-disclosure"), lastModified: isoDate("2026-10-04"), changeFrequency: "yearly", priority: 0.6 },
   ];
 

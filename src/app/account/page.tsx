@@ -3,8 +3,11 @@ import Link from "next/link";
 import { getCatalog } from "@/lib/catalog";
 import { AccountClient } from "@/components/account/AccountClient";
 import { absoluteUrl, socialImages } from "@/lib/site";
+import { ACCOUNTS_ENABLED } from "@/lib/accounts";
+import { AccountsPaused } from "@/components/account/AccountsPaused";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = ACCOUNTS_ENABLED
+  ? {
   title: "Account — optional sign-in",
   description:
     "Sign in with an email address or phone number if you want your photo, name, and a handful of study counts to follow you between devices. Everything on AP Study Hub works without an account.",
@@ -18,9 +21,17 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", images: socialImages },
   robots: { index: true, follow: true },
-};
+    }
+  : {
+      title: "Accounts are paused · AP Study Hub",
+      description:
+        "The optional account is switched off for now. Nothing on AP Study Hub requires one, and your work stays in this browser.",
+      robots: { index: false, follow: false },
+    };
 
 export default function AccountPage() {
+  if (!ACCOUNTS_ENABLED) return <AccountsPaused heading="The optional account is resting." />;
+
   const subjects = getCatalog().map((course) => ({
     slug: course.subject.slug,
     familiar: course.subject.familiar,

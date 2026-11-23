@@ -7260,19 +7260,52 @@ html.is-entering footer[data-site-footer] {
   background: var(--rule);
 }
 
-.signin-google-off {
+.signin-google {
   display: grid;
-  gap: 0.35rem;
-  padding: 0.8rem 0.9rem;
-  border: 1px dashed var(--rule-strong);
-  border-radius: 0.75rem;
+  gap: 0.5rem;
+}
+
+/* The provider is off on this deployment. The button stays on the page but is
+   unmistakably inactive, and clicking it opens the setup steps — a control that
+   disappears reads as "this site has no Google login". */
+.google-button.is-off {
+  cursor: pointer;
+  border-style: dashed;
+  border-color: rgba(0, 0, 0, 0.28);
+  background: #f4f4f4;
+  color: #4a4a4a;
+  box-shadow: none;
+  filter: saturate(0.35);
+  opacity: 0.92;
+}
+
+.google-button.is-off:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: rgba(0, 0, 0, 0.45);
+}
+
+.signin-copy {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.25rem 0;
+}
+
+.signin-copy code {
+  font-size: 0.72rem;
+}
+
+.signin-setup {
+  margin-top: 0.15rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.7rem;
   background: var(--paper-raised);
 }
 
-.signin-offline-title {
-  font-family: var(--font-ui);
-  font-size: 0.8125rem;
-  font-weight: 600;
+.signin-setup a {
   color: var(--ink);
 }
 
