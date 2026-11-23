@@ -18,7 +18,7 @@ import {
   supabaseConfigured,
   type AuthProviders,
 } from "./supabase";
-import { checkAssetCandidate, verifyAssetBytes } from "./custom-assets";
+import { prepareUpload } from "./custom-assets";
 
 /**
  * Optional accounts.
@@ -72,6 +72,10 @@ interface AuthContextValue {
   status: AuthStatus;
   session: Session | null;
   userId: string | null;
+  /** How this session was created: "google", "email", "phone", or null. Used by
+   *  the permissions card, which must not claim Google access that never
+   *  happened. */
+  provider: string | null;
   /** The best identifier we can show without printing the whole address. */
   maskedContact: string;
   profile: AccountProfile | null;
@@ -266,7 +270,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           provider: "google",
           options: {
             redirectTo: target.toString(),
-            queryParams: { prompt: "select_account" },
+            // Supabase asks Google for `openid email profile` and nothing more.
+            // `select_account` keeps a shared laptop from silently reusing
+            // someone else's Google session; `online` means no refresh token is
+            // issued, because this site never calls a Google API after sign-in.
+            queryParams: { prompt: "select_account", access_type: "online" },
           },
         });
         if (error) return { ok: false, message: error.message };
@@ -369,22 +377,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const uploadAvatar = useCallback(
     async (file: File): Promise<AuthResult> => {
       if (!client || !userId) return { ok: false, message: "Sign in first." };
-      if (file.size > MAX_AVATAR_BYTES) {
-        return { ok: false, message: "Avatars must be under 2 MB." };
+      // The same pipeline the wallpaper uses: an iPhone HEIC is decoded and
+      // re-encoded as JPEG here, so the picker failing on Safari is not a thing
+      // that only happens to backgrounds.
+      const prepared = await prepareUpload(file);
+      if (!prepared.ok) {
+        return {
+          ok: false,
+          message:
+            prepared.reason === "too-large"
+              ? "Avatars must be under 2 MB, even after re-sizing."
+              : prepared.reason === "undecodable"
+                ? "That picture could not be decoded on this device. Try exporting it as JPEG."
+                : "That is not a picture this site can store.",
+        };
       }
-      // The same gate the wallpaper uses: declared type, then magic bytes.
-      const candidate = checkAssetCandidate(file);
-      if (!candidate.ok) {
-        return { ok: false, message: "That is not a PNG, JPEG, WebP, or GIF image." };
+      if (prepared.prepared.kind !== "image") {
+        return { ok: false, message: "A profile photo has to be a still image, not a video." };
       }
-      const sniffed = await verifyAssetBytes(file);
-      if (!sniffed) return { ok: false, message: "That file is not really an image." };
+      if (prepared.prepared.blob.size > MAX_AVATAR_BYTES) {
+        return { ok: false, message: "Avatars must be under 2 MB, even after re-sizing." };
+      }
+      const sniffed = prepared.prepared.type;
       try {
-        const ext = sniffed.split("/")[1] ?? "png";
+        const ext = sniffed.split("/")[1] ?? "jpeg";
         const path = `${userId}/avatar.${ext}`;
         const { error } = await client.storage
           .from(AVATAR_BUCKET)
-          .upload(path, file, { upsert: true, contentType: sniffed, cacheControl: "3600" });
+          .upload(path, prepared.prepared.blob, { upsert: true, contentType: sniffed, cacheControl: "3600" });
         if (error) return { ok: false, message: error.message };
         const { data } = client.storage.from(AVATAR_BUCKET).getPublicUrl(path);
         const url = `${data.publicUrl}?v=${Date.now()}`;
@@ -486,6 +506,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [client, userId]);
 
+  // The provider that actually created the session. Supabase records it on the
+  // user, so an email one-time-code sign-in cannot be mistaken for Google.
+  const provider = useMemo(() => {
+    const fromMeta = session?.user?.app_metadata?.provider;
+    if (typeof fromMeta === "string" && fromMeta) return fromMeta;
+    const identity = session?.user?.identities?.[0]?.provider;
+    return typeof identity === "string" && identity ? identity : null;
+  }, [session]);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       configured: supabaseConfigured,
@@ -497,6 +526,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cloudStats,
       requestCode,
       providers,
+      provider,
       signInWithGoogle,
       verifyCode,
       signOut,
@@ -516,6 +546,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cloudStats,
       requestCode,
       providers,
+      provider,
       signInWithGoogle,
       verifyCode,
       signOut,

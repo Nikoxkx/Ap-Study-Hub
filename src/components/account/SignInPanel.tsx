@@ -165,8 +165,9 @@ export function SignInPanel({
             <span>{busy ? "Opening Google…" : "Continue with Google"}</span>
           </button>
           <p className="signin-fineprint">
-            Google sends back your name, email address, and photo. That is everything this site can
-            read — no mail, no files, no contacts.
+            Google asks for three scopes and nothing else: <code>openid</code>, <code>email</code>,
+            and <code>profile</code>. That is your name, address, and photo — no mail, no files, no
+            contacts, no calendar. Nothing is written to your Google account.
           </p>
         </>
       ) : null}

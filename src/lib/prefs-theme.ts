@@ -240,6 +240,11 @@ export function buildPrefsCss(prefs: SitePrefs): string {
       `  --aps-highlight: ${palette.highlight};`,
       `  --aps-highlight-wash: ${washOf(palette.highlight, palette.theme)};`,
       `  --glass-bg: ${rgba([tint[0], tint[1], tint[2]], glassAlpha)};`,
+      // /settings is a reading surface, not a poster: the rail and the panels
+      // sit side by side over a painting, and at a thin surface they stop
+      // reading as two objects. This token is the same tint with a floor under
+      // its opacity, and it is only used where two surfaces meet.
+      `  --glass-bg-solid: ${rgba([tint[0], tint[1], tint[2]], Math.max(glassAlpha, isNight ? 0.82 : 0.8))};`,
       `  --surface-blur: ${blur}px;`,
       isNight
         ? `  --paper: ${rgba([15, 15, 15], paperAlpha)};`

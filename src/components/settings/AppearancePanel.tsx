@@ -10,7 +10,17 @@ import { usePrefs } from "@/lib/use-prefs";
 import { SURFACE_STOPS, surfaceStopOf } from "@/lib/site-prefs";
 import { useThemeChoice } from "@/lib/theme";
 import { WALLPAPERS } from "@/lib/prefs-theme";
-import { putAsset, deleteAsset, getAssetUrl, MAX_ASSET_BYTES } from "@/lib/custom-assets";
+import {
+  ASSET_ACCEPT,
+  IMAGE_COPY_LIMIT,
+  VIDEO_COPY_LIMIT,
+  deleteAsset,
+  getAsset,
+  putAsset,
+  type AssetKind,
+  type AssetRejectionReason,
+} from "@/lib/custom-assets";
+import { hasAudioTrack } from "@/lib/video-audio";
 import {
   ColorField,
   Note,
@@ -34,7 +44,7 @@ export function AppearancePanel() {
   const { prefs, update } = usePrefs();
   const { choice, setChoice } = useThemeChoice();
   const { appearance } = prefs;
-  const [resolved, setResolved] = useState<{ id: string; url: string | null } | null>(null);
+  const [resolved, setResolved] = useState<{ id: string; url: string | null; kind: AssetKind } | null>(null);
   const [uploadError, setUploadError] = useState("");
   const [uploading, setUploading] = useState(false);
 
@@ -43,8 +53,8 @@ export function AppearancePanel() {
   useEffect(() => {
     if (!customId) return;
     let cancelled = false;
-    getAssetUrl(customId).then((url) => {
-      if (!cancelled) setResolved({ id: customId, url });
+    getAsset(customId).then((asset) => {
+      if (!cancelled) setResolved({ id: customId, url: asset?.url ?? null, kind: asset?.kind ?? "image" });
     });
     return () => {
       cancelled = true;
@@ -53,23 +63,70 @@ export function AppearancePanel() {
 
   // Keyed by id: a URL for the previous upload is never shown as the current one.
   const customUrl = customId && resolved?.id === customId ? resolved.url : null;
+  const customKind: AssetKind = customId && resolved?.id === customId ? resolved.kind : "image";
+
+  // Null = the browser did not say. Treated as "there might be sound" so the
+  // switch is never hidden from someone whose browser is quiet about it.
+  const [videoHasAudio, setVideoHasAudio] = useState<boolean | null>(null);
+  const [videoNote, setVideoNote] = useState("");
+
+  useEffect(() => {
+    if (!customUrl || customKind !== "video") return;
+    let cancelled = false;
+    hasAudioTrack(customUrl).then((answer) => {
+      if (!cancelled) setVideoHasAudio(answer);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [customUrl, customKind]);
+
+  /**
+   * Every refusal says which file and why. A silent no-op is what made the
+   * iPhone report hard to believe: the file arrived, and nothing happened.
+   */
+  function refusalCopy(reason: AssetRejectionReason, name: string): string {
+    const file = name ? `“${name.length > 34 ? `${name.slice(0, 31)}…` : name}”` : "That file";
+    switch (reason) {
+      case "too-large":
+        return `${file} is too large. Pictures are re-sized to fit under ${IMAGE_COPY_LIMIT}, videos under ${VIDEO_COPY_LIMIT}.`;
+      case "empty":
+        return `${file} is empty — the picker may have handed over a placeholder. Try choosing it again.`;
+      case "undecodable":
+        return `${file} could not be decoded on this device. iPhone HEIC usually works here; if it does not, export it as JPEG (or pick the video instead) and try once more.`;
+      case "bad-bytes":
+        return `${file} is not really the picture or video its name claims.`;
+      case "bad-type":
+      default:
+        return `${file} is not a supported format. Pictures: PNG, JPEG, WebP, GIF, HEIC, AVIF. Videos: MP4, WebM, MOV.`;
+    }
+  }
 
   async function uploadWallpaper(file: File) {
     setUploadError("");
+    setVideoNote("");
     setUploading(true);
     try {
       const result = await putAsset(file);
       if (!result.ok) {
-        setUploadError(
-          result.reason === "too-large"
-            ? `That file is larger than ${Math.round(MAX_ASSET_BYTES / 1024 / 1024)} MB.`
-            : "That file is not a PNG, JPEG, WebP, or GIF image.",
-        );
+        setUploadError(refusalCopy(result.reason, file.name));
         return;
       }
       update((draft) => {
         draft.appearance.wallpaper = `custom:${result.asset.id}`;
+        // A fresh file starts silent unless it actually has a track.
+        draft.appearance.wallpaperSound = false;
       });
+      if (result.converted) {
+        setVideoNote(
+          `Converted ${result.asset.type === "image/jpeg" ? "to JPEG" : ""} on this device so the browser can display it. Nothing was uploaded.`.replace(
+            "  ",
+            " ",
+          ),
+        );
+      }
+    } catch {
+      setUploadError("That file could not be read. Nothing was saved and the previous wallpaper is unchanged.");
     } finally {
       setUploading(false);
     }
@@ -127,45 +184,82 @@ export function AppearancePanel() {
             );
           })}
 
-          <div className={`wallpaper-tile wallpaper-tile-upload${customId ? " is-selected" : ""}`}>
+          <div
+            className={`wallpaper-tile wallpaper-tile-upload${customId ? " is-selected" : ""}`}
+            onDragOver={(event) => {
+              event.preventDefault();
+            }}
+            onDrop={(event) => {
+              event.preventDefault();
+              const file = event.dataTransfer.files?.[0];
+              if (file) void uploadWallpaper(file);
+            }}
+          >
             {customUrl ? (
-                            <img src={customUrl} alt="Your uploaded wallpaper" />
+              customKind === "video" ? (
+                <video
+                  src={customUrl}
+                  muted
+                  loop
+                  autoPlay
+                  playsInline
+                  preload="metadata"
+                  aria-label="Your uploaded background video"
+                />
+              ) : (
+                <img src={customUrl} alt="Your uploaded wallpaper" />
+              )
             ) : (
               <div className="wallpaper-drop">
                 <span aria-hidden="true">↑</span>
-                <small>Drop an image or choose a file</small>
+                <small>Drop a picture or video here</small>
               </div>
             )}
-            <span>Yours</span>
+            <span>{customKind === "video" && customUrl ? "Your video" : "Yours"}</span>
             <small>
-              PNG, JPEG, WebP, or GIF · up to {Math.round(MAX_ASSET_BYTES / 1024 / 1024)} MB · stays on
+              Picture up to {IMAGE_COPY_LIMIT} (HEIC welcome) · video up to {VIDEO_COPY_LIMIT} · stays on
               this device
             </small>
-            <input
-              type="file"
-              accept="image/png,image/jpeg,image/webp,image/gif"
-              aria-label="Upload a wallpaper"
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (file) void uploadWallpaper(file);
-                event.target.value = "";
-              }}
-            />
-            {customId ? (
-              <button
-                type="button"
-                className="pref-mini"
-                onClick={() => {
-                  void deleteAsset(customId);
-                  update((draft) => { draft.appearance.wallpaper = "auto"; });
+            <label className="wallpaper-choose">
+              {customUrl ? "Replace file" : "Choose a file"}
+              <input
+                type="file"
+                accept={ASSET_ACCEPT}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (file) void uploadWallpaper(file);
+                  event.target.value = "";
                 }}
-              >
-                Remove
-              </button>
-            ) : null}
-            {uploading ? <small>Checking the file…</small> : null}
-            {uploadError ? <small className="settings-error">{uploadError}</small> : null}
+              />
+            </label>
           </div>
+        </div>
+
+        {/* Status lives below the grid: a refusal is a sentence, and a 9.5rem
+            tile would clip it into something unreadable. */}
+        <div className="wallpaper-status" aria-live="polite">
+          {uploading ? <p>Reading the file on this device…</p> : null}
+          {videoNote ? <p className="settings-ok">{videoNote}</p> : null}
+          {uploadError ? (
+            <p className="settings-error" role="alert">
+              {uploadError}
+            </p>
+          ) : null}
+          {customId ? (
+            <button
+              type="button"
+              className="pref-mini"
+              onClick={() => {
+                void deleteAsset(customId);
+                setVideoHasAudio(null);
+                setUploadError("");
+                setVideoNote("");
+                update((draft) => { draft.appearance.wallpaper = "auto"; });
+              }}
+            >
+              Remove my {customKind === "video" ? "video" : "picture"}
+            </button>
+          ) : null}
         </div>
 
         <Row
@@ -178,6 +272,45 @@ export function AppearancePanel() {
             onChange={(checked) => update((draft) => { draft.appearance.showWallpaper = checked; })}
           />
         </Row>
+        {customKind === "video" && customUrl ? (
+          <>
+            <Row
+              label="Video sound"
+              hint={
+                videoHasAudio === true
+                  ? "This file has an audio track. Off by default: browsers block sound that starts on its own, and a background that talks is a surprise."
+                  : videoHasAudio === false
+                    ? "This file has no audio track, so there is nothing to play. The switch is kept in case you replace it."
+                    : "Checking the file for an audio track. A video that starts silently is the shipped behaviour either way."
+              }
+            >
+              <Toggle
+                label="Play the video's sound"
+                checked={appearance.wallpaperSound}
+                onChange={(checked) => update((draft) => { draft.appearance.wallpaperSound = checked; })}
+              />
+            </Row>
+            <Row
+              label="Volume"
+              hint="Applies to the background video only. System volume is never touched."
+            >
+              <Slider
+                min={0}
+                max={100}
+                value={appearance.wallpaperVolume}
+                onChange={(value) => update((draft) => { draft.appearance.wallpaperVolume = value; })}
+                format={(value) => `${value}%`}
+              />
+            </Row>
+            {appearance.wallpaperSound ? (
+              <Note>
+                Browsers only allow sound after you have interacted with the page. If it arrives
+                silently, the “Tap for sound” pill at the bottom of the screen turns it on with one
+                tap.
+              </Note>
+            ) : null}
+          </>
+        ) : null}
         <Row label="Blur" hint="Softens the painting so small text stays comfortable.">
           <Slider
             min={0}

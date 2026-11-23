@@ -5,7 +5,13 @@
 
 import { useState } from "react";
 import { usePrefs } from "@/lib/use-prefs";
-import { putAsset, deleteAsset, getAssetUrl, MAX_ASSET_BYTES } from "@/lib/custom-assets";
+import {
+  IMAGE_COPY_LIMIT,
+  deleteAsset,
+  getAssetUrl,
+  prepareUpload,
+  storeUpload,
+} from "@/lib/custom-assets";
 import { safeUrl, type CustomBlock } from "@/lib/site-prefs";
 import {
   Note,
@@ -49,17 +55,31 @@ export function ContentPanel({ subjects }: PanelProps) {
 
   async function pickImage(file: File) {
     setError("");
-    const result = await putAsset(file);
-    if (!result.ok) {
+    // Same pipeline as the wallpaper (an iPhone HEIC is converted on the
+    // device), but a block is an <img>: a video is refused with a reason
+    // instead of being stored and rendered as a broken picture.
+    const prepared = await prepareUpload(file);
+    if (!prepared.ok) {
       setError(
-        result.reason === "too-large"
-          ? `Images must be under ${Math.round(MAX_ASSET_BYTES / 1024 / 1024)} MB.`
-          : "That is not a PNG, JPEG, WebP, or GIF image.",
+        prepared.reason === "too-large"
+          ? `Pictures must be under ${IMAGE_COPY_LIMIT}, even after re-sizing.`
+          : prepared.reason === "undecodable"
+            ? "That picture could not be decoded on this device. Try exporting it as JPEG."
+            : "That file is not a picture.",
       );
       return;
     }
-    const url = await getAssetUrl(result.asset.id);
-    setDraftAsset(url ? { id: result.asset.id, url } : null);
+    if (prepared.prepared.kind !== "image") {
+      setError("A block takes a picture, not a video. Videos are only used as the page background.");
+      return;
+    }
+    const stored = await storeUpload(prepared.prepared);
+    if (!stored.ok) {
+      setError(`Pictures must be under ${IMAGE_COPY_LIMIT}.`);
+      return;
+    }
+    const url = await getAssetUrl(stored.asset.id);
+    setDraftAsset(url ? { id: stored.asset.id, url } : null);
   }
 
   function addBlock() {

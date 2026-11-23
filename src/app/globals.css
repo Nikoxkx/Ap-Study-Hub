@@ -2198,6 +2198,16 @@ main :has(:fullscreen) {
   backface-visibility: hidden;
 }
 
+/* A video wallpaper: same fixed full-bleed layer, object-fit instead of
+   background-size, and no fill behind it (the element paints its own frames). */
+.page-wallpaper-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  background-color: #000000;
+}
+
 .dark .page-wallpaper {
   background-color: #0d0d0d;
 }
@@ -5949,9 +5959,15 @@ html.is-entering footer[data-site-footer] {
 
 .settings-layout {
   display: grid;
-  gap: 1.5rem;
+  gap: 1.75rem;
   margin-top: 1.5rem;
   align-items: start;
+  /* The rail is sticky and both surfaces are frosted. Without an isolated
+     stacking context the browser is free to composite the rail under a panel
+     while scrolling, which is what made the sections look like they were
+     drawn on top of each other. */
+  position: relative;
+  isolation: isolate;
 }
 
 @media (min-width: 1024px) {
@@ -5970,10 +5986,15 @@ html.is-entering footer[data-site-footer] {
   padding: 0.5rem;
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-cut);
-  background: var(--glass-bg);
+  /* A floor under the surface: the rail has its own one-line descriptions to
+     keep legible, and it sits directly beside the panel. At the thinnest
+     surface setting the two frosted rectangles merged into one another. */
+  background-color: var(--glass-bg-solid, var(--glass-bg));
   box-shadow: var(--glass-shadow);
   backdrop-filter: blur(16px) saturate(118%);
   -webkit-backdrop-filter: blur(16px) saturate(118%);
+  position: relative;
+  z-index: 2;
 }
 
 @media (min-width: 1024px) {
@@ -5995,6 +6016,7 @@ html.is-entering footer[data-site-footer] {
 .settings-tab {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: 0.1rem;
   width: 100%;
   flex: 0 0 auto;
@@ -6020,12 +6042,19 @@ html.is-entering footer[data-site-footer] {
 }
 
 .settings-tab small {
+  display: block;
+  max-width: 100%;
   font-family: var(--font-mono);
   font-size: 0.62rem;
   font-weight: 400;
+  line-height: 1.4;
   letter-spacing: 0.02em;
   color: var(--ink-faint);
-  white-space: nowrap;
+  /* These notes used to be `nowrap`, so "Theme, wallpaper, surface, colours,
+     type" ran straight out of the rail and across the panel beside it — the
+     overlap in the report. They wrap now, inside their own tab. */
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .settings-tab:hover {
@@ -6055,6 +6084,15 @@ html.is-entering footer[data-site-footer] {
   display: grid;
   gap: 1.25rem;
   min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Every panel keeps a readable floor of its own, at every surface setting, so
+   a bright painting can never show through a row label. */
+.settings-layout .settings-panel {
+  background-color: var(--glass-bg-solid, var(--glass-bg));
+  border-color: var(--rule-strong);
 }
 
 /* ---- Panels and rows --------------------------------------------------- */
@@ -6391,11 +6429,108 @@ html.is-entering footer[data-site-footer] {
   color: var(--ink-faint);
 }
 
-.wallpaper-tile input[type="file"] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
+/* The picker is a real, visible control. It used to be a transparent input
+   stretched over the whole tile, which on iOS made the tile itself the target
+   and left the Remove button underneath it unreachable. */
+.wallpaper-choose {
+  position: relative;
+  margin-top: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
   cursor: pointer;
+}
+
+.wallpaper-choose:hover { border-color: var(--ink); }
+
+.wallpaper-choose:focus-within {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Kept in the accessibility tree and reachable by keyboard, drawn nowhere. */
+.wallpaper-choose input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+}
+
+.wallpaper-tile video {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.3rem;
+  background: var(--paper-sunk);
+}
+
+.wallpaper-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.15rem 0 0.5rem;
+}
+
+.wallpaper-status p {
+  flex: 1 1 18rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.wallpaper-status .settings-error,
+.wallpaper-status .settings-ok {
+  margin-top: 0;
+  padding: 0.45rem 0.7rem;
+  border-left: 2px solid var(--ink);
+  background: var(--mark-wash);
+}
+
+.wallpaper-status .settings-ok { border-left-color: var(--ink-soft); }
+
+.settings-ok {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* The one control that can appear outside a panel: a background video that the
+   browser refused to start with sound. Fixed, small, and out of the way. */
+.wallpaper-sound-pill {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: var(--glass-shadow);
+  cursor: pointer;
+}
+
+.wallpaper-sound-pill:hover { border-color: var(--ink); }
+
+@media print {
+  .wallpaper-sound-pill { display: none !important; }
 }
 
 .wallpaper-drop {
@@ -7394,4 +7529,135 @@ html.is-entering footer[data-site-footer] {
 .account-lesson-links {
   display: flex;
   gap: 0.35rem;
+}
+
+/* ---- Permissions -------------------------------------------------------
+   Two kinds of "allow" on one card: the account scopes, and what the browser
+   may keep. Each row is a statement plus, at most, one optional action.
+   ----------------------------------------------------------------------- */
+
+.permission-list {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.permission-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem 1.25rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.permission-row:last-child { border-bottom: 0; }
+
+.permission-row > div:first-child {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.permission-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.35rem;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.permission-badge {
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.permission-badge.is-granted {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.permission-body {
+  margin: 0.15rem 0 0;
+  max-width: 66ch;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.permission-meta {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+}
+
+.permission-scopes {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0.2rem 0 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.permission-scopes li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.permission-scopes code {
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+  background: var(--mark-wash);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink);
+}
+
+.permission-action { flex: 0 0 auto; }
+
+.permission-note { margin: 0.75rem 0 0; }
+
+.permission-never {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+
+.permission-never ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.4rem 0 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.permission-never li {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
 }

@@ -9,6 +9,7 @@ import { useAdaptiveProfile } from "@/lib/use-adaptive";
 import { localStats } from "@/lib/account-stats";
 import { MAX_AVATAR_BYTES } from "@/lib/supabase";
 import { SignInPanel } from "@/components/account/SignInPanel";
+import { PermissionsCard } from "@/components/account/PermissionsCard";
 
 export interface AccountSubject {
   slug: string;
@@ -137,6 +138,9 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
 
       {auth.configured && auth.status === "signed-in" ? (
         <>
+          {/* First thing after signing in: what was granted, and the one
+              browser-side permission worth asking for. Both are optional. */}
+          <PermissionsCard signedIn />
           <GlassCard as="section" padding="lg" aria-labelledby="profile-heading">
             <div className="account-profile">
               <div className="account-avatar">
@@ -192,7 +196,8 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
                     </button>
                   ) : null}
                   <span className="adaptive-meta">
-                    PNG, JPEG, WebP or GIF · under {Math.round(MAX_AVATAR_BYTES / 1024 / 1024)} MB
+                    PNG, JPEG, WebP, GIF or iPhone HEIC · under{" "}
+                    {Math.round(MAX_AVATAR_BYTES / 1024 / 1024)} MB · converted on this device
                   </span>
                 </div>
                 {avatarError ? <p className="settings-error">{avatarError}</p> : null}

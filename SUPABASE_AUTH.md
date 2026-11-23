@@ -118,6 +118,32 @@ Created on 2026-11-22 for this repository and **active**:
 The key in use is the project's **legacy anon JWT**. It is public by design, and swapping in the newer
 `sb_publishable_…` key is a one-line change in Vercel once legacy keys are retired.
 
+### Scopes and consent
+
+Supabase asks Google for three scopes and nothing else: `openid`, `email`, and `profile`. That is
+what produces the name, address, and photo the account card shows. No Drive, Gmail, Calendar,
+Contacts, or Cloud Platform scope is requested, no refresh token is issued (`access_type=online`),
+and nothing is ever written to the user's Google account — the site never calls a Google API after
+sign-in.
+
+What the user sees:
+
+- Google's own consent screen, listing exactly those three scopes. The consent screen's *app name*,
+  *support email*, and *privacy-policy link* are what make it look legitimate; fill them in before
+  publishing the app, or Google shows the bare project id.
+- `/login` states the three scopes above the button, and the account page repeats them under
+  **Permissions** with the ability to review or revoke at Google → Security → Third-party apps.
+- A one-time-code sign-in never touches Google, and the Permissions card says so rather than
+  claiming access that was never granted.
+
+If you change the requested scopes you must also change `GOOGLE_SCOPES` in
+`src/lib/browser-permissions.ts`; that constant is the single copy the sign-in card, the account
+card, and the docs are written from.
+
+The browser side is separate and deliberately tiny: persistent storage
+(`navigator.storage.persist()`), offered as one optional button on `/account`. There is no
+notification, camera, microphone, or geolocation code in this app.
+
 ### One optional email tweak
 
 The default *Magic Link* template sends a link and no code. Clicking that link signs you in — it

@@ -538,9 +538,73 @@ for (const token of ["--answer-correct", "--answer-wrong"]) {
   if (night && !isChromatic(night)) fail(`${token} is not a colour at night`);
 }
 
+/* --------------------------------------------------------------------------
+   Uploads, video wallpapers, and permissions
+   --------------------------------------------------------------------------
+   Three regressions are easy to reintroduce and invisible in a screenshot:
+   an allow-list that silently stops accepting the phone in your pocket, a
+   background video that autoplays with sound, and a permissions card that
+   claims access it never had.
+   -------------------------------------------------------------------------- */
+
+const assetSource = read("src/lib/custom-assets.ts");
+for (const signature of ["image/heic", "image/avif", "video/mp4", "video/webm", "video/quicktime"]) {
+  if (!assetSource.includes(`"${signature}"`)) fail(`custom-assets no longer recognises ${signature}`);
+}
+if (!/export async function prepareUpload/.test(assetSource)) {
+  fail("the upload pipeline lost prepareUpload — HEIC would be refused again");
+}
+if (!/canvas|toBlob/.test(assetSource) || !/createImageBitmap/.test(assetSource)) {
+  fail("prepareUpload no longer decodes and re-encodes on the device");
+}
+if (!/function sniff\(/.test(assetSource)) {
+  fail("the upload gate stopped inspecting the file's leading bytes");
+}
+
+const backgroundSource = read("src/components/ui/PageBackground.tsx");
+if (!/<video/.test(backgroundSource)) fail("the wallpaper layer cannot render a video");
+if (!/playsInline/.test(backgroundSource)) fail("a background video would go full-screen on iOS without playsInline");
+if (!/muted=\{!appearance\.wallpaperSound\}/.test(backgroundSource)) {
+  fail("a video wallpaper would autoplay with sound — every browser blocks that, and it is rude when it works");
+}
+if (!/wallpaper-sound-pill/.test(backgroundSource)) fail("the one-tap unmute affordance is gone");
+for (const token of ["wallpaperSound", "wallpaperVolume"]) {
+  if (!read("src/lib/site-prefs.ts").includes(token)) fail(`preferences lost ${token}`);
+}
+
+if (!/\.wallpaper-sound-pill\s*\{/.test(css)) fail("the sound pill has no styling");
+if (!/\.wallpaper-choose\s*\{/.test(css)) fail("the file picker is not a visible control");
+// The reported overlap: a `nowrap` description ran out of the rail and across
+// the panel beside it.
+const tabNoteRule = css.match(/\.settings-tab small \{([^}]*)\}/)?.[1] ?? "";
+if (/white-space:\s*nowrap/.test(tabNoteRule)) {
+  fail("settings tab descriptions still refuse to wrap — they will overlap the panel again");
+}
+if (!/white-space:\s*normal/.test(tabNoteRule)) {
+  fail("settings tab descriptions are not explicitly wrapped");
+}
+if (!/--glass-bg-solid/.test(read("src/lib/prefs-theme.ts"))) {
+  fail("the settings rail has no opacity floor and can merge into the panel at a thin surface");
+}
+
+const permissionsSource = read("src/components/account/PermissionsCard.tsx");
+const permissionsLib = read("src/lib/browser-permissions.ts");
+if (!/navigator|storage/.test(permissionsLib) || !/persist/.test(permissionsLib)) {
+  fail("persistent storage is no longer requested from the browser");
+}
+for (const scope of ["openid", "email", "profile"]) {
+  if (!permissionsLib.includes(`"${scope}"`)) fail(`the permissions card no longer lists the ${scope} scope`);
+}
+if (!/Never requested|NOT_REQUESTED/.test(permissionsSource)) {
+  fail("the permissions card no longer says what is never requested");
+}
+if (/Notification\.requestPermission|getUserMedia|geolocation/.test(permissionsSource + permissionsLib)) {
+  fail("the site asks for a permission it cannot justify");
+}
+
 if (errors.length) {
   console.error(`Presentation validation failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, the surface ladder, the Google sign-in window, and the optional account layer are intact.");
+console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, the surface ladder, uploads and video wallpapers, the permission cards, the Google sign-in window, and the optional account layer are intact.");
