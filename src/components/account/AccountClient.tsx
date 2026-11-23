@@ -10,6 +10,7 @@ import { localStats } from "@/lib/account-stats";
 import { MAX_AVATAR_BYTES } from "@/lib/supabase";
 import { SignInPanel } from "@/components/account/SignInPanel";
 import { PermissionsCard } from "@/components/account/PermissionsCard";
+import { AuthReturnNotice } from "@/components/account/AuthReturnNotice";
 
 export interface AccountSubject {
   slug: string;
@@ -110,6 +111,10 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
           <Link href="/settings?tab=account">Account settings</Link>
         </div>
       </GlassCard>
+
+      {/* An expired link or a refused consent often lands here rather than on
+          /login, because that is where the request came from. */}
+      <AuthReturnNotice />
 
       {!auth.configured ? <UnconfiguredCard /> : null}
 

@@ -217,6 +217,9 @@ export function SignInPanel({
 
       {emailEnabled || phoneEnabled ? (
         <div className="signin-code">
+          {/* The steps describe what this project will actually send. The
+              default email template carries a link and no code, so promising a
+              code would be a lie the visitor discovers two minutes later. */}
           <ol className="signin-steps">
             <li>
               {stage === "identify"
@@ -225,15 +228,23 @@ export function SignInPanel({
             </li>
             <li>
               {stage === "identify" ? (
-                <>Press <strong>Send code</strong>. It arrives in a few seconds.</>
+                kind === "email" ? (
+                  <>Press <strong>Send link</strong>. The message arrives in a few seconds.</>
+                ) : (
+                  <>Press <strong>Send code</strong>. It arrives in a few seconds.</>
+                )
+              ) : kind === "email" ? (
+                <>Open the <strong>link</strong> in that message. It signs you in here, or on any other device.</>
               ) : (
-                <>Open it: the button in the message signs you in, and the code signs you in here.</>
+                <>Type the code from the message below.</>
               )}
             </li>
             <li>
-              {stage === "identify"
-                ? "Either route works — the link opens signed in, the code finishes it here."
-                : "Codes last an hour and work once. Nothing to remember afterwards."}
+              {kind === "phone"
+                ? "Codes last a few minutes and work once. Nothing to remember afterwards."
+                : stage === "identify"
+                  ? "If the message also shows a numeric code, it works in the box below as well."
+                  : "The link works once, and the code under it (when there is one) is a second way in."}
             </li>
           </ol>
 
@@ -297,7 +308,7 @@ export function SignInPanel({
                 onClick={() => void sendCode()}
                 disabled={busy || !value.trim()}
               >
-                {busy ? "Sending…" : "Send code"}
+                {busy ? "Sending…" : kind === "email" ? "Send link" : "Send code"}
               </button>
             ) : (
               <>
@@ -315,7 +326,7 @@ export function SignInPanel({
                   onClick={() => void sendCode()}
                   disabled={busy || cooldown > 0}
                 >
-                  {cooldown > 0 ? `Resend in ${cooldown}s` : "Send again"}
+                  {cooldown > 0 ? `Resend in ${cooldown}s` : "Send it again"}
                 </button>
                 <button type="button" className="pref-mini" onClick={reset}>
                   Different {kind === "email" ? "address" : "number"}

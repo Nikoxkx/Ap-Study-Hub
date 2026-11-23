@@ -33,7 +33,14 @@ export function getSupabase(): SupabaseClient | null {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
-      flowType: "pkce",
+      // Implicit, deliberately. PKCE keeps a code verifier in this browser's
+      // storage, which makes an emailed link fail the moment it is opened
+      // anywhere else — the ordinary case of requesting a code on a phone and
+      // opening the message on a laptop. Implicit puts the session in the URL
+      // fragment, which `detectSessionInUrl` consumes and strips on any page,
+      // on any device. The tokens never touch the referrer, and with no
+      // third-party script on the page there is nothing else to leak them to.
+      flowType: "implicit",
     },
     global: {
       headers: { "x-application-name": "ap-study-hub" },

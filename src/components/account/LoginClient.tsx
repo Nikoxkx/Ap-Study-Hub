@@ -4,7 +4,9 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SignInPanel } from "@/components/account/SignInPanel";
+import { AuthReturnNotice } from "@/components/account/AuthReturnNotice";
 import { useAuth } from "@/lib/use-auth";
+import { clearAuthFragment } from "@/lib/auth-errors";
 
 /**
  * `/login` — the proper window, not a card buried in another page.
@@ -23,8 +25,12 @@ export function LoginClient({ next, providerError = "" }: { next?: string; provi
   // A returned OAuth session is detected by the Supabase client (detectSessionInUrl)
   // and surfaces here as `signed-in`, which is the moment to leave the login page.
   useEffect(() => {
-    if (auth.status === "signed-in") router.replace(target);
+    if (auth.status === "signed-in") {
+      clearAuthFragment();
+      router.replace(target);
+    }
   }, [auth.status, router, target]);
+
 
   return (
     <main className="login-shell">
@@ -41,12 +47,7 @@ export function LoginClient({ next, providerError = "" }: { next?: string; provi
           </p>
         </div>
 
-        {providerError ? (
-          <p className="settings-note settings-note-warn" role="alert">
-            Google sign-in did not finish: {providerError}. Nothing was saved; try again or use a
-            one-time code below.
-          </p>
-        ) : null}
+        <AuthReturnNotice serverMessage={providerError} />
 
         {auth.status === "loading" ? (
           <p className="settings-note">Checking for a saved session…</p>

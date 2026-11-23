@@ -100,7 +100,7 @@ Each of the ten courses has a monochrome symbol on a transparent canvas: a flag,
 
 `/settings` makes the site configurable without a backend, and without letting a saved preference break a page. Seven panels, no save button: every control writes through one validated record (`aps.prefs.v1`), so the page you are looking at *is* the saved state.
 
-- **Sign-in window** — `/login`, one tap with Google when the project has a Google OAuth client, otherwise a one-time code by email; no password exists, and the window is never required to study. Google is asked for `openid email profile` and nothing else.
+- **Sign-in window** — `/login`, one tap with Google when the project has a Google OAuth client, otherwise a one-time link by email; no password exists, and the window is never required to study. Google is asked for `openid email profile` and nothing else. The client runs the **implicit** flow on purpose: a PKCE verifier lives in one browser, so a magic link opened on a second device would fail. Refusals arrive in the URL fragment, which `src/lib/auth-errors.ts` reads and turns into a sentence with a next step, and a spent fragment is stripped from the address bar without losing `?next=`.
 - **Appearance** — wallpaper (the four shipped paintings, route default, or **your own upload: a picture or a video**), fit, blur, dimming, and — when the video has an audio track — a sound switch plus a 0–100 volume slider. Uploads are decided by their leading bytes, not their name: an iPhone HEIC or AVIF is decoded and re-encoded as JPEG **on the device** and never uploaded, a video up to 12 MB is stored as it is, and a refusal prints the file name and the actual reason instead of doing nothing; light and night ink, accent, highlight, glass tint; a **surface ladder** from clear glass to solid paper (five named stops plus a continuous 0–100 slider, with a per-palette contrast floor so the panels can never thin past readable); display/UI fonts, size, line height; radius, motion, density.
 - **Layout** — reorder, hide, and rename every home-page section. Order is applied with CSS `order` and hiding with `display`, so no section is unmounted and nothing keeps state it should not.
 - **Text & elements** — hero badge/title/subtitle, footer note, and up to twelve custom blocks (text, image, link), placed on the home page or under one specific course.
@@ -226,6 +226,8 @@ corepack pnpm validate:scroll         # page lock: pins, nests, restores, cannot
 corepack pnpm validate:study          # 1,015 study items, KaTeX math, scheduling, backups, plans & calendar
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 94 verified 11-char YouTube IDs, course/unit mapping & thumbnails
+corepack pnpm validate:auth           # jsdom: refused consent, expired links, rate limits, lost ?next=
+corepack pnpm check:auth              # live: which providers /auth/v1/settings reports, plus the Google hand-off
 corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png (10 subjects, live counts)
 node scripts/build-ap-lit-mark.mjs     # rebuild the AP Lit rose mark from assets/marks (256px RGBA, #121212 + #FFFFFF)
 corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png (2× supersampled)

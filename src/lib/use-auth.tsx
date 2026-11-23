@@ -19,6 +19,7 @@ import {
   type AuthProviders,
 } from "./supabase";
 import { prepareUpload } from "./custom-assets";
+import { friendlyAuthError } from "./auth-errors";
 
 /**
  * Optional accounts.
@@ -277,7 +278,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             queryParams: { prompt: "select_account", access_type: "online" },
           },
         });
-        if (error) return { ok: false, message: error.message };
+        if (error) return { ok: false, message: friendlyAuthError(error.message) };
         // The browser is navigating away; nothing after this runs in practice.
         return { ok: true, message: "Opening Google…" };
       } catch (error) {
@@ -293,22 +294,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const trimmed = value.trim();
       if (!trimmed) return { ok: false, message: "Enter an address or a phone number first." };
       try {
+        // The link returns to the page the request came from, errors stripped,
+        // so a visitor who started at /login?next=/settings lands back there
+        // signed in instead of being dropped on /account.
+        const returnTo = (() => {
+          if (typeof window === "undefined") return undefined;
+          const here = new URL(window.location.href);
+          here.hash = "";
+          for (const key of ["error", "error_code", "error_description"]) {
+            here.searchParams.delete(key);
+          }
+          return here.toString();
+        })();
+
         const { error } =
           kind === "email"
             ? await client.auth.signInWithOtp({
                 email: trimmed,
                 options: {
                   shouldCreateUser: true,
-                  // The default email carries a magic link. Landing back on
-                  // /account lets detectSessionInUrl finish the sign-in there.
-                  emailRedirectTo:
-                    typeof window === "undefined"
-                      ? undefined
-                      : `${window.location.origin}/account`,
+                  emailRedirectTo: returnTo,
                 },
               })
             : await client.auth.signInWithOtp({ phone: trimmed });
-        if (error) return { ok: false, message: error.message };
+        if (error) return { ok: false, message: friendlyAuthError(error.message) };
         return {
           ok: true,
           message:
@@ -317,7 +326,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               : "If that number can receive texts, a one-time code is on its way. It expires shortly.",
         };
       } catch (error) {
-        return { ok: false, message: messageOf(error, "The code could not be sent.") };
+        return { ok: false, message: friendlyAuthError(messageOf(error, "The code could not be sent.")) };
       }
     },
     [client],
@@ -335,7 +344,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           kind === "email"
             ? await client.auth.verifyOtp({ email: value.trim(), token: clean, type: "email" })
             : await client.auth.verifyOtp({ phone: value.trim(), token: clean, type: "sms" });
-        if (error) return { ok: false, message: error.message };
+        if (error) {
+          // "Token has expired or is invalid" is the single most common failure
+          // here, and the useful half of the answer is "ask for a new one".
+          const friendly = /expired|invalid/i.test(error.message)
+            ? "That code has expired or was already used. Send a fresh one — codes work once and last an hour."
+            : friendlyAuthError(error.message);
+          return { ok: false, message: friendly };
+        }
         return { ok: true, message: "Signed in. Your local study record has not moved." };
       } catch (error) {
         return { ok: false, message: messageOf(error, "That code was not accepted.") };

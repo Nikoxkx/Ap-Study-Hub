@@ -602,6 +602,56 @@ if (/Notification\.requestPermission|getUserMedia|geolocation/.test(permissionsS
   fail("the site asks for a permission it cannot justify");
 }
 
+/* --------------------------------------------------------------------------
+   Sign-in return path
+   --------------------------------------------------------------------------
+   The difference between "login works" and "login looks like it works" is the
+   trip back from Google or an emailed link. Three things must stay true.
+   -------------------------------------------------------------------------- */
+
+const supabaseSource = read("src/lib/supabase.ts");
+if (!/flowType:\s*"implicit"/.test(supabaseSource)) {
+  fail("the auth client is not on the implicit flow — a magic link opened on another device would fail with 'code verifier not found'");
+}
+if (!/detectSessionInUrl:\s*true/.test(supabaseSource)) {
+  fail("detectSessionInUrl is off, so a returned session would be ignored");
+}
+
+const loginClientSource = read("src/components/account/LoginClient.tsx");
+const authNoticeSource = read("src/components/account/AuthReturnNotice.tsx");
+for (const needle of ["hashAuthErrorSnapshot", "explainHashAuthError", "clearAuthFragment"]) {
+  if (!authNoticeSource.includes(needle)) {
+    fail(`AuthReturnNotice no longer uses ${needle} — a refused provider would leave a blank window`);
+  }
+}
+if (!loginClientSource.includes("AuthReturnNotice")) {
+  fail("/login stopped rendering the sign-in return notice");
+}
+if (!read("src/components/account/AccountClient.tsx").includes("AuthReturnNotice")) {
+  fail("/account stopped rendering the sign-in return notice — an expired link would land silently");
+}
+if (!/router\.replace\(target\)/.test(loginClientSource)) {
+  fail("the login page no longer forwards a signed-in visitor to ?next=");
+}
+
+const authErrorsSource = read("src/lib/auth-errors.ts");
+for (const needle of ["access_denied", "otp_expired", "rate limit", "not allowed"]) {
+  if (!authErrorsSource.toLowerCase().includes(needle.toLowerCase())) {
+    fail(`auth-errors.ts no longer explains ${needle}`);
+  }
+}
+if (!/error_description/.test(authErrorsSource)) {
+  fail("auth-errors.ts stopped reading error_description from the URL");
+}
+
+const signInPanelSource = read("src/components/account/SignInPanel.tsx");
+if (/and the code signs you in here/.test(signInPanelSource)) {
+  fail("the sign-in steps promise a code again — the default template carries only a link");
+}
+if (!/Open the <strong>link<\/strong>/.test(signInPanelSource)) {
+  fail("the sign-in steps no longer tell the reader to open the link");
+}
+
 if (errors.length) {
   console.error(`Presentation validation failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
   for (const error of errors) console.error(`  • ${error}`);
