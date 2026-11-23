@@ -75,11 +75,14 @@ else {
 if (!/\.dark body \{\s*background-image: none;/.test(css)) {
   fail("Night mode still paints a body background wash");
 }
-// The wallpaper lives behind body::before, so checking the body alone misses
-// a full-page overlay that makes every dark-mode page much darker.
-const darkWallpaperVeil = css.match(/\.dark body::before\s*\{([^}]*)\}/)?.[1];
-if (!darkWallpaperVeil || !/background:\s*none\s*;/.test(darkWallpaperVeil)) {
-  fail("Night mode must not dim the wallpaper with a page-wide veil");
+// The wallpaper lives behind body::before, so checking the body alone misses a
+// full-page overlay. Neither theme may wash it out (light mode used to sit a
+// 30–52% off-white gradient there) or dim it (night mode once did the same with
+// black). Panels are frosted individually; the painting itself stays untouched.
+for (const [, declaration] of css.matchAll(/body::before\s*\{([^}]*)\}/g)) {
+  if (!/background(?:-image)?:\s*none\s*;/.test(declaration)) {
+    fail("A page-wide veil is painting over the wallpaper; it must show at its own brightness");
+  }
 }
 for (const oldTint of [
   "#0f1114", "#171a1e", "#0b0d10", "#e9ecf1", "#bcc3cd", "#949da8",

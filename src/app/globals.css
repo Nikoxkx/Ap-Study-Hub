@@ -206,24 +206,32 @@
   --on-accent: #f4f4f4;
 }
 
-/* The light-mode veil sits under the content and over the wallpaper. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -9;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(246, 244, 239, 0.30), rgba(246, 244, 239, 0.52));
+/* No page-wide veil in either theme.
+   Light mode used to sit a warm off-white wash (30–52% opacity) over the
+   wallpaper, which flattened the classroom painting into a pale backdrop and
+   made day look like a washed-out night. The wallpaper is now seen at its own
+   brightness on both themes; contrast comes from the glass panels, their
+   borders and shadows, and the halos below.
+
+   With no wash behind it, the small bare type that some sections set straight
+   on the painting (`.label`, `.folio`, `.lede`) would land anywhere from a pale
+   wall to a dark chalkboard as the page scrolls. A soft halo — the same trick
+   `.canvas-heading` already used — keeps it readable either way. Inside a
+   frosted panel the halo is invisible, so it costs nothing there. */
+.label,
+.folio,
+.lede {
+  text-shadow:
+    0 1px 10px rgba(255, 255, 255, 0.92),
+    0 0 2px rgba(255, 255, 255, 0.9);
 }
 
-/* Keep the wallpaper undimmed in night mode, as it was before the page-wide
-   black veil was introduced. Frosted panels retain their existing styling. */
-.dark body::before {
-  background: none;
-}
-
-@media print {
-  body::before { display: none; }
+.dark .label,
+.dark .folio,
+.dark .lede {
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.92),
+    0 0 3px rgba(0, 0, 0, 0.9);
 }
 
 /* Each AP class keeps its own accent (from src/lib/subjects.ts): `ink` on light
@@ -2150,11 +2158,18 @@ main :has(:fullscreen) {
   inset: 0;
   z-index: -10;
   pointer-events: none;
+  /* Only visible while the photograph decodes; without it a slow connection
+     would flash the browser's plain white canvas. */
+  background-color: #e8e8e8;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+
+.dark .page-wallpaper {
+  background-color: #0d0d0d;
 }
 
 .dark body {
@@ -2324,8 +2339,8 @@ main :has(:fullscreen) {
   -webkit-backdrop-filter: blur(16px) saturate(118%);
 }
 
-/* In night mode the blur runs a touch stronger: the wallpaper photographs are
-   busier than the light-mode wash, and the score report sits over the page. */
+/* In night mode the blur runs a touch stronger: these panels sit over the page
+   with the wallpaper undimmed behind them. */
 .dark .exam-notes,
 .dark .coach-panel,
 .dark .response-list > li,
