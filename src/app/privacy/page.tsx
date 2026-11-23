@@ -33,6 +33,21 @@ const storageKeys = [
     when: "Written when you use the theme control in the header. Absent until then.",
   },
   {
+    key: "aps.prefs.v1",
+    what: "Your settings: wallpaper, colours, type, density, home-page order and headings, hero copy, custom blocks, and the adaptive switches.",
+    when: "Written the first time you change anything in Settings. Absent until then, which is why a fresh browser looks exactly like the shipped site.",
+  },
+  {
+    key: "aps.adaptive.v1",
+    what: "A capped list of at most 400 recent actions (searches, cards, videos, practice, quizzes, lessons, labs) used to build the local profile on Settings → Adaptive. No identifiers, no free text beyond the searches you type.",
+    when: "Written as you use the site, and only for the kinds you leave switched on. Cleared by Forget everything.",
+  },
+  {
+    key: "aps.sources.v1",
+    what: "The sources you add yourself: link, title, course, type, and your note. Curated sources are not stored this way.",
+    when: "Written when you press Add in Settings → Sources or remove one.",
+  },
+  {
     key: "aps.cards.v2.{course}",
     what: "Which flashcards you marked as known and which you marked to see again, per course.",
     when: "Written as you work through a card deck.",
@@ -150,6 +165,15 @@ export default function PrivacyPage() {
               preview is a static image, not a tracking pixel.
             </p>
             <p>
+              The adaptive layer is a local record, not a server one. It counts actions in this
+              browser and stores them under <code>aps.adaptive.v1</code> so the home page can offer
+              a sensible next step, a daily question, and a weekly spotlight. Nothing is sent
+              anywhere to compute it, no identifier is attached, the list is capped at 400 entries,
+              and every kind of signal can be switched off individually. Settings → Adaptive shows
+              the whole derived profile — signals, streak, subject affinity, recent searches — and a
+              single button erases it. Settings is also where each piece of the layer is turned off.
+            </p>
+            <p>
               A video page automatically fetches the creator&rsquo;s real thumbnail image from
               <code>i.ytimg.com</code> when the player appears. That is a static image, not a player
               or script. Two further requests still require an explicit action: pressing play loads a
@@ -192,8 +216,17 @@ export default function PrivacyPage() {
           </div>
 
           <p className="mt-4 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            To clear them, clear site data for this domain in your browser settings, use Reset local
-            study data on the Study page, or open a private window. Offline course packs also use
+            Uploaded wallpapers and block images live in the browser&rsquo;s IndexedDB database
+            <code>aps-assets</code> (object store <code>assets</code>), not in the key table above.
+            They are read back as local object URLs and are never uploaded anywhere; deleting the
+            image in Settings removes the stored blob. Every file is checked by MIME type and magic
+            bytes before it is stored, and SVG is refused outright.
+          </p>
+
+          <p className="mt-4 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
+            To clear them, use Settings → Privacy &amp; data (export first, if you want a copy), clear
+            site data for this domain in your browser settings, use Reset local study data on the
+            Study page, or open a private window. Offline course packs also use
             this browser’s Cache Storage for pages and assets. Nothing on the site breaks without
             local data — you just lose your place and saved work.
           </p>
@@ -219,6 +252,17 @@ export default function PrivacyPage() {
               forwards them to the provider you chose (OpenAI, Anthropic, or Google) using your key.
               The route keeps no copy, writes no log line containing your text, and has no database.
               Without a key it returns the same local analysis, computed on the server.
+            </p>
+            <p>
+              Scanning a link is the one other action that reaches the network, and it never happens
+              on its own. Pressing <strong>Scan link</strong> in Settings → Sources sends the URL you
+              pasted to <code>/api/link-preview</code> on this site, which fetches that page once to
+              read its title and description. The target site therefore sees a request from this
+              site&rsquo;s server, not from your browser, and the body is discarded after the title is
+              read. The route refuses non-http links, embedded credentials, loopback, private,
+              link-local and metadata addresses (re-checked on every redirect), caps the response at
+              512 KB, and times out after five seconds. If you would rather not involve this site at
+              all, type the title yourself — the form works without the scan.
             </p>
             <p>
               Optional sync uses the Supabase edge function you configure in Advanced. The browser
@@ -286,6 +330,10 @@ export default function PrivacyPage() {
           See also:{" "}
           <Link href="/accessibility" className="link-underlined" style={{ color: "var(--ink)" }}>
             accessibility
+          </Link>
+          ,{" "}
+          <Link href="/settings?tab=privacy" className="link-underlined" style={{ color: "var(--ink)" }}>
+            the controls themselves
           </Link>{" "}
           and{" "}
           <Link href="/about" className="link-underlined" style={{ color: "var(--ink)" }}>

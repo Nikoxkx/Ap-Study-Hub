@@ -14,6 +14,10 @@ export function getNavigationCommands(): CommandItem[] {
     { id: "videos", title: "Unit video library", context: "Curated videos for every unit of ten AP courses", href: "/videos", kind: "Video" },
     { id: "integrations", title: "Integrations & press kit", context: "Public registry, editorial brief, roadmap, and social card", href: "/integrations", kind: "Site" },
     { id: "guides", title: "Study guides", context: "How to read, retrieve, write, and rehearse", href: "/guides", kind: "Study" },
+    { id: "settings", title: "Settings", context: "Wallpaper, colour, type, layout, sources, and privacy", href: "/settings", kind: "Site" },
+    { id: "settings-sources", title: "Add your own sources", context: "File a link under the course it belongs to", href: "/settings?tab=sources", kind: "Site" },
+    { id: "settings-adaptive", title: "See what the site knows", context: "The local adaptive profile, in full", href: "/settings?tab=adaptive", kind: "Site" },
+    { id: "settings-privacy", title: "Export or erase your data", context: "Download a copy, restore one, or forget everything", href: "/settings?tab=privacy", kind: "Site" },
   ];
   for (const course of getCatalog()) {
     const base = `/course/${course.subject.slug}`;

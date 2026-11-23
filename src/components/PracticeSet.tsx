@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { track } from "@/lib/use-adaptive";
 import { useCallback, useId, useMemo, useState } from "react";
 import { useStudyState } from "@/lib/use-study-state";
 import { questionStudyId, scheduleReview } from "@/lib/study-model";
@@ -96,6 +97,7 @@ export function PracticeSet({
   const check = useCallback(() => {
     if (choice === null) return;
     const correct = choice === question.correctIndex;
+    track.practice(courseSlug);
     setChecked(true);
     setAnswers((current) => ({ ...current, [question.id]: choice }));
     setStudy((current) => scheduleReview(current, {

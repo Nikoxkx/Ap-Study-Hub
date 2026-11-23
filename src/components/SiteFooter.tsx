@@ -23,6 +23,7 @@ const columns = [
       { href: "/ai-disclosure", label: "AI disclosure" },
       { href: "/accessibility", label: "Works for everyone" },
       { href: "/privacy", label: "Your privacy" },
+      { href: "/settings", label: "Make it yours" },
       { href: "/sitemap.xml", label: "All pages" },
       { href: site.repo, label: "See the code", external: true },
       { href: `${site.repo}/blob/main/AI_DISCLOSURE.md`, label: "AI_DISCLOSURE.md", external: true },

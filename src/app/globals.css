@@ -5842,3 +5842,1084 @@ html.is-entering footer[data-site-footer] {
 .stimulus-table tbody tr:last-child td { border-bottom: none; }
 .stimulus-table-note { margin-top: 0.4rem; font-size: 0.66rem; color: var(--ink-faint); }
 .exam-passage[data-has-table="true"] p:first-child { color: var(--ink-faint); font-size: 0.82rem; }
+
+/* ==========================================================================
+   Settings, personalisation, and the adaptive layer
+   --------------------------------------------------------------------------
+   Everything below belongs to /settings and the home-page pieces it controls.
+   The vocabulary is the site's own: glass surfaces for containers, a mono
+   eyebrow, hairline rules, and no colour of its own — every value is a token,
+   because two panels on this page *are* the token editor.
+   ========================================================================== */
+
+/* ---- The settings shell ------------------------------------------------ */
+
+.settings-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.settings-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+.settings-meta a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.settings-meta a:hover { color: var(--ink); }
+
+.settings-layout {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .settings-layout {
+    grid-template-columns: minmax(13.5rem, 15.5rem) minmax(0, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* A rail of sections, not tabs with an underline: each one carries its own
+   one-line description, so you can tell where a control lives without
+   opening every tab. */
+.settings-tabs {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.5rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-cut);
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(16px) saturate(118%);
+  -webkit-backdrop-filter: blur(16px) saturate(118%);
+}
+
+@media (min-width: 1024px) {
+  .settings-tabs {
+    position: sticky;
+    top: 5.5rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .settings-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+}
+
+.settings-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  width: 100%;
+  flex: 0 0 auto;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-edge);
+  background: transparent;
+  color: var(--ink-soft);
+  text-align: left;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-snap), color 160ms var(--ease-snap),
+    border-color 160ms var(--ease-snap);
+}
+
+@media (max-width: 1023px) {
+  .settings-tab {
+    width: auto;
+    min-width: 9.5rem;
+  }
+}
+
+.settings-tab small {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.settings-tab:hover {
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+
+.settings-tab.is-active {
+  background: var(--paper-raised);
+  border-color: var(--rule-strong);
+  color: var(--ink);
+}
+
+.settings-tab.is-active small { color: var(--ink-soft); }
+
+.settings-tab:focus-visible,
+.pref-mini:focus-visible,
+.pref-switch input:focus-visible + .pref-switch-track,
+.wallpaper-tile:focus-visible,
+.adaptive-quiz-option:focus-visible,
+.settings-tab:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.settings-panels {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+/* ---- Panels and rows --------------------------------------------------- */
+
+.settings-panel {
+  padding: 1.35rem clamp(1rem, 2.4vw, 1.75rem);
+}
+
+.settings-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.settings-panel-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.settings-panel-note {
+  margin-top: 0.25rem;
+  max-width: 62ch;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.settings-panel-body {
+  display: grid;
+  gap: 0.15rem;
+  padding-top: 0.35rem;
+}
+
+.settings-row {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.settings-row:last-child { border-bottom: 0; }
+
+@media (min-width: 640px) {
+  .settings-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.settings-row-label label {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.settings-row-label p {
+  margin-top: 0.2rem;
+  max-width: 54ch;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ink-faint);
+}
+
+.settings-row-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: flex-start;
+}
+
+@media (min-width: 640px) {
+  .settings-row-control { justify-content: flex-end; }
+}
+
+/* Notes are prose, so they get a left rule rather than a box. The warn tone is
+   not red: red on this palette reads as an error, and most of these are
+   information you asked for. */
+.settings-note {
+  margin-top: 0.85rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--rule-strong);
+  max-width: 68ch;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.settings-note code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 4px;
+  background: var(--mark-wash);
+}
+
+.settings-note-warn {
+  border-left-color: var(--ink);
+  background: var(--mark-wash);
+  padding: 0.55rem 0.75rem;
+  border-radius: 0 var(--radius-edge) var(--radius-edge) 0;
+  color: var(--ink);
+}
+
+.settings-note-good { border-left-color: var(--good); }
+
+.settings-error {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.settings-error::before { content: "! "; font-family: var(--font-mono); }
+
+.pref-count {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.pref-badge {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  vertical-align: 0.1em;
+}
+
+/* ---- Controls ---------------------------------------------------------- */
+
+.pref-mini {
+  padding: 0.28rem 0.6rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 150ms var(--ease-snap), border-color 150ms var(--ease-snap);
+}
+
+.pref-mini:hover:not(:disabled) { border-color: var(--ink); }
+
+.pref-mini:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* A switch drawn over a real checkbox. The input keeps its native semantics and
+   its keyboard behaviour; only its appearance is replaced. */
+.pref-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pref-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: inherit;
+}
+
+.pref-switch-track {
+  display: inline-flex;
+  align-items: center;
+  width: 2.6rem;
+  height: 1.45rem;
+  padding: 0.15rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--paper-sunk);
+  transition: background-color 180ms var(--ease-snap), border-color 180ms var(--ease-snap);
+}
+
+.pref-switch-thumb {
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+  transition: transform 180ms var(--ease-settle);
+}
+
+.pref-switch input:checked + .pref-switch-track {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.pref-switch input:checked + .pref-switch-track .pref-switch-thumb {
+  transform: translateX(1.15rem);
+  background: var(--on-accent);
+}
+
+.dark .pref-switch input:checked + .pref-switch-track .pref-switch-thumb {
+  background: #101010;
+}
+
+.pref-switch.is-disabled { opacity: 0.45; cursor: not-allowed; }
+
+.pref-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 12rem;
+}
+
+.pref-slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
+.pref-slider output {
+  min-width: 4.5ch;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.pref-color {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.pref-color input[type="color"] {
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-edge);
+  background: transparent;
+  cursor: pointer;
+}
+
+.pref-color input[type="color"]::-webkit-color-swatch-wrapper { padding: 0.15rem; }
+.pref-color input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 5px; }
+.pref-color input[type="color"]::-moz-color-swatch { border: 0; border-radius: 5px; }
+
+.pref-color-hex {
+  width: 8.2ch;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: lowercase;
+}
+
+.btn-danger {
+  color: var(--ink);
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-strong);
+  box-shadow: none;
+}
+
+.btn-danger:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--paper-raised);
+  border-color: var(--warn);
+}
+
+/* ---- Appearance: wallpaper picker ------------------------------------- */
+
+.wallpaper-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  padding: 0.35rem 0 0.6rem;
+}
+
+.wallpaper-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.4rem 0.4rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  text-align: left;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 160ms var(--ease-snap), transform 160ms var(--ease-settle);
+}
+
+.wallpaper-tile:hover { border-color: var(--rule-strong); }
+.wallpaper-tile.is-selected { border-color: var(--ink); }
+
+.wallpaper-tile img,
+.wallpaper-tile .wallpaper-drop {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.3rem;
+  background: var(--paper-sunk);
+}
+
+.wallpaper-tile > span { padding-inline: 0.15rem; color: var(--ink); }
+
+.wallpaper-tile > small {
+  padding-inline: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--ink-faint);
+}
+
+.wallpaper-tile input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.wallpaper-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  border: 1px dashed var(--rule-strong);
+  color: var(--ink-faint);
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.wallpaper-drop small {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.02em;
+  padding-inline: 0.4rem;
+}
+
+/* ---- Layout: the module list ------------------------------------------ */
+
+.module-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+  padding-top: 0.55rem;
+}
+
+.module-row {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  transition: opacity 160ms var(--ease-snap);
+}
+
+.module-row.is-hidden { opacity: 0.55; }
+
+.module-row-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.module-row-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.module-row-note {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ink-faint);
+}
+
+.module-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.module-row-rename {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.module-row-rename label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.module-row-rename .field {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---- Content: block builder ------------------------------------------- */
+
+.block-builder {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.6rem 0 0.9rem;
+}
+
+.block-builder-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.block-builder-row .field { flex: 1 1 12rem; }
+
+.block-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.block-upload img {
+  width: 4rem;
+  height: 3rem;
+  object-fit: cover;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+
+.block-upload input[type="file"] {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+  max-width: 100%;
+}
+
+.block-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.block-list > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  border-top: 1px solid var(--rule);
+}
+
+.block-list-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.block-list-body {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--ink-faint);
+  overflow-wrap: anywhere;
+}
+
+.block-list-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+/* ---- Sources: form and grouped list ----------------------------------- */
+
+.source-form {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 0.6rem;
+}
+
+.source-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.source-form-row .field { flex: 1 1 11rem; min-width: 0; }
+.source-form-row .btn { padding: 0.55em 1.1em; font-size: 0.875rem; }
+
+.source-group { padding-top: 0.9rem; }
+
+.source-group-title {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.source-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.source-group li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.source-group li:last-child { border-bottom: 0; }
+
+.source-group a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.source-group li p {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--ink-faint);
+}
+
+/* ---- Adaptive panel: the profile -------------------------------------- */
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.5rem;
+  padding: 0.6rem 0 0.4rem;
+}
+
+.profile-stat {
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* A stat card is one big number and one small caption. */
+.profile-stat > span { display: block; }
+
+.profile-stat small {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.profile-line {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  padding-top: 0.35rem;
+}
+
+.affinity-list {
+  list-style: none;
+  margin: 0.4rem 0 0.6rem;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.affinity-list li {
+  display: grid;
+  grid-template-columns: minmax(6rem, 9rem) minmax(0, 1fr) 3.2rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.affinity-bar {
+  position: relative;
+  display: block;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--paper-sunk);
+  overflow: hidden;
+}
+
+.affinity-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  border-radius: inherit;
+}
+
+.affinity-value {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-faint);
+  text-align: right;
+}
+
+/* ---- Privacy & data ---------------------------------------------------- */
+
+.privacy-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.privacy-list li::marker { color: var(--ink-faint); }
+
+.privacy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.85rem;
+}
+
+/* ---- Home: adaptive strip --------------------------------------------- */
+
+.home-sections {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.adaptive-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.adaptive-badge {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+}
+
+.adaptive-badge a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.adaptive-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  align-items: stretch;
+}
+
+@media (min-width: 1100px) {
+  .adaptive-grid.has-spotlight {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+}
+
+.adaptive-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.adaptive-card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.adaptive-card-body {
+  margin-top: 0.4rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.adaptive-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+
+.adaptive-card-foot .btn {
+  padding: 0.5em 1.05em;
+  font-size: 0.85rem;
+}
+
+.adaptive-meta {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+}
+
+/* A spotlight is the only card that is time-limited, so it is the only one
+   that gets a heavier rule on its top edge. */
+.adaptive-card-spotlight {
+  border-top: 2px solid var(--ink);
+}
+
+.adaptive-quiz-question {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.adaptive-quiz-options {
+  list-style: none;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.adaptive-quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms var(--ease-snap), color 150ms var(--ease-snap),
+    background-color 150ms var(--ease-snap);
+}
+
+.adaptive-quiz-option span {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  padding-top: 0.15rem;
+}
+
+.adaptive-quiz-option:hover:not(:disabled) {
+  border-color: var(--rule-strong);
+  color: var(--ink);
+}
+
+.adaptive-quiz-option.is-correct {
+  border-color: var(--ink);
+  background: var(--mark-wash);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.adaptive-quiz-option.is-wrong {
+  border-color: var(--warn);
+  color: var(--ink);
+}
+
+.adaptive-quiz-option.is-muted { opacity: 0.5; }
+.adaptive-quiz-option:disabled { cursor: default; }
+
+.adaptive-quiz-explain {
+  margin-top: 0.65rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.adaptive-quiz-explain a {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.adaptive-countdown {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px dashed var(--rule-strong);
+  border-radius: var(--radius-cut);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.adaptive-countdown-number {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* ---- Custom blocks ---------------------------------------------------- */
+
+.custom-blocks {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  width: 100%;
+  max-width: 74rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+  padding-bottom: 1rem;
+}
+
+.custom-block {
+  padding: 1rem 1.15rem;
+}
+
+.custom-block-image {
+  display: block;
+  width: 100%;
+  max-height: 14rem;
+  object-fit: cover;
+  border-radius: var(--radius-edge);
+  margin-bottom: 0.6rem;
+}
+
+.custom-block-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.custom-block-body {
+  margin-top: 0.3rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.custom-block-link {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* ---- Wallpaper dimming layer ------------------------------------------ */
+
+.page-wallpaper-dim {
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+}
+
+/* ---- Print ------------------------------------------------------------- */
+
+@media print {
+  .settings-tabs,
+  .custom-blocks,
+  .adaptive-grid,
+  .wallpaper-grid { display: none !important; }
+}

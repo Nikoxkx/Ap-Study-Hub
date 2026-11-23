@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { track } from "@/lib/use-adaptive";
 import {
   videoEmbedUrl,
   videoSearchUrl,
@@ -101,6 +102,7 @@ export function UnitVideoPlayer({
   const reportHref = `${site.repo}/issues/new?title=${encodeURIComponent(`Broken unit video: ${courseSlug} unit ${unit}`)}&body=${encodeURIComponent(`The video ${active.title} (${active.id}) did not load from ${windowHref(active)}.`)}`;
 
   function play(video: UnitVideo, goFullscreen = false) {
+    track.video(courseSlug, video.id);
     setActiveId(video.id);
     setIframeReady(false);
     setLoaded(true);

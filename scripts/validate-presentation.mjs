@@ -234,9 +234,76 @@ for (const path of ["public/og-image.png", "public/social-preview.png"]) {
   if (width !== 1200 || height !== 630) fail(`${path} is ${width}×${height}, expected 1200×630`);
 }
 
+// 5. Personalisation, the adaptive layer, and the settings page.
+//
+//    The risk here is not "does it look right" but "can a visitor break their
+//    own site". Every assertion below exists because a saved preference or a
+//    pasted URL is untrusted input: it has to be clamped on the way in and
+//    interpreted safely on the way out.
+const prefs = read("src/lib/site-prefs.ts");
+const prefsTheme = read("src/lib/prefs-theme.ts");
+const home = read("src/app/page.tsx");
+const settingsClient = read("src/components/settings/SettingsClient.tsx");
+const sourcesPanel = read("src/components/settings/SourcesPanel.tsx");
+const linkRoute = read("src/app/api/link-preview/route.ts");
+const assets = read("src/lib/custom-assets.ts");
+
+// Every tab the shell claims must be switchable, and the deep link must work.
+for (const tab of ["appearance", "layout", "content", "sources", "adaptive", "privacy", "advanced"]) {
+  if (!settingsClient.includes(`id: "${tab}"`)) fail(`SettingsClient is missing the ${tab} tab`);
+}
+if (!settingsClient.includes('get("tab")') || !settingsClient.includes("tabFromUrl")) {
+  fail("Settings lost its ?tab= deep link");
+}
+
+// A stored value is normalised through `revivePrefs`, never trusted raw.
+if (!prefs.includes("export function revivePrefs")) fail("site-prefs lost revivePrefs: stored settings would be trusted raw");
+if (!prefs.includes("clampNumber(")) fail("site-prefs no longer clamps numeric preferences");
+if (!prefs.includes("export function safeUrl")) fail("site-prefs lost safeUrl: a stored link could carry javascript:");
+if (!prefs.includes("export function sanitizeCustomCss")) fail("site-prefs lost sanitizeCustomCss");
+
+// The override sheet has to address both palettes, or a custom ink silently
+// does nothing at night, and it must never paint a page-wide veil over the
+// wallpaper (the standing rule from the previous change).
+if (!prefsTheme.includes('selector: ":root"')) fail("prefs CSS does not emit the light palette");
+if (!prefsTheme.includes('selector: "html.dark"')) fail("prefs CSS does not emit the night palette");
+if (!prefsTheme.includes("readableInk(")) fail("prefs CSS no longer contrast-corrects custom inks");
+if (!prefsTheme.includes("sanitizeCustomCss(advanced.customCss)")) fail("custom CSS is appended without being sanitised");
+if (/body::before/.test(prefsTheme)) fail("prefs CSS paints a page-wide layer over the wallpaper");
+
+// Sections are reordered with CSS order and hidden with display, so no module
+// is ever unmounted — a renamed or moved section keeps its state.
+if (!home.includes("<HomeOrder />")) fail("the home page no longer mounts HomeOrder");
+const moduleIds = [...prefs.matchAll(/\{ id: "([a-z-]+)", label:/gu)].map((m) => m[1]);
+if (moduleIds.length < 6) fail("HOME_MODULES shrank below the documented six sections");
+for (const id of moduleIds) {
+  if (!home.includes(`data-home-module="${id}"`) && !home.includes("<AdaptiveHero")) {
+    fail(`home page has no data-home-module="${id}" element, so that section cannot be reordered or hidden`);
+  }
+}
+if (!home.includes("<AdaptiveHero")) fail("the home hero is no longer rendered through AdaptiveHero");
+
+// The one outbound request on the site stays guarded.
+if (!linkRoute.includes("function isPrivateAddress")) fail("link preview lost its private-address guard");
+if (!linkRoute.includes("lookup(host, { all: true")) fail("link preview no longer resolves every address before fetching");
+if (!linkRoute.includes('redirect: "manual"')) fail("link preview follows redirects without re-checking the target");
+if (!linkRoute.includes("MAX_BYTES") || !linkRoute.includes("TIMEOUT_MS")) fail("link preview lost its size or time cap");
+if (!/protocol !== "http:" && url\.protocol !== "https:"/.test(linkRoute)) fail("link preview accepts non-http schemes");
+if (!sourcesPanel.includes("/api/link-preview")) fail("SourcesPanel no longer calls the link-preview route");
+
+// Uploads stay images: SVG is refused and the size cap is enforced.
+if (!assets.includes("image/svg")) fail("custom-assets no longer names SVG as refused");
+if (!assets.includes("MAX_ASSET_BYTES")) fail("custom-assets lost its size cap");
+
+// The privacy page has to name every new key, or it describes an older site.
+for (const key of ["aps.prefs.v1", "aps.adaptive.v1", "aps.sources.v1", "aps-assets"]) {
+  if (!read("src/app/privacy/page.tsx").includes(key)) fail(`privacy page does not mention ${key}`);
+}
+if (!read("src/app/privacy/page.tsx").includes("link-preview")) fail("privacy page does not explain the link-preview request");
+
 if (errors.length) {
   console.error(`Presentation validation failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Exam room print sheet, neutral night mode, subject symbols, real video thumbnails, and static social preview are intact.");
+console.log("✓ Exam room print sheet, neutral night mode, subject symbols, real video thumbnails, static social preview, and the validated personalisation layer are intact.");

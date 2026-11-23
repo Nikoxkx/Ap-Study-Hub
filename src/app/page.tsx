@@ -10,6 +10,11 @@ import { Stat } from "@/components/Furniture";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { BanterLoader } from "@/components/ui/BanterLoader";
 import { JsonLd, catalogSchema, faqSchema } from "@/lib/schema";
+import { AdaptiveHero } from "@/components/home/AdaptiveHero";
+import { AdaptiveModules, type QuizPoolItem } from "@/components/home/AdaptiveModules";
+import { HomeOrder } from "@/components/home/HomeOrder";
+import { CustomBlocks } from "@/components/home/CustomBlocks";
+import { PrefText } from "@/components/home/PrefText";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -74,37 +79,68 @@ const studySurfaces = [
   },
 ];
 
+/**
+ * A small pool for the daily question: the first three questions of every
+ * course, with the subject attached so the adaptive layer can favour the one the
+ * visitor actually studies. Three per course keeps the payload around 20 KB while
+ * still giving each course a different question for months.
+ */
+function buildQuizPool(): QuizPoolItem[] {
+  const pool: QuizPoolItem[] = [];
+  for (const course of getCatalog()) {
+    for (const [index, question] of course.questions.slice(0, 3).entries()) {
+      pool.push({
+        id: `${course.subject.slug}-${question.id ?? index}`,
+        subject: course.subject.slug,
+        question: question.question,
+        options: question.options,
+        correctIndex: question.correctIndex,
+        explanation: question.explanation,
+        unitNumber: question.unitNumber ?? 1,
+      });
+    }
+  }
+  return pool;
+}
+
 export default function HomePage() {
   const catalog = getCatalog();
   const totals = getTotals();
   const upcoming = nextExam();
   const daysToNext = upcoming ? daysUntil(examInstant(upcoming)) : 0;
+  const quizPool = buildQuizPool();
+  const subjectIndex = catalog.map((course) => ({
+    slug: course.subject.slug,
+    familiar: course.subject.familiar,
+    official: course.subject.official,
+  }));
+  const heroTotals = {
+    courses: totals.courses,
+    units: totals.units,
+    paragraphs: totals.paragraphs,
+    flashcards: totals.flashcards,
+    questions: totals.questions,
+  };
 
   return (
     <>
       <JsonLd schema={[catalogSchema(), faqSchema(faqs)]} />
+      <HomeOrder />
 
+      <div className="home-sections">
       {/* ── Centered Open-Canvas Hero + Floating Glass Showcase Window ──── */}
-      <section className="wrap pb-16 pt-10 md:pb-24 md:pt-16">
+      <section className="wrap pb-16 pt-10 md:pb-24 md:pt-16" data-home-module="hero">
+        <AdaptiveHero
+          totals={heroTotals}
+          subjects={subjectIndex}
+          defaults={{
+            badge: `Built by a student · Free since 2025 · ${totals.courses} AP courses`,
+            title: "Learn ten AP subjects deeply — on a quieter kind of study hub.",
+            subtitle: `${totals.units} lessons and ${totals.paragraphs} teaching paragraphs explain the why behind every unit. Recall cards, original practice, marked essays and FRQs, and unit videos help you earn a score your college may accept for credit — with zero accounts or paywalls.`,
+          }}
+        />
+
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-          <div className="tag mb-6 px-3.5 py-1.5">
-            <SiteMark size={18} />
-            <span>Built by a student · Free since 2025 · {totals.courses} AP courses</span>
-          </div>
-
-          <h1
-            className="canvas-heading text-[clamp(2.25rem,1.5rem+3.4vw,4.25rem)] font-semibold"
-            style={{ letterSpacing: "-0.032em", lineHeight: 1.04 }}
-          >
-            Learn ten AP subjects deeply — on a quieter kind of study hub.
-          </h1>
-
-          <p className="canvas-subtext mt-6 max-w-2xl text-[clamp(1.05rem,0.96rem+0.45vw,1.25rem)] leading-relaxed">
-            {totals.units} lessons and {totals.paragraphs} teaching paragraphs explain the why
-            behind every unit. Recall cards, original practice, marked essays and FRQs, and unit
-            videos help you earn a score your college may accept for credit — with zero accounts or paywalls.
-          </p>
-
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link href="#catalogue" className="btn">
               Find your course
@@ -197,15 +233,19 @@ export default function HomePage() {
         </GlassCard>
       </section>
 
+      {/* ── Adaptive strip: for you, today's question, this week ────────── */}
+      <AdaptiveModules subjects={subjectIndex} totals={heroTotals} quizPool={quizPool} />
+      <CustomBlocks placement="home" />
+
       {/* ── 01 · Centered Section Heading + 3-Column Glass Course Cards ─── */}
-      <section id="catalogue" className="wrap py-14 md:py-20" aria-labelledby="catalogue-heading">
+      <section id="catalogue" data-home-module="catalogue" className="wrap py-14 md:py-20" aria-labelledby="catalogue-heading">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <p className="label mb-2">01 · Ten AP Courses</p>
           <h2
             id="catalogue-heading"
             className="canvas-heading text-[clamp(1.85rem,1.4rem+1.8vw,2.75rem)] font-semibold"
           >
-            Built for students who would rather understand than cram.
+            <PrefText prefKey="catalogue" fallback="Built for students who would rather understand than cram." />
           </h2>
           <p className="canvas-subtext mt-3 text-[1rem]">
             Every course gives you curriculum-ordered lessons, recall cards, original practice,
@@ -285,7 +325,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 02 · Asymmetric 2-Column Split ──────────────────────────────── */}
-      <section className="wrap py-14 md:py-20" aria-labelledby="anatomy-heading">
+      <section data-home-module="anatomy" className="wrap py-14 md:py-20" aria-labelledby="anatomy-heading">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-center">
           <GlassCard padding="lg">
             <div className="mb-4 flex items-center gap-3">
@@ -296,7 +336,7 @@ export default function HomePage() {
               id="anatomy-heading"
               className="text-[clamp(1.75rem,1.35rem+1.5vw,2.45rem)] font-semibold"
             >
-              Revision stops being eleven open browser tabs.
+              <PrefText prefKey="anatomy" fallback="Revision stops being eleven open browser tabs." />
             </h2>
             <p className="mt-4 text-[0.95rem] leading-relaxed" style={{ color: "var(--ink-soft)" }}>
               Six study surfaces work together in the order you actually use them. Every mode has
@@ -367,14 +407,14 @@ export default function HomePage() {
       </section>
 
       {/* ── 03 · 2027 Exam Calendar ─────────────────────────────────────── */}
-      <section className="wrap py-14 md:py-20" aria-labelledby="calendar-heading">
+      <section data-home-module="calendar" className="wrap py-14 md:py-20" aria-labelledby="calendar-heading">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="label mb-2">03 · 2027 Schedule</p>
           <h2
             id="calendar-heading"
             className="canvas-heading text-[clamp(1.85rem,1.4rem+1.8vw,2.65rem)] font-semibold"
           >
-            Your 2027 deadlines, in plain sight.
+            <PrefText prefKey="calendar" fallback="Your 2027 deadlines, in plain sight." />
           </h2>
           <p className="canvas-subtext mt-3 text-[0.975rem]">
             Published 2027 dates and the AP Research portfolio deadline. Confirm exact local
@@ -429,7 +469,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 04 · Student Note & Honest Boundaries ───────────────────────── */}
-      <section className="wrap py-14 md:py-20" aria-labelledby="note-heading">
+      <section data-home-module="note" className="wrap py-14 md:py-20" aria-labelledby="note-heading">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           <GlassCard padding="lg">
             <p className="label mb-2.5">04 · From the Author</p>
@@ -437,7 +477,7 @@ export default function HomePage() {
               id="note-heading"
               className="mb-8 border-b border-black/10 pb-5 text-[1.8rem] font-semibold dark:border-white/15"
             >
-              Why a student built this for you
+              <PrefText prefKey="note" fallback="Why a student built this for you" />
             </h2>
             <div className="prose pt-1">
               <p className="dropcap">
@@ -501,14 +541,14 @@ export default function HomePage() {
       </section>
 
       {/* ── 05 · FAQ Grid ───────────────────────────────────────────────── */}
-      <section className="wrap pb-10 pt-10 md:pt-14" aria-labelledby="faq-heading">
+      <section data-home-module="faq" className="wrap pb-10 pt-10 md:pt-14" aria-labelledby="faq-heading">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="label mb-2">05 · Common Questions</p>
           <h2
             id="faq-heading"
             className="canvas-heading text-[clamp(1.75rem,1.35rem+1.5vw,2.4rem)] font-semibold"
           >
-            Questions you might be asking
+            <PrefText prefKey="faq" fallback="Questions you might be asking" />
           </h2>
         </div>
 
@@ -525,6 +565,7 @@ export default function HomePage() {
           ))}
         </dl>
       </section>
+      </div>
     </>
   );
 }

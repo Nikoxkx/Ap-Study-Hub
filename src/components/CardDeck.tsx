@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { track } from "@/lib/use-adaptive";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStoredState } from "@/lib/use-stored-state";
 import { useStudyState } from "@/lib/use-study-state";
@@ -121,6 +122,7 @@ export function CardDeck({ cards, courseSlug, courseLabel }: DeckProps) {
 
   const mark = useCallback(
     (verdict: Verdict) => {
+      track.card(courseSlug);
       setVerdicts((current) => ({ ...current, [cardIndex]: verdict }));
       setStudy((current) => scheduleReview(current, {
         itemId: cardStudyId(courseSlug, card.id),
