@@ -326,6 +326,55 @@ if ((migration.match(/auth\.uid\(\)/g) ?? []).length < 6) fail("account policies
 if (!migration.includes("'avatars'")) fail("account migration does not create the avatars bucket");
 if (!migration.includes("file_size_limit")) fail("avatar bucket lost its size limit");
 
+// Google sign-in, the /login window, and the messages that go with it.
+const loginPage = read("src/app/login/page.tsx");
+const loginClient = read("src/components/account/LoginClient.tsx");
+const signInPanel = read("src/components/account/SignInPanel.tsx");
+const sitemap = read("src/app/sitemap.ts");
+const navSource = read("src/lib/navigation.ts");
+
+if (!loginPage.includes('canonical: "/login"')) fail("/login lost its canonical metadata");
+if (!loginPage.includes("providerError")) fail("/login does not surface an OAuth refusal");
+if (!/searchParams/.test(loginPage) || !/startsWith\("\/"\)/.test(loginPage)) {
+  fail("/login does not sanitise its ?next= destination");
+}
+if (!navSource.includes('href: "/login"')) fail("the command palette has no sign-in entry");
+if (!sitemap.includes('absoluteUrl("/login")')) fail("/login is missing from the sitemap");
+
+// The button exists only where the provider does: capability comes from Supabase.
+if (!/auth\/v1\/settings/.test(supabaseLib)) fail("provider capability is not read from Supabase");
+if (!/external\.google/.test(supabaseLib)) fail("Google is not among the detected providers");
+if (!/signInWithOAuth\(\{[\s\S]*provider: "google"/.test(authLib)) {
+  fail("the Google OAuth call is missing or points at another provider");
+}
+if (!/redirectTo/.test(authLib) || !/\/login/.test(authLib)) {
+  fail("Google does not return to /login, so the session would land on the wrong page");
+}
+if (!signInPanel.includes("providers.google")) fail("the panel does not gate the Google button on the provider");
+if (!/providers\.phone/.test(signInPanel)) fail("the phone tab is not gated on the SMS provider");
+if (/password/i.test(signInPanel.replace(/no password|No password|password exists/gi, ""))) {
+  fail("the sign-in panel mentions a password that this site does not have");
+}
+
+// The emails and texts have to tell the reader what to do, and carry both routes.
+const magicLink = read("supabase/templates/magic-link.html");
+const confirmation = read("supabase/templates/confirmation.html");
+const sms = read("supabase/templates/sms-code.txt");
+for (const [name, template] of [
+  ["magic-link", magicLink],
+  ["confirmation", confirmation],
+]) {
+  if (!template.includes("{{ .Token }}")) fail(`${name} email does not include the code`);
+  if (!template.includes("{{ .ConfirmationURL }}")) fail(`${name} email does not include the link`);
+  if (!/<ol/.test(template)) fail(`${name} email does not spell out the steps`);
+}
+if (!/\{\{ \.Code \}\}/.test(sms)) fail("the SMS template does not include the code");
+if (!/expires/i.test(sms)) fail("the SMS template does not say when the code stops working");
+const authDoc = read("SUPABASE_AUTH.md");
+if (!/auth\/v1\/callback/.test(authDoc)) fail("SUPABASE_AUTH.md does not give the OAuth redirect URI");
+if (!/Providers → Google|Providers →\s*Google/.test(authDoc)) fail("SUPABASE_AUTH.md does not say where the client goes");
+if (!/supabase\/templates\//.test(authDoc)) fail("SUPABASE_AUTH.md does not point at the message templates");
+
 // Small mono labels have to hold up over a photograph seen through glass. The
 // light faint ink is asserted against the page's own surface colour, and the
 // halo rule is asserted so a future reset of the ink cannot quietly undo it.
@@ -489,9 +538,123 @@ for (const token of ["--answer-correct", "--answer-wrong"]) {
   if (night && !isChromatic(night)) fail(`${token} is not a colour at night`);
 }
 
+/* --------------------------------------------------------------------------
+   Uploads, video wallpapers, and permissions
+   --------------------------------------------------------------------------
+   Three regressions are easy to reintroduce and invisible in a screenshot:
+   an allow-list that silently stops accepting the phone in your pocket, a
+   background video that autoplays with sound, and a permissions card that
+   claims access it never had.
+   -------------------------------------------------------------------------- */
+
+const assetSource = read("src/lib/custom-assets.ts");
+for (const signature of ["image/heic", "image/avif", "video/mp4", "video/webm", "video/quicktime"]) {
+  if (!assetSource.includes(`"${signature}"`)) fail(`custom-assets no longer recognises ${signature}`);
+}
+if (!/export async function prepareUpload/.test(assetSource)) {
+  fail("the upload pipeline lost prepareUpload — HEIC would be refused again");
+}
+if (!/canvas|toBlob/.test(assetSource) || !/createImageBitmap/.test(assetSource)) {
+  fail("prepareUpload no longer decodes and re-encodes on the device");
+}
+if (!/function sniff\(/.test(assetSource)) {
+  fail("the upload gate stopped inspecting the file's leading bytes");
+}
+
+const backgroundSource = read("src/components/ui/PageBackground.tsx");
+if (!/<video/.test(backgroundSource)) fail("the wallpaper layer cannot render a video");
+if (!/playsInline/.test(backgroundSource)) fail("a background video would go full-screen on iOS without playsInline");
+if (!/muted=\{!appearance\.wallpaperSound\}/.test(backgroundSource)) {
+  fail("a video wallpaper would autoplay with sound — every browser blocks that, and it is rude when it works");
+}
+if (!/wallpaper-sound-pill/.test(backgroundSource)) fail("the one-tap unmute affordance is gone");
+for (const token of ["wallpaperSound", "wallpaperVolume"]) {
+  if (!read("src/lib/site-prefs.ts").includes(token)) fail(`preferences lost ${token}`);
+}
+
+if (!/\.wallpaper-sound-pill\s*\{/.test(css)) fail("the sound pill has no styling");
+if (!/\.wallpaper-choose\s*\{/.test(css)) fail("the file picker is not a visible control");
+// The reported overlap: a `nowrap` description ran out of the rail and across
+// the panel beside it.
+const tabNoteRule = css.match(/\.settings-tab small \{([^}]*)\}/)?.[1] ?? "";
+if (/white-space:\s*nowrap/.test(tabNoteRule)) {
+  fail("settings tab descriptions still refuse to wrap — they will overlap the panel again");
+}
+if (!/white-space:\s*normal/.test(tabNoteRule)) {
+  fail("settings tab descriptions are not explicitly wrapped");
+}
+if (!/--glass-bg-solid/.test(read("src/lib/prefs-theme.ts"))) {
+  fail("the settings rail has no opacity floor and can merge into the panel at a thin surface");
+}
+
+const permissionsSource = read("src/components/account/PermissionsCard.tsx");
+const permissionsLib = read("src/lib/browser-permissions.ts");
+if (!/navigator|storage/.test(permissionsLib) || !/persist/.test(permissionsLib)) {
+  fail("persistent storage is no longer requested from the browser");
+}
+for (const scope of ["openid", "email", "profile"]) {
+  if (!permissionsLib.includes(`"${scope}"`)) fail(`the permissions card no longer lists the ${scope} scope`);
+}
+if (!/Never requested|NOT_REQUESTED/.test(permissionsSource)) {
+  fail("the permissions card no longer says what is never requested");
+}
+if (/Notification\.requestPermission|getUserMedia|geolocation/.test(permissionsSource + permissionsLib)) {
+  fail("the site asks for a permission it cannot justify");
+}
+
+/* --------------------------------------------------------------------------
+   Sign-in return path
+   --------------------------------------------------------------------------
+   The difference between "login works" and "login looks like it works" is the
+   trip back from Google or an emailed link. Three things must stay true.
+   -------------------------------------------------------------------------- */
+
+const supabaseSource = read("src/lib/supabase.ts");
+if (!/flowType:\s*"implicit"/.test(supabaseSource)) {
+  fail("the auth client is not on the implicit flow — a magic link opened on another device would fail with 'code verifier not found'");
+}
+if (!/detectSessionInUrl:\s*true/.test(supabaseSource)) {
+  fail("detectSessionInUrl is off, so a returned session would be ignored");
+}
+
+const loginClientSource = read("src/components/account/LoginClient.tsx");
+const authNoticeSource = read("src/components/account/AuthReturnNotice.tsx");
+for (const needle of ["hashAuthErrorSnapshot", "explainHashAuthError", "clearAuthFragment"]) {
+  if (!authNoticeSource.includes(needle)) {
+    fail(`AuthReturnNotice no longer uses ${needle} — a refused provider would leave a blank window`);
+  }
+}
+if (!loginClientSource.includes("AuthReturnNotice")) {
+  fail("/login stopped rendering the sign-in return notice");
+}
+if (!read("src/components/account/AccountClient.tsx").includes("AuthReturnNotice")) {
+  fail("/account stopped rendering the sign-in return notice — an expired link would land silently");
+}
+if (!/router\.replace\(target\)/.test(loginClientSource)) {
+  fail("the login page no longer forwards a signed-in visitor to ?next=");
+}
+
+const authErrorsSource = read("src/lib/auth-errors.ts");
+for (const needle of ["access_denied", "otp_expired", "rate limit", "not allowed"]) {
+  if (!authErrorsSource.toLowerCase().includes(needle.toLowerCase())) {
+    fail(`auth-errors.ts no longer explains ${needle}`);
+  }
+}
+if (!/error_description/.test(authErrorsSource)) {
+  fail("auth-errors.ts stopped reading error_description from the URL");
+}
+
+const signInPanelSource = read("src/components/account/SignInPanel.tsx");
+if (/and the code signs you in here/.test(signInPanelSource)) {
+  fail("the sign-in steps promise a code again — the default template carries only a link");
+}
+if (!/Open the <strong>link<\/strong>/.test(signInPanelSource)) {
+  fail("the sign-in steps no longer tell the reader to open the link");
+}
+
 if (errors.length) {
   console.error(`Presentation validation failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, the surface ladder, and the optional account layer are intact.");
+console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, night text, answer feedback, the surface ladder, uploads and video wallpapers, the permission cards, the Google sign-in window, and the optional account layer are intact.");

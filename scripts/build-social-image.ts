@@ -210,16 +210,18 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
     <pattern id="graph" width="${GRID}" height="${GRID}" patternUnits="userSpaceOnUse">
       <path d="M0 0.5H${GRID}M0.5 0V${GRID}" stroke="${rule}" stroke-width="1" fill="none" />
     </pattern>
+    <!-- A light soften, not a blur: the classroom should still read as a room.
+         3.5 px turned the wallpaper into flat colour at preview size. -->
     <filter id="soften" x="-6%" y="-6%" width="112%" height="112%">
-      <feGaussianBlur stdDeviation="3.5" />
+      <feGaussianBlur stdDeviation="1.3" />
     </filter>
     <filter id="sheet" x="-12%" y="-12%" width="130%" height="132%">
       <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#080a10" flood-opacity="0.32" />
     </filter>
     <linearGradient id="scrim" x1="0" y1="0" x2="1" y2="0.35">
-      <stop offset="0" stop-color="#14121a" stop-opacity="0.38" />
-      <stop offset="0.52" stop-color="#14121a" stop-opacity="0.26" />
-      <stop offset="1" stop-color="#14121a" stop-opacity="0.50" />
+      <stop offset="0" stop-color="#14121a" stop-opacity="0.46" />
+      <stop offset="0.52" stop-color="#14121a" stop-opacity="0.30" />
+      <stop offset="1" stop-color="#14121a" stop-opacity="0.56" />
     </linearGradient>
   </defs>
 
@@ -237,16 +239,27 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 
 writeFileSync(join(root, "assets/social/og-image.svg"), svg, "utf8");
 
-const resvg = new Resvg(svg, {
-  fitTo: { mode: "width", value: W },
-  font: {
-    fontFiles,
-    loadSystemFonts: false,
-    defaultFontFamily: "Public Sans",
-  },
-});
+const font = {
+  fontFiles,
+  loadSystemFonts: false,
+  defaultFontFamily: "Public Sans",
+};
 
-const png = resvg.render().asPng();
+/*
+ * Supersample. Resvg renders vectors at whatever width you ask for, so the
+ * type is already sharp — but the photograph and the ten course marks are
+ * bitmaps, and at exactly 1200 px they land on half-pixel boundaries. Drawing
+ * the card at 2× and resampling it down once gives the photo and the marks the
+ * same edge quality as the text, which is most of what "higher quality" means
+ * for a preview that is usually seen at 300–600 px wide.
+ */
+const OVERSAMPLE = 2;
+const large = new Resvg(svg, { ...{ font }, fitTo: { mode: "width", value: W * OVERSAMPLE } }).render().asPng();
+const downscaled = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+  <image href="data:image/png;base64,${Buffer.from(large).toString("base64")}" x="0" y="0" width="${W}" height="${H}" />
+</svg>`;
+
+const png = new Resvg(downscaled, { font, fitTo: { mode: "width", value: W } }).render().asPng();
 writeFileSync(join(root, "public/og-image.png"), png);
 writeFileSync(join(root, "public/social-preview.png"), png);
 console.log(

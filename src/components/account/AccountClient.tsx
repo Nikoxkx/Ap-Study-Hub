@@ -8,7 +8,9 @@ import { useStudyState } from "@/lib/use-study-state";
 import { useAdaptiveProfile } from "@/lib/use-adaptive";
 import { localStats } from "@/lib/account-stats";
 import { MAX_AVATAR_BYTES } from "@/lib/supabase";
-import type { ContactKind } from "@/lib/use-auth";
+import { SignInPanel } from "@/components/account/SignInPanel";
+import { PermissionsCard } from "@/components/account/PermissionsCard";
+import { AuthReturnNotice } from "@/components/account/AuthReturnNotice";
 
 export interface AccountSubject {
   slug: string;
@@ -34,10 +36,6 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
   const { profile: adaptive } = useAdaptiveProfile();
   const local = useMemo(() => localStats(study, adaptive), [study, adaptive]);
 
-  const [kind, setKind] = useState<ContactKind>("email");
-  const [value, setValue] = useState("");
-  const [token, setToken] = useState("");
-  const [stage, setStage] = useState<"identify" | "code">("identify");
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -60,24 +58,6 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
     if (ranked.length > 0) return ranked;
     return subjects.slice(0, 3).map((subject) => ({ subject, score: 0 }));
   }, [adaptive.affinity, subjects]);
-
-  async function sendCode() {
-    setBusy(true);
-    setFeedback(null);
-    const result = await auth.requestCode(kind, value);
-    setFeedback({ ok: result.ok, text: result.message });
-    if (result.ok) setStage("code");
-    setBusy(false);
-  }
-
-  async function verify() {
-    setBusy(true);
-    setFeedback(null);
-    const result = await auth.verifyCode(kind, value, token);
-    setFeedback({ ok: result.ok, text: result.message });
-    if (result.ok) setToken("");
-    setBusy(false);
-  }
 
   async function saveName() {
     setBusy(true);
@@ -132,6 +112,10 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
         </div>
       </GlassCard>
 
+      {/* An expired link or a refused consent often lands here rather than on
+          /login, because that is where the request came from. */}
+      <AuthReturnNotice />
+
       {!auth.configured ? <UnconfiguredCard /> : null}
 
       {auth.configured && auth.status === "loading" ? (
@@ -144,103 +128,24 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
         <GlassCard as="section" padding="lg" aria-labelledby="signin-heading">
           <p className="label mb-2">Sign in</p>
           <h2 id="signin-heading" className="settings-panel-title">
-            {stage === "identify" ? "Send yourself a sign-in link" : `Finish signing in as ${value}`}
+            Google in one tap, or a one-time code
           </h2>
-
-          <div className="account-form">
-            <div className="segmented" role="group" aria-label="Contact method">
-              {(["email", "phone"] as ContactKind[]).map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  aria-pressed={kind === option}
-                  onClick={() => {
-                    setKind(option);
-                    setStage("identify");
-                    setFeedback(null);
-                  }}
-                >
-                  {option === "email" ? "Email" : "Phone"}
-                </button>
-              ))}
-            </div>
-
-            <input
-              className="field"
-              type={kind === "email" ? "email" : "tel"}
-              inputMode={kind === "email" ? "email" : "tel"}
-              autoComplete={kind === "email" ? "email" : "tel"}
-              placeholder={kind === "email" ? "you@example.com" : "+1 617 555 0100"}
-              value={value}
-              maxLength={120}
-              aria-label={kind === "email" ? "Email address" : "Phone number in international format"}
-              onChange={(event) => setValue(event.target.value)}
-              disabled={stage === "code" || busy}
-            />
-
-            {stage === "code" ? (
-              <input
-                className="field account-code"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                placeholder="12345678"
-                value={token}
-                maxLength={10}
-                aria-label="Sign-in code from the email"
-                onChange={(event) => setToken(event.target.value.replace(/\D/g, "").slice(0, 10))}
-              />
-            ) : null}
-
-            <div className="account-actions">
-              {stage === "identify" ? (
-                <button type="button" className="btn" onClick={sendCode} disabled={busy || !value.trim()}>
-                  {busy ? "Sending…" : "Send code"}
-                </button>
-              ) : (
-                <>
-                  <button type="button" className="btn" onClick={verify} disabled={busy || token.length < 4}>
-                    {busy ? "Checking…" : "Sign in"}
-                  </button>
-                  <button
-                    type="button"
-                    className="pref-mini"
-                    onClick={() => {
-                      setStage("identify");
-                      setToken("");
-                      setFeedback(null);
-                    }}
-                  >
-                    Use a different {kind === "email" ? "address" : "number"}
-                  </button>
-                </>
-              )}
-            </div>
-
-            {feedback ? (
-              <p className={`settings-note ${feedback.ok ? "settings-note-good" : "settings-note-warn"}`}>
-                {feedback.text}
-              </p>
-            ) : null}
-
-            {stage === "code" ? (
-              <p className="settings-note">
-                Two ways in: click the link in the email — it returns you here signed in — or type the
-                code if the message shows one. If the email never arrives, check spam, then try the
-                other address.
-              </p>
-            ) : null}
-
-            <p className="settings-note">
-              There is no password field on this site, so there is no password to reuse, leak, or type
-              into a lookalike page. Supabase is the only server this feature talks to. Your browser
-              keeps the session in local storage; signing out removes it.
-            </p>
-          </div>
+          <p className="settings-panel-note">
+            The full window lives at{" "}
+            <Link href="/login" className="link-underlined">
+              /login
+            </Link>{" "}
+            — same flow, one address you can bookmark.
+          </p>
+          <SignInPanel next="/account" variant="inline" />
         </GlassCard>
       ) : null}
 
       {auth.configured && auth.status === "signed-in" ? (
         <>
+          {/* First thing after signing in: what was granted, and the one
+              browser-side permission worth asking for. Both are optional. */}
+          <PermissionsCard signedIn />
           <GlassCard as="section" padding="lg" aria-labelledby="profile-heading">
             <div className="account-profile">
               <div className="account-avatar">
@@ -296,7 +201,8 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
                     </button>
                   ) : null}
                   <span className="adaptive-meta">
-                    PNG, JPEG, WebP or GIF · under {Math.round(MAX_AVATAR_BYTES / 1024 / 1024)} MB
+                    PNG, JPEG, WebP, GIF or iPhone HEIC · under{" "}
+                    {Math.round(MAX_AVATAR_BYTES / 1024 / 1024)} MB · converted on this device
                   </span>
                 </div>
                 {avatarError ? <p className="settings-error">{avatarError}</p> : null}

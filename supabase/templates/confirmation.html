@@ -1,0 +1,37 @@
+<h2>Confirm your email for AP Study Hub</h2>
+
+<p>
+  One tap finishes this: the button confirms {{ .Email }} and opens the site signed in. If you would
+  rather type it, the code below does the same thing in the sign-in window.
+</p>
+
+<p
+  style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:28px;letter-spacing:6px;font-weight:700;margin:18px 0"
+>
+  {{ .Token }}
+</p>
+
+<p>
+  <a
+    href="{{ .ConfirmationURL }}"
+    style="display:inline-block;background:#0f0f0f;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:600"
+    >Confirm and open AP Study Hub</a
+  >
+</p>
+
+<ol style="padding-left:18px;line-height:1.6">
+  <li><strong>Tapped the button?</strong> You are done — the account exists and you are signed in.</li>
+  <li>
+    <strong>Typing the code?</strong> Return to the window, enter the eight digits, press
+    <em>Sign in</em>. The address becomes confirmed at that moment.
+  </li>
+  <li>
+    <strong>Nothing happens on its own.</strong> An account is only created when one of those two
+    steps is completed, and the code expires after an hour.
+  </li>
+</ol>
+
+<p style="color:#555;font-size:13px;line-height:1.55">
+  Not you? Ignore this message and nothing is created. Questions about what an account stores are
+  answered on <a href="https://ap-study-hub-five.vercel.app/account">the account page</a>.
+</p>

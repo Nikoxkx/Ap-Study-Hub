@@ -19,14 +19,20 @@ const H = 580;
 
 const bgJpgB64 = readFileSync(join(rootDir, "public/bg-music-class.jpg")).toString("base64");
 
+// All ten subjects in the catalogue, in the order the site lists them. The
+// banner used to show seven: it went stale the moment the catalogue grew, which
+// is why the numbers and the pills are now updated together.
 const courses = [
   { slug: "apush", label: "APUSH", w: 114 },
   { slug: "ap-lang", label: "AP Lang", w: 124 },
+  { slug: "ap-lit", label: "AP Lit", w: 116 },
   { slug: "ap-seminar", label: "AP Seminar", w: 148 },
+  { slug: "ap-research", label: "AP Research", w: 154 },
   { slug: "ap-gov", label: "AP Gov", w: 118 },
   { slug: "ap-bio", label: "AP Bio", w: 114 },
   { slug: "ap-calc", label: "AP Calc", w: 120 },
-  { slug: "ap-research", label: "AP Research", w: 154 },
+  { slug: "ap-env", label: "AP Env", w: 114 },
+  { slug: "ap-macro", label: "AP Macro", w: 132 },
 ].map((c) => ({
   ...c,
   darkIconB64: readFileSync(join(rootDir, `public/icons/courses/${c.slug}-dark.png`)).toString("base64"),
@@ -89,17 +95,21 @@ function buildBannerSvg(mode) {
 
   // Course pills layout inside main hero card (dark icons on light glass in light mode; white icons in night mode)
   let pillX = 96;
-  const pillY = 442;
+  const pillY = 436;
   const coursePillFill = isDark ? "rgba(18, 19, 24, 0.78)" : "rgba(255, 255, 255, 0.68)";
   const coursePillStroke = isDark ? "rgba(255, 255, 255, 0.68)" : "rgba(255, 255, 255, 0.96)";
   const coursePillText = isDark ? "#ffffff" : "#111111";
   const coursePills = courses
-    .map((c) => {
+    .map((c, index) => {
+      // Two rows of five: ten pills will not fit across 1600 px without
+      // shrinking the labels past legibility.
+      if (index === 5) pillX = 96;
       const x = pillX;
+      const y = pillY + (index >= 5 ? 52 : 0);
       pillX += c.w + 9;
       const icon = isDark ? c.whiteIconB64 : c.darkIconB64;
       return `
-        <g transform="translate(${x} ${pillY})">
+        <g transform="translate(${x} ${y})">
           <rect width="${c.w}" height="42" rx="21" fill="${coursePillFill}" stroke="${coursePillStroke}" stroke-width="1.2" />
           <image href="data:image/png;base64,${icon}" x="12" y="9" width="24" height="24" />
           <text x="42" y="26" font-family="${SANS}" font-size="13.5" font-weight="600" fill="${coursePillText}">${c.label}</text>
@@ -108,10 +118,10 @@ function buildBannerSvg(mode) {
     .join("");
 
   const stats = [
-    ["51", "FULL LESSONS", "510 cited paragraphs"],
-    ["405", "RECALL CARDS", "Cold retrieval + shuffle"],
-    ["240", "PRACTICE ITEMS", "Linked to lesson sections"],
-    ["66", "UNIT VIDEOS", "Full-screen, zero tracking"],
+    ["75", "FULL LESSONS", "750 cited paragraphs"],
+    ["568", "RECALL CARDS", "Cold retrieval + shuffle"],
+    ["447", "PRACTICE ITEMS", "Linked to lesson sections"],
+    ["93", "UNIT VIDEOS", "Full-screen, zero tracking"],
   ];
 
   const statBoxes = stats
@@ -188,9 +198,9 @@ function buildBannerSvg(mode) {
     <rect x="60" y="102" width="1040" height="436" rx="20" fill="${glassFill}" stroke="${glassStroke}" stroke-width="1.4" />
   </g>
 
-  <text x="96" y="154" font-family="${MONO}" font-size="12" font-weight="700" letter-spacing="1.6" fill="${faint}">SEVEN AP COURSES  ·  FREE  ·  NO ACCOUNT  ·  LOCAL-FIRST</text>
+  <text x="96" y="154" font-family="${MONO}" font-size="12" font-weight="700" letter-spacing="1.6" fill="${faint}">TEN AP COURSES  ·  FREE  ·  NO ACCOUNT NEEDED  ·  LOCAL-FIRST</text>
 
-  <text x="96" y="226" font-family="${SERIF}" font-size="60" font-weight="700" letter-spacing="-1.2" fill="${ink}">Learn seven AP subjects</text>
+  <text x="96" y="226" font-family="${SERIF}" font-size="60" font-weight="700" letter-spacing="-1.2" fill="${ink}">Learn ten AP subjects</text>
   <text x="96" y="294" font-family="${SERIF}" font-size="60" font-weight="700" letter-spacing="-1.2" fill="${ink}">deeply — with zero noise.</text>
 
   <text x="96" y="348" font-family="${SANS}" font-size="18.5" fill="${soft}">Complete cited lessons, cold-recall card decks, original practice questions, vetted</text>

@@ -24,6 +24,7 @@ const columns = [
       { href: "/accessibility", label: "Works for everyone" },
       { href: "/privacy", label: "Your privacy" },
       { href: "/settings", label: "Make it yours" },
+      { href: "/login", label: "Sign in (optional)" },
       { href: "/account", label: "Optional account" },
       { href: "/sitemap.xml", label: "All pages" },
       { href: site.repo, label: "See the code", external: true },

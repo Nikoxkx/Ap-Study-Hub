@@ -148,10 +148,12 @@ export default function PrivacyPage() {
             Your work stays yours. You choose what leaves.
           </h1>
           <p className="lede mt-5">
-            No account, no cookies, no analytics, no advertising, no trackers, and no fonts loaded
-            from someone else&rsquo;s server. Video players and Study Desk sync are opt-in; real
-            YouTube thumbnails are the one automatic third-party image. This page explains exactly
-            when a request can leave the site.
+            No cookies, no analytics, no advertising, no trackers, and no fonts loaded from someone
+            else&rsquo;s server. An account is optional: it exists only if you create one, it is
+            passwordless, and nothing on the site is behind it. Video players, Study Desk sync, and
+            an uploaded background video are all opt-in; real YouTube thumbnails are the one
+            automatic third-party image. This page explains exactly when a request can leave the
+            site, and every permission the site can ask your browser for.
           </p>
         </div>
 
@@ -159,9 +161,11 @@ export default function PrivacyPage() {
           <SectionHead folio="01" title="What this site knows about you" id="collect-heading" />
           <div className="prose">
             <p>
-              Nothing by default. There is no account system, no contact form, no newsletter, no
-              comment section and no analytics product. I do not know how many people use this site,
-              which is occasionally frustrating and is still the correct trade.
+              Nothing by default. There is no contact form, no newsletter, no comment section and no
+              analytics product. An account is available and entirely optional: signed out, every
+              lesson, card, question, paper, and video works, and nothing on the site is gated behind
+              sign-in. If you do create one, the only things that can reach Supabase are the four
+              counts described in section 03, a display name you type, and a photo you choose.
             </p>
             <p>
               Pages are static files. Loading one requires no database query about you and creates
@@ -221,11 +225,16 @@ export default function PrivacyPage() {
           </div>
 
           <p className="mt-4 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
-            Uploaded wallpapers and block images live in the browser&rsquo;s IndexedDB database
-            <code>aps-assets</code> (object store <code>assets</code>), not in the key table above.
-            They are read back as local object URLs and are never uploaded anywhere; deleting the
-            image in Settings removes the stored blob. Every file is checked by MIME type and magic
-            bytes before it is stored, and SVG is refused outright.
+            Uploaded wallpapers, background videos, and block images live in the browser&rsquo;s
+            IndexedDB database <code>aps-assets</code> (object store <code>assets</code>), not in the
+            key table above. They are read back as local object URLs and are never uploaded
+            anywhere; deleting the file in Settings removes the stored blob. Every file is checked by
+            its leading bytes before it is stored, not by its name: SVG is refused outright, and a
+            picture the browser cannot display directly — an iPhone HEIC, for instance — is decoded
+            and re-encoded as JPEG in this browser first. That conversion happens on your device and
+            the original is discarded; if the picture cannot be decoded, the upload is refused and
+            the reason is printed next to the picker. Videos are stored as they are, up to 12 MB, and
+            are muted unless you switch the sound on.
           </p>
 
           <p className="mt-4 max-w-[62ch] text-[0.9375rem]" style={{ color: "var(--ink-soft)" }}>
@@ -235,6 +244,43 @@ export default function PrivacyPage() {
             this browser’s Cache Storage for pages and assets. Nothing on the site breaks without
             local data — you just lose your place and saved work.
           </p>
+        </section>
+
+        <section className="mt-14" aria-labelledby="permissions-heading" id="permissions">
+          <SectionHead folio="02b" title="Every permission this site can ask for" id="permissions-heading" />
+          <div className="prose">
+            <p>
+              One, and it is optional. On{" "}
+              <Link href="/account" className="link-underlined" style={{ color: "var(--ink)" }}>
+                /account
+              </Link>{" "}
+              there is a button that calls <code>navigator.storage.persist()</code>, which asks the
+              browser to stop evicting this origin&rsquo;s data to free space. Accept it and an
+              uploaded wallpaper or a year of study state is much less likely to disappear; decline it
+              and everything still works exactly the same until the disk fills or you clear site data.
+              Chrome and Firefox usually answer from a heuristic without showing anything at all;
+              Safari answers no for every site that is not added to the Home Screen, and the card says
+              so rather than pretending otherwise.
+            </p>
+            <p>
+              Nothing else is requested. There is no camera, microphone, geolocation, notification,
+              contact, calendar, clipboard, Bluetooth, USB, serial, MIDI, wake-lock, or motion-sensor
+              code in this app. A browser only shows those prompts if a site calls them, and this one
+              does not — so if you see one on this domain, it is not from here.
+            </p>
+            <p>
+              Sound on a background video is not a permission, but it behaves like one: browsers
+              refuse to start audible playback before you interact with the page. The video therefore
+              starts muted, and a small pill appears in the corner offering one tap to turn the sound
+              on. The switch in Settings → Appearance does the same thing deliberately; the volume
+              slider next to it only ever changes that one video.
+            </p>
+            <p>
+              Google access is a separate consent, stored in your Google account rather than in your
+              browser. It is covered in section 03, and it can be revoked at Google → Security →
+              Third-party apps without affecting anything you have saved here.
+            </p>
+          </div>
         </section>
 
         <section className="mt-14" aria-labelledby="third-heading">
@@ -259,9 +305,16 @@ export default function PrivacyPage() {
               Without a key it returns the same local analysis, computed on the server.
             </p>
             <p>
-              Signing in is optional and is the only feature that talks to a second server. If this
-              deployment has Supabase configured, <code>/account</code> can send you a one-time code by
-              email or text; entering it creates a session in this browser. From then on Supabase holds
+              Signing in is optional and is the only feature that talks to a second server. The window
+              is <code>/login</code>. If this deployment has Supabase configured, it can send you a
+              one-time code by email or text, or hand you to Google&rsquo;s own sign-in screen; either
+              route creates a session in this browser. Choosing Google sends Google the fact that you
+              are signing in here and asks for exactly three scopes — <code>openid</code>,
+              <code>email</code>, and <code>profile</code> — so what comes back is your name, address,
+              and photo. No Drive, Gmail, Calendar, or Contacts scope is requested, no refresh token
+              is issued, and nothing is ever written to your Google account. Supabase stores that
+              identity, and you can revoke it from your Google account at any time. From then on
+              Supabase holds
               a display name, a photo you chose, and five coarse counts (cards reviewed, practice
               answered, focus minutes, streak, last active) — only when you press{" "}
               <strong>Save today&rsquo;s counts</strong>. No lesson, answer, draft, essay, or search is

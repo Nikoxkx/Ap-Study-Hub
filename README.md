@@ -14,7 +14,7 @@
   </p>
 
   <p>
-    <a href="https://ap-study-hub-five.vercel.app"><img alt="Live site" src="https://img.shields.io/badge/live_site-v0--project--roan--six--20.vercel.app-121212?style=flat-square&labelColor=262626" /></a>
+    <a href="https://ap-study-hub-five.vercel.app"><img alt="Live site" src="https://img.shields.io/badge/live_site-ap--study--hub--five.vercel.app-121212?style=flat-square&labelColor=262626" /></a>
     <a href="#the-catalogue"><img alt="10 AP courses · 75 lessons · 750 paragraphs" src="https://img.shields.io/badge/10_courses-75_lessons_·_750_paragraphs-121212?style=flat-square&labelColor=262626" /></a>
     <a href="#the-catalogue"><img alt="568 cards · 447 questions · 93 videos" src="https://img.shields.io/badge/practice-568_cards_·_447_questions_·_93_videos-121212?style=flat-square&labelColor=262626" /></a>
     <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-404040?style=flat-square&labelColor=262626" /></a>
@@ -100,7 +100,8 @@ Each of the ten courses has a monochrome symbol on a transparent canvas: a flag,
 
 `/settings` makes the site configurable without a backend, and without letting a saved preference break a page. Seven panels, no save button: every control writes through one validated record (`aps.prefs.v1`), so the page you are looking at *is* the saved state.
 
-- **Appearance** — wallpaper (the four shipped paintings, route default, or your own upload), fit, blur, dimming; light and night ink, accent, highlight, glass tint; a **surface ladder** from clear glass to solid paper (five named stops plus a continuous 0–100 slider, with a per-palette contrast floor so the panels can never thin past readable); display/UI fonts, size, line height; radius, motion, density.
+- **Sign-in window** — `/login`, one tap with Google when the project has a Google OAuth client, otherwise a one-time link by email; no password exists, and the window is never required to study. Google is asked for `openid email profile` and nothing else. The client runs the **implicit** flow on purpose: a PKCE verifier lives in one browser, so a magic link opened on a second device would fail. Refusals arrive in the URL fragment, which `src/lib/auth-errors.ts` reads and turns into a sentence with a next step, and a spent fragment is stripped from the address bar without losing `?next=`.
+- **Appearance** — wallpaper (the four shipped paintings, route default, or **your own upload: a picture or a video**), fit, blur, dimming, and — when the video has an audio track — a sound switch plus a 0–100 volume slider. Uploads are decided by their leading bytes, not their name: an iPhone HEIC or AVIF is decoded and re-encoded as JPEG **on the device** and never uploaded, a video up to 12 MB is stored as it is, and a refusal prints the file name and the actual reason instead of doing nothing; light and night ink, accent, highlight, glass tint; a **surface ladder** from clear glass to solid paper (five named stops plus a continuous 0–100 slider, with a per-palette contrast floor so the panels can never thin past readable); display/UI fonts, size, line height; radius, motion, density.
 - **Layout** — reorder, hide, and rename every home-page section. Order is applied with CSS `order` and hiding with `display`, so no section is unmounted and nothing keeps state it should not.
 - **Text & elements** — hero badge/title/subtitle, footer note, and up to twelve custom blocks (text, image, link), placed on the home page or under one specific course.
 - **Sources** — your own links, filed by course, shown in a clearly-labelled *your sources* group on that course's resources page. Optional **Scan link** fills the title and guesses the course through `/api/link-preview`.
@@ -111,7 +112,7 @@ Each of the ten courses has a monochrome symbol on a transparent canvas: a flag,
 Three rules hold it together:
 
 1. **Nothing can break the page.** Every stored value passes through `revivePrefs`, which clamps numbers, whitelists choices, re-validates URLs with `safeUrl`, and caps text; custom inks are contrast-corrected with `readableInk` against the surface they actually sit on. `/any-page?safe=1` ignores the stored record entirely if a custom stylesheet ever makes a page unreadable.
-2. **Nothing is sent anywhere.** Preferences, the adaptive event log (capped at 400 entries), your sources, and uploaded images (IndexedDB `aps-assets`) all stay in the browser. The adaptive profile is recomputed locally from counts; there is no account, no identifier, and no endpoint.
+2. **Nothing is sent anywhere.** Preferences, the adaptive event log (capped at 400 entries), your sources, and uploaded pictures and videos (IndexedDB `aps-assets`) all stay in the browser. The adaptive profile is recomputed locally from counts; it needs no account, no identifier, and no endpoint. An account is a separate, optional thing you create on purpose.
 3. **The server renders the same HTML for everyone.** The `<style>` block and `data-*` attributes are written after mount, so a visitor who has customised nothing downloads exactly the bytes they did before this existed.
 
 **The adaptive layer** is deliberately small: it counts eight kinds of action (search, video, card, practice, quiz, lesson, course, studio) with published weights and a 10-day half-life, and derives subject affinity, streaks, momentum, and confidence. From that it can offer a next step, one question a day (deterministic per day, so refreshing does not reshuffle the page), and a weekly spotlight gated on `limitedTime`. Every module is individually switchable, and the whole layer is off with one toggle. It also feeds the lightweight personalisation of the hero copy — which never overrides words you have written yourself.
@@ -139,6 +140,13 @@ configures it. Everything — every lesson, card, question, paper, and video —
   `anon` is revoked on both tables, and avatar writes are restricted to `avatars/<uid>/`.
   `scripts/validate-presentation.mjs` fails the build if a service-role key, a password flow, or an
   unprotected table appears in client code.
+- **Permissions, asked once and never assumed.** `/account`, immediately under the profile, prints
+  exactly what was granted: the three Google scopes (`openid`, `email`, `profile`) or the fact that a
+  one-time code was used and no Google access exists; the state of browser persistent storage
+  (`navigator.storage.persist()`, offered as one optional button, with the honest answer each engine
+  gives — Safari says no to anything that is not on the Home Screen); and a list of permissions the
+  site never requests (camera, microphone, location, contacts, notifications, clipboard). Nothing
+  there blocks anything else, and a declined browser permission changes no feature.
 - **Live on this deployment.** Project `ap-study-hub-accounts` (`zgkpflrddkrqldjeocsk`, us-east-1) has
   both tables, the `avatars` bucket, email sign-in, and the two public env vars set in Vercel. Phone
   sign-in is the one thing waiting on an SMS provider; `SUPABASE_AUTH.md` has the details.
@@ -218,9 +226,12 @@ corepack pnpm validate:scroll         # page lock: pins, nests, restores, cannot
 corepack pnpm validate:study          # 1,015 study items, KaTeX math, scheduling, backups, plans & calendar
 corepack pnpm validate:presentation   # dark-mode neutral hex tokens, white RGBA marks, CSP, 1200×630 OG PNGs
 corepack pnpm validate:videos         # 94 verified 11-char YouTube IDs, course/unit mapping & thumbnails
-corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png
+corepack pnpm validate:auth           # jsdom: refused consent, expired links, rate limits, lost ?next=
+corepack pnpm check:auth              # live: which providers /auth/v1/settings reports, plus the Google hand-off
+corepack pnpm build:banners           # regenerate assets/readme/banner-{light,dark}.png (10 subjects, live counts)
 node scripts/build-ap-lit-mark.mjs     # rebuild the AP Lit rose mark from assets/marks (256px RGBA, #121212 + #FFFFFF)
-corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png
+corepack pnpm build:social            # regenerate public/og-image.png & public/social-preview.png (2× supersampled)
+python3 scripts/social-image.py       # regenerate public/github-banner.png (needs pillow, fonttools, brotli)
 corepack pnpm check                   # runs every validator + tsc --noEmit + eslint + next build
 corepack pnpm audit --audit-level low # checks direct and transitive dependencies for known advisories
 ```
@@ -246,8 +257,9 @@ public/
   bg-class2.jpg                 wallpaper: /notes, /practice, /studio, /essays, /exam, /resources, /print
   fonts/                        self-hosted WOFF2 subsets (Newsreader, Public Sans, JetBrains Mono, Kalam)
   icons/courses/                10 pure-white (#FFFFFF) transparent RGBA AP course symbols
-  og-image.png                  compiled 1200×630 Open Graph card
-  social-preview.png            compiled 1200×630 GitHub / social preview card
+  og-image.png                  compiled 1200×630 Open Graph card (2× supersampled, classroom visible)
+  social-preview.png            byte-identical copy of og-image.png, kept in step by build:social
+  github-banner.png             1280×640 repository social preview — upload in Settings → Social preview
   sw.js                         same-origin offline service worker
 scripts/
   validate-lessons.ts           verifies lesson depth, citations, cards, and practice integrity
@@ -287,7 +299,8 @@ src/
       WritingCoach.tsx          timed plan, evidence checklist, sentence frames per essay
     study/AdvancedDesk.tsx      spaced-review queue, missed-question drill, and study analytics
     ui/
-      PageBackground.tsx        route-mapped full-viewport classroom/corridor wallpaper layer
+      PageBackground.tsx        route-mapped wallpaper layer; renders a <video> for a video wallpaper,
+                                applies the volume, and offers one tap when autoplay-with-sound is refused
       Logo.tsx                  universal 45°-rotated 7-square geometric mark
       BanterLoader.tsx          9-box kinetic geometric symbol
       LoadingSpinner.tsx        universal 3-circle + 3-shadow bouncing loader
@@ -295,7 +308,14 @@ src/
       NotebookPaper.tsx         reusable math graph-paper sheet (16px blue grid, red margin rule)
       ScrollEffects.tsx         60fps exponential-lerp bidirectional viewport-edge fade controller
   content/                      typed curriculum, 75 deep lessons, 10 exam blueprints, sources, and unit videos
-  lib/                          catalog aggregator, weighted search index, local store, and JSON-LD schema
+  lib/
+    custom-assets.ts            the upload gate: leading-byte signatures, HEIC/AVIF → JPEG on the device,
+                                a 4 MB picture cap and a 12 MB video cap, IndexedDB `aps-assets`
+    video-audio.ts              "does this video have a sound track?" across Safari, Firefox and Chromium
+    browser-permissions.ts      persistent-storage state and request, plus the scope and never-asked lists
+    catalog.ts                  catalog aggregator, weighted search index, local store, and JSON-LD schema
+  components/account/
+    PermissionsCard.tsx         what was granted (Google scopes, storage), what is never requested
 ```
 
 ---

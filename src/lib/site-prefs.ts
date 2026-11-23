@@ -69,6 +69,12 @@ export interface SitePrefs {
     wallpaperBlur: number;
     wallpaperDim: number;
     wallpaperFit: "cover" | "contain";
+    /** Sound for a video wallpaper. Off by default: autoplay with audio is
+     *  blocked by every browser, and a site that talks on load is a site you
+     *  close. The switch only appears when the file actually has an audio track. */
+    wallpaperSound: boolean;
+    /** 0–100, applied as the video element's volume. */
+    wallpaperVolume: number;
     /** Six-digit hex overrides, or null to keep the shipped token. */
     ink: string | null;
     inkSoft: string | null;
@@ -172,6 +178,8 @@ export const DEFAULT_PREFS: SitePrefs = {
     wallpaperBlur: 0,
     wallpaperDim: 0,
     wallpaperFit: "cover",
+    wallpaperSound: false,
+    wallpaperVolume: 60,
     ink: null,
     inkSoft: null,
     inkFaint: null,
@@ -463,6 +471,8 @@ export function revivePrefs(value: unknown): SitePrefs {
       wallpaperBlur: clampNumber(appearance.wallpaperBlur, 0, 16, 0),
       wallpaperDim: clampNumber(appearance.wallpaperDim, 0, 70, 0),
       wallpaperFit: choice(appearance.wallpaperFit, ["cover", "contain"] as const, "cover"),
+      wallpaperSound: appearance.wallpaperSound === true,
+      wallpaperVolume: clampNumber(appearance.wallpaperVolume, 0, 100, 60),
       ink: hex(appearance.ink),
       inkSoft: hex(appearance.inkSoft),
       inkFaint: hex(appearance.inkFaint),
