@@ -225,7 +225,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           kind === "email"
             ? await client.auth.signInWithOtp({
                 email: trimmed,
-                options: { shouldCreateUser: true },
+                options: {
+                  shouldCreateUser: true,
+                  // The default email carries a magic link. Landing back on
+                  // /account lets detectSessionInUrl finish the sign-in there.
+                  emailRedirectTo:
+                    typeof window === "undefined"
+                      ? undefined
+                      : `${window.location.origin}/account`,
+                },
               })
             : await client.auth.signInWithOtp({ phone: trimmed });
         if (error) return { ok: false, message: error.message };
@@ -233,8 +241,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           ok: true,
           message:
             kind === "email"
-              ? "If that address can receive mail, a six-digit code is on its way. It expires in an hour."
-              : "If that number can receive texts, a six-digit code is on its way. It expires in an hour.",
+              ? "If that address can receive mail, a sign-in link is on its way — and a code too, if this project's email template includes one. Either works here."
+              : "If that number can receive texts, a one-time code is on its way. It expires shortly.",
         };
       } catch (error) {
         return { ok: false, message: messageOf(error, "The code could not be sent.") };
@@ -246,8 +254,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const verifyCode = useCallback(
     async (kind: ContactKind, value: string, token: string): Promise<AuthResult> => {
       if (!client) return { ok: false, message: "Sign-in is not configured on this deployment." };
-      const clean = token.replace(/\D/g, "").slice(0, 6);
-      if (clean.length < 6) return { ok: false, message: "Codes are six digits." };
+      // Supabase's code length is project configuration (6–10 digits); accept
+      // whatever arrives rather than hard-coding today's length.
+      const clean = token.replace(/\D/g, "").slice(0, 10);
+      if (clean.length < 4) return { ok: false, message: "That code looks too short." };
       try {
         const { error } =
           kind === "email"

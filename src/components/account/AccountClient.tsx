@@ -144,7 +144,7 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
         <GlassCard as="section" padding="lg" aria-labelledby="signin-heading">
           <p className="label mb-2">Sign in</p>
           <h2 id="signin-heading" className="settings-panel-title">
-            {stage === "identify" ? "Send yourself a code" : `Enter the code sent to ${value}`}
+            {stage === "identify" ? "Send yourself a sign-in link" : `Finish signing in as ${value}`}
           </h2>
 
           <div className="account-form">
@@ -183,11 +183,11 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
                 className="field account-code"
                 inputMode="numeric"
                 autoComplete="one-time-code"
-                placeholder="123456"
+                placeholder="12345678"
                 value={token}
-                maxLength={6}
-                aria-label="Six-digit sign-in code"
-                onChange={(event) => setToken(event.target.value.replace(/\D/g, "").slice(0, 6))}
+                maxLength={10}
+                aria-label="Sign-in code from the email"
+                onChange={(event) => setToken(event.target.value.replace(/\D/g, "").slice(0, 10))}
               />
             ) : null}
 
@@ -198,7 +198,7 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
                 </button>
               ) : (
                 <>
-                  <button type="button" className="btn" onClick={verify} disabled={busy || token.length < 6}>
+                  <button type="button" className="btn" onClick={verify} disabled={busy || token.length < 4}>
                     {busy ? "Checking…" : "Sign in"}
                   </button>
                   <button
@@ -222,10 +222,18 @@ export function AccountClient({ subjects }: { subjects: AccountSubject[] }) {
               </p>
             ) : null}
 
+            {stage === "code" ? (
+              <p className="settings-note">
+                Two ways in: click the link in the email — it returns you here signed in — or type the
+                code if the message shows one. If the email never arrives, check spam, then try the
+                other address.
+              </p>
+            ) : null}
+
             <p className="settings-note">
               There is no password field on this site, so there is no password to reuse, leak, or type
-              into a lookalike page. The code is verified by Supabase, which is the only server this
-              feature talks to. Your browser keeps the session in local storage; signing out removes it.
+              into a lookalike page. Supabase is the only server this feature talks to. Your browser
+              keeps the session in local storage; signing out removes it.
             </p>
           </div>
         </GlassCard>

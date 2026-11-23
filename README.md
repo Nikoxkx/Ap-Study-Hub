@@ -139,6 +139,9 @@ configures it. Everything — every lesson, card, question, paper, and video —
   `anon` is revoked on both tables, and avatar writes are restricted to `avatars/<uid>/`.
   `scripts/validate-presentation.mjs` fails the build if a service-role key, a password flow, or an
   unprotected table appears in client code.
+- **Live on this deployment.** Project `ap-study-hub-accounts` (`zgkpflrddkrqldjeocsk`, us-east-1) has
+  both tables, the `avatars` bucket, email sign-in, and the two public env vars set in Vercel. Phone
+  sign-in is the one thing waiting on an SMS provider; `SUPABASE_AUTH.md` has the details.
 - **Graceful when absent.** With no `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
   `/account` says so, Settings → Account shows `off`, and nothing else changes. The schema,
   bucket, and step-by-step setup live in `SUPABASE_AUTH.md` and

@@ -63,8 +63,38 @@ user (`avatars/<uid>/avatar.<ext>`), 2 MB limit, and only PNG/JPEG/WebP/GIF — 
 Settings → Account shows `off`, and nothing else changes. `pnpm check` runs the whole suite exactly
 the same way, because the feature has no build-time dependency on a live project.
 
-## Why the project may be paused
+## What is provisioned
 
-The Supabase project connected to this repository (`unfplzqqotubcfcswnlo`) is currently **inactive**,
-so the migration can be committed but not applied until it is restored. Restoring resumes compute on
-that project; nothing in this repository assumes it is running.
+Created on 2026-11-22 for this repository and **active**:
+
+| | |
+| --- | --- |
+| Project | `ap-study-hub-accounts` (`zgkpflrddkrqldjeocsk`), `us-east-1`, free plan |
+| URL | `https://zgkpflrddkrqldjeocsk.supabase.co` |
+| Tables | `profiles`, `study_stats` — RLS enabled, policies applied |
+| Storage | `avatars` bucket (public read, 2 MB, raster only) with folder-scoped write policies |
+| Auth | Email enabled, phone **disabled** (no SMS provider yet), sign-ups on, email confirmation required |
+| Redirects | site URL `https://ap-study-hub-five.vercel.app`, plus the `the-ap-study-hub` / team / git and preview wildcards and `http://localhost:3000/**` |
+| Vercel env | `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` set for production, preview and development |
+
+The key in use is the project's **legacy anon JWT**. It is public by design, and swapping in the newer
+`sb_publishable_…` key is a one-line change in Vercel once legacy keys are retired.
+
+### One optional email tweak
+
+The default *Magic Link* template sends a link and no code. Clicking that link signs you in — it
+returns to `/account` and the session completes there. If you also want the typed-code path to work
+(handy when a link is stripped by a school mail filter), add `{{ .Token }}` to the Magic Link
+template in Authentication → Email Templates. Codes are currently 8 digits in this project; the form
+accepts any 4–10 digit code, so nothing breaks either way.
+
+### Phone sign-in later
+
+Enable the Phone provider, add Twilio (or another) credentials in the dashboard, and flip
+`external_phone_enabled`. The phone tab is already in the UI; until then it reports the provider's
+error verbatim rather than pretending to send.
+
+## The older study-sync project
+
+The separate project used by the Study Desk's optional snapshot sync (`unfplzqqotubcfcswnlo`) is
+still paused; nothing here depends on it.

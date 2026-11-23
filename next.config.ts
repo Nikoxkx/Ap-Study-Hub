@@ -22,7 +22,9 @@ const csp = [
   "default-src 'self'",
   isDev ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'" : "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://i.ytimg.com",
+  // Avatars are public objects in the project's Storage bucket, so the image
+  // host has to be allowed alongside YouTube's static thumbnails.
+  "img-src 'self' data: https://i.ytimg.com https://*.supabase.co",
   "font-src 'self'",
   "connect-src 'self' https://*.supabase.co",
   "frame-src https://www.youtube-nocookie.com",
