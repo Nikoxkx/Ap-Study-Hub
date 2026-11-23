@@ -19,6 +19,7 @@
  */
 import {
   HOME_MODULE_ORDER,
+  contrastRatio,
   readableInk,
   sanitizeCustomCss,
   surfaceStopOf,
@@ -84,6 +85,42 @@ function washOf(value: string, theme: "light" | "dark"): string {
  * no "fully transparent" stop because text over bare painting does not pass.
  */
 const SURFACE_FLOOR = { light: 0.44, dark: 0.56 } as const;
+
+
+/**
+ * Keep a hand-picked glass tint readable, the same way `readableInk` keeps a
+ * hand-picked text colour readable.
+ *
+ * The tint is a *colour*, but what the text actually sits on is the tint
+ * composited over the painting behind the panel. A visitor who picks charcoal as
+ * the glass tint in the day palette would otherwise get near-black text on a
+ * near-black panel. So the tint is nudged along its own lightness axis toward
+ * paper (day) or ink (night) until the composite clears 4.6:1 against that
+ * palette's ink, measured over the worst patch of the shipped paintings.
+ */
+const WORST_BEHIND = { light: [57, 36, 45], dark: [225, 235, 250] } as const;
+const INK_ON_SURFACE = { light: "#0b0b0b", dark: "#f7f7f7" } as const;
+
+export function readableTint(
+  tint: readonly [number, number, number],
+  alpha: number,
+  theme: "light" | "dark",
+): [number, number, number] {
+  const behind = WORST_BEHIND[theme];
+  const ink = INK_ON_SURFACE[theme];
+  const target = theme === "light" ? 255 : 0;
+  const toHex = (rgb: readonly number[]) =>
+    `#${rgb.map((channel) => Math.round(Math.min(255, Math.max(0, channel))).toString(16).padStart(2, "0")).join("")}`;
+  for (let step = 0; step <= 20; step += 1) {
+    const mix = step / 20;
+    const mixed = tint.map((channel) => channel + (target - channel) * mix);
+    const composite = mixed.map((channel, index) => alpha * channel + (1 - alpha) * behind[index]);
+    if (contrastRatio(toHex(composite), ink) >= 4.6) {
+      return [Math.round(mixed[0]), Math.round(mixed[1]), Math.round(mixed[2])];
+    }
+  }
+  return theme === "light" ? [255, 255, 255] : [0, 0, 0];
+}
 
 /** Map the 0–100 ladder onto a real panel alpha for one palette. */
 export function surfaceAlpha(percent: number, theme: "light" | "dark"): number {
@@ -173,8 +210,11 @@ export function buildPrefsCss(prefs: SitePrefs): string {
 
   for (const palette of palettes) {
     const glassBase = palette.base.glass;
-    const tint = appearance.glassTint ? hexToRgbArray(appearance.glassTint) : [glassBase[0], glassBase[1], glassBase[2]];
     const glassAlpha = surfaceAlpha(appearance.surface, palette.theme);
+    const rawTint: [number, number, number] = appearance.glassTint
+      ? hexToRgbArray(appearance.glassTint)
+      : [glassBase[0], glassBase[1], glassBase[2]];
+    const tint = readableTint(rawTint, glassAlpha, palette.theme);
     const blur = surfaceBlur(appearance.surface);
     const isNight = palette.theme === "dark";
     // Night paper is the same material as the night panels, so it follows the

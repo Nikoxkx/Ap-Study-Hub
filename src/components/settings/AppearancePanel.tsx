@@ -263,7 +263,9 @@ export function AppearancePanel() {
         </Row>
         <Note>
           Pick any colour you like: if it would fall below 4.5:1 against the panels, it is nudged along
-          its own lightness axis — same hue, readable result — rather than rejected.
+          its own lightness axis — same hue, readable result — rather than rejected. The glass tint is
+          corrected the same way against what the tint actually composites to over the painting, so a
+          charcoal tint in daylight comes back as a light smoke instead of swallowing the text.
         </Note>
       </Panel>
 

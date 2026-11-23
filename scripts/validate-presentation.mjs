@@ -442,6 +442,12 @@ else {
   if (dayWorst < 4.5) fail(`clear day glass drops body text to ${dayWorst.toFixed(2)}:1`);
   if (nightWorst < 4.5) fail(`clear night glass drops body text to ${nightWorst.toFixed(2)}:1`);
 }
+if (!/readableTint\(rawTint, glassAlpha, palette\.theme\)/.test(themeSource)) {
+  fail("a hand-picked glass tint is not contrast-corrected against the composite");
+}
+if (!/export function readableTint/.test(themeSource) || !/contrastRatio\(toHex\(composite\)/.test(themeSource)) {
+  fail("the glass-tint correction does not measure contrast");
+}
 if (!/surfaceAlpha\(appearance\.surface/.test(themeSource)) {
   fail("the generated stylesheet ignores the surface setting");
 }
