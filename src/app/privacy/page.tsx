@@ -33,6 +33,11 @@ const storageKeys = [
     when: "Written when you use the theme control in the header. Absent until then.",
   },
   {
+    key: "sb-{project-ref}-auth-token",
+    what: "Your optional account session: an access token and a refresh token issued by Supabase after a one-time code. Written only if you sign in on /account, and removed when you sign out.",
+    when: "Written at sign-in. Not a cookie, and not present for anyone who never signs in.",
+  },
+  {
     key: "aps.prefs.v1",
     what: "Your settings: wallpaper, colours, type, density, home-page order and headings, hero copy, custom blocks, and the adaptive switches.",
     when: "Written the first time you change anything in Settings. Absent until then, which is why a fresh browser looks exactly like the shipped site.",
@@ -254,6 +259,17 @@ export default function PrivacyPage() {
               Without a key it returns the same local analysis, computed on the server.
             </p>
             <p>
+              Signing in is optional and is the only feature that talks to a second server. If this
+              deployment has Supabase configured, <code>/account</code> can send you a one-time code by
+              email or text; entering it creates a session in this browser. From then on Supabase holds
+              a display name, a photo you chose, and five coarse counts (cards reviewed, practice
+              answered, focus minutes, streak, last active) — only when you press{" "}
+              <strong>Save today&rsquo;s counts</strong>. No lesson, answer, draft, essay, or search is
+              ever sent. There is no password field anywhere in this app, so there is no password to
+              lose. Delete the cloud copy removes those rows and photos; it does not touch this
+              browser.
+            </p>
+            <p>
               Scanning a link is the one other action that reaches the network, and it never happens
               on its own. Pressing <strong>Scan link</strong> in Settings → Sources sends the URL you
               pasted to <code>/api/link-preview</code> on this site, which fetches that page once to
@@ -334,6 +350,10 @@ export default function PrivacyPage() {
           ,{" "}
           <Link href="/settings?tab=privacy" className="link-underlined" style={{ color: "var(--ink)" }}>
             the controls themselves
+          </Link>
+          ,{" "}
+          <Link href="/account" className="link-underlined" style={{ color: "var(--ink)" }}>
+            the optional account
           </Link>{" "}
           and{" "}
           <Link href="/about" className="link-underlined" style={{ color: "var(--ink)" }}>

@@ -113,9 +113,13 @@
   --color-paper: transparent;
   --color-paper-raised: rgba(255, 255, 255, 0.28);
   --color-paper-sunk: rgba(255, 255, 255, 0.18);
-  --color-ink: #0f0f0f;
-  --color-ink-soft: #242424;
-  --color-ink-faint: #3d3d3d;
+  --color-ink: #0b0b0b;
+  --color-ink-soft: #171717;
+  /* Faint ink is the small mono label voice — eyebrows, stat captions, hints.
+     It used to sit at #3d3d3d, which is legible on flat paper and vanishes over
+     a photograph seen through glass. It is now a near-black; the halo rules
+     below do the rest. */
+  --color-ink-faint: #1f1f1f;
   --color-rule: rgba(255, 255, 255, 0.65);
   --color-rule-strong: rgba(0, 0, 0, 0.22);
   --color-mark: #0f0f0f;
@@ -2204,6 +2208,41 @@ main :has(:fullscreen) {
   text-shadow:
     0 2px 18px rgba(0, 0, 0, 0.96),
     0 0 3px rgba(0, 0, 0, 0.98);
+}
+
+/* ---- Legibility over the wallpaper --------------------------------------
+   Frosted panels are deliberately see-through, so the classroom painting is
+   still visible behind them — which means small type lands on a chalkboard, a
+   window, or forty desks. Every rule here is about that, and nothing else:
+
+   • small labels, folios and stat figures get a tight halo in the direction
+     that lifts them (white on paper, black at night), so they hold their edge
+     against whatever photograph is behind the glass;
+   • nothing here is a full-page filter, a wash, or an opaque panel. The
+     painting stays at its own brightness, as it must.
+
+   The halo is a text-shadow rather than a background because a background
+   would draw a box around every label and change the page's composition. */
+:root:not(.dark) .label,
+:root:not(.dark) .folio,
+:root:not(.dark) .stat-value,
+:root:not(.dark) .canvas-subtext {
+  text-shadow:
+    0 1px 14px rgba(255, 255, 255, 0.94),
+    0 0 2px rgba(255, 255, 255, 0.88);
+}
+
+.dark .label,
+.dark .folio,
+.dark .stat-value {
+  text-shadow:
+    0 1px 14px rgba(0, 0, 0, 0.92),
+    0 0 2px rgba(0, 0, 0, 0.88);
+}
+
+/* Tags are chips with their own surface; only their ink needs a nudge. */
+.tag {
+  font-weight: 500;
 }
 
 /* Convert all major app containers across every route into the Universal Glass Box */
@@ -6922,4 +6961,187 @@ html.is-entering footer[data-site-footer] {
   .custom-blocks,
   .adaptive-grid,
   .wallpaper-grid { display: none !important; }
+}
+
+/* ==========================================================================
+   Account — the optional half of the site
+   --------------------------------------------------------------------------
+   Same vocabulary as the settings page. One extra rule matters: the sign-in
+   card is the only thing on this page that is a form, so it is the only place
+   with a stacked field layout.
+   ========================================================================== */
+
+.account-shell {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.account-form {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+  max-width: 32rem;
+}
+
+.account-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.account-form-row .field { flex: 1 1 14rem; min-width: 0; }
+
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.account-actions .btn { padding: 0.6em 1.3em; font-size: 0.9375rem; }
+
+.account-code {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  letter-spacing: 0.42em;
+  padding-block: 0.5rem;
+  text-align: center;
+  max-width: 12rem;
+}
+
+.account-profile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.account-profile-body { flex: 1 1 16rem; min-width: 0; }
+
+.account-avatar {
+  display: grid;
+  place-items: center;
+  width: 6rem;
+  height: 6rem;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-lift);
+  text-shadow: 0 1px 14px rgba(255, 255, 255, 0.4);
+}
+
+.account-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A file input needs a label that looks like a control, because the native
+   button is the one piece of browser chrome that ignores the design system. */
+.account-file {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.account-file input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.account-stats {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 720px) {
+  .account-stats { grid-template-columns: 1fr 1fr; }
+}
+
+.account-stat-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.account-stat-list > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.account-stat-list > div:last-child { border-bottom: 0; }
+
+.account-stat-list dt {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.account-stat-list dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.account-lessons {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.account-lessons > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-edge);
+  background: var(--paper-raised);
+}
+
+.account-lesson-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.account-lesson-note {
+  margin-top: 0.1rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ink-faint);
+}
+
+.account-lesson-links {
+  display: flex;
+  gap: 0.35rem;
 }

@@ -162,6 +162,7 @@ export function MobileNav() {
             { href: "/search", label: "Full Search" },
             { href: "/about", label: "About" },
             { href: "/settings", label: "Settings" },
+            { href: "/account", label: "Account" },
             { href: "/ai-disclosure", label: "AI Disclosure" },
           ].map((item) => (
             <li key={item.href}>

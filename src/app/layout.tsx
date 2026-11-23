@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { PageBackground } from "@/components/ui/PageBackground";
 import { PreferencesProvider } from "@/lib/use-prefs";
+import { AuthProvider } from "@/lib/use-auth";
 import { ScrollEffects } from "@/components/ui/ScrollEffects";
 import { site, socialImages } from "@/lib/site";
 import { organizationSchema, websiteSchema, JsonLd } from "@/lib/schema";
@@ -111,6 +112,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body suppressHydrationWarning className="relative flex min-h-screen flex-col bg-transparent">
         <PreferencesProvider>
+        <AuthProvider>
           <PageBackground />
         <a className="skip-link" href="#main">
           Skip to content
@@ -123,7 +125,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <ScrollEffects />
         <ServiceWorkerRegister />
           <JsonLd schema={[organizationSchema(), websiteSchema()]} />
-        </PreferencesProvider>
+          </AuthProvider>
+      </PreferencesProvider>
       </body>
     </html>
   );

@@ -301,9 +301,55 @@ for (const key of ["aps.prefs.v1", "aps.adaptive.v1", "aps.sources.v1", "aps-ass
 }
 if (!read("src/app/privacy/page.tsx").includes("link-preview")) fail("privacy page does not explain the link-preview request");
 
+// 6. Optional accounts, and readable small type.
+//
+//    Accounts must stay a switch, not a requirement: no secret in the bundle, no
+//    password flow, and RLS on every table the client can reach.
+const supabaseLib = read("src/lib/supabase.ts");
+const authLib = read("src/lib/use-auth.tsx");
+const accountPage = read("src/app/account/page.tsx");
+const migration = read("supabase/migrations/20261122120000_create_profiles_and_stats.sql");
+
+if (!layout.includes("<AuthProvider>")) fail("layout.tsx does not mount AuthProvider");
+if (!settingsClient.includes('id: "account"')) fail("Settings is missing the account tab");
+if (!authLib.includes("signInWithOtp") || !authLib.includes("verifyOtp")) {
+  fail("use-auth no longer signs in with a one-time code");
+}
+if (/signInWithPassword/.test(authLib)) fail("a password flow appeared; this site has no password field");
+if (!supabaseLib.includes("NEXT_PUBLIC_SUPABASE_ANON_KEY")) fail("supabase.ts lost its public key wiring");
+if (/SERVICE_ROLE/i.test(supabaseLib) || /SERVICE_ROLE/i.test(authLib) || /SERVICE_ROLE/i.test(accountPage)) {
+  fail("a service-role key is referenced in client code");
+}
+if (!accountPage.includes('canonical: "/account"')) fail("/account lost its canonical metadata");
+if (!migration.includes("enable row level security")) fail("account migration does not enable RLS");
+if ((migration.match(/auth\.uid\(\)/g) ?? []).length < 6) fail("account policies are not keyed to auth.uid()");
+if (!migration.includes("'avatars'")) fail("account migration does not create the avatars bucket");
+if (!migration.includes("file_size_limit")) fail("avatar bucket lost its size limit");
+
+// Small mono labels have to hold up over a photograph seen through glass. The
+// light faint ink is asserted against the page's own surface colour, and the
+// halo rule is asserted so a future reset of the ink cannot quietly undo it.
+const faintInk = css.match(/--color-ink-faint:\s*(#[0-9a-fA-F]{6})/)?.[1];
+const lin = (value) => (value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+const luminance = (hex) => {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+};
+if (!faintInk) {
+  fail("light --color-ink-faint is not a plain hex colour");
+} else {
+  const surface = luminance("#f1efe9");
+  const ratio = (Math.max(surface, luminance(faintInk)) + 0.05) / (Math.min(surface, luminance(faintInk)) + 0.05);
+  if (ratio < 9) fail(`light --color-ink-faint is ${faintInk}, only ${ratio.toFixed(1)}:1 on the page surface — small labels will wash out`);
+}
+if (!/:root:not\(\.dark\) \.label,/.test(css)) fail("small labels lost their light-mode halo");
+if (!/Legibility over the wallpaper/.test(css)) fail("the legibility block was removed from globals.css");
+
 if (errors.length) {
   console.error(`Presentation validation failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
   for (const error of errors) console.error(`  • ${error}`);
   process.exit(1);
 }
-console.log("✓ Exam room print sheet, neutral night mode, subject symbols, real video thumbnails, static social preview, and the validated personalisation layer are intact.");
+console.log("✓ Print sheet, neutral night mode, symbols, thumbnails, social preview, personalisation, readable labels, and the optional account layer are intact.");

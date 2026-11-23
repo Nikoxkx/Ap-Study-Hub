@@ -120,6 +120,38 @@ Three rules hold it together:
 
 ---
 
+## Optional accounts (Supabase)
+
+`/account` is the only place the site can talk to a second server, and it is off unless a deployment
+configures it. Everything — every lesson, card, question, paper, and video — works signed out.
+
+- **No password field, anywhere.** Sign-in is a one-time code by email or by phone (Supabase Auth).
+  A lookalike login page has nothing useful to steal, and there is no password for a student to
+  reuse.
+- **Two rows, five numbers.** `public.profiles` holds a display name and an avatar URL;
+  `public.study_stats` holds cards reviewed, practice answered, focus minutes, streak, last active,
+  and up to twelve `{ slug, score }` affinity pairs. No lesson ID, answer, draft, or search is ever
+  uploaded, and the counts are written only when you press **Save today's counts**.
+- **Yours to delete.** *Delete the cloud copy* removes the profile row, stats row, and photo;
+  *Forget everything* in Settings clears the local record. They are separate buttons because they
+  are separate things.
+- **RLS is the boundary.** The anon key is public by design; every policy is keyed to `auth.uid()`,
+  `anon` is revoked on both tables, and avatar writes are restricted to `avatars/<uid>/`.
+  `scripts/validate-presentation.mjs` fails the build if a service-role key, a password flow, or an
+  unprotected table appears in client code.
+- **Graceful when absent.** With no `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+  `/account` says so, Settings → Account shows `off`, and nothing else changes. The schema,
+  bucket, and step-by-step setup live in `SUPABASE_AUTH.md` and
+  `supabase/migrations/20261122120000_create_profiles_and_stats.sql`.
+
+**Readability pass.** Small mono labels, folios, and stat figures sat at `#3d3d3d` — fine on flat
+paper, hard to read over a photograph seen through glass. Light ink-faint is now near-black, and
+every label voice gets a tight white halo (black at night). It is a `text-shadow`, not a wash: the
+wallpaper still shows at its own brightness, and `validate:presentation` asserts both the contrast
+ratio and the halo rule.
+
+---
+
 ## The Interim Assessments
 
 Each course has one paper at `/course/<slug>/exam` with two modes and a score report.
@@ -222,9 +254,11 @@ scripts/
   validate-scroll-lock.ts       asserts the shared page lock nests and restores scroll position
   validate-presentation.mjs     neutral dark tokens, SubjectMark icons, CSP, OG PNGs, and the validated settings/adaptive layer
   build-social-image.ts         renders the 1200×630 link preview: graph-paper sheet + 10 course marks via @resvg/resvg-js
+supabase/
+  migrations/                   RLS-enabled schema for optional accounts (see SUPABASE_AUTH.md)
 src/
   app/                          Next.js 16 App Router (static routes, loading boundaries, /api/search)
-    globals.css                 design tokens, light/dark surfaces, every shared component, settings UI
+    globals.css                 design tokens, light/dark surfaces, every shared component, settings and account UI
     exam-room.css               exam room shell: painted (not frosted) surface, hidden page behind
   components/
     SiteHeader.tsx              single-row leveled header bar (Logo, TopClassBar, Jump to ⌘K, MobileNav)
@@ -232,7 +266,8 @@ src/
     TopClassBar.tsx             hover-reveal AP Courses bar + mobile touch sheet with white AP symbols
     MobileNav.tsx               unified Menu popover (SiteSearch, Study Desk, links, ThemeSwitch, Settings)
     AdaptiveSignal.tsx          one-line page-opened signal for the local adaptive profile
-    settings/                   seven-panel /settings shell and its validated controls
+    settings/                   eight-panel /settings shell and its validated controls
+    account/AccountClient.tsx   optional sign-in, profile photo, local vs cloud stats
     home/                       adaptive hero, for-you strip, renamable headings, custom blocks
     StudySystemVisual.tsx       interactive ten-course cold-recall card preview inside the homepage hero
     StudyDashboard.tsx          spacious local-first Study Desk with white AP course filter pills & 9 tabs

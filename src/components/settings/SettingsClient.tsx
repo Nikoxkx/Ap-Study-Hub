@@ -11,6 +11,7 @@ import { SourcesPanel } from "./SourcesPanel";
 import { AdaptivePanel } from "./AdaptivePanel";
 import { PrivacyPanel } from "./PrivacyPanel";
 import { AdvancedPanel } from "./AdvancedPanel";
+import { AccountPanel } from "./AccountPanel";
 import type { PanelProps } from "./types";
 
 const TABS = [
@@ -19,6 +20,7 @@ const TABS = [
   { id: "content", label: "Text & elements", note: "Hero, footer, custom blocks" },
   { id: "sources", label: "Sources", note: "Your links, filed by course" },
   { id: "adaptive", label: "Adaptive", note: "What the site learns, and why" },
+  { id: "account", label: "Account", note: "Optional sign-in and sync" },
   { id: "privacy", label: "Privacy & data", note: "Export, restore, erase" },
   { id: "advanced", label: "Advanced", note: "Custom CSS, reset" },
 ] as const;
@@ -98,6 +100,7 @@ export function SettingsClient({ subjects, totals }: Omit<PanelProps, "prefs" | 
     content: <ContentPanel prefs={prefs} update={update} subjects={subjects} totals={totals} />,
     sources: <SourcesPanel prefs={prefs} update={update} subjects={subjects} totals={totals} />,
     adaptive: <AdaptivePanel prefs={prefs} update={update} subjects={subjects} totals={totals} />,
+    account: <AccountPanel />,
     privacy: <PrivacyPanel />,
     advanced: <AdvancedPanel />,
   };
